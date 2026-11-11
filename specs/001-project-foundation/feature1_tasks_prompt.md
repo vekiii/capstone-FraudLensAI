@@ -39,6 +39,7 @@ Uvodna mapa za orijentaciju (uvek proveri aktuelni tasks.md):
    pronađi njen opseg. Ako je naveden samo opseg, izvedi fazu kada je jednoznačno.
    Ako izbor nedostaje ili je protivrečan, postavi jedno kratko pitanje; ne nagađaj.
 3. Pročitaj važeće AGENTS.md instrukcije ako postoje, zatim
+   obavezno root `next_work.md` pre generisanja prompta, pa
    `.specify/memory/constitution.md`, `specs/001-project-foundation/tasks.md`, `spec.md`
    i `plan.md` iz istog direktorijuma. Iz data-model.md, contracts/, quickstart.md i
    research.md pročitaj delove relevantne za izabranu fazu. `original_idea.md` koristi
@@ -48,6 +49,8 @@ Uvodna mapa za orijentaciju (uvek proveri aktuelni tasks.md):
    koliko je potrebno za izbor. Checkbox nije dovoljan dokaz izvršavanja, a neoznačen
    task može biti delimično implementiran. Razdvoji potvrđeno stanje od pretpostavki.
    Ako evidence ili prompt direktorijumi još ne postoje, to nije prepreka za fazu 1.
+   Pri generisanju ne menjaj next_work.md. Ako nedostaje ili nije čitljiv, prijavi
+   to i utvrdi stanje iz taskova/evidence zapisa, bez izmišljanja prethodne predaje.
 5. Utvrdi spoljne preduslove, relevantne FR/SC kriterijume, redosled testova i
    implementacije, ciljane putanje i provere koje su ostvarive u toj fazi.
    Ne dodaj kasnije funkcionalnosti da bi buduća kompletna provera već sada prošla.
@@ -82,6 +85,9 @@ okolne dokumente referenciraj putanjama. Dužinu prilagodi složenosti faze.
 
 ### 2. Pročitaj pre izmena
 
+- Prompt mora zahtevati da izvršilac, odmah nakon važećih AGENTS.md instrukcija,
+  pročita root `next_work.md` pre planiranja i implementacije, uključujući nastavak
+  prekinutog rada. Aktuelni zahtev određuje opseg; next_work.md ga ne proširuje.
 - Konkretne relevantne putanje iz prethodnog postupka, uključujući postojeća pravila,
   constitution, tasks/spec/plan i samo potrebne ugovore i evidence zapise.
 - Za Spec-kit odaberi `specs/001-project-foundation` eksplicitno za ovu sesiju umesto
@@ -142,6 +148,9 @@ okolne dokumente referenciraj putanjama. Dužinu prilagodi složenosti faze.
 - Handoff osveži posle završenog taska ili koherentne celine, ne samo na kraju:
   sesija može biti prekinuta bez prilike za završni odgovor. Prekid zbog kvote ne
   garantuje automatsko čuvanje dodatnog zapisa; već sačuvani fajlovi su osnova nastavka.
+- Posle implementacione celine ažuriraj i root `next_work.md`: trenutno stanje,
+  evidence linkovi, blokade/neizvršene provere i jedan konkretan sledeći korak.
+  Ovaj fajl je kratka predaja, dok tasks.md i evidence/ čuvaju detaljan status i dokaz.
 - Ne tvrdi da postoji ljudski review ili da je drugi član reprodukovao setup ako se
   to nije dogodilo. Posebno T025/SC-001 ostaju pending do stvarnog drugog učesnika.
 

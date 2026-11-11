@@ -1,5 +1,15 @@
 # FraudLens AI contributor instructions
 
+## Mandatory start of every task
+Before planning, generating prompts, reviewing or implementing any project work,
+MUST read the current root [next_work.md](next_work.md), after applicable AGENTS.md
+instructions. Repeat this at the start of each new task or resumed session; do not
+rely only on previous chat context. Read-only requests must read it too, without
+updating it. If it is missing or unreadable, report that fact and use the requested
+feature's tasks/evidence to establish context; do not invent the missing handoff.
+The user's current request determines scope; next_work.md does not authorize
+unrequested implementation. Verify its progress claims against relevant evidence.
+
 ## Scope and authority
 Use [.specify/memory/constitution.md](.specify/memory/constitution.md) as the shared
 governance source and [original_idea.md](original_idea.md) for the approved product
@@ -37,6 +47,11 @@ machine-local/generated files out of Git. Record original development prompts,
 versions, commands, observed results, limitations and pending human review using
 the prompts/ and evidence/ conventions. Synthetic fixture checks are not model
 evaluation, and one contributor's setup is not second-person reproduction.
+
+After each implementation unit or partial-work handoff, update next_work.md with
+actual progress, evidence links, blockers/unrun checks and one concrete next step.
+Keep detailed execution history in evidence/. Prompt-generation-only requests remain
+read-only and do not update progress files. Git commit/push is not automatic.
 
 Keep deterministic calculations and validation in code; LLMs must not invent facts
 or permissions. Keep evaluation labels and holdout answers outside prediction and
