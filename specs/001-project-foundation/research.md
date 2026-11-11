@@ -7,8 +7,8 @@ No unresolved technical decisions block the foundation.
 **Decision**: FastAPI + Vite vanilla TypeScript, as approved by the team.
 **Rationale**: Small local application; no extra frontend framework or orchestration needed.
 **Alternatives considered**: Streamlit would change the approved frontend; React adds scope.
-Vite supports vanilla-ts and documents Node 22.12+ compatibility. Choose Python 3.12 and
-Node 22; verify patch releases and dependency resolution when creating lockfiles.
+Vite supports vanilla-ts. User-approved runtime update: choose Python 3.14 and
+Node 24; verify patch releases and dependency resolution when creating lockfiles.
 Sources: [Vite](https://vite.dev/guide/), [FastAPI](https://fastapi.tiangolo.com/).
 
 ## 2. Tests and reproducibility

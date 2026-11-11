@@ -1,17 +1,17 @@
 # Tasks: Project Foundation
 
 **Input**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md.
-**Status**: All tasks pending. This is a plan, not an implementation/evidence record.
+**Status**: Phase 1 (T001–T005) completed; T006 onward pending. Actual setup evidence: [phase-01-handoff.md](../../evidence/tasks/phase-01-handoff.md).
 **Tests**: TDD requested. Run each behavior test RED before its implementation, then GREEN and
 relevant regression. Do not fabricate failures for mechanical setup or already-correct behavior.
 **Format**: `- [ ] Tnnn [P?] [USn?] action with paths`. [P] is valid only after listed prerequisites.
 
 ## Phase 1: Setup (Shared Infrastructure)
-- [ ] T001 Document team scope/approval and SDD/TDD instructions in AGENTS.md, referencing .specify/memory/constitution.md and original_idea.md; do not add out-of-course requirements.
-- [ ] T002 Create evidence/README.md, evidence/templates/task.md and prompts/README.md covering real RED/GREEN outcomes, limitations, pending peer review, sanitized original development prompts in prompts/development/ and versioned application prompts in prompts/app/ (FR-008).
-- [ ] T003 [P] Initialize backend dependencies and tests/lint config in pyproject.toml, .python-version and uv.lock; Python 3.12, FastAPI, Uvicorn, pytest, httpx, Ruff, jsonschema; configure backend/src import path and dev group. Record exact resolved versions in docs/decisions/foundation.md (FR-001).
-- [ ] T004 [P] Initialize Vite vanilla TypeScript in frontend/package.json, frontend/package-lock.json, frontend/tsconfig.json, frontend/index.html and frontend/vite.config.ts with Vitest/jsdom, test/typecheck/build scripts and loopback /api proxy; record Node 22 patch and npm versions in frontend/README.md. No feature UI yet (FR-001).
-- [ ] T005 Update .gitignore preserving existing entries; ignore .venv/, node_modules/, dist/, caches, .env files except .env.example, data/raw/, data/processed/ and local generated eval output; retain shared .agents and .specify and honor .specify/.gitignore. Document tracking policy in data/README.md (FR-009).
+- [x] T001 Document team scope/approval and SDD/TDD instructions in AGENTS.md, referencing .specify/memory/constitution.md and original_idea.md; do not add out-of-course requirements.
+- [x] T002 Create evidence/README.md, evidence/templates/task.md and prompts/README.md covering real RED/GREEN outcomes, limitations, pending peer review, sanitized original development prompts in prompts/development/ and versioned application prompts in prompts/app/ (FR-008).
+- [x] T003 [P] Initialize backend dependencies and tests/lint config in pyproject.toml, .python-version and uv.lock; Python 3.14, FastAPI, Uvicorn, pytest, httpx, Ruff, jsonschema; configure backend/src import path and dev group. Record exact resolved versions in docs/decisions/foundation.md (FR-001).
+- [x] T004 [P] Initialize Vite vanilla TypeScript in frontend/package.json, frontend/package-lock.json, frontend/tsconfig.json, frontend/index.html and frontend/vite.config.ts with Vitest/jsdom, test/typecheck/build scripts and loopback /api proxy; record Node 24 patch and npm versions in frontend/README.md. No feature UI yet (FR-001).
+- [x] T005 Update .gitignore preserving existing entries; ignore .venv/, node_modules/, dist/, caches, .env files except .env.example, data/raw/, data/processed/ and local generated eval output; retain shared .agents and .specify and honor .specify/.gitignore. Document tracking policy in data/README.md (FR-009).
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 - [ ] T006 Write and execute RED validation tests in backend/tests/contracts/test_models.py using specs/001-project-foundation/contracts/schemas.json. Cover closed objects; IDs `^TX-[0-9]{3}$` and `^CASE-[0-9]{3}$`; nonempty account strings max 120; amount as nonnegative decimal string with exactly two fractional digits; currency three uppercase letters; UTC timestamps; finite score in [0, 1]; source fixture/rules/model; scorer_version nonempty max 80; explanation nonempty max 500; no labels. Save actual RED evidence under evidence/tasks/T006.md (FR-006/010).

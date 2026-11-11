@@ -10,7 +10,7 @@ case list/detail, explicit source labeling, replaceable scorer and reproducible 
 checks. Do not implement later ML, RAG or investigation features.
 
 ## Technical Context
-**Language/Version**: Python 3.12.x; TypeScript; Node.js 22.x with minimum 22.12.
+**Language/Version**: Python 3.14.x; TypeScript; Node.js 24.x.
 Record exact runtime patch versions in implementation, rather than inventing installed versions.
 **Primary Dependencies**: FastAPI/Pydantic, Uvicorn, pytest/httpx; Vite, TypeScript,
 Vitest with jsdom for DOM/fetch behavior tests. Resolve compatible versions and commit

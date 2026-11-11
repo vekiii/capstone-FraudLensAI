@@ -5,7 +5,7 @@ Do not report this guide as executed. First install needs network; application r
 model, dataset, corpus, provider key or external service.
 
 ## Prerequisites
-Git, uv, Python 3.12, Node 22 (>=22.12), npm, Windows PowerShell. Record exact versions during
+Git, uv, Python 3.14, Node 24, npm, Windows PowerShell. Record exact versions during
 setup. Spec-kit 1.4.0 is already initialized. Preserve existing initialization branch.
 
 ## Install (after implementation setup generates and commits lockfiles)
