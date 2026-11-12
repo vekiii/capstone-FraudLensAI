@@ -31,8 +31,10 @@ regulatory submissions are included in the MVP.
 ## Development and verification
 Follow Specify → Plan → Tasks → Implement → Converge, with clarification and review
 as needed. Read the selected feature artifacts before implementing behavior.
-For Spec-kit commands explicitly select the feature in the PowerShell session:
-`$env:SPECIFY_FEATURE_DIRECTORY = 'specs/001-project-foundation'`.
+For Spec-kit commands explicitly select the requested feature in the PowerShell session.
+For feature 002 use:
+`$env:SPECIFY_FEATURE_DIRECTORY = 'specs/002-data-and-risk-scoring'`.
+Use the corresponding directory for other features; do not assume foundation is always active.
 This selects feature files, without changing the Git branch.
 
 Use RED → GREEN → REFACTOR for critical business behavior, including negative,
