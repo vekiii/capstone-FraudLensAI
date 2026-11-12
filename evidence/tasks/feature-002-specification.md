@@ -61,3 +61,40 @@ No commit, push, merge or deployment performed.
 - Reviewed tracked diff paths: AGENTS.md and next_work.md only; new specification/checklist,
   prompt and evidence files are the intended untracked additions. No source/lockfile change.
 - Final specify hook check: extensions.yml absent, no before/after hooks to execute.
+
+## Adversarial-review revision — 2026-11-12
+
+Prompt: [review remediation request](../../prompts/development/002-review-remediation-2026-11-12.md).
+Input review: [002-review.md](../../prompts/development/002-review.md), including
+the second-level reclassification, scientific/data-engineering review and
+Foundation compatibility review. Scope: specification and quality-checklist
+revision only; no product code, dataset, model or contract implementation.
+
+The revised spec keeps FR-001–FR-026 and SC-001–SC-009. It clarifies event-fact
+validity versus label eligibility, import completeness, identity before filtering,
+unknown-column policy, decimal/time fidelity, point-in-time replay, a genuine
+label-free rule baseline, per-scorer validation-only threshold policy, zero alerts,
+K-boundary ties, holdout consumption, artifact checking, explanation fidelity,
+atomic completed-run selection and versioned Foundation migration. Added acceptance
+scenarios, a label-role table, proposed interface sketches and ten contributor
+work packages. Exact observed IBM schema, numeric rule values, lookback boundary,
+threshold objective, local storage mechanism and resource budget remain planning
+decisions. Authoritative Phase 2 assignment requirements remain unavailable, so
+course compliance is not asserted.
+
+The updated checklist records open human, Phase 2, contract/plan and implementation
+gates. Its checked document-quality items do not claim Feature 002 is implemented.
+RED/GREEN and runtime tests are not applicable to this documentation revision;
+the historical Foundation test results are not new runs.
+
+Documentation verification actually run for this revision:
+- PowerShell structure check: exit 0; five user stories, unique sequential
+  FR-001–FR-026 and SC-001–SC-009, no clarification placeholders.
+- Local-link check of the five touched handoff/spec/checklist/prompt/evidence
+  documents: exit 0; all local Markdown link targets resolve. An initial helper
+  invocation used an empty parent path for root next_work.md and printed Join-Path
+  errors; the corrected strict-error run above is the valid result.
+- git diff --check on the revised tracked documents: exit 0; no whitespace errors.
+- Repository inventory: only Feature 002 spec/checklist exist under its feature
+  directory; data/ contains README and the Foundation fixture, no raw IBM dataset.
+  The only repository requirements.md files are feature quality checklists.
