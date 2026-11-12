@@ -39,9 +39,8 @@ Recorded implementation/test revisions (author and committer verified):
 | 2ff3d84e8540cbb5d990d4340096ada24b78d43d | T017 runtime contracts and typed request handling |
 | d7c3bb72a65708889ae137181dda17e8640dcb84 | T018 case inspection UI, states and race protection |
 
-This manifest is included in the sixth commit, identified by the exact subject
+Sixth commit: `549f304a44157caeb7f18e7996e41c0bc966d978`,
 `docs(us2): record integrated verification and current acceptance limits`.
-Its revision will be added in the publication receipt after creating it.
 
 Earlier per-task
 statements that work was uncommitted describe the state at that task's completion;
@@ -76,4 +75,24 @@ npm.cmd --prefix frontend run build
 Observed: 291 backend + 151 frontend tests passed (442 total, zero failures);
 Ruff, TypeScript and Vite build pass. Known nonblocking Starlette/httpx warning.
 No new browser testing was attempted. No application source changes were made
-during commit preparation. Push pending until actual remote verification succeeds.
+during commit preparation.
+
+## Actual push receipt
+
+`git push origin initialization` exited 0 and reported:
+
+```text
+56aaa10..549f304  initialization -> initialization
+```
+
+`git ls-remote --heads origin initialization` then exited 0 and returned
+`549f304a44157caeb7f18e7996e41c0bc966d978`, exactly matching local HEAD.
+The working tree was clean after the six commits. All six commit authors and
+committers were verified as Isidora Popovic <popovicisidora17@gmail.com>.
+
+A seventh documentation-only commit, `docs: record successful US2 publication`,
+records this actual receipt and changes only this file. It uses the same verified
+identity and is pushed normally to the same branch. Its own revision is available
+in Git history under that exact subject; final remote/HEAD comparison is performed
+after publication. This receipt reports the observed six-commit push above and
+does not fabricate a result for a command that has not yet run.
