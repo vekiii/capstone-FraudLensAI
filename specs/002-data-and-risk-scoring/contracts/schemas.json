@@ -1,0 +1,382 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fraudlens.local/specs/002/contracts/schemas.json",
+  "title": "FraudLens Feature 002 public dataset responses",
+  "description": "Design contract. Foundation fixture v1 remains in specs/001-project-foundation/contracts/schemas.json.",
+  "oneOf": [
+    {"$ref": "#/$defs/HealthV2"},
+    {"$ref": "#/$defs/CaseListV2"},
+    {"$ref": "#/$defs/CaseDetailV2"},
+    {"$ref": "#/$defs/ErrorEnvelopeV2"}
+  ],
+  "$defs": {
+    "Instant": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z$"
+    },
+    "TransactionId": {
+      "type": "string",
+      "pattern": "^D[0-9a-f]{32}$"
+    },
+    "CaseId": {
+      "type": "string",
+      "pattern": "^C[0-9a-f]{32}$"
+    },
+    "RunId": {
+      "type": "string",
+      "pattern": "^run_[A-Za-z0-9_-]{1,64}$"
+    },
+    "DatasetVersionId": {
+      "type": "string",
+      "pattern": "^dv_[A-Za-z0-9_-]{1,64}$"
+    },
+    "Score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ScoreKind": {
+      "enum": [
+        "ordinal_rule_score",
+        "uncalibrated_probability_estimate",
+        "calibrated_probability"
+      ]
+    },
+    "ScoreSource": {
+      "enum": ["rules", "model"]
+    },
+    "BankAccount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bank", "account"],
+      "properties": {
+        "bank": {"type": "string", "minLength": 1, "maxLength": 120},
+        "account": {"type": "string", "minLength": 1, "maxLength": 120}
+      }
+    },
+    "Money": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["amount", "currency"],
+      "properties": {
+        "amount": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12
+        }
+      }
+    },
+    "TransactionV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transaction_id",
+        "event_time_utc",
+        "event_time_raw",
+        "time_basis",
+        "sender",
+        "receiver",
+        "paid",
+        "received",
+        "payment_format"
+      ],
+      "properties": {
+        "transaction_id": {"$ref": "#/$defs/TransactionId"},
+        "event_time_utc": {"$ref": "#/$defs/Instant"},
+        "event_time_raw": {"type": "string", "minLength": 1, "maxLength": 120},
+        "time_basis": {
+          "enum": ["source_explicit_timezone", "documented_source_timezone"]
+        },
+        "sender": {"$ref": "#/$defs/BankAccount"},
+        "receiver": {"$ref": "#/$defs/BankAccount"},
+        "paid": {"$ref": "#/$defs/Money"},
+        "received": {"$ref": "#/$defs/Money"},
+        "payment_format": {
+          "anyOf": [
+            {"type": "string", "minLength": 1, "maxLength": 120},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "HistoryCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "start"],
+      "properties": {
+        "state": {"enum": ["full", "incomplete", "unavailable"]},
+        "start": {
+          "anyOf": [
+            {"$ref": "#/$defs/Instant"},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "ExplanationItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feature_key",
+        "observed_value",
+        "unit",
+        "direction",
+        "contribution",
+        "rule_condition"
+      ],
+      "properties": {
+        "feature_key": {"type": "string", "minLength": 1, "maxLength": 120},
+        "observed_value": {"type": "string", "minLength": 1, "maxLength": 200},
+        "unit": {"type": "string", "minLength": 1, "maxLength": 40},
+        "direction": {"enum": ["increases", "decreases", "neutral"]},
+        "contribution": {"type": "number"},
+        "rule_condition": {
+          "anyOf": [
+            {"type": "string", "minLength": 1, "maxLength": 300},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "ExplanationAvailable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "method",
+        "explained_scale",
+        "feature_snapshot_digest",
+        "partial",
+        "base_value",
+        "remainder",
+        "items"
+      ],
+      "properties": {
+        "status": {"const": "available"},
+        "method": {"enum": ["rules", "linear_log_odds", "tree_path"]},
+        "explained_scale": {
+          "enum": ["risk_score", "log_odds", "positive_class_estimate"]
+        },
+        "feature_snapshot_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "partial": {"type": "boolean"},
+        "base_value": {
+          "anyOf": [{"type": "number"}, {"type": "null"}]
+        },
+        "remainder": {
+          "anyOf": [{"type": "number"}, {"type": "null"}]
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {"$ref": "#/$defs/ExplanationItem"}
+        }
+      }
+    },
+    "ExplanationUnavailable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason_code", "feature_snapshot_digest"],
+      "properties": {
+        "status": {"const": "unavailable"},
+        "reason_code": {
+          "enum": ["missing_context", "unsupported_method", "missing_artifact"]
+        },
+        "feature_snapshot_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        }
+      }
+    },
+    "AssessmentV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transaction_id",
+        "run_id",
+        "dataset_version",
+        "score",
+        "score_kind",
+        "score_source",
+        "scorer_version",
+        "feature_version",
+        "event_time_utc",
+        "history_cutoff_exclusive_at",
+        "scored_at",
+        "history_coverage",
+        "explanation"
+      ],
+      "properties": {
+        "transaction_id": {"$ref": "#/$defs/TransactionId"},
+        "run_id": {"$ref": "#/$defs/RunId"},
+        "dataset_version": {"$ref": "#/$defs/DatasetVersionId"},
+        "score": {"$ref": "#/$defs/Score"},
+        "score_kind": {"$ref": "#/$defs/ScoreKind"},
+        "score_source": {"$ref": "#/$defs/ScoreSource"},
+        "scorer_version": {"type": "string", "minLength": 1, "maxLength": 80},
+        "feature_version": {"type": "string", "minLength": 1, "maxLength": 80},
+        "event_time_utc": {"$ref": "#/$defs/Instant"},
+        "history_cutoff_exclusive_at": {"$ref": "#/$defs/Instant"},
+        "scored_at": {"$ref": "#/$defs/Instant"},
+        "history_coverage": {"$ref": "#/$defs/HistoryCoverage"},
+        "explanation": {
+          "oneOf": [
+            {"$ref": "#/$defs/ExplanationAvailable"},
+            {"$ref": "#/$defs/ExplanationUnavailable"}
+          ]
+        }
+      }
+    },
+    "CaseSummaryV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "transaction_id",
+        "event_time",
+        "score",
+        "score_kind",
+        "score_source"
+      ],
+      "properties": {
+        "case_id": {"$ref": "#/$defs/CaseId"},
+        "transaction_id": {"$ref": "#/$defs/TransactionId"},
+        "event_time": {"$ref": "#/$defs/Instant"},
+        "score": {"$ref": "#/$defs/Score"},
+        "score_kind": {"$ref": "#/$defs/ScoreKind"},
+        "score_source": {"$ref": "#/$defs/ScoreSource"}
+      }
+    },
+    "SelectedTimeRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": {
+          "anyOf": [{"$ref": "#/$defs/Instant"}, {"type": "null"}]
+        },
+        "to": {
+          "anyOf": [{"$ref": "#/$defs/Instant"}, {"type": "null"}]
+        }
+      }
+    },
+    "HealthV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "status",
+        "mode",
+        "data_source",
+        "score_source",
+        "dataset_version",
+        "active_run_id"
+      ],
+      "properties": {
+        "contract_version": {"const": 2},
+        "status": {"enum": ["ok", "unavailable"]},
+        "mode": {"const": "dataset"},
+        "data_source": {"const": "ibm_aml_hi_small"},
+        "score_source": {"$ref": "#/$defs/ScoreSource"},
+        "dataset_version": {
+          "anyOf": [{"$ref": "#/$defs/DatasetVersionId"}, {"type": "null"}]
+        },
+        "active_run_id": {
+          "anyOf": [{"$ref": "#/$defs/RunId"}, {"type": "null"}]
+        }
+      }
+    },
+    "CaseListV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "snapshot_ref",
+        "dataset_version",
+        "data_source",
+        "score_source",
+        "scorer_version",
+        "total_alerts",
+        "displayed_count",
+        "truncated",
+        "selected_time_range",
+        "items"
+      ],
+      "properties": {
+        "contract_version": {"const": 2},
+        "snapshot_ref": {"$ref": "#/$defs/RunId"},
+        "dataset_version": {"$ref": "#/$defs/DatasetVersionId"},
+        "data_source": {"const": "ibm_aml_hi_small"},
+        "score_source": {"$ref": "#/$defs/ScoreSource"},
+        "scorer_version": {"type": "string", "minLength": 1, "maxLength": 80},
+        "total_alerts": {"type": "integer", "minimum": 0},
+        "displayed_count": {"type": "integer", "minimum": 0, "maximum": 100},
+        "truncated": {"type": "boolean"},
+        "selected_time_range": {"$ref": "#/$defs/SelectedTimeRange"},
+        "items": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {"$ref": "#/$defs/CaseSummaryV2"}
+        }
+      }
+    },
+    "CaseDetailV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "snapshot_ref",
+        "case_id",
+        "transaction",
+        "risk_assessment"
+      ],
+      "properties": {
+        "contract_version": {"const": 2},
+        "snapshot_ref": {"$ref": "#/$defs/RunId"},
+        "case_id": {"$ref": "#/$defs/CaseId"},
+        "transaction": {"$ref": "#/$defs/TransactionV2"},
+        "risk_assessment": {"$ref": "#/$defs/AssessmentV2"}
+      }
+    },
+    "ErrorBodyV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": {
+          "enum": [
+            "invalid_request",
+            "case_not_found",
+            "stale_snapshot",
+            "run_unavailable",
+            "internal_error"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      }
+    },
+    "ErrorEnvelopeV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["error"],
+      "properties": {
+        "error": {"$ref": "#/$defs/ErrorBodyV2"}
+      }
+    }
+  }
+}
