@@ -1,7 +1,7 @@
 # Tasks: Project Foundation
 
 **Input**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md.
-**Status**: Phase 1 (T001–T005) completed; T006 onward pending. Actual setup evidence: [phase-01-handoff.md](../../evidence/tasks/phase-01-handoff.md).
+**Status**: Phases 1–2 (T001–T007) completed; T008 onward pending. Phase 2 evidence: [phase-02-handoff.md](../../evidence/tasks/phase-02-handoff.md). Actual setup evidence: [phase-01-handoff.md](../../evidence/tasks/phase-01-handoff.md).
 **Tests**: TDD requested. Run each behavior test RED before its implementation, then GREEN and
 relevant regression. Do not fabricate failures for mechanical setup or already-correct behavior.
 **Format**: `- [ ] Tnnn [P?] [USn?] action with paths`. [P] is valid only after listed prerequisites.
@@ -14,8 +14,8 @@ relevant regression. Do not fabricate failures for mechanical setup or already-c
 - [x] T005 Update .gitignore preserving existing entries; ignore .venv/, node_modules/, dist/, caches, .env files except .env.example, data/raw/, data/processed/ and local generated eval output; retain shared .agents and .specify and honor .specify/.gitignore. Document tracking policy in data/README.md (FR-009).
 
 ## Phase 2: Foundational (Blocking Prerequisites)
-- [ ] T006 Write and execute RED validation tests in backend/tests/contracts/test_models.py using specs/001-project-foundation/contracts/schemas.json. Cover closed objects; IDs `^TX-[0-9]{3}$` and `^CASE-[0-9]{3}$`; nonempty account strings max 120; amount as nonnegative decimal string with exactly two fractional digits; currency three uppercase letters; UTC timestamps; finite score in [0, 1]; source fixture/rules/model; scorer_version nonempty max 80; explanation nonempty max 500; no labels. Save actual RED evidence under evidence/tasks/T006.md (FR-006/010).
-- [ ] T007 Implement backend/src/fraudlens/contracts.py to satisfy T006 and the JSON Schema; test JSON Schema date-time format checking explicitly, run GREEN and record results in evidence/tasks/T006.md. Do not widen the schema silently (FR-006).
+- [x] T006 Write and execute RED validation tests in backend/tests/contracts/test_models.py using specs/001-project-foundation/contracts/schemas.json. Cover closed objects; IDs `^TX-[0-9]{3}$` and `^CASE-[0-9]{3}$`; nonempty account strings max 120; amount as nonnegative decimal string with exactly two fractional digits; currency three uppercase letters; UTC timestamps; finite score in [0, 1]; source fixture/rules/model; scorer_version nonempty max 80; explanation nonempty max 500; no labels. Save actual RED evidence under evidence/tasks/T006.md (FR-006/010).
+- [x] T007 Implement backend/src/fraudlens/contracts.py to satisfy T006 and the JSON Schema; test JSON Schema date-time format checking explicitly, run GREEN and record results in evidence/tasks/T006.md. Do not widen the schema silently (FR-006).
 
 **Checkpoint**: Shared contracts and tooling ready. No real data/model needed. Tasks touching the
 same file must stay sequential even if separate stories could otherwise proceed concurrently.

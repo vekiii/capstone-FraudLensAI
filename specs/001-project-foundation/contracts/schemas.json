@@ -9,12 +9,12 @@
       "properties": {
         "transaction_id": {
           "type": "string",
-          "pattern": "^TX-[0-9]{3}$"
+          "pattern": "^TX-[0-9]{3}(?![\\s\\S])"
         },
         "occurred_at": {
           "type": "string",
           "format": "date-time",
-          "pattern": "Z$"
+          "pattern": "Z(?![\\s\\S])"
         },
         "sender_account": {
           "type": "string",
@@ -28,11 +28,11 @@
         },
         "amount": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.[0-9]{2}$"
+          "pattern": "^(0|[1-9][0-9]*)\\.[0-9]{2}(?![\\s\\S])"
         },
         "currency": {
           "type": "string",
-          "pattern": "^[A-Z]{3}$"
+          "pattern": "^[A-Z]{3}(?![\\s\\S])"
         }
       },
       "required": [
@@ -50,7 +50,7 @@
       "properties": {
         "transaction_id": {
           "type": "string",
-          "pattern": "^TX-[0-9]{3}$"
+          "pattern": "^TX-[0-9]{3}(?![\\s\\S])"
         },
         "score": {
           "type": "number",
@@ -73,7 +73,7 @@
         "scored_at": {
           "type": "string",
           "format": "date-time",
-          "pattern": "Z$"
+          "pattern": "Z(?![\\s\\S])"
         },
         "explanation": {
           "type": "string",
@@ -96,11 +96,11 @@
       "properties": {
         "case_id": {
           "type": "string",
-          "pattern": "^CASE-[0-9]{3}$"
+          "pattern": "^CASE-[0-9]{3}(?![\\s\\S])"
         },
         "transaction_id": {
           "type": "string",
-          "pattern": "^TX-[0-9]{3}$"
+          "pattern": "^TX-[0-9]{3}(?![\\s\\S])"
         },
         "score": {
           "type": "number",
@@ -129,7 +129,7 @@
       "properties": {
         "case_id": {
           "type": "string",
-          "pattern": "^CASE-[0-9]{3}$"
+          "pattern": "^CASE-[0-9]{3}(?![\\s\\S])"
         },
         "transaction": {
           "$ref": "#/$defs/Transaction"
