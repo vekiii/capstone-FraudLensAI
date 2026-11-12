@@ -20,3 +20,17 @@ Next concrete step: another teammate executes peer-reproduction.md on their chec
 and supplies actual results; separately obtain human review T028. No feature 002.
 
 Final review: git diff --check and per-untracked-file git diff --no-index --check NUL passed; reviewed all 14 changed/new files. No suites repeated after prose-only edits. Hooks absent; Sync Impact Report absent. User peer clarification appended to original instruction. No secrets/large data added.
+
+Participant continuation: Vedran Mitic report recorded in peer-reproduction.md; 235 backend passes plus 75 temp permission setup errors, 151 frontend passes and working UI/health/retry. T025 partial pending local-temp rerun, CASE-999 check and independent participant context. README adds unique workspace temp/cache workaround. Documentation only; git diff --check passed. No acceptance checkbox changed.
+
+Vedran continuation: full backend 310 passed / exit 0, CASE-999 404 JSON supplied. Technical pending checks resolved; independent second-teammate context still unconfirmed. T028 remains pending. Documentation only; diff check passed.
+
+## Team acceptance closure - 2026-11-12
+Vedran confirms all team members jointly checked setup and conducted the T028
+code/contracts/evidence review. T025/SC-001 and T028 now complete; T001-T028 all
+checked. See peer-reproduction.md and human-review.md for evidence provenance and
+limits. Supersedes previous pending summaries; no new execution or independent
+machine claim. Feature 1 accepted within its local synthetic-demo scope.
+Next: team Git review/commit/push through its normal process, not executed by agent;
+then separately request specification of 002-data-and-risk-scoring. No new feature
+implementation authorized by this closure. Documentation diff check passes.

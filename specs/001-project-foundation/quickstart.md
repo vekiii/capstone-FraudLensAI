@@ -66,3 +66,9 @@ $env:SPECIFY_FEATURE_DIRECTORY = 'specs/001-project-foundation'
 ```
 This selects the feature directory, not a Git branch. Keep branch initialization until the team
 chooses its normal merge flow. No commit/push/deploy is performed by this planning step.
+
+## Acceptance update - 2026-11-12
+Earlier pending acceptance statements above are superseded by the team's reported
+joint setup verification and code/contracts/evidence review. T025/SC-001 and T028
+are complete; see evidence/tasks/peer-reproduction.md and human-review.md from the
+repository root. No additional automated/browser executions claimed by this update.

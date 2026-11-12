@@ -106,3 +106,9 @@ No CI service, containers or deployment required by this feature.
 ## Complexity Tracking
 No constitution exceptions requested. JSON Schema is a design contract; use Pydantic on the
 backend and explicit frontend decoding rather than adding a code generation platform.
+
+## Acceptance update - 2026-11-12
+Earlier pending acceptance statements above are superseded by the team's reported
+joint setup verification and code/contracts/evidence review. T025/SC-001 and T028
+are complete; see evidence/tasks/peer-reproduction.md and human-review.md from the
+repository root. No additional automated/browser executions claimed by this update.

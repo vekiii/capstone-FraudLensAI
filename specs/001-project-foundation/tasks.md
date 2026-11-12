@@ -1,7 +1,7 @@
 # Tasks: Project Foundation
 
 **Input**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md.
-**Status**: T001-T024, T026 and T027 complete. T025/SC-001 and human acceptance remain pending. See ../../evidence/tasks/phase-06-handoff.md.
+**Status**: T001-T028 complete. Team setup verification and human review confirmed on 2026-11-12; see ../../evidence/tasks/peer-reproduction.md and ../../evidence/tasks/human-review.md.
 **Tests**: TDD requested. Run each behavior test RED before its implementation, then GREEN and
 relevant regression. Do not fabricate failures for mechanical setup or already-correct behavior.
 **Format**: `- [ ] Tnnn [P?] [USn?] action with paths`. [P] is valid only after listed prerequisites.
@@ -51,7 +51,7 @@ unavailable service/retry and stale selection.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 - [x] T024 Review all FR and SC coverage in specs/001-project-foundation/tasks.md and specs/001-project-foundation/spec.md; update genuine changes at their source, without weakening assertions to obtain green tests.
-- [ ] T025 Have a second teammate follow README.md, record their actual result or pending status in evidence/tasks/peer-reproduction.md and fix reproducibility issues; SC-001 is not complete while this review is pending.
+- [x] T025 Have a second teammate follow README.md, record their actual result or pending status in evidence/tasks/peer-reproduction.md and fix reproducibility issues; SC-001 is not complete while this review is pending.
 - [x] T026 Run backend tests/Ruff, frontend tests/typecheck/build and git diff --check, inspect tracked files for secrets/large data and document all outcomes/limitations in evidence/tasks/foundation-validation.md; no commit/push/deploy unless requested.
 - [x] T027 Run Spec-kit convergence against specs/001-project-foundation/spec.md, plan.md and tasks.md, append remaining work to tasks.md if needed; remove the temporary Sync Impact Report in .specify/memory/constitution.md after its review, before committing.
 
@@ -83,11 +83,11 @@ do not reconstruct an allegedly original prompt after changes.
 ## Success Criterion Traceability (phase 6 review)
 | Criterion | Tests/evidence | Current limit |
 |---|---|---|
-| SC-001 | T025 / peer-reproduction.md | Pending real second teammate |
+| SC-001 | T025 / peer-reproduction.md | Team confirmation recorded 2026-11-12 |
 | SC-002 | views tests, T019 final browser report | Headless automation, not manual review |
 | SC-003 | API/schema/UI negative tests, T019 | Synthetic foundation boundary |
 | SC-004 | test_scoring_boundary.py, T020 | Test-only injected rules scorer |
-| SC-005 | T024 requirement matrix and task evidence | Human acceptance pending |
+| SC-005 | T024 requirement matrix and task evidence | Team review recorded in human-review.md |
 
 ## Parallel Examples and Implementation Strategy
 US1: T003 backend and T004 frontend setup are independent after evidence conventions exist.
@@ -100,4 +100,4 @@ D tooling/evidence/handoff, with review rotation. This temporary foundation spli
 the longer-term four product workstreams in original_idea.md.
 
 ## Phase 7: Convergence
-- [ ] T028 Record an actual human review of AI-generated foundation code, contracts, test/evidence claims and A/B/C/D ownership in evidence/tasks/human-review.md per Constitution IX/X and FR-008/011 (partial). Depends on T024/T026; record reviewer/date/checkout, findings and disposition; do not invent approval or substitute automated tests. Acceptance requires actual review; remediation work needs separately scoped tasks if found.
+- [x] T028 Record an actual human review of AI-generated foundation code, contracts, test/evidence claims and A/B/C/D ownership in evidence/tasks/human-review.md per Constitution IX/X and FR-008/011 (partial). Depends on T024/T026; record reviewer/date/checkout, findings and disposition; do not invent approval or substitute automated tests. Acceptance requires actual review; remediation work needs separately scoped tasks if found.

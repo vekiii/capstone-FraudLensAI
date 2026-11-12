@@ -111,3 +111,9 @@ task to its requirement and evidence convention.
 - Fixture scores are illustrative constants and contain no ground-truth labels.
 - Preserve the existing initialization branch. Technical artifacts are in English, aligned
   with the course; user-facing explanations are Serbian Latin.
+
+## Acceptance update - 2026-11-12
+Earlier pending acceptance statements above are superseded by the team's reported
+joint setup verification and code/contracts/evidence review. T025/SC-001 and T028
+are complete; see evidence/tasks/peer-reproduction.md and human-review.md from the
+repository root. No additional automated/browser executions claimed by this update.

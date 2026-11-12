@@ -76,3 +76,9 @@ Focused checks from the repository root:
 npm.cmd --prefix frontend run test -- --run tests/api.test.ts tests/api-lifecycle.test.ts tests/contracts.test.ts
 npm.cmd --prefix frontend run typecheck
 ```
+
+## Acceptance update - 2026-11-12
+Earlier pending acceptance statements above are superseded by the team's reported
+joint setup verification and code/contracts/evidence review. T025/SC-001 and T028
+are complete; see evidence/tasks/peer-reproduction.md and human-review.md from the
+repository root. No additional automated/browser executions claimed by this update.

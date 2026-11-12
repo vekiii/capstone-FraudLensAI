@@ -1,28 +1,22 @@
 # Next work - FraudLens AI
-Updated 2026-11-12 Europe/Belgrade. Branch initialization; phase-6 baseline 6a99ef6.
+Updated 2026-11-12 Europe/Belgrade. Branch initialization; HEAD 733bff2.
 
-## Verified state
-T001-T024, T026 and T027 complete. T025/SC-001 pending; new T028 human review pending.
-Feature 1 is NOT complete. User confirmed no second-member reproduction result.
-Phase 6: 310 backend tests, 151 frontend tests; Ruff, typecheck/build and diff PASS.
-Actual runtime this run: Python 3.14.3, uv 0.10.9, Node 24.20.0, npm 11.19.0.
-T019 final headless browser evidence is historical, not rerun for prose-only edits.
-No new product defects identified; convergence appended T028 only, not implemented.
-No active technical blocker; actual human reproduction/review are still required.
-Earlier statement about uncommitted phase-5 work was stale: starting tree was clean.
-Current phase-6 changes are uncommitted; no Git publication performed by agent.
-
-## Evidence
-- [Phase 6 handoff](evidence/tasks/phase-06-handoff.md)
-- [Coverage matrix](evidence/tasks/T024.md)
-- [Validation/audit](evidence/tasks/foundation-validation.md)
-- [Convergence](evidence/tasks/T027.md)
-- [Peer procedure](evidence/tasks/peer-reproduction.md)
+## Current state
+Feature 001-project-foundation completed/accepted in its local synthetic-demo scope:
+T001-T028 checked. Vedran Mitic confirms joint setup verification and human
+code/contracts/evidence review by all team members. No individual signatures or
+separate-machine installations claimed. Historical pending entries superseded.
+- Peer results: 310 backend passed (exit 0), 151 frontend passed, Ruff,
+  typecheck/build, health/UI/retry and 404/422 results recorded.
+- Project Python 3.14.3; system py 3.14.7; Node 24.20.0; npm 11.19.0; uv 0.10.9.
+- Prior temp permission errors resolved through unique workspace temp/cache paths.
+- Known Starlette/httpx warning remains, no outstanding failure reported.
+- Evidence: evidence/tasks/peer-reproduction.md, human-review.md,
+  phase-06-handoff.md and foundation-validation.md. Browser evidence remains the
+  historical T019 run; no new browser/test run during acceptance recording.
 
 ## One concrete next step
-A second teammate follows peer-reproduction.md and returns participant/date/commit,
-versions, commands/results and problems. Keep T025 unchecked until genuine success.
-T028 additionally requires actual human review of code/contracts/evidence and owners.
-Do not implement new task T028 or remediation solely from this handoff. Current
-request ends at phase 6; feature 002 is not authorized. Read AGENTS and this file
-before further work; preserve local changes and verify actual Git state.
+Review and publish current documentation/status changes through the team's normal
+Git workflow (agent has not committed/pushed). Then separately request specification
+of 002-data-and-risk-scoring; no implementation of that feature started/authorized.
+Read AGENTS and this handoff before further work; preserve existing local changes.

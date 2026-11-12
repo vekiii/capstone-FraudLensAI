@@ -99,3 +99,21 @@ See [T019 integrated verification and limits](evidence/tasks/T019.md),
 [startup RED/GREEN](evidence/tasks/T008.md), [setup/smoke](evidence/tasks/T011.md)
 and [next_work.md](next_work.md). Human review and independent second-member
 reproduction remain pending (SC-001). Local fixture checks are not ML evaluation.
+
+## Windows pytest temporary-directory access
+If pytest reports WinError 5 during tmp_path setup or cannot write .pytest_cache,
+use a fresh workspace-local temp/cache for that run (all tests still run):
+```powershell
+$runId = [guid]::NewGuid().ToString('N')
+$pytestTemp = Join-Path $PWD ".cache/peer-pytest-$runId"
+$pytestCache = Join-Path $PWD ".cache/peer-pytest-cache-$runId"
+uv run --locked pytest backend/tests --basetemp "$pytestTemp" -o "cache_dir=$pytestCache"
+```
+Use new paths: pytest manages/removes its basetemp contents. Do not change system
+permissions or remove other users' temp directories. Record the actual rerun result.
+
+## Acceptance update - 2026-11-12
+Earlier pending acceptance statements above are superseded by the team's reported
+joint setup verification and code/contracts/evidence review. T025/SC-001 and T028
+are complete; see evidence/tasks/peer-reproduction.md and human-review.md from the
+repository root. No additional automated/browser executions claimed by this update.
