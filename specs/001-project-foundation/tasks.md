@@ -1,7 +1,7 @@
 # Tasks: Project Foundation
 
 **Input**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md.
-**Status**: Phases 1–2 (T001–T007) completed; T008 onward pending. Phase 2 evidence: [phase-02-handoff.md](../../evidence/tasks/phase-02-handoff.md). Actual setup evidence: [phase-01-handoff.md](../../evidence/tasks/phase-01-handoff.md).
+**Status**: Phases 1–3 (T001–T011) completed; T012 onward pending. Phase 3 evidence: [phase-03-handoff.md](../../evidence/tasks/phase-03-handoff.md). Phase 2 evidence: [phase-02-handoff.md](../../evidence/tasks/phase-02-handoff.md). Actual setup evidence: [phase-01-handoff.md](../../evidence/tasks/phase-01-handoff.md).
 **Tests**: TDD requested. Run each behavior test RED before its implementation, then GREEN and
 relevant regression. Do not fabricate failures for mechanical setup or already-correct behavior.
 **Format**: `- [ ] Tnnn [P?] [USn?] action with paths`. [P] is valid only after listed prerequisites.
@@ -23,10 +23,10 @@ same file must stay sequential even if separate stories could otherwise proceed 
 ## Phase 3: US1 - Reproduce the Shared Environment (Priority: P1)
 **Goal**: A teammate starts local fixture mode with no credentials or external AI services.
 **Independent test**: quickstart.md setup + health + check/build commands; second-person result pending.
-- [ ] T008 [US1] Write/run RED tests in backend/tests/integration/test_startup.py for health status/mode, default fixture settings, missing keys/model/corpus and rejection of unsupported APP_MODE; ensure startup does not call a provider (FR-001/002).
-- [ ] T009 [US1] Implement backend/src/fraudlens/main.py and backend/src/fraudlens/settings.py with application factory, dependency injection point, local fixture settings and GET /api/health; satisfy T008 and record GREEN in evidence/tasks/T008.md (FR-002).
-- [ ] T010 [US1] Add exact setup/run/check/build and prerequisite instructions to README.md, consistent with specs/001-project-foundation/quickstart.md; distinguish first lockfile creation from locked installs and no-network runtime from initial downloads (FR-001).
-- [ ] T011 [US1] Execute documented automated checks/build and health smoke; record actual versions/results in evidence/tasks/T011.md, marking manual peer reproduction pending unless another teammate has actually performed it (SC-001).
+- [x] T008 [US1] Write/run RED tests in backend/tests/integration/test_startup.py for health status/mode, default fixture settings, missing keys/model/corpus and rejection of unsupported APP_MODE; ensure startup does not call a provider (FR-001/002).
+- [x] T009 [US1] Implement backend/src/fraudlens/main.py and backend/src/fraudlens/settings.py with application factory, dependency injection point, local fixture settings and GET /api/health; satisfy T008 and record GREEN in evidence/tasks/T008.md (FR-002).
+- [x] T010 [US1] Add exact setup/run/check/build and prerequisite instructions to README.md, consistent with specs/001-project-foundation/quickstart.md; distinguish first lockfile creation from locked installs and no-network runtime from initial downloads (FR-001).
+- [x] T011 [US1] Execute documented automated checks/build and health smoke; record actual versions/results in evidence/tasks/T011.md, marking manual peer reproduction pending unless another teammate has actually performed it (SC-001).
 
 ## Phase 4: US2 - Inspect a Clearly Synthetic Case (Priority: P1)
 **Goal**: First complete list → detail → synthetic score journey.
