@@ -5,6 +5,22 @@ create them. Do not put real customer/account data, ground-truth evaluation labe
 credentials or large datasets into application fixtures or evidence logs. Phase 1
 creates no datasets or fixture records.
 
+## T014 synthetic case fixtures
+
+`fixtures/cases.json` now contains exactly three entirely invented transfers:
+CASE-001/TX-001, CASE-002/TX-002 and CASE-003/TX-003, ordered by case_id.
+Account strings beginning DEMO-BANK- and containing SYN-ACCOUNT- are fictional
+bank-qualified references, not real banks, IBANs or customer identifiers.
+Amounts and UTC timestamps are illustrative; no real transaction source was used.
+
+The storage format is a JSON array of closed `{case_id, transaction}` records.
+Transaction fields are those in the canonical Transaction contract. No labels,
+scores, assessment objects, model claims or evaluation metrics are stored.
+`fraudlens.cases.load_cases` validates the records, rejects duplicate case and
+transaction IDs, and returns fresh records sorted by case_id. Injected empty
+arrays are valid for empty-state tests; the shipped file itself has three cases.
+See [T014 evidence](../evidence/tasks/T014.md) for validation results.
+
 `data/raw/` and `data/processed/` are local ignored locations for downloaded inputs
 and generated transformations. Later data work should record source, acquisition
 date, license, version/hash, transformation and split definitions in reviewed

@@ -1,0 +1,35 @@
+[
+  {
+    "case_id": "CASE-001",
+    "transaction": {
+      "transaction_id": "TX-001",
+      "occurred_at": "2026-01-05T09:15:00Z",
+      "sender_account": "DEMO-BANK-A:SYN-ACCOUNT-001",
+      "receiver_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+      "amount": "1250.00",
+      "currency": "EUR"
+    }
+  },
+  {
+    "case_id": "CASE-002",
+    "transaction": {
+      "transaction_id": "TX-002",
+      "occurred_at": "2026-01-05T09:42:00Z",
+      "sender_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+      "receiver_account": "DEMO-BANK-C:SYN-ACCOUNT-003",
+      "amount": "89.95",
+      "currency": "EUR"
+    }
+  },
+  {
+    "case_id": "CASE-003",
+    "transaction": {
+      "transaction_id": "TX-003",
+      "occurred_at": "2026-01-06T14:20:00Z",
+      "sender_account": "DEMO-BANK-C:SYN-ACCOUNT-004",
+      "receiver_account": "DEMO-BANK-A:SYN-ACCOUNT-005",
+      "amount": "18420.50",
+      "currency": "EUR"
+    }
+  }
+]
