@@ -1,9 +1,3 @@
-<!-- Sync Impact Report (temporary; remove before committing):
-Version: unratified template -> 1.0.0, initial adoption of ten team-approved principles.
-Modified: all placeholder principles replaced by I–X. Added: Scope and Boundaries,
-Development Workflow, Governance. Removed: example comments. Deferred placeholders: none.
-Dependent templates remain unchanged; they read the constitution at runtime.
--->
 # FraudLens AI Constitution
 
 ## Core Principles

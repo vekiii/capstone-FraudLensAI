@@ -1,7 +1,7 @@
-# Tasks: Project Foundation
+﻿# Tasks: Project Foundation
 
 **Input**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md.
-**Status**: Phases 1–3 (T001–T011) completed; T012 onward pending. Phase 3 evidence: [phase-03-handoff.md](../../evidence/tasks/phase-03-handoff.md). Phase 2 evidence: [phase-02-handoff.md](../../evidence/tasks/phase-02-handoff.md). Actual setup evidence: [phase-01-handoff.md](../../evidence/tasks/phase-01-handoff.md).
+**Status**: T001–T018 completed. T019 PARTIAL: backend 291 passed, frontend 151 passed, typecheck/build/Ruff and real HTTP/proxy checks PASS; browser access unavailable, 0/16 interactive scenarios executed. T019 remains open pending browser acceptance; T020–T027 pending. Evidence: [T019.md](../../evidence/tasks/T019.md), [T018.md](../../evidence/tasks/T018.md).
 **Tests**: TDD requested. Run each behavior test RED before its implementation, then GREEN and
 relevant regression. Do not fabricate failures for mechanical setup or already-correct behavior.
 **Format**: `- [ ] Tnnn [P?] [USn?] action with paths`. [P] is valid only after listed prerequisites.
@@ -32,13 +32,13 @@ same file must stay sequential even if separate stories could otherwise proceed 
 **Goal**: First complete list → detail → synthetic score journey.
 **Independent test**: Three cases, return navigation, empty list, unknown/malformed ID,
 unavailable service/retry and stale selection.
-- [ ] T012 [P] [US2] Write/run RED backend API and fixture-scorer tests in backend/tests/integration/test_cases.py and backend/tests/unit/test_fixture_scoring.py: three ordered cases; list/detail agreement; unknown CASE-999=404; malformed ID=422; empty items; invalid scorer/mismatch=500; closed payloads with no labels; generic error envelope (FR-003/004/005/006).
-- [ ] T013 [P] [US2] Write/run RED fetch/DOM tests in frontend/tests/api.test.ts and frontend/tests/views.test.ts: valid/invalid payloads, 5-second timeout, loading/empty/error/not-found, retry, three selections and back navigation, visible synthetic notice and ignoring late previous-case results (FR-003/004/005).
-- [ ] T014 [US2] Create exactly three synthetic case/transaction records in data/fixtures/cases.json, no labels or embedded ML claims; validate unique case/transaction IDs and deterministic ordering in backend/src/fraudlens/cases.py (data-model.md).
-- [ ] T015 [US2] Implement fixture scorer and protocol in backend/src/fraudlens/scoring.py: `score(transaction: Transaction) -> RiskAssessment`; deterministic score and scored_at, source=fixture, scorer_version=fixture-v1, explanation explicitly illustrative. Enforce constraints from T006, and reject transaction identity mismatch in backend/src/fraudlens/cases.py (FR-004/006/007).
-- [ ] T016 [US2] Add GET /api/cases and GET /api/cases/{case_id} to backend/src/fraudlens/main.py through case service in backend/src/fraudlens/cases.py; normalize 404/422/500 envelopes as contracts/api.md specifies, no traceback/path leakage; run T012 GREEN (FR-003/005/006).
-- [ ] T017 [US2] Implement frontend/src/contracts.ts and frontend/src/api.ts boundary decoding matching schemas.json, timeout/cancellation and controlled errors; no unchecked casts as validation or hidden fallback scores (FR-005/006).
-- [ ] T018 [US2] Implement frontend/src/main.ts, frontend/src/views.ts and frontend/src/styles.css with list/detail/back, source notice, loading/empty/error/not-found and retry; clear detail on selection change, cancel/ignore obsolete requests; use safe text rendering; run T013 GREEN (FR-003/004/005).
+- [x] T012 [P] [US2] Write/run RED backend API and fixture-scorer tests in backend/tests/integration/test_cases.py and backend/tests/unit/test_fixture_scoring.py: three ordered cases; list/detail agreement; unknown CASE-999=404; malformed ID=422; empty items; invalid scorer/mismatch=500; closed payloads with no labels; generic error envelope (FR-003/004/005/006).
+- [x] T013 [P] [US2] Write/run RED fetch/DOM tests in frontend/tests/api.test.ts and frontend/tests/views.test.ts: valid/invalid payloads, 5-second timeout, loading/empty/error/not-found, retry, three selections and back navigation, visible synthetic notice and ignoring late previous-case results (FR-003/004/005).
+- [x] T014 [US2] Create exactly three synthetic case/transaction records in data/fixtures/cases.json, no labels or embedded ML claims; validate unique case/transaction IDs and deterministic ordering in backend/src/fraudlens/cases.py (data-model.md).
+- [x] T015 [US2] Implement fixture scorer and protocol in backend/src/fraudlens/scoring.py: `score(transaction: Transaction) -> RiskAssessment`; deterministic score and scored_at, source=fixture, scorer_version=fixture-v1, explanation explicitly illustrative. Enforce constraints from T006, and reject transaction identity mismatch in backend/src/fraudlens/cases.py (FR-004/006/007).
+- [x] T016 [US2] Add GET /api/cases and GET /api/cases/{case_id} to backend/src/fraudlens/main.py through case service in backend/src/fraudlens/cases.py; normalize 404/422/500 envelopes as contracts/api.md specifies, no traceback/path leakage; run T012 GREEN (FR-003/005/006).
+- [x] T017 [US2] Implement frontend/src/contracts.ts and frontend/src/api.ts boundary decoding matching schemas.json, timeout/cancellation and controlled errors; no unchecked casts as validation or hidden fallback scores (FR-005/006).
+- [x] T018 [US2] Implement frontend/src/main.ts, frontend/src/views.ts and frontend/src/styles.css with list/detail/back, source notice, loading/empty/error/not-found and retry; clear detail on selection change, cancel/ignore obsolete requests; use safe text rendering; run T013 GREEN (FR-003/004/005).
 - [ ] T019 [US2] Run integrated regression and manual browser journey from specs/001-project-foundation/quickstart.md; record actual results and any manual scenarios not run in evidence/tasks/T019.md. Do not report fixture scores as ML evaluation (SC-002/003).
 
 ## Phase 5: US3 - Independent Contribution Boundaries (Priority: P2)

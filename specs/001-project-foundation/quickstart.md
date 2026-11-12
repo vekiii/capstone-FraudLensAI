@@ -1,18 +1,19 @@
-# Foundation Quickstart — Target Runbook
+# Foundation Quickstart
 
-**Status**: Planned commands for implementation. The application and lockfiles do not yet exist.
-Do not report this guide as executed. First install needs network; application runtime needs no
-model, dataset, corpus, provider key or external service.
+**Status**: Application, fixtures and lockfiles exist. T019 verified locked setup,
+automated checks and real backend/proxy HTTP; interactive browser verification
+and second-person reproduction remain pending. See evidence/tasks/T019.md.
+First install needs network; runtime needs no model, corpus, provider or external service.
 
 ## Prerequisites
 Git, uv, Python 3.14, Node 24, npm, Windows PowerShell. Record exact versions during
 setup. Spec-kit 1.4.0 is already initialized. Preserve existing initialization branch.
 
-## Install (after implementation setup generates and commits lockfiles)
+## Install from existing lockfiles
 From repository root:
 ```powershell
 uv sync --locked --group dev
-npm --prefix frontend ci
+npm.cmd --prefix frontend ci
 ```
 For the first implementation only, resolve dependencies with uv lock and npm install in frontend;
 review and commit resulting lockfiles before using locked installs. Do not handwrite hashes.
@@ -24,7 +25,7 @@ uv run --locked uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.
 ```
 Repository root, terminal 2:
 ```powershell
-npm --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort
+npm.cmd --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort
 ```
 Open http://127.0.0.1:5173. Expect three explicitly synthetic cases. No key entry is required.
 The frontend development proxy forwards /api to 127.0.0.1:8000.
@@ -33,11 +34,11 @@ The frontend development proxy forwards /api to 127.0.0.1:8000.
 ```powershell
 uv run --locked pytest backend/tests
 uv run --locked ruff check backend
-npm --prefix frontend run test -- --run
-npm --prefix frontend run typecheck
-npm --prefix frontend run build
+npm.cmd --prefix frontend run test -- --run
+npm.cmd --prefix frontend run typecheck
+npm.cmd --prefix frontend run build
 ```
-Implementation setup must define these scripts and dev dependencies. Backend pytest config
+These scripts and development dependencies are implemented. Backend pytest config
 sets pythonpath=backend/src. A generated dist directory is not committed or a public deployment.
 
 ## Manual acceptance
