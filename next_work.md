@@ -90,3 +90,17 @@ Read AGENTS and this handoff before further work; preserve existing local change
   paths are already ignored. Source audit, Phase 2 document, contract review,
   tasks, human review and independent reproduction are open.
 - This handoff preserves existing local edits and makes no Git commit/push.
+
+## Documentation publication request — 2026-11-12
+
+- The user explicitly requested commits and a push for all pending documentation;
+  see the [original publication request](prompts/development/002-publication-request-2026-11-12.md).
+  That instruction supersedes earlier no-commit/no-push statements for this
+  session. It does not expand Feature 002 implementation scope.
+- The [contribution report addendum](evidence/tasks/project-evidence-plan-2026-11-12.md)
+  names the four publication commits and their distinct contents. The historical
+  19-commit time calculation remains pinned and does not count unmeasured hours
+  from these documentation commits.
+- Verify the current local/remote branch state with Git. The concrete next
+  development step remains Feature 002 tasks.md generation and source/contract
+  audit; human, Phase 2, dataset and implementation gates remain open.

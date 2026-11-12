@@ -365,3 +365,36 @@ Audit checks executed with system Python **3.13.3**, without installing packages
 The project interpreter was not changed. Participant confirmation of actual
 working durations and of the Veki-to-Vedran account mapping remains outstanding;
 the estimate and that mapping are qualified accordingly above.
+
+## Publication addendum — this documentation session, 12 November 2026
+
+This addendum records work **after** the pinned `f63bffe` baseline. The 19-commit
+ledger, 69-file inventory and 7.17–14.34 provisional person-hour scenarios above
+remain a historical snapshot; they are not recalculated to imply measured time
+for this session. The [publication request](../../prompts/development/002-publication-request-2026-11-12.md)
+explicitly authorizes these commits and the push, superseding earlier request
+records that limited the documentation work to uncommitted drafts.
+
+Git records **Isidora Popovic** as the author of each new commit. This attributes
+the published changes to her account, not exclusive manual authorship or a
+measured working duration. The saved request, document evidence and actual diffs
+support the work descriptions below. No additional contributor or hours are
+assigned without evidence.
+
+| Commit | Subject | Work recorded in this session |
+|---|---|---|
+| `6b69ae2` | `docs(evidence): document historical contributions and time estimate` | Added this consolidated historical evidence report, a pinned reproducible 19-commit calculation and JSON source inventory, the original evidence request/clarification, and a link from evidence/README.md. It separates three identifiable contributors and provisional publication-window hours from measured time. |
+| `5eb0d10` | `docs(feature-002): strengthen risk-scoring specification after review` | Preserved the adversarial-review transcript and remediation request; revised Feature 002 spec, quality checklist and specification evidence for label-independent history, temporal and threshold safeguards, faithful scoring/explanations, atomic publication, and Foundation compatibility. Human and Phase 2 gates remain open. |
+| `7957844` | `docs(feature-002): add technical plan and Codex work prompts` | Added the detailed architecture/implementation plan, 14 research decisions, data model, v2 API and offline scoring contracts with JSON Schema, validation quickstart, eight staged Codex prompts, original planning request, planning evidence and updated next_work.md. These are proposed design artifacts; no IBM data or Feature 002 code was executed. |
+| This ledger commit | `docs(evidence): record session publication ledger` | Adds this post-baseline commit ledger, preserves the explicit publication request and updates the root handoff. Its hash is resolved by `git log` after commit creation; a commit cannot embed its own hash without changing that hash. |
+
+After the ledger commit, the branch contains **23 commits total** (the pinned 19
+plus these four), with the same **three distinct Git author accounts**. The
+three newly completed commits have publication timestamps 23:50:15, 23:51:05
+and 23:52:15 Europe/Budapest, respectively. Those times are Git timestamps,
+not work-session start/end or labor measurements. This addendum does not add
+an estimated duration for this session. No product source, lockfile, dataset
+or model artifact is included in these four documentation commits. Application
+tests were not rerun; the reported document/JSON/link checks are in the
+[Feature 002 planning evidence](feature-002-technical-plan.md) and earlier
+specification evidence. Remote push status must be verified from Git refs.
