@@ -1,7 +1,7 @@
 ﻿# Tasks: Project Foundation
 
 **Input**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md.
-**Status**: T001–T018 completed. T019 PARTIAL: backend 291 passed, frontend 151 passed, typecheck/build/Ruff and real HTTP/proxy checks PASS; browser access unavailable, 0/16 interactive scenarios executed. T019 remains open pending browser acceptance; T020–T027 pending. Evidence: [T019.md](../../evidence/tasks/T019.md), [T018.md](../../evidence/tasks/T018.md).
+**Status**: T001?T019 completed. T019: fresh regression 291 backend + 151 frontend PASS and 16/16 headless Chrome scenarios PASS. Human review/peer reproduction pending; T020?T027 pending. Evidence: [T019.md](../../evidence/tasks/T019.md).
 **Tests**: TDD requested. Run each behavior test RED before its implementation, then GREEN and
 relevant regression. Do not fabricate failures for mechanical setup or already-correct behavior.
 **Format**: `- [ ] Tnnn [P?] [USn?] action with paths`. [P] is valid only after listed prerequisites.
@@ -39,7 +39,7 @@ unavailable service/retry and stale selection.
 - [x] T016 [US2] Add GET /api/cases and GET /api/cases/{case_id} to backend/src/fraudlens/main.py through case service in backend/src/fraudlens/cases.py; normalize 404/422/500 envelopes as contracts/api.md specifies, no traceback/path leakage; run T012 GREEN (FR-003/005/006).
 - [x] T017 [US2] Implement frontend/src/contracts.ts and frontend/src/api.ts boundary decoding matching schemas.json, timeout/cancellation and controlled errors; no unchecked casts as validation or hidden fallback scores (FR-005/006).
 - [x] T018 [US2] Implement frontend/src/main.ts, frontend/src/views.ts and frontend/src/styles.css with list/detail/back, source notice, loading/empty/error/not-found and retry; clear detail on selection change, cancel/ignore obsolete requests; use safe text rendering; run T013 GREEN (FR-003/004/005).
-- [ ] T019 [US2] Run integrated regression and manual browser journey from specs/001-project-foundation/quickstart.md; record actual results and any manual scenarios not run in evidence/tasks/T019.md. Do not report fixture scores as ML evaluation (SC-002/003).
+- [x] T019 [US2] Run integrated regression and manual browser journey from specs/001-project-foundation/quickstart.md; record actual results and any manual scenarios not run in evidence/tasks/T019.md. Do not report fixture scores as ML evaluation (SC-002/003).
 
 ## Phase 5: US3 - Independent Contribution Boundaries (Priority: P2)
 **Goal**: Prove adapter replacement and document reliable handoff.
