@@ -1,7 +1,7 @@
 ﻿# Tasks: Project Foundation
 
 **Input**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md.
-**Status**: T001?T019 completed. T019: fresh regression 291 backend + 151 frontend PASS and 16/16 headless Chrome scenarios PASS. Human review/peer reproduction pending; T020?T027 pending. Evidence: [T019.md](../../evidence/tasks/T019.md).
+**Status**: T001–T023 completed; T024–T027 pending. Phase 5: 19 new scorer-boundary checks and all 310 backend tests PASS; Ruff PASS. Production behavior was already correct, so no artificial RED or runtime change was needed. See [T020/T021](../../evidence/tasks/T020.md) and [phase 5 handoff](../../evidence/tasks/phase-05-handoff.md). Prior [T019 evidence](../../evidence/tasks/T019.md) covers 151 frontend tests and the completed headless browser journey. Human review/peer reproduction remain pending.
 **Tests**: TDD requested. Run each behavior test RED before its implementation, then GREEN and
 relevant regression. Do not fabricate failures for mechanical setup or already-correct behavior.
 **Format**: `- [ ] Tnnn [P?] [USn?] action with paths`. [P] is valid only after listed prerequisites.
@@ -44,10 +44,10 @@ unavailable service/retry and stale selection.
 ## Phase 5: US3 - Independent Contribution Boundaries (Priority: P2)
 **Goal**: Prove adapter replacement and document reliable handoff.
 **Independent test**: Alternate test scorer changes the score/source without altering service/API code.
-- [ ] T020 [US3] Write/run RED substitution and failure tests in backend/tests/unit/test_scoring_boundary.py using an injected test-only rules scorer; require source=rules, correct transaction identity and rejection of out-of-range/nonfinite values. Keep the production fixture data unchanged (FR-007).
-- [ ] T021 [US3] Complete injection/validation in backend/src/fraudlens/scoring.py and backend/src/fraudlens/cases.py as needed for T020; do not introduce a remote service or provider implementation; record GREEN or already-correct evidence in evidence/tasks/T020.md (SC-004).
-- [ ] T022 [US3] Document owners A/B/C/D, replaceable boundaries, shared-contract change review and next specs 002–005 in docs/decisions/foundation.md. Describe approval recording for out-of-course requests and dependencies; assign no invented team-member names (FR-011).
-- [ ] T023 [US3] Record the original implementation instruction and subsequent changes using prompts/development/001-foundation.md; verify evidence/README.md distinguishes app prompts, dev prompts, fixture tests, model evaluations and pending human review (FR-008/010).
+- [x] T020 [US3] Write/run RED substitution and failure tests in backend/tests/unit/test_scoring_boundary.py using an injected test-only rules scorer; require source=rules, correct transaction identity and rejection of out-of-range/nonfinite values. Keep the production fixture data unchanged (FR-007).
+- [x] T021 [US3] Complete injection/validation in backend/src/fraudlens/scoring.py and backend/src/fraudlens/cases.py as needed for T020; do not introduce a remote service or provider implementation; record GREEN or already-correct evidence in evidence/tasks/T020.md (SC-004).
+- [x] T022 [US3] Document owners A/B/C/D, replaceable boundaries, shared-contract change review and next specs 002–005 in docs/decisions/foundation.md. Describe approval recording for out-of-course requests and dependencies; assign no invented team-member names (FR-011).
+- [x] T023 [US3] Record the original implementation instruction and subsequent changes using prompts/development/001-foundation.md; verify evidence/README.md distinguishes app prompts, dev prompts, fixture tests, model evaluations and pending human review (FR-008/010).
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 - [ ] T024 Review all FR and SC coverage in specs/001-project-foundation/tasks.md and specs/001-project-foundation/spec.md; update genuine changes at their source, without weakening assertions to obtain green tests.

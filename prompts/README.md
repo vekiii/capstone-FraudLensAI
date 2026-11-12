@@ -4,8 +4,9 @@
 tracking. Link the record from task evidence. Save the received instruction before
 implementation; preserve existing content and append clearly dated amendments
 instead of reconstructing an “original” afterward. Record redactions without secrets.
-The phase 1 record is [001-foundation-phase-01.md](development/001-foundation-phase-01.md);
-it does not complete the later T023 record.
+The phase 1 original is [001-foundation-phase-01.md](development/001-foundation-phase-01.md).
+The [foundation instruction index](development/001-foundation.md), added for T023,
+links preserved phase/task originals, continuations and their execution evidence.
 
 `app/` is reserved for versioned application prompts when a feature actually uses
 them. Create it with its first meaningful file. Give each prompt a stable ID/version,
