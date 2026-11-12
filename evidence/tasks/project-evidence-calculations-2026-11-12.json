@@ -1,0 +1,574 @@
+{
+  "baseline": "f63bffe490358a4fba06d27b896d42c5e81bf882",
+  "date": "2026-11-12",
+  "timezone": "Europe/Budapest, UTC+01:00 on the covered dates",
+  "scope": "Locally available Git history through baseline; no remote fetch",
+  "available_ref_commits_outside_baseline": [],
+  "commit_count": 19,
+  "git_author_count": 3,
+  "first_commit_at": "2026-11-11T16:19:45+01:00",
+  "last_commit_at": "2026-11-12T21:39:12+01:00",
+  "elapsed_seconds": 105567,
+  "within_day_gap_seconds": 44425,
+  "method": {
+    "attribution": "Each same-day gap is assigned once to the next commit's author",
+    "low_assumption": "50% of gaps plus 30 min before first daily publication",
+    "central_assumption": "75% of gaps plus 45 min before first daily publication",
+    "high_assumption": "100% of gaps plus 60 min before first daily publication",
+    "limits": "Assumed activity shares; not measured labor or confidence bounds; excludes overnight gaps, unnamed work and this report"
+  },
+  "people": {
+    "Veki": {
+      "commits": 11,
+      "within_day_gap_seconds": 20117,
+      "first_publications_of_day": 2,
+      "scenarios_hours": {
+        "low_assumption": 3.794028,
+        "central_assumption": 5.691042,
+        "high_assumption": 7.588056
+      }
+    },
+    "Isidora Popovic": {
+      "commits": 7,
+      "within_day_gap_seconds": 16955,
+      "first_publications_of_day": 0,
+      "scenarios_hours": {
+        "low_assumption": 2.354861,
+        "central_assumption": 3.532292,
+        "high_assumption": 4.709722
+      }
+    },
+    "milangavric2003": {
+      "commits": 1,
+      "within_day_gap_seconds": 7353,
+      "first_publications_of_day": 0,
+      "scenarios_hours": {
+        "low_assumption": 1.02125,
+        "central_assumption": 1.531875,
+        "high_assumption": 2.0425
+      }
+    }
+  },
+  "total_scenarios_hours": {
+    "low_assumption": 7.170139,
+    "central_assumption": 10.755208,
+    "high_assumption": 14.340278
+  },
+  "commits": [
+    {
+      "commit": "b03e8e3b9b5a4234beb2fcc15fecf3b1507df737",
+      "author": "Veki",
+      "authored_at": "2026-11-11T16:19:45+01:00",
+      "committed_at": "2026-11-11T16:19:45+01:00",
+      "subject": "initial idea"
+    },
+    {
+      "commit": "f86aff0f1e7a2d6344ca07f9c437188286418015",
+      "author": "Veki",
+      "authored_at": "2026-11-11T16:55:15+01:00",
+      "committed_at": "2026-11-11T16:55:15+01:00",
+      "subject": "feature 1 implementation: constitution; specification; technical plan; API and JSON; Tasks; Quickstart"
+    },
+    {
+      "commit": "e62c4fe108b9cf9ee1052c8ed130c44c386855ff",
+      "author": "Veki",
+      "authored_at": "2026-11-11T17:08:59+01:00",
+      "committed_at": "2026-11-11T17:08:59+01:00",
+      "subject": "tasks prompt generator"
+    },
+    {
+      "commit": "0aa7328827a7b3006ca8bef26aa3985f008b2e6a",
+      "author": "Veki",
+      "authored_at": "2026-11-11T17:31:42+01:00",
+      "committed_at": "2026-11-11T17:31:42+01:00",
+      "subject": "T001-T005"
+    },
+    {
+      "commit": "25cbd17a7a8b455a5439442009f44de972f5d1d8",
+      "author": "Veki",
+      "authored_at": "2026-11-11T17:53:54+01:00",
+      "committed_at": "2026-11-11T17:53:54+01:00",
+      "subject": "add next_work.md"
+    },
+    {
+      "commit": "5d602521e9b430ae3da3e408c55fadaf9ecfa06e",
+      "author": "Veki",
+      "authored_at": "2026-11-12T10:52:56+01:00",
+      "committed_at": "2026-11-12T10:52:56+01:00",
+      "subject": "T006-T007"
+    },
+    {
+      "commit": "56aaa1060e1671f2c281a8d384f5ec7ac235d343",
+      "author": "Veki",
+      "authored_at": "2026-11-12T11:11:43+01:00",
+      "committed_at": "2026-11-12T11:11:43+01:00",
+      "subject": "T008-T011"
+    },
+    {
+      "commit": "fe187a66431f32d9fed65baf9f3c5f8e30774beb",
+      "author": "Isidora Popovic",
+      "authored_at": "2026-11-12T15:52:45+01:00",
+      "committed_at": "2026-11-12T15:52:45+01:00",
+      "subject": "test(backend): define US2 case API and fixture scorer expectations"
+    },
+    {
+      "commit": "8e99ee0cefe8bc5d516a4b937ec19712734470bf",
+      "author": "Isidora Popovic",
+      "authored_at": "2026-11-12T15:52:46+01:00",
+      "committed_at": "2026-11-12T15:52:46+01:00",
+      "subject": "test(frontend): define US2 fetch and case inspection behaviors"
+    },
+    {
+      "commit": "ff4406e2f896b2432089567e1951e4c7133c329b",
+      "author": "Isidora Popovic",
+      "authored_at": "2026-11-12T15:52:46+01:00",
+      "committed_at": "2026-11-12T15:52:46+01:00",
+      "subject": "feat(backend): serve validated synthetic cases with deterministic scoring"
+    },
+    {
+      "commit": "2ff3d84e8540cbb5d990d4340096ada24b78d43d",
+      "author": "Isidora Popovic",
+      "authored_at": "2026-11-12T15:52:46+01:00",
+      "committed_at": "2026-11-12T15:52:46+01:00",
+      "subject": "feat(frontend): validate case API responses and request lifecycle"
+    },
+    {
+      "commit": "d7c3bb72a65708889ae137181dda17e8640dcb84",
+      "author": "Isidora Popovic",
+      "authored_at": "2026-11-12T15:52:47+01:00",
+      "committed_at": "2026-11-12T15:52:47+01:00",
+      "subject": "feat(frontend): add synthetic case inspection UI"
+    },
+    {
+      "commit": "549f304a44157caeb7f18e7996e41c0bc966d978",
+      "author": "Isidora Popovic",
+      "authored_at": "2026-11-12T15:53:35+01:00",
+      "committed_at": "2026-11-12T15:53:35+01:00",
+      "subject": "docs(us2): record integrated verification and current acceptance limits"
+    },
+    {
+      "commit": "3c786fbd16c9fd3909dc1e54c4858cd830e541bf",
+      "author": "Isidora Popovic",
+      "authored_at": "2026-11-12T15:54:18+01:00",
+      "committed_at": "2026-11-12T15:54:18+01:00",
+      "subject": "docs: record successful US2 publication"
+    },
+    {
+      "commit": "f17ff8ff3a29ac00679bae089cdefd62ab2f846c",
+      "author": "Veki",
+      "authored_at": "2026-11-12T16:52:13+01:00",
+      "committed_at": "2026-11-12T16:52:13+01:00",
+      "subject": "did T019"
+    },
+    {
+      "commit": "6a99ef6dd6b0851b472d58021cd96d887b14a286",
+      "author": "milangavric2003",
+      "authored_at": "2026-11-12T18:54:46+01:00",
+      "committed_at": "2026-11-12T18:54:46+01:00",
+      "subject": "phase-05"
+    },
+    {
+      "commit": "733bff2746a7db4f0bd8be65cd3fd6ee717ba19b",
+      "author": "Veki",
+      "authored_at": "2026-11-12T20:48:54+01:00",
+      "committed_at": "2026-11-12T20:48:54+01:00",
+      "subject": "T024-T027; without T025"
+    },
+    {
+      "commit": "33bcf628ec4325d386117f72378e79835194e772",
+      "author": "Veki",
+      "authored_at": "2026-11-12T21:14:26+01:00",
+      "committed_at": "2026-11-12T21:14:26+01:00",
+      "subject": "T025 and T028 finish"
+    },
+    {
+      "commit": "f63bffe490358a4fba06d27b896d42c5e81bf882",
+      "author": "Veki",
+      "authored_at": "2026-11-12T21:39:12+01:00",
+      "committed_at": "2026-11-12T21:39:12+01:00",
+      "subject": "feature 02 created"
+    }
+  ],
+  "publication_windows": [
+    {
+      "from_commit": "b03e8e3b9b5a4234beb2fcc15fecf3b1507df737",
+      "to_commit": "f86aff0f1e7a2d6344ca07f9c437188286418015",
+      "attributed_author": "Veki",
+      "seconds": 2130
+    },
+    {
+      "from_commit": "f86aff0f1e7a2d6344ca07f9c437188286418015",
+      "to_commit": "e62c4fe108b9cf9ee1052c8ed130c44c386855ff",
+      "attributed_author": "Veki",
+      "seconds": 824
+    },
+    {
+      "from_commit": "e62c4fe108b9cf9ee1052c8ed130c44c386855ff",
+      "to_commit": "0aa7328827a7b3006ca8bef26aa3985f008b2e6a",
+      "attributed_author": "Veki",
+      "seconds": 1363
+    },
+    {
+      "from_commit": "0aa7328827a7b3006ca8bef26aa3985f008b2e6a",
+      "to_commit": "25cbd17a7a8b455a5439442009f44de972f5d1d8",
+      "attributed_author": "Veki",
+      "seconds": 1332
+    },
+    {
+      "from_commit": "5d602521e9b430ae3da3e408c55fadaf9ecfa06e",
+      "to_commit": "56aaa1060e1671f2c281a8d384f5ec7ac235d343",
+      "attributed_author": "Veki",
+      "seconds": 1127
+    },
+    {
+      "from_commit": "56aaa1060e1671f2c281a8d384f5ec7ac235d343",
+      "to_commit": "fe187a66431f32d9fed65baf9f3c5f8e30774beb",
+      "attributed_author": "Isidora Popovic",
+      "seconds": 16862
+    },
+    {
+      "from_commit": "fe187a66431f32d9fed65baf9f3c5f8e30774beb",
+      "to_commit": "8e99ee0cefe8bc5d516a4b937ec19712734470bf",
+      "attributed_author": "Isidora Popovic",
+      "seconds": 1
+    },
+    {
+      "from_commit": "8e99ee0cefe8bc5d516a4b937ec19712734470bf",
+      "to_commit": "ff4406e2f896b2432089567e1951e4c7133c329b",
+      "attributed_author": "Isidora Popovic",
+      "seconds": 0
+    },
+    {
+      "from_commit": "ff4406e2f896b2432089567e1951e4c7133c329b",
+      "to_commit": "2ff3d84e8540cbb5d990d4340096ada24b78d43d",
+      "attributed_author": "Isidora Popovic",
+      "seconds": 0
+    },
+    {
+      "from_commit": "2ff3d84e8540cbb5d990d4340096ada24b78d43d",
+      "to_commit": "d7c3bb72a65708889ae137181dda17e8640dcb84",
+      "attributed_author": "Isidora Popovic",
+      "seconds": 1
+    },
+    {
+      "from_commit": "d7c3bb72a65708889ae137181dda17e8640dcb84",
+      "to_commit": "549f304a44157caeb7f18e7996e41c0bc966d978",
+      "attributed_author": "Isidora Popovic",
+      "seconds": 48
+    },
+    {
+      "from_commit": "549f304a44157caeb7f18e7996e41c0bc966d978",
+      "to_commit": "3c786fbd16c9fd3909dc1e54c4858cd830e541bf",
+      "attributed_author": "Isidora Popovic",
+      "seconds": 43
+    },
+    {
+      "from_commit": "3c786fbd16c9fd3909dc1e54c4858cd830e541bf",
+      "to_commit": "f17ff8ff3a29ac00679bae089cdefd62ab2f846c",
+      "attributed_author": "Veki",
+      "seconds": 3475
+    },
+    {
+      "from_commit": "f17ff8ff3a29ac00679bae089cdefd62ab2f846c",
+      "to_commit": "6a99ef6dd6b0851b472d58021cd96d887b14a286",
+      "attributed_author": "milangavric2003",
+      "seconds": 7353
+    },
+    {
+      "from_commit": "6a99ef6dd6b0851b472d58021cd96d887b14a286",
+      "to_commit": "733bff2746a7db4f0bd8be65cd3fd6ee717ba19b",
+      "attributed_author": "Veki",
+      "seconds": 6848
+    },
+    {
+      "from_commit": "733bff2746a7db4f0bd8be65cd3fd6ee717ba19b",
+      "to_commit": "33bcf628ec4325d386117f72378e79835194e772",
+      "attributed_author": "Veki",
+      "seconds": 1532
+    },
+    {
+      "from_commit": "33bcf628ec4325d386117f72378e79835194e772",
+      "to_commit": "f63bffe490358a4fba06d27b896d42c5e81bf882",
+      "attributed_author": "Veki",
+      "seconds": 1486
+    }
+  ],
+  "source_inventory": [
+    {
+      "path": ".specify/memory/constitution.md",
+      "sha256": "920b1cc815cc76757c8c91ee79f3408cfce1da156d86b08f9a1d127c7ef94f1e"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "2244e7b66efee3c9818d75dd5de6c89e98fcab8ddb70cacd665eb118778d0ad9"
+    },
+    {
+      "path": "docs/decisions/fixture-scoring.md",
+      "sha256": "c1a6a240c0ceba7558430bbcd3882682194210e54bd85952661066ac8910feec"
+    },
+    {
+      "path": "docs/decisions/foundation.md",
+      "sha256": "329a84fcba8461728eb1e0b92f73bf7c4df31250fa323ce627f13d0ead517d84"
+    },
+    {
+      "path": "evidence/README.md",
+      "sha256": "5cf7f4d81d8a1a638bcbf216308cce4a1c739ca63fc277ab8bcc3f86b9b59fc7"
+    },
+    {
+      "path": "evidence/tasks/T006.md",
+      "sha256": "b8b403873762e45ccb89a436fa662969c27b98f37dd44a7ca1ab6ce492a0df59"
+    },
+    {
+      "path": "evidence/tasks/T008.md",
+      "sha256": "363f3cc7626e45a73c2a1f2f719a85cf42e320c0701a51bedd6f0d772bce198f"
+    },
+    {
+      "path": "evidence/tasks/T011.md",
+      "sha256": "bf9ce1d82dbbe3df356cc7ad0f8535fa93af25bac1488d34491133e88acf1cdd"
+    },
+    {
+      "path": "evidence/tasks/T012.md",
+      "sha256": "e2c2b66d0d256fdb28f5c8c68697807cd14f8017748c3838aa41ab1502e991d0"
+    },
+    {
+      "path": "evidence/tasks/T013.md",
+      "sha256": "754db86162cabf02e600150e9145e44b74a5223ca4763cdcf6ca2fde6bfa3ae3"
+    },
+    {
+      "path": "evidence/tasks/T014.md",
+      "sha256": "2e75361e1040a7ab88c63f45b1c2e8ec65fe2a20440e56f1d7716b4cbb0eea6c"
+    },
+    {
+      "path": "evidence/tasks/T015.md",
+      "sha256": "8445ce234ae8c432620d44c3fa991547da33b3d7dfe2acd6f3be2849a5f61341"
+    },
+    {
+      "path": "evidence/tasks/T016.md",
+      "sha256": "3825a6a826718be1f5e62872518e5366cddf06d69ba800090a8214930b9b0a4e"
+    },
+    {
+      "path": "evidence/tasks/T017.md",
+      "sha256": "361bde97b5fdbcccf75bd6e5dc1c5dc5d646093e76f8f8af365bda5be30586e0"
+    },
+    {
+      "path": "evidence/tasks/T018.md",
+      "sha256": "f8636a279f0c2801b486b96735538e32fd061ac712f24c1c1fe4866ee4755ff7"
+    },
+    {
+      "path": "evidence/tasks/T019-browser-attempt-1.json",
+      "sha256": "5d240b053334f8195dc6c38a950d10954768c2162c3bfc41f07e8bf039f65c02"
+    },
+    {
+      "path": "evidence/tasks/T019-browser-attempt-2.json",
+      "sha256": "e61b3dab5a21e5dbf1f25aed20aee5e6adfcd3bda96cba0271921e8437dcb3d4"
+    },
+    {
+      "path": "evidence/tasks/T019-browser-results.json",
+      "sha256": "dc725f2a9297c9dbb2f5f3c3667ace203d76c2af594bd0ef0748e312815c3dc6"
+    },
+    {
+      "path": "evidence/tasks/T019-browser-verification.mjs",
+      "sha256": "d2e89404b793267876c61afae46b70474d9c5b768765f1d71e35abf2314242e1"
+    },
+    {
+      "path": "evidence/tasks/T019-desktop.png",
+      "sha256": "409563b09a2561f642024a07432df0f54181bb9cbd8733da61be7aa441cfc74f"
+    },
+    {
+      "path": "evidence/tasks/T019-live-verification.py",
+      "sha256": "0d68b10b8222b371a904e8606e952e2d6466e2a4b813397f47d6a19138335c3c"
+    },
+    {
+      "path": "evidence/tasks/T019-mobile.png",
+      "sha256": "1115252801c8f6bbe9c11d39ec653832adf14ed73b135987edc449418f117604"
+    },
+    {
+      "path": "evidence/tasks/T019-responses.json",
+      "sha256": "6294fc2ee95c480eaf40ba7ea4fc392350528003094d9b98de7ea0fd25678d10"
+    },
+    {
+      "path": "evidence/tasks/T019.md",
+      "sha256": "e43e31429f3c5bbb2e2a20927c23ea5f354962ce78388a9cd29f91dd2b23b32d"
+    },
+    {
+      "path": "evidence/tasks/T020.md",
+      "sha256": "1fb13f261bde8bbeaf07b936a184f85a7e5a4deb60efabf138f1d428d33c23e8"
+    },
+    {
+      "path": "evidence/tasks/T024.md",
+      "sha256": "bf6b40d030e11a26942f2c8e67b28fc3791a4759f8489bfa50836fe1a3d37467"
+    },
+    {
+      "path": "evidence/tasks/T027.md",
+      "sha256": "35474c8e42db46fec5c44114f9db5b8d89f8799844357791b1e080fd41054feb"
+    },
+    {
+      "path": "evidence/tasks/feature-002-specification.md",
+      "sha256": "21f14525f93d1a375b5ab1aa5bd77a1b4926d9eda38e39805f783e010d52d1a3"
+    },
+    {
+      "path": "evidence/tasks/foundation-validation.md",
+      "sha256": "496c55e9657b6c307bd0d4513c79625535aca7031da8b08311aaee5c3341ef8c"
+    },
+    {
+      "path": "evidence/tasks/human-review.md",
+      "sha256": "e7f5bf9ca74598b70f453df8bafd1dce99b3b80e9b7274d0e67236a82d4175e6"
+    },
+    {
+      "path": "evidence/tasks/peer-reproduction.md",
+      "sha256": "fd242c014e74a82a2e36aa2afe24a256ab273a5bb3ae9386b1a66bb1d49f15ff"
+    },
+    {
+      "path": "evidence/tasks/phase-01-handoff.md",
+      "sha256": "e5ab9baf859a28b54cd06800827760dc2fbc3aac4fbea94efbfe34f22944c912"
+    },
+    {
+      "path": "evidence/tasks/phase-02-handoff.md",
+      "sha256": "b46cc0594079d952639669597afa5b78895399672726e91996ac3970ca10fc47"
+    },
+    {
+      "path": "evidence/tasks/phase-03-handoff.md",
+      "sha256": "ab1f463578065e73735c7925695535cb9ab1f5e08145c2fedc4b63be1b9ba705"
+    },
+    {
+      "path": "evidence/tasks/phase-05-handoff.md",
+      "sha256": "3a7884e999660c8f79741c91d4dd47966e7747040d732601d00106ded579c5d3"
+    },
+    {
+      "path": "evidence/tasks/phase-06-handoff.md",
+      "sha256": "21e847da1c2937c24a64b9e01293911623c03a3fcc24b13d1505d3672da0ae54"
+    },
+    {
+      "path": "evidence/tasks/session-commits-2026-11-12.md",
+      "sha256": "8402f6017f9667241508f07795044da18522fe025a7b4a1395bfdf75f06ed434"
+    },
+    {
+      "path": "evidence/templates/task.md",
+      "sha256": "61d0547adafd3e15f56a7fd9128fa56b07bfc444caa05248f7fbce476cc43427"
+    },
+    {
+      "path": "next_work.md",
+      "sha256": "edcb6cecd32a574f380646eb8c0ddce98ea7f3a58f377408df1b7c286ca789d9"
+    },
+    {
+      "path": "original_idea.md",
+      "sha256": "299d3723b470607ac48c699a0ab7ba51d788c1083966515ef6b76d20c537fded"
+    },
+    {
+      "path": "prompts/README.md",
+      "sha256": "b18593ad28b0114b441a27cbb584b3d9b18e007251768488d347a3bbb448ec25"
+    },
+    {
+      "path": "prompts/development/001-foundation-T012.md",
+      "sha256": "307b3c00036de9f45343c062427598d1347a72bafefe06d485b9b298758f3fde"
+    },
+    {
+      "path": "prompts/development/001-foundation-T013.md",
+      "sha256": "0825fe37f2129a2d33a6765313ca44f62096f4779210293531a7febb914e3134"
+    },
+    {
+      "path": "prompts/development/001-foundation-T014.md",
+      "sha256": "e52b26437f795a36c4f733fa8dc79fadfc309d857c1afa3a06bb981f6a40ab0a"
+    },
+    {
+      "path": "prompts/development/001-foundation-T015.md",
+      "sha256": "52dfaa15a742b392a85d6ff85b9dd7049db9a7e2fca85a57006a5fe8aa30e7bc"
+    },
+    {
+      "path": "prompts/development/001-foundation-T016.md",
+      "sha256": "3004a6a431ecf6be8d68787e4fc4bb91b8a9d535f0135821cc8eb32dadf0ad00"
+    },
+    {
+      "path": "prompts/development/001-foundation-T017.md",
+      "sha256": "201c2b7fb1a2be78f822cbfdefca95456e925374924d348972d80457ffc6e993"
+    },
+    {
+      "path": "prompts/development/001-foundation-T018.md",
+      "sha256": "809caa3a90900982e9690318b734dd58a3f799ac4eb11b30d12a3a4d0381fae9"
+    },
+    {
+      "path": "prompts/development/001-foundation-T019-browser-continuation.md",
+      "sha256": "01033d14c2676371588f53017f1d1c18c0c9ebada03cb004c2b256da229dfb55"
+    },
+    {
+      "path": "prompts/development/001-foundation-T019.md",
+      "sha256": "e21255e210140f20214a3592a892e1653491dc63df9fe2a93f64b2a76e9e69fe"
+    },
+    {
+      "path": "prompts/development/001-foundation-phase-01.md",
+      "sha256": "bc4361b6c9198dbc4191205156efd8aa92667fe54d520c651db1966b53773b99"
+    },
+    {
+      "path": "prompts/development/001-foundation-phase-02.md",
+      "sha256": "5ff927a9391f3f741d5545c4a16332578b21be9860bc4a73fb3a66ebab23bad6"
+    },
+    {
+      "path": "prompts/development/001-foundation-phase-03.md",
+      "sha256": "b040e27cf9ad93edb310e90ae4a2a0a20ed135c9406376533c135383b74605a0"
+    },
+    {
+      "path": "prompts/development/001-foundation-phase-05.md",
+      "sha256": "5766e35e2e19833239c11d14e5913e86f86bf8afe98544c62b78b2459737bf1e"
+    },
+    {
+      "path": "prompts/development/001-foundation-phase-06.md",
+      "sha256": "b7c200eb70f6b5c92da44cf2f23916038c177e4a7217cd701033cc0f5e251a7b"
+    },
+    {
+      "path": "prompts/development/001-foundation.md",
+      "sha256": "3c5dc0dcbf009c2768eba44e2282d4a763dcc53539ea36bd6c2edc0757807ece"
+    },
+    {
+      "path": "prompts/development/002-data-and-risk-scoring-specification.md",
+      "sha256": "2f040dc1d6dcbe75a808b533f88d0ae974ea9b8ccfdb5b7facc915982bfde389"
+    },
+    {
+      "path": "specs/001-project-foundation/checklists/requirements.md",
+      "sha256": "8aa4ab3d36e44fb01a02d928f6bd9fbd8c3b542b1f17fb3c7ba7716924af62c1"
+    },
+    {
+      "path": "specs/001-project-foundation/contracts/api.md",
+      "sha256": "07fa82a906341403e270ec9c502c1daaae02057248fe3228fc1fa04c29bf360f"
+    },
+    {
+      "path": "specs/001-project-foundation/contracts/schemas.json",
+      "sha256": "0822d24cf2fa9d59c79ce64479aca3ba4a595ead60dfb07daba30b88d163114f"
+    },
+    {
+      "path": "specs/001-project-foundation/data-model.md",
+      "sha256": "8a35b78eb1ee061b2c93b73b20d28c3609eb2086f6239bad958a816f2261cceb"
+    },
+    {
+      "path": "specs/001-project-foundation/feature1_tasks_prompt.md",
+      "sha256": "953e8f712fc87e0405e2e379cd1509506184c5291b8b585570da3c2b9a714d96"
+    },
+    {
+      "path": "specs/001-project-foundation/plan.md",
+      "sha256": "a339ac46b7dee6666875853b9497b4dba0c099aa305027394b3ec972bc90e754"
+    },
+    {
+      "path": "specs/001-project-foundation/quickstart.md",
+      "sha256": "d538afe2984616d44afcb5da6f06ace9921436706e9285ad9f1602c4fb75175c"
+    },
+    {
+      "path": "specs/001-project-foundation/research.md",
+      "sha256": "9049bbc3a0f7482b5b642152a9377b8408c43f60a50a3edaa88b428920a01b89"
+    },
+    {
+      "path": "specs/001-project-foundation/spec.md",
+      "sha256": "362d2edf95fecf614ee74602f2729f66ee5eafc7ec5891d7ea330de4a12e5bba"
+    },
+    {
+      "path": "specs/001-project-foundation/tasks.md",
+      "sha256": "38163873c9f185583174c952844d30edd884a37a0ae0dff6d6fe8319e8bb3ce7"
+    },
+    {
+      "path": "specs/002-data-and-risk-scoring/checklists/requirements.md",
+      "sha256": "c5b038f2cc30b7ada48ab9980b779a006f7d15146262eb50b41b1b48dce6aa4b"
+    },
+    {
+      "path": "specs/002-data-and-risk-scoring/spec.md",
+      "sha256": "3435160dd4ee29d89ff2257268bf7f769dda19e1441be0b93b24925bba17a51f"
+    }
+  ]
+}

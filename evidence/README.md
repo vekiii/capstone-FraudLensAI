@@ -1,5 +1,10 @@
 # Execution evidence
 
+The [project evidence and contribution plan as of 12 November 2026](tasks/project-evidence-plan-2026-11-12.md)
+consolidates the historical work, named contributors, validation and provisional
+time calculation. Its estimates are separate from measured working hours; source
+task records remain authoritative for the original execution details.
+
 Use [templates/task.md](templates/task.md) for task records in `evidence/tasks/`.
 Link task/requirement IDs, original development prompts, code revision or working
 diff, runtime/dependency/data versions, exact commands, exit codes and observed
