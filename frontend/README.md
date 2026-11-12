@@ -3,7 +3,7 @@
 Vanilla TypeScript/Vite frontend with T017's typed API boundary and T018's complete
 synthetic case inspection UI. No framework or runtime dependency is required.
 
-Required runtime: Node 24.x. Latest verified runtime: Node v24.21.0, npm 11.19.0.
+Required runtime: Node 24.x. Phase 6 verified runtime (2026-11-12): Node v24.20.0, npm 11.19.0.
 The user approved this change from Node 22 on 2026-11-11. Global runtime
 installations and execution policies were not changed. Use npm.cmd in PowerShell.
 
@@ -43,8 +43,9 @@ The synthetic notice is persistent. Scores appear as raw 0–1 illustrative valu
 with source/version/time/explanation. Loading, empty, error and not-found states
 are accessible; recoverable errors offer explicit retry. No raw exceptions or
 invented case data are displayed. T019 confirms real backend/proxy HTTP and reruns
-all checks; interactive browser/console and visual layout checks remain unexecuted
-because browser access failed. See ../evidence/tasks/T019.md.
+all checks; its final continuation records successful headless Chrome, console,
+Enter and 390px viewport checks. Manual review and peer reproduction are pending.
+Phase 6 reran suites, not browser verification. See ../evidence/tasks/T019.md.
 
 ## API boundary
 

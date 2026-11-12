@@ -57,3 +57,7 @@ The existing [prompt conventions](../README.md) and
 The evidence policy already states these distinctions and required no amendment
 for T023. Task-level RED/GREEN or already-correct outcomes remain in their own
 evidence files. Phase 6/T024–T027 instructions and evidence are not invented here.
+
+## Phase 6 (2026-11-12)
+Original instruction: [001-foundation-phase-06.md](001-foundation-phase-06.md).
+User confirmed no peer result and requested reproduction steps.

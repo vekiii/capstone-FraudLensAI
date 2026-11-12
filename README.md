@@ -1,18 +1,14 @@
 # FraudLens AI
 
-Educational AML prototype. Current delivery includes foundation phases 1–3: strict
-contracts, local backend startup/health and a minimal vanilla TypeScript frontend
-showing the project name. T014 adds three synthetic transaction fixtures and a
-validated loader; T015 adds deterministic illustrative scoring and a validated
-case-scoring boundary. T016 serves GET /api/cases and GET /api/cases/{case_id}
-with generic errors. T017 adds a typed frontend API client with strict runtime
-decoding, timeout and cancellation. T018 adds case list/detail/back, explicit states,
-retry and stale-response protection. T019 regression/live HTTP passes; interactive
-browser verification is pending because browser access was unavailable.
+Educational AML prototype. Foundation phases 1-5 are implemented: local synthetic
+cases, strict contracts, replaceable scoring and list/detail UI. Phase 6 verifies
+coverage and delivery; independent peer reproduction and human review are pending.
+T019's final continuation records 16 headless Chrome scenarios plus Enter and
+390px viewport checks. This is automated browser evidence, not human review.
 
 ## Prerequisites and setup
 Use Git, uv, Python 3.14.x, Node 24.x and npm in Windows PowerShell.
-Versions checked during this phase: Python 3.14.3, uv 0.10.9,
+Versions checked on 2026-11-12 in phase 6: Python 3.14.3, uv 0.10.9,
 Node v24.20.0 and npm 11.19.0. Run commands from the repository root.
 
 For an existing checkout, install the committed locked dependencies:
@@ -75,7 +71,7 @@ npm.cmd --prefix frontend run typecheck
 npm.cmd --prefix frontend run build
 git diff --check
 ```
-All 291 backend tests pass, including the unchanged 49 T012 API/scorer tests and
+All 310 backend tests pass (phase 6, 2026-11-12), including the unchanged 49 T012 API/scorer tests and
 8 additional framework/logging checks (rerun successfully in T019).
 The frontend has 151 passing tests, including all 82 original API and 19 DOM tests.
 T019 typecheck/build/Ruff pass. See T012–T019 evidence for actual results and limits.
@@ -87,8 +83,9 @@ are explicitly synthetic, without ML inference, calibrated probabilities or labe
 
 The [target quickstart](specs/001-project-foundation/quickstart.md) also describes
 three-case navigation and failure-state checks. T019's real-server/browser
-verification is partial: live backend/proxy HTTP checks pass, but browser access
-failed. Do not claim interactive verification from automated DOM tests.
+verification includes live HTTP and completed headless Chrome automation. See the
+final T019 continuation for fault injection and limits. Phase 6 did not rerun the
+browser verifier because production code is unchanged. Human review stays pending.
 
 ## Evidence and next work
 See [T019 integrated verification and limits](evidence/tasks/T019.md),

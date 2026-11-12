@@ -2,7 +2,7 @@
 
 **Branch**: `initialization` | **Date**: 2026-11-11 | **Spec**: [spec.md](spec.md)
 **Input**: `specs/001-project-foundation/spec.md`
-**Status**: Design only. Commands and acceptance results are not yet executed.
+**Status**: Implemented through T023; phase 6 verification recorded in ../../evidence/tasks/phase-06-handoff.md. Peer reproduction and human review pending.
 
 ## Summary
 Build a local read-only fixture journey with FastAPI and Vite vanilla TypeScript. Deliver

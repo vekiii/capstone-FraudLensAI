@@ -1,8 +1,9 @@
 # Foundation Quickstart
 
 **Status**: Application, fixtures and lockfiles exist. T019 verified locked setup,
-automated checks and real backend/proxy HTTP; interactive browser verification
-and second-person reproduction remain pending. See evidence/tasks/T019.md.
+automated checks and real backend/proxy HTTP. The final T019 continuation records
+headless Chrome verification. Manual review and second-person reproduction remain
+pending. See ../../evidence/tasks/T019.md and ../../evidence/tasks/peer-reproduction.md.
 First install needs network; runtime needs no model, corpus, provider or external service.
 
 ## Prerequisites
