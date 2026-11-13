@@ -1,5 +1,92 @@
 # Feature 002 pretrained artifact investigation
 
+## IBM pretrained inference RED request gate — 2026-11-13
+
+At `c872375e3457bf16a148541c407063a02615553a` on
+`model-implementations`, the requested exact-vector RED tests were not written.
+The Feature 002 source mapping still has `status=pending_team_review` and
+`executable_mapping=false` (its synthetic time assumption is separately
+marked `approved_by_user`). The [IBM pretrained decision](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md)
+still awaits the team's model/identity/history scope decision. The pinned
+`aml_lgbm.py` provides the 22-name source recipe, but actual native feature
+metadata, categorical code/vocabulary, and training-period graph maps have
+not been safely verified from the model/preprocessing artifacts. An exact
+hand-calculated successful vector or category-encoding assertion would
+therefore assume facts that are still unknown. Original source mapping,
+`history-v1` and model account/time semantics are not interchangeable.
+
+Read-only commands: `git status --short --branch`, `git rev-parse HEAD`, reads
+of `AGENTS.md`, `next_work.md`, source mapping, current test conventions,
+`data_contracts.py`, `feature_history.py` and the model decision, plus
+`rg --files`/`git log --all --oneline --` for pretrained test paths all exited
+0. No pretrained loader or inference test module exists. No tests were
+created, collected or executed; there are **zero RED cases and no valid
+failure output**. No dataset, model, joblib or holdout was loaded, no adapter
+or training operation was run, and no original task checkbox changed. This
+gate note is uncommitted; the requested test commit was not made.
+
+Next: complete the approved source/model policy and safely verify exact
+artifact preprocessing metadata, then write synthetic RED vectors against
+that frozen input contract. Prompt 07 GREEN cannot start yet.
+
+## IBM pretrained loader implementation gate — 2026-11-13
+
+At `c872375e3457bf16a148541c407063a02615553a` on
+`model-implementations`, the requested GREEN loader implementation stopped
+before acquisition. The [IBM decision proposal](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md)
+still records team approval as pending. No approved IBM pretrained manifest,
+source/preprocessing SHA-256 pair, safe primitive graph-state conversion plan,
+or replacement task checklist is present. Prompt 04/04C loader RED tests are
+absent from worktree and history; `backend/tests/unit/test_pretrained_loader.py`,
+`backend/src/fraudlens/pretrained.py`, and `data/artifacts/` are absent. The
+upstream joblib remains untrusted for deserialization, and the model's
+bank-unqualified graph state is not compatible with approved `history-v1` by
+assumption. The existing untracked T029 JSON concerns the original training
+benchmark, not a pretrained artifact manifest.
+
+Read-only checks: `git status --short --branch`, `git rev-parse HEAD`,
+`Test-Path` for the three paths, `rg --files` for manifest/test candidates,
+`git log --all --oneline --` for the loader test path, `.gitignore`,
+`AGENTS.md`, `next_work.md` and the IBM decision proposal all exited 0.
+`.gitignore` already excludes `data/artifacts/`, `data/raw/`,
+`data/processed/` and `evals/results/`. No downloader, model load, joblib
+deserialization/conversion, training, inference or source-data modification
+occurred. Loader tests, backend regressions, Ruff and artifact integrity smoke
+checks were **not run**; no GREEN result or implementation commit is claimed.
+Unrelated working-tree changes and original task status were preserved.
+
+Next: complete Prompt 04C's actual team scope/feature-policy decision,
+independent artifact and state verification, safe preprocessing plan and
+approved manifest/checklist; then write real RED loader tests before GREEN.
+
+## Prompt 04B loader RED alignment gate — 2026-11-13
+
+At `c872375e3457bf16a148541c407063a02615553a` on
+`model-implementations`, the requested extension could not start against an
+existing Prompt 04 suite: `backend/tests/unit/test_pretrained_loader.py` is
+absent from the worktree and `git log --all --oneline --
+backend/tests/unit/test_pretrained_loader.py` returned no commits. The
+[IBM candidate decision](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md)
+still says approval is pending. There is no approved IBM pretrained artifact
+manifest or inference-only task checklist; the untracked T029 JSON is the
+original training-protocol draft. The native model's expected SHA-256 and
+preprocessing-state compatibility are not independently verified. Tests
+requiring an approved manifest, exact checksums, account/temporal policy and
+accepted graph state would assert invented requirements now.
+
+Read-only `git status --short --branch`, `git rev-parse HEAD`, `rg --files`
+over tests/specs/evals, `git log --all --oneline --` for the loader test path,
+and reads of `AGENTS.md`, `next_work.md`, the decision and this evidence all
+exited 0. No tests were added, collected or executed; test count is **zero**
+and there are **no valid RED failures**. No model was loaded, no training or
+inference ran, and the original T026–T036 markers remain unchanged. Existing
+unrelated worktree changes were preserved. This is an uncommitted gate note,
+not the requested RED-test commit.
+
+Next: complete Prompt 04C's scope decision, verified model/preprocessing
+checksums, identity/temporal policy and approved manifest/checklist; then
+create the synthetic loader RED suite and record its actual intended failures.
+
 ## IBM AML LightGBM candidate correction — 2026-11-13
 
 **Status:** Primary candidate for review, not an approved production model. This corrects the earlier ApexFi IEEE-only direction while retaining IBM HI-Small as the project dataset. See the [pending source decision](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md). The historical ApexFi investigation below remains accurate for that earlier candidate.
@@ -411,6 +498,41 @@ inference, joblib deserialization, publisher-model download, dataset access or
 holdout evaluation occurred. The separate
 [loader checklist](../../specs/002-data-and-risk-scoring/checklists/pretrained-ibm-loader.md)
 keeps substantive RED and real artifact verification open before Prompt 05.
+
+## Pinned IBM artifact and loader gate check — 2026-11-13
+
+Branch `model-implementations`, starting HEAD `79987df7723e892fc6797acb1ee2981c383a0a8b`.
+The user-reported team scope approval is recorded in the IBM [decision](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md). This check establishes artifact bytes, but does not resolve the separate identity/history and manifest gates. Pre-existing worktree changes were preserved. No IBM CSV, holdout, training or inference was used.
+
+Only these files were downloaded to Git-ignored `data/artifacts/` from immutable revision `4fc397afa0e22396d26153d69e46e46304411ca0`:
+
+| Pinned source | Measured bytes | Locally computed SHA-256 |
+| --- | ---: | --- |
+| [`aml_lgbm_model.txt`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/resolve/4fc397afa0e22396d26153d69e46e46304411ca0/aml_lgbm_model.txt) | 9,281,152 | `5c20d22e5e395d3b7e1f2741583f350bdac10d43afcc697ccbcd5373efcfd798` |
+| [`aml_lgbm_preproc.joblib`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/resolve/4fc397afa0e22396d26153d69e46e46304411ca0/aml_lgbm_preproc.joblib) | 33,080,466 | `189ab48262821327abfdd38c04923608954e7869ca59801ef3c1291698236a76` |
+| [`aml_lgbm_metrics.json`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/resolve/4fc397afa0e22396d26153d69e46e46304411ca0/aml_lgbm_metrics.json) | 1,917 | `8c821488ac8a42c7461f958a3669d95e1ef5067e82831e15bd0ed79d8b27c974` |
+
+The joblib digest matches the publisher listing. Publisher SHA-256 values for the model and metrics were not located; the two values above are local calculations, not publisher attestations. `git check-ignore -v` matched `.gitignore:38:/data/artifacts/` for all three. Downloads refused to overwrite existing files. Repeat integrity check with `Get-Item` and `Get-FileHash -Algorithm SHA256 -LiteralPath` on each listed path; compare sizes and hashes above.
+
+Native text inspection without model execution found `tree`, `version=v4`, `max_feature_idx=21`, `objective=binary sigmoid:1`, and 22 names in source order. The final three **native** names are `Receiving_Currency`, `Payment_Currency`, `Payment_Format`; source Python and the synthetic RED header use spaces. The native `pandas_categorical` footer lists 15 receiving-currency, 15 payment-currency and 7 payment-format values. A loader must map the source names to native names explicitly and verify order, rather than accept either spelling as an unchecked substitute.
+
+The pinned joblib begins with pickle protocol 4. A read-only `pickletools.genops` scan counted 6,560,865 opcodes, all primitive container/string/number/memo/framing operations; zero `GLOBAL`, `STACK_GLOBAL`, `REDUCE`, `BUILD`, `NEWOBJ`, `NEWOBJ_EX`, `OBJ`, `INST`, extension or persistent-reference opcodes. This supports a future restricted primitive parser. It is **not** proof that `pickle.load` or `joblib.load` is safe; neither was called. No sanitized graph artifact was produced.
+
+The upstream save statement stores `graph`, `features` and `cat_cols` only. Its graph keys are unqualified account IDs and its aggregates cover a complete initial training period. The saved state does not include a verified bank/account collision index or exact training-end timestamp. The current fail-closed test contract requires both. Copying graph maps or inventing metadata would not satisfy that contract. The synthetic native-header fixture also conflicts with the observed underscore names. There is no truthful real artifact manifest yet. LightGBM is absent from the installed/locked environment. Production loader and conversion were stopped at this input-policy gate; downloaded bytes remain ignored, and no implementation commit was made.
+
+| Check | Exit | Observed result |
+| --- | ---: | --- |
+| `git check-ignore -v data/artifacts/aml_lgbm_model.txt data/artifacts/aml_lgbm_preproc.joblib data/artifacts/aml_lgbm_metrics.json` | 0 | All excluded by `/data/artifacts/`. |
+| `curl.exe -I --max-time 20 <pinned metrics URL>` | 0 | HTTP 307; `X-Repo-Commit` matched; linked size 1,917. |
+| `curl.exe --fail --location --silent --show-error --max-time 180 --output <ignored path> <pinned resolve URL>` for each file | 0 each | Three files and measured sizes/hashes above. |
+| `.venv/Scripts/python.exe -c <pickletools static opcode scan>` | 0 | 6,560,865 opcodes, zero executable reconstruction opcodes. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py --collect-only -q --basetemp data/artifacts/pytest-loader-collect` | 0 | 33 cases collected. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py -q --basetemp data/artifacts/pytest-loader-execute --tb=no` | 1 | 30 missing-interface failures, 3 passes; two nonfatal pytest-cache permission warnings. No GREEN result. |
+| `.venv/Scripts/ruff.exe check backend/tests/unit/test_pretrained_loader.py` | 0 | All checks passed. |
+| `git diff --check` | 0 | No whitespace errors; Git emitted only LF-to-CRLF notices. |
+| `Get-Item` and `Get-FileHash -Algorithm SHA256` on the three local files | 0 | Repeat measurements matched the table above. |
+
+Original T029–T036 status, Foundation scorer and rules scorer remain unchanged. Next: establish bank/account collision and exact cutoff provenance (or formally narrow the permitted mode), reconcile the native-name fixture, and freeze a real manifest before Prompt 05 GREEN.
 
 ## IBM inference RED extension against pinned native metadata — 2026-11-13
 
