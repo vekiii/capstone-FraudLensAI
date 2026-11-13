@@ -1,9 +1,18 @@
 # Feature 002 validation quickstart
 
-Status: **planned validation guide**. Feature 002 CLI, contracts and tests are
-not implemented yet. Commands marked planned below must not be reported as
-executed results. Use [plan.md](plan.md), [data-model.md](data-model.md) and
+Status: **inspection available; later validation planned**. Only the local
+`inspect` CLI and source-independent inspection tests are implemented. Mapping,
+v2 runtime contracts and all later commands remain gated. Commands marked planned
+below must not be reported as executed results. Use [plan.md](plan.md), [data-model.md](data-model.md) and
 [contracts](contracts/api.md) for expected behavior.
+
+The 2026-11-13 [source audit](../../evidence/tasks/feature-002-source-audit.md)
+contains the exact executable inspection command and results for the authorized
+local file, including positional observation roles. It returns exit 2 for the
+observed duplicate `Account` headers and unknown release. This is a complete
+read-only scan with unresolved mapping/provenance, not an import. No source
+data is tracked. [Contract review](../../evidence/tasks/feature-002-contract-review.md)
+records remaining producer/consumer decisions.
 
 ## Preconditions
 
@@ -20,11 +29,10 @@ executed results. Use [plan.md](plan.md), [data-model.md](data-model.md) and
 3. Acquire the authorized IBM AML HI-Small release locally under ignored
    data/raw/ through the team's permitted process. Record source/release,
    license reference and SHA-256. Do not commit the file or credentials.
-   The source is currently absent, so no substantive import/evaluation
-   can be completed from this checkout alone.
-   Before generating local model/run files, add and verify a Git ignore
-   rule for data/artifacts/; the current .gitignore covers data/raw/ and
-   data/processed/ but not data/artifacts/.
+   This local session has inspected a supplied source; its exact release and
+   mapping remain pending. Other checkouts require their own authorized file.
+   Before generating local files, verify the existing ignore rules for
+   data/raw/, data/processed/, data/artifacts/ and evals/results/.
 4. Confirm the reviewed source mapping, feature catalog, rule policy,
    protocol and v2 contract have been frozen and affected consumers
    reviewed them. If the authoritative Phase 2 assignment becomes
@@ -54,8 +62,8 @@ evidence/tasks/; do not copy historical counts as fresh results.
 
 The following interface is specified in
 [data-and-scoring.md](contracts/data-and-scoring.md). The module and
-subcommands do **not** exist yet. From the repository root after
-implementation, make backend/src importable:
+subcommands other than **inspect** do **not** exist yet. From the repository
+root, make backend/src importable:
 
     $env:PYTHONPATH = 'backend/src'
     $env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'

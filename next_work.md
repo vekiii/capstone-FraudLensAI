@@ -1,6 +1,42 @@
 # Next work - FraudLens AI
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
-Current observed branch: 002-data-and-risk-scoring; HEAD: f37e67a.
+Current observed branch: 002-data-and-risk-scoring; HEAD: 3568c7d.
+
+## Current Feature 002 inspection handoff — 2026-11-13
+
+This update supersedes planning-era source-absent/not-implemented statements below
+for the inspection slice only. T001–T005 complete; T006 partial on source provenance;
+T007 `pending_mapping_review`; T008 `pending_consumer_review`. [Implementation ledger](evidence/tasks/feature-002-implementation.md),
+[source audit](evidence/tasks/feature-002-source-audit.md), [contract review](evidence/tasks/feature-002-contract-review.md).
+
+- Read-only streaming `fraudlens.pipeline_cli inspect` and 36 authored inspection
+  tests implemented. Only inspect is available; no import/model/run/v2 integration.
+  Artifact ignore rule added and checked before local report generation.
+- Local authorized `data/raw/HI-Small_Trans.csv`: 475,664,283 bytes;
+  SHA-256 `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`;
+  5,078,345 records; label tokens 0=5,073,168 and 1=5,177. These are source counts,
+  not event-valid/supervised/model metrics. User supplied acquisition date/source;
+  exact Kaggle release remains unknown. IBM upstream data-license statement
+  verified; applicability to the exact acquired release remains pending.
+- Duplicate `Account` headers at positions 2/4; minute timestamps without timezone;
+  amount scales 2/6; currency names reach 17 characters, exceeding proposed v2
+  maxLength 12. Mapping/namespace/time-policy hashes not frozen; no mapping file
+  created. Contract review records a separate detail-version wording inconsistency.
+- Actual source scan returned controlled exit 2 (`duplicate_headers`,
+  `provenance_incomplete`), with complete observations; source hash verified unchanged.
+  Small sanitized evidence is prepared for Git; full report remains ignored/local.
+- Initial RED: 30 intended missing-inspector failures in test bodies. GREEN: 30,
+  then 36 inspection tests after extra form/option assertions. Lexical-summary
+  follow-up: 2 RED/34 passing, then 36 GREEN. Final backend 346 passed; frontend
+  151 passed; Ruff/typecheck/build passed. Existing Starlette/httpx warning remains.
+  Foundation v1 code, schema, fixture and frontend unchanged.
+- Phase 2 source lookup complete, compliance `pending_requirements_unavailable`.
+  Human code/mapping/contract review and independent reproduction pending.
+  No download, training, substantive evaluation, browser run, commit or push.
+
+One concrete next step: obtain exact acquired-release evidence and actual
+producer/affected-consumer decisions for duplicate-header direction, timezone,
+currency bounds and detail-version wording before starting import.
 
 ## Current state
 Feature 001-project-foundation completed/accepted in its local synthetic-demo scope:
@@ -16,7 +52,7 @@ separate-machine installations claimed. Historical pending entries superseded.
   phase-06-handoff.md and foundation-validation.md. Browser evidence remains the
   historical T019 run; no new browser/test run during acceptance recording.
 
-Feature **002-data-and-risk-scoring is revised after adversarial review, not implemented**:
+Feature **002-data-and-risk-scoring planning history** (current inspection progress above):
 - [Specification](specs/002-data-and-risk-scoring/spec.md): import/provenance, historical
   features and rules, bounded ML comparison, local explanations and dataset-backed case review.
 - [Quality checklist](specs/002-data-and-risk-scoring/checklists/requirements.md): agent
@@ -48,7 +84,7 @@ Feature **002-data-and-risk-scoring is revised after adversarial review, not imp
 - The preceding planning request authorized technical planning and future
   prompts only. No Feature 002 implementation was performed by that unit.
 
-## One concrete next step
+## Historical next step before the inspection slice
 Start Feature 002 T001: create the implementation evidence ledger with the actual
 working revision, original implementation prompt and environment after reading
 AGENTS.md and this handoff. The next implementation slice is source-independent

@@ -1,5 +1,8 @@
 # Codex prompts for Feature 002
 
+Executed request, 2026-11-13: [source-inspection slice and provenance clarification](002-source-inspection-request-2026-11-13.md).
+Actual results and open gates: [implementation ledger](../../evidence/tasks/feature-002-implementation.md).
+
 Created 2026-11-12. These are **future copy-ready prompts**, not executed
 commands or authorization to mark work complete. Start each prompt in the
 repository checkout after the preceding gate is met. The current
