@@ -1,3 +1,25 @@
+# Current feature 003 phase 2 handoff - 2026-11-14
+Branch feature03; baseline 6db94af. T001-T012 complete by task type.
+T005/T006 contracts: 70 PASS. T007/T008 context: 8 PASS. T009/T010 repository: 8 PASS.
+Settings+startup: 89 PASS. T012 deliberate RED: 4 failed / 3 passed, no route code added.
+Full backend: 480 passed / 4 intentional T012 failures; separately excluding ONLY
+that module, 477 passed. Ruff PASS. Full suite is NOT GREEN; no skip/xfail added.
+T011 prompt/retrieval configuration frozen as initial untuned design with hashes.
+Existing foundation, source fixtures, schemas, feature 002/ML and lockfiles preserved.
+Human/provider/corpus/producer review gates remain pending, not needed for this slice.
+No actual provider, tools, worker, ingestion/retrieval/UI or live evaluation executed.
+Evidence: [phase 2 handoff](evidence/tasks/feature-003-phase-02-handoff.md),
+[contracts](evidence/tasks/feature-003-contracts.md), [context](evidence/tasks/feature-003-context.md),
+[state](evidence/tasks/feature-003-state.md), [intentional API RED](evidence/tasks/feature-003-api.md).
+One concrete next step: separately request phase 3 from T013 reviewed source corpus.
+T012 failures are future T019/T035 implementation work, not authorization to add routes now.
+No commit/push/merge/deploy. Earlier handoffs below are historical.
+
+# Current feature 003 phase 2 progress
+T005-T008 implemented with executed RED/GREEN: contracts 57 PASS, context 6 PASS.
+Evidence: evidence/tasks/feature-003-phase-02-handoff.md. T009 repository tests next.
+No provider/ML/route composition work. Previous handoffs below historical.
+
 # Next work - FraudLens AI
 
 ## Current feature 003 setup handoff - 2026-11-13

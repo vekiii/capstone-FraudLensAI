@@ -1,0 +1,20 @@
+{
+  "configuration_version": 1,
+  "algorithm": "bm25",
+  "status": "untuned_design",
+  "k1": 1.2,
+  "b": 0.75,
+  "normalization": [
+    "NFKC",
+    "casefold"
+  ],
+  "tokenization": "Unicode alphanumeric sequences",
+  "term_policy": "deduplicate query terms",
+  "tie_break": "passage_id ascending",
+  "maximum_results": 5,
+  "adequacy_cutoff": null,
+  "cutoff_status": "requires development-pack selection before quality evaluation",
+  "glossary": null,
+  "body_only": true,
+  "corpus": "fraudlens-aml-knowledge-v1"
+}
