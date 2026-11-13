@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## Phase 5 pretrained reconciliation - 2026-11-13
+
+The [Phase 5 reconciliation](evidence/tasks/feature-002-pretrained-final-review.md#phase-5-task-reconciliation---2026-11-13) keeps T026–T028 complete and T029–T036 open. The team-approved pretrained direction has **no recorded replacement tasks or waivers**. Local FraudSentinel model, joblib and metrics hashes match prior evidence, but its graph features are incompatible with the approved `history-v1` identity/time policy; safe preprocessing, a real manifest, loader and adapter remain absent. Real inference: 0 transactions scored. Independent model evaluation: BLOCKED, with exact publisher/local row overlap unverified. Controlled protocol and Foundation/rules checks passed 102/102; pretrained loader 30 failures/3 passes and adapter 36 failures/1 pass remain interface RED; Ruff passed. No raw dataset, downloaded model binary, private-label source or common secret pattern was found in tracked files; existing untracked T029 drafts were preserved.
+
+One concrete next action: audit a different pretrained IBM model for bank-qualified, point-in-time-compatible features and documented training exposure before proposing a replacement Phase 5 checklist.
+
 ## Pretrained evaluation independence audit - 2026-11-13
 
 The [evaluation-independence audit](evidence/tasks/feature-002-pretrained-evaluation.md#independent-performance-evaluation-audit---2026-11-13) classifies independent performance evaluation of the selected FraudSentinel model on our current IBM HI-Small data as **BLOCKED**. Publisher mirror/source-row identity is unpinned; its first 80% train population and test-label-selected routing threshold cannot be proven disjoint from our source/split. Our 70/15/15 protocol JSON is untracked and T029 is open. Exact row overlap remains unverified. No holdout, labels, predictions, metrics, model fit or threshold change occurred; real inference remains absent and separate from performance evidence.
