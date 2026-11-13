@@ -4,15 +4,20 @@ import importlib
 import importlib.util
 from dataclasses import replace
 from datetime import UTC, datetime, timedelta
+from types import MappingProxyType
 
 import pytest
 
 from fraudlens.data_contracts import CanonicalTransaction, DatasetVersion, PrivateEvaluationLabel
+from fraudlens.data_import import derive_dataset_version
 from fraudlens.feature_history import build_feature_snapshots
 
 START = datetime(2026, 1, 1, tzinfo=UTC)
-VERSION = 'dv_' + 'a' * 64
 SOURCE_HASH = 'b' * 64
+MAPPING_HASH = 'c' * 64
+TIME_HASH = 'd' * 64
+VERSION = derive_dataset_version(*(bytes.fromhex(value) for value in
+                                   (SOURCE_HASH, MAPPING_HASH, TIME_HASH)))
 
 
 def _event(name: str, at: datetime, ordinal: int) -> CanonicalTransaction:
@@ -55,7 +60,7 @@ def _population():
         )
         for i, event in enumerate(events)
     )
-    dataset = DatasetVersion(VERSION, SOURCE_HASH, 'c' * 64, 'd' * 64, 'complete',
+    dataset = DatasetVersion(VERSION, SOURCE_HASH, MAPPING_HASH, TIME_HASH, 'complete',
                              len(events))
     return dataset, tuple(snapshots.values()), labels
 
@@ -185,6 +190,7 @@ def test_missing_negative_class_is_ineligible(partition_name):
 
 
 @pytest.mark.parametrize('change', ['wrong_version', 'wrong_source_hash',
+                                    'wrong_mapping_hash',
                                     'bad_as_of', 'unsupported_coverage',
                                     'staged_dataset'])
 def test_invalid_provenance_or_partition_state_fails_closed(change):
@@ -194,6 +200,8 @@ def test_invalid_provenance_or_partition_state_fails_closed(change):
                      *snapshots[1:])
     elif change == 'wrong_source_hash':
         dataset = replace(dataset, source_sha256='f' * 64)
+    elif change == 'wrong_mapping_hash':
+        dataset = replace(dataset, mapping_sha256='f' * 64)
     elif change == 'bad_as_of':
         snapshots = (replace(snapshots[2], as_of=snapshots[2].event_time +
                              timedelta(minutes=1)), *snapshots[:2], *snapshots[3:])
@@ -203,6 +211,50 @@ def test_invalid_provenance_or_partition_state_fails_closed(change):
         snapshots = (replace(snapshots[2], coverage_state='unknown'),
                      *snapshots[:2], *snapshots[3:])
     with pytest.raises(ValueError, match='version|source|as.of|coverage|provenance|complete'):
+        _protocol(dataset, snapshots, labels)
+
+
+def test_manifest_is_immutable_deterministic_and_bound_to_feature_policy():
+    dataset, snapshots, labels = _population()
+    first = _protocol(dataset, snapshots, labels)
+    second = _protocol(dataset, tuple(reversed(snapshots)), tuple(reversed(labels)))
+    assert first == second
+    assert first.membership_hash == second.membership_hash
+    assert first.protocol_hash == second.protocol_hash
+    assert first.protocol.feature_version == 'history-v1'
+    assert len(first.protocol.feature_policy_hash) == 64
+    assert first.holdout_disclosed is False
+    with pytest.raises((AttributeError, TypeError)):
+        first.partitions['train'] = first.partitions['test']
+    with pytest.raises((AttributeError, TypeError)):
+        first.partitions['train'].positives = 999
+
+
+def test_manifest_rejects_overlap_and_inconsistent_counts():
+    dataset, snapshots, labels = _population()
+    manifest = _protocol(dataset, snapshots, labels)
+    bad_count = replace(manifest.partitions['validation'], positives=21)
+    with pytest.raises(ValueError, match='split manifest partition counts'):
+        replace(manifest, partitions=MappingProxyType({
+            **manifest.partitions, 'validation': bad_count}))
+    duplicate = replace(manifest.partitions['validation'],
+                        transaction_ids=manifest.partitions['train'].transaction_ids)
+    with pytest.raises(ValueError, match='split manifest'):
+        replace(manifest, partitions=MappingProxyType({
+            **manifest.partitions, 'validation': duplicate}))
+    with pytest.raises(ValueError, match='split manifest digest'):
+        replace(manifest, membership_hash='0' * 64)
+
+
+@pytest.mark.parametrize('change', ['unknown_label_id', 'duplicate_snapshot_id'])
+def test_mismatched_event_identity_is_rejected(change):
+    dataset, snapshots, labels = _population()
+    if change == 'unknown_label_id':
+        labels = (replace(labels[0], transaction_id='other-event'), *labels[1:])
+    else:
+        snapshots = (replace(snapshots[1], transaction_id=snapshots[0].transaction_id),
+                     *snapshots[:1], *snapshots[2:])
+    with pytest.raises(ValueError, match='identity|identities'):
         _protocol(dataset, snapshots, labels)
 
 

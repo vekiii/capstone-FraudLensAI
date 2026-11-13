@@ -2,6 +2,26 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## T027 immutable temporal protocol GREEN — 2026-11-13
+
+On `model-implementations` from T026 HEAD `fe310c1a7213655b47cc2ffb22554fc39b4e2acf`,
+[T027 implementation and commands](evidence/tasks/feature-002-protocol.md#t027-green-implementation--2026-11-13)
+added a deterministic, immutable split manifest and offline label eligibility
+join for Feature 002. The T026 suite now has **25 passing** cases; focused
+history/scoring focused regressions had **78 passing** cases on the final
+rerun. Ruff and `git diff --check` passed. The full backend run had
+**594 passed, 6 failed**: existing import CLI integration tests compare the
+mapping's pinned LF-byte hash to a CRLF working copy generated under Git
+`core.autocrlf=true`. The tracked mapping is unchanged; normalizing CRLF to
+LF in memory matches HEAD exactly. No dataset import, model fit, metric or
+holdout access occurred. The unrelated uncommitted contribution-report edit
+remains preserved.
+
+One concrete next step: **T028** — verify the Python 3.14 ML dependencies and
+run the prescribed resource pilot, recording actual limits. Resolve the
+mapping checkout line endings separately before claiming a full green backend
+suite.
+
 ## T026 chronological protocol RED tests — 2026-11-13
 
 On `model-implementations` from Feature 002 HEAD `27ac7d49e3d638717c752dce225216d291bf9e87`,
