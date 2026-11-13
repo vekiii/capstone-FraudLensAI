@@ -1,5 +1,19 @@
 # Next work - FraudLens AI
 
+## Latest recovery - 2026-11-13
+
+The user's pull of feature 002 into main started a merge with `0f5ad9a` and
+conflicted in this file. Verification found **566 passed / 6 failed** on Windows;
+the same CRLF/LF test-helper issue remains. Ran `git merge --abort` successfully.
+Main is still `b9650a1`; the new feature commit remains available on
+`origin/002-data-and-risk-scoring`. No push, completed feature 002 merge or code
+fix occurred. Only this handoff and the recovery evidence were subsequently
+edited, left uncommitted.
+See [actual recovery checks](evidence/tasks/main-pull-recovery-2026-11-13.md).
+Next step remains fixing and verifying the hash expectation on the feature
+branch before another merge review. Use `git fetch origin` to obtain updates
+without merging a feature branch into whichever branch is currently active.
+
 ## Current handoff - main merge review, 2026-11-13
 
 Main incorporates verified `origin/initialization` at `f37e67a`, preserving its
