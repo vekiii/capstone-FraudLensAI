@@ -10,7 +10,7 @@ The user confirms that project work and documentation are produced collectively 
 - Import remains disabled because the CLI has no import command. Model training, activation and v2 application integration are not authorized/performed by this approval.
 - Evidence: `evidence/tasks/feature-002-source-audit.md`, `evidence/tasks/feature-002-contract-review.md`, and `evidence/tasks/feature-002-technical-resolution.json`.
 
-One concrete next step: proceed with the next authorized Feature 002 implementation tasks after T008; do not treat this approval as authorization for model training, activation, or unrelated scope.
+The T007/T008 approval changes are committed as `dab61f3`. The contribution ledger and original prompt are being published in two follow-up evidence commits; final commit IDs will be recorded there. After publication, proceed with the next authorized Feature 002 tasks (T009?T011); this approval does not authorize model training, activation, or unrelated scope.
 
 ## Current Prompt 1 technical resolution — 2026-11-13
 
