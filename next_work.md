@@ -2,6 +2,31 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## Latest IBM pretrained inference handoff — 2026-11-13
+
+The user conveyed the team's approval/verification for the IBM pretrained
+direction and authorized continuing. [The decision record](specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md)
+records this as reported team scope approval; artifact hashes, saved graph
+state, runtime/category metadata and verification commands were not supplied
+and remain independently unverified in this checkout. The original T029–T036
+training tasks remain open. Historical pending-approval notes below describe
+the state before this message, not a renewed request for team signatures.
+
+[Synthetic IBM inference tests](backend/tests/unit/test_pretrained_ibm_inference.py)
+were authored. Collection found 27 cases (exit 0); execution produced 27
+in-test missing-adapter failures (exit 1). This is an interface RED only:
+downstream vector and rejection assertions have not executed. The local uv
+cache lock failed, so checks used `.venv/Scripts/python.exe`; Ruff passed.
+[Evidence and limitations](evidence/tasks/feature-002-pretrained-model.md#ibm-inference-adapter-test-preparation--2026-11-13).
+No model, graph state, joblib, IBM dataset or holdout was loaded, and no
+production inference code was added. Existing unrelated working-tree changes
+remain preserved.
+
+One concrete next step: **Prompt 04C artifact verification** — inspect the
+pinned native model header and safely obtain a complete primitive graph-state
+representation, then reconcile the RED test assumptions before Prompt 07
+implementation.
+
 ## IBM pretrained candidate corrected — 2026-11-13
 
 On `model-implementations` from `13472f9058079687cf4ae4ce159db9286fdcb039`,

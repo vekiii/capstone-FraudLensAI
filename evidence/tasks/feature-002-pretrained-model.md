@@ -308,3 +308,52 @@ Documentation review before commit: `git diff --cached --name-status` exited
 `git diff --cached --check` exited 0; a read-only Python relative-link check
 exited 0 with 96 local links checked and none missing. No application tests
 were run for this documentation-only investigation.
+
+## IBM inference adapter test preparation — 2026-11-13
+
+The user conveyed the team's approval and verification on 2026-11-13 and
+authorized continuing work. The [decision record](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md)
+now records this approval as reported. The message did not include names,
+verification commands, native model metadata, graph-state export or hashes.
+Those technical facts remain unverified here; approval is not a substitute for
+independent artifact inspection.
+
+The pinned upstream [`aml_lgbm.py`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/4fc397afa0e22396d26153d69e46e46304411ca0/aml_lgbm.py)
+and [`infer.py`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/4fc397afa0e22396d26153d69e46e46304411ca0/infer.py)
+were statically inspected through their publisher pages. They confirm the 22
+ordered source features, `log1p` amounts, absolute paid/received difference,
+unqualified-account graph lookups, gather/scatter degree threshold 5, amount
+ratio denominator `mean + 1e-6`, three pandas categorical columns and
+`Is Laundering` as a training label. The author's unknown-account zero default
+is only meaningful with a complete verified graph map. Its graph is computed
+over the full first 80% training period, so earlier transactions can see later
+aggregate facts. Its default routing threshold is selected using test labels.
+Neither rule is adopted as a FraudLens benchmark policy.
+
+[`test_pretrained_ibm_inference.py`](../../backend/tests/unit/test_pretrained_ibm_inference.py)
+contains authored synthetic transactions, graph maps, a synthetic manifest and
+a fake predictor. `MODEL_SHA` and `GRAPH_SHA` in that file are unmistakably test
+sentinels, **not** checksums of downloaded publisher artifacts. The test matrix
+covers exact 22-slot order and numeric examples; source/time/money/category
+mapping; label and IEEE-field rejection; state/dataset/model lineage; collision
+and future-state refusal; missing graph coverage; prediction shape, range,
+identity, provenance and calibration status; and no fitting. The current source
+mapping remains `pending_team_review` on disk; this synthetic test design does
+not mark T007/T008 or the original T029–T036 complete.
+
+| Command | Exit | Observed result |
+| --- | ---: | --- |
+| `uv run --locked pytest backend/tests/unit/test_pretrained_ibm_inference.py --collect-only -q` | 1 | Local uv cache lock access denied. Environment failure, not RED evidence. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_ibm_inference.py --collect-only -q` | 0 | 27 cases collected, no collection/import failure. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_ibm_inference.py -q --tb=short` | 1 | 27 failures at the deliberate in-test missing-adapter assertion. No test reached its vector/score assertion. Pytest cache produced two nonfatal local warnings. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_ibm_inference.py -q --tb=no -p no:cacheprovider` | 1 | Final rerun: 27 failures at the same missing-adapter assertion, no cache warnings, 0.09 s. |
+| `.venv/Scripts/ruff.exe check backend/tests/unit/test_pretrained_ibm_inference.py` | 0 | All checks passed. |
+
+The execution establishes a **RED interface gap** only. The missing module is
+caught inside each test and converted to an explicit assertion, but all 27
+failures share that same missing boundary; they do **not** establish that the
+downstream feature calculations or negative cases would fail for the intended
+reasons once the adapter exists. No full IBM dataset, real model, joblib,
+training or holdout was used. Before Prompt 07 GREEN, obtain and verify the
+native schema and safe complete graph representation, then rerun each test to
+observe the substantive behavior and adjust only incorrect assumptions.
