@@ -1,0 +1,37 @@
+{
+  "contract_version": 1,
+  "source_mode": "fixture",
+  "case_id": "CASE-001",
+  "snapshot_ref": "fixture_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "dataset_version": null,
+  "observed_at": "2026-11-13T12:00:00Z",
+  "source_payload": {
+    "case_id": "CASE-001",
+    "transaction": {
+      "transaction_id": "TX-001",
+      "occurred_at": "2026-01-05T09:15:00Z",
+      "sender_account": "DEMO-BANK-A:SYN-ACCOUNT-001",
+      "receiver_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+      "amount": "1250.00",
+      "currency": "EUR"
+    },
+    "risk_assessment": {
+      "transaction_id": "TX-001",
+      "score": 0.75,
+      "source": "fixture",
+      "scorer_version": "fixture-v1",
+      "scored_at": "2026-01-05T09:15:00Z",
+      "explanation": "Illustrative authored fixture; no model inference."
+    }
+  },
+  "history": {
+    "availability": "unavailable",
+    "cutoff": null,
+    "coverage": "unavailable",
+    "start": null,
+    "lookback_days": 7,
+    "view_scope": "authored_fixture",
+    "reason": "No authored history supplied."
+  },
+  "context_revision": "6445337edc3138ae4f43f941161e491bc95b6edd4de0327372f96b0778ec352a"
+}

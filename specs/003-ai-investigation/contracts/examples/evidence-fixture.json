@@ -1,0 +1,25 @@
+{
+  "contract_version": 1,
+  "evidence_id": "ev_11111111111111111111111111111111",
+  "attempt_id": "att_22222222222222222222222222222222",
+  "context_revision": "6445337edc3138ae4f43f941161e491bc95b6edd4de0327372f96b0778ec352a",
+  "kind": "case_fact",
+  "text": "Authored fixture amount/currency observation.",
+  "facts": [
+    {
+      "path": "transaction.amount",
+      "value": "1250.00"
+    },
+    {
+      "path": "transaction.currency",
+      "value": "EUR"
+    }
+  ],
+  "passage": null,
+  "history": null,
+  "returned_count": 2,
+  "eligible_count": 2,
+  "truncated": false,
+  "content_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+  "created_at": "2026-11-13T12:00:01Z"
+}

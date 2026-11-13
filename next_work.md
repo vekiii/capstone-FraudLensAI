@@ -1,5 +1,33 @@
 # Next work - FraudLens AI
 
+## Current feature 003 plan/tasks handoff - 2026-11-13
+
+Branch `feature03`: generated [plan](specs/003-ai-investigation/plan.md),
+[research](specs/003-ai-investigation/research.md),
+[data model](specs/003-ai-investigation/data-model.md),
+[contracts](specs/003-ai-investigation/contracts/api.md),
+[evaluation protocol](specs/003-ai-investigation/evaluation.md),
+[quickstart target](specs/003-ai-investigation/quickstart.md) and
+[67 unchecked tasks](specs/003-ai-investigation/tasks.md).
+No implementation, provider/key access, corpus ingestion, runtime tests or
+human acceptance performed. Existing spec and feature 002/ML files preserved.
+Design checks passed for schemas/eight authored examples, IDs/dependencies,
+FR/SC coverage and document links/whitespace; these are not runtime evaluation.
+
+Evidence: [actual workflow/results/limits](evidence/tasks/feature-003-plan-and-tasks.md);
+[original request](prompts/development/003-plan-and-tasks-request-2026-11-13.md).
+Separate provider-access and producer-review gates do not block fixture work.
+The literal producer schema reference at `2dd815d` is a proposal/test snapshot,
+not current implementation or recorded human approval. Model ID/access remains
+unverified. No commit/push performed.
+
+**One concrete next step:** implement **Phase 1, T001-T004**, using
+`$env:SPECIFY_FEATURE_DIRECTORY = 'specs/003-ai-investigation'`, preserving
+foundation and recording actual setup/RED/GREEN evidence. Continue with
+T005-T012 after setup; do not skip from this plan straight to live evaluation.
+
+Previous specification/merge handoffs below are historical.
+
 ## Current feature 003 handoff - 2026-11-13
 
 On user-created branch `feature03`, baseline `0fbe313`, created

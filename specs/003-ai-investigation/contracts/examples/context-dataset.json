@@ -1,0 +1,91 @@
+{
+  "contract_version": 1,
+  "source_mode": "dataset",
+  "case_id": "C0123456789abcdef0123456789abcdef",
+  "snapshot_ref": "run_example_1",
+  "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "observed_at": "2026-11-13T12:00:00Z",
+  "source_payload": {
+    "contract_version": 2,
+    "snapshot_ref": "run_example_1",
+    "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "case_id": "C0123456789abcdef0123456789abcdef",
+    "transaction": {
+      "transaction_id": "D0123456789abcdef0123456789abcdef",
+      "event_time_utc": "2026-01-01T10:00:00Z",
+      "event_time_raw": "2026/01/01 10:00",
+      "time_basis": "assumed_utc_for_synthetic_benchmark",
+      "sender": {
+        "bank": "SYNTH-BANK-A",
+        "account": "001"
+      },
+      "receiver": {
+        "bank": "SYNTH-BANK-B",
+        "account": "002"
+      },
+      "paid": {
+        "amount": "1250.000",
+        "currency": "Australian Dollar"
+      },
+      "received": {
+        "amount": "1250.000",
+        "currency": "Australian Dollar"
+      },
+      "payment_format": null
+    },
+    "risk_assessment": {
+      "transaction_id": "D0123456789abcdef0123456789abcdef",
+      "run_id": "run_example_1",
+      "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "score": 0.65,
+      "score_kind": "ordinal_rule_score",
+      "score_source": "rules",
+      "scorer_version": "rules-v1",
+      "feature_version": "history-v1",
+      "event_time_utc": "2026-01-01T10:00:00Z",
+      "history_cutoff_exclusive_at": "2026-01-01T10:00:00Z",
+      "scored_at": "2026-01-02T09:00:00Z",
+      "history_coverage": {
+        "state": "full",
+        "start": "2025-12-31T10:00:00Z"
+      },
+      "explanation": {
+        "status": "available",
+        "method": "rules",
+        "explained_scale": "risk_score",
+        "feature_snapshot_digest": "sha256:example",
+        "partial": false,
+        "base_value": 0,
+        "remainder": 0,
+        "items": [
+          {
+            "feature_key": "sender_out_count_24h",
+            "observed_value": "3",
+            "unit": "transfers",
+            "direction": "increases",
+            "contribution": 0.35,
+            "rule_condition": "prior sender outgoing count >= 3"
+          },
+          {
+            "feature_key": "receiver_in_count_24h",
+            "observed_value": "3",
+            "unit": "transfers",
+            "direction": "increases",
+            "contribution": 0.3,
+            "rule_condition": "prior receiver incoming count >= 3"
+          }
+        ]
+      }
+    }
+  },
+  "history": {
+    "availability": "unavailable",
+    "cutoff": "2026-01-01T10:00:00Z",
+    "coverage": "unavailable",
+    "start": null,
+    "lookback_days": 7,
+    "view_scope": "synthetic_shared_banks",
+    "reason": "Authored contract example; real producer/history integration not executed."
+  },
+  "context_revision": "921b3732649e1f9938775907c2d096b24c037558e96c2dba1cdf4a9475ff7bb9"
+}
