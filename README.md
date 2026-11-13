@@ -1,5 +1,14 @@
 # FraudLens AI
 
+## Feature 002 local dataset import
+
+The [Feature 002 quickstart](specs/002-data-and-risk-scoring/quickstart.md)
+has the executable IBM v8 import command for macOS and PowerShell. A teammate
+with the same authorized CSV can create their own local SQLite database. The
+CSV and database stay ignored and local. Import uses separate team approval
+bound to the exact mapping, source hash and namespace; read-only `inspect`
+retains its existing behavior. Later scoring and v2 UI integration are planned.
+
 Educational AML prototype. Foundation phases 1-5 are implemented: local synthetic
 cases, strict contracts, replaceable scoring and list/detail UI. Phase 6 verifies
 coverage and delivery; independent peer reproduction and human review are pending.

@@ -3,6 +3,7 @@ import csv
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -121,6 +122,46 @@ def test_cli_interrupted_stage_retries_without_replacing_complete(tmp_path, monk
     store = store_type()(tmp_path / 'imports.sqlite')
     assert store.version_status(old) == 'complete'
     assert store.active_version() == new
+    store.close()
+
+
+@pytest.mark.parametrize('change_mode', ['in_place', 'replace', 'size_change'])
+def test_cli_changed_source_between_hash_and_parse_cannot_complete(
+        tmp_path, monkeypatch, capsys, change_mode):
+    source, original_digest = _cli_source(tmp_path)
+    cli = _synthetic_binding(monkeypatch, original_digest, source)
+    store_path = tmp_path / 'imports.sqlite'
+    assert cli.main(_cli_args(source, original_digest, store_path)) == 0
+    old_version = json.loads(capsys.readouterr().out)['dataset_version']
+
+    source.write_bytes(source.read_bytes().replace(b'Wire,1', b'Wire,0'))
+    new_digest = hashlib.sha256(source.read_bytes()).hexdigest()
+    cli = _synthetic_binding(monkeypatch, new_digest, source)
+    original_hash = cli._file_sha256
+
+    def hash_then_change(path):
+        result = original_hash(path)
+        replacement_label = b'Wire,10' if change_mode == 'size_change' else b'Wire,1'
+        changed = source.read_bytes().replace(b'Wire,0', replacement_label)
+        if change_mode != 'replace':
+            source.write_bytes(changed)
+        else:
+            replacement = tmp_path / 'replacement.csv'
+            replacement.write_bytes(changed)
+            os.replace(replacement, source)
+        return result
+
+    monkeypatch.setattr(cli, '_file_sha256', hash_then_change)
+    assert cli.main(_cli_args(source, new_digest, store_path)) == 2
+    failure = json.loads(capsys.readouterr().out)
+    assert failure == {'status': 'failed', 'error_codes': ['source_mismatch']}
+    store = store_type()(store_path)
+    assert store.active_version() == old_version
+    assert store.version_status(old_version) == 'complete'
+    new_version = cli.derive_dataset_version(
+        bytes.fromhex(new_digest), bytes.fromhex(cli._MAPPING_M),
+        bytes.fromhex(cli._load_authorization(_MAPPING)['time_policy_sha256']))
+    assert store.version_status(new_version) == 'failed'
     store.close()
 
 

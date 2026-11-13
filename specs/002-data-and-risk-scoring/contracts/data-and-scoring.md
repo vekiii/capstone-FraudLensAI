@@ -21,7 +21,7 @@ settings; no download occurs at application startup.
 | Command | Inputs | Output/side effect | Failure behavior |
 |---|---|---|---|
 | inspect | Local source path, declared release, source-data license reference | Read-only source/data card: hash, schema, dialect/encoding, types, row/label/time/currency observations and ambiguities | Invalid/inaccessible source or ambiguous parsing => nonzero; no active version changes |
-| import | Source path, reviewed mapping file/version, source namespace | Staged then completed DatasetVersion, ImportReport, canonical event facts and private labels | File/structural error => failed attempt, no active incomplete import; row-level rejection counted |
+| import | Local `--source`, `--mapping`, `--namespace`, `--expected-sha256`, `--store` | Staged then completed DatasetVersion, ImportReport, canonical event facts and private labels | File/structural or processed-byte hash/size mismatch => failed attempt, no active incomplete import; row-level rejection counted |
 | build-features | Completed dataset version, frozen feature version | Point-in-time snapshots and coverage report | Any identity/time/feature mismatch => incomplete output, no scorer publication |
 | freeze-protocol | Dataset/feature version and reviewed protocol configuration | Immutable SplitManifest/EvaluationProtocol and eligibility report | Ineligible classes/positives => explicit ineligible report; no fit or test metric |
 | evaluate | Frozen protocol ID | Training/validation selection, frozen predictions, one final test comparison/report and holdout-consumed record | Failed candidate or missing artifact => explicit incomplete report, no fabricated improvement |
@@ -29,9 +29,9 @@ settings; no download occurs at application startup.
 | activate-run | Completed run ID | One atomic active pointer update after compatibility/hash checks | Missing/incomplete/incompatible run => no pointer change |
 | reproduce | Report/protocol ID and matching local source/artifacts | Recomputed prediction/metric comparison under frozen tolerance | Missing hash/version or divergence => explicit failure and difference report |
 
-The command names are stable planning targets for the later quickstart and
-tasks. Do not expose import, fit, evaluation or activation through the
-analyst HTTP API.
+`inspect` and source-bound `import` are executable in Phase 3; the other
+command names are stable planning targets. Do not expose import, fit,
+evaluation or activation through the analyst HTTP API.
 
 ## Reviewed source mapping contract
 
@@ -88,17 +88,19 @@ The separate review record is excluded from M. A mapping-content change
 requires a new M and new review before import; changed IBM v8 CSV bytes fail
 the pinned source SHA-256 even if only a private label changed.
 
-### Team-agreed HI-Small technical policy; import disabled
+### Team-approved HI-Small technical policy; source-bound local import
 
 The current configuration is [ibm_hi_small_v1.json](../../../data/mappings/ibm_hi_small_v1.json).
-The file is still the pending inspection configuration:
+The file retains the historical pending inspection configuration:
 `pending_team_review`, `executable_mapping=false`, `import_allowed=false`;
-only read-only inspection is supported. Its historical null review fields are
-not individual approvals. The subsequent joint technical decision, source,
-date and calculated working hash live in the separate review record; the final
-diff still needs responsible owner review. The CLI has no import
-command; a future importer must require a reviewed matching M and an explicit
-import-enabled policy before activation. Neither is inferred from this document.
+the read-only `inspect` command still reports those fields. Its historical null
+review fields are not individual approvals. The later collective final-byte
+approval, source, date and exact M live in the separate review record. The local
+`import` CLI requires that approval and a matching source SHA-256, namespace,
+member, size, mapping M and time policy before staging. This source-bound
+authorization does not turn the mapping's flags into general import permission.
+The importer also verifies the hash and size of the bytes fed to the CSV parser
+before completing and activating a new DatasetVersion.
 
 Verified reference: Kaggle v8 HI-Small_Trans.csv, SHA-256
 `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`.
@@ -120,9 +122,9 @@ without claiming source UTC, clock synchronization or lifecycle semantics.
 Preserve raw time/minute ties; do not use host-local timezone. Policy hash is
 SHA-256 of canonical UTF-8 JSON (sorted keys, separators comma/colon), recorded
 in the configuration. The inspector reports the raw mapping file SHA-256;
-the normalized M used for DatasetVersion is calculated in the separate review
-record pending final confirmation. These differ for CRLF files. No import,
-identity creation, feature building or training occurs in this slice.
+the normalized M used for DatasetVersion is recorded in the separate final-byte
+review. These differ for CRLF files. Phase 3 local import is implemented;
+feature building and training remain later work.
 
 ## ScoreRequestV2 and ScorerV2
 

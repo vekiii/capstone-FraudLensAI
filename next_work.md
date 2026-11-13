@@ -2,6 +2,28 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: 002-data-and-risk-scoring; Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## Phase 3 final cleanup verified — 2026-11-13
+
+[Original request](prompts/development/002-phase-3-final-cleanup-2026-11-13.md);
+[RED/GREEN, full IBM replay and read-only evidence](evidence/tasks/feature-002-import-identity.md#phase-3-final-cleanup--2026-11-13);
+[executable quickstart](specs/002-data-and-risk-scoring/quickstart.md). Starting
+revision and confirmed remote were both `b5f75211c9a6aa5befa602f04308918df98ac106`.
+The importer now checks the SHA-256 and byte count of the exact stream parsed
+before marking a new version complete. Synthetic in-place, replacement and
+size-change regressions pass while preserving an older complete version.
+Targeted tests **85 passed**, full backend **465 passed**, Ruff and
+`git diff --check` passed. The new ignored IBM v8 SQLite import completed
+all **5,078,345** rows in **1,315.29 s**, and the same-command replay returned
+`repeated=true` in **13.41 s**. DatasetVersion, S/M/T, all counts and the
+whole-file database hash match; read-only verification found 5,078,345 unique
+D and C IDs, schema 1, `quick_check=ok` and reconciled row equations. The
+original database is unchanged. The offline contract text has a separate
+documentation-only hash record; the approved mapping bytes are unchanged.
+T015/T016 remain complete. T060 full later quickstart coverage, another
+teammate's independent reproduction and later scoring/v2 integration remain
+open. One concrete next step after this cleanup publication: start **T017**
+feature-catalog and RulePolicy freeze in a separate authorized session.
+
 ## Phase 3 T015/T016 import complete — 2026-11-13
 
 [Original request](prompts/development/002-t015-t016-complete-and-publish-2026-11-13.md); [CLI RED/GREEN and actual IBM import/replay evidence](evidence/tasks/feature-002-import-identity.md#t015-local-cli-implementation--2026-11-13). T015 source-bound local import CLI passes its 3 new integration cases and preserves inspect/Foundation v1; T016 imported all **5,078,345** declared IBM v8 records with **5,078,345 event-valid**, 0 rejected, **5,078,345 label-eligible**, 5,177 positives and 5,073,168 negatives. The identical replay returned the same `dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802` without changing the SQLite file hash. Read-only SQL found 5,078,345 distinct D and C IDs and `quick_check=ok`. Source S and reviewed mapping M stayed unchanged. The ignored database is 7,559,012,352 bytes; no real data are staged.

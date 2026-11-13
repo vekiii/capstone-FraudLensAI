@@ -1,6 +1,7 @@
 """Local source inspection and reviewed, source-bound dataset import."""
 import argparse
 import hashlib
+import io
 import json
 import re
 import sqlite3
@@ -54,6 +55,28 @@ def _file_sha256(path: Path) -> tuple[str, int]:
     return digest.hexdigest(), size
 
 
+class _MeasuredReader(io.RawIOBase):
+    """Measure the exact binary stream supplied to the CSV decoder."""
+
+    def __init__(self, stream):
+        self._stream = stream
+        self._digest = hashlib.sha256()
+        self.size = 0
+
+    def readable(self):
+        return True
+
+    def readinto(self, buffer):
+        count = self._stream.readinto(buffer)
+        if count:
+            self._digest.update(memoryview(buffer)[:count])
+            self.size += count
+        return count
+
+    def hexdigest(self):
+        return self._digest.hexdigest()
+
+
 def _import(args) -> dict:
     if _SHA256.fullmatch(args.expected_sha256) is None or not args.namespace:
         raise ValueError('invalid_arguments')
@@ -81,9 +104,13 @@ def _import(args) -> dict:
                     time_policy_sha256=binding['time_policy_sha256'])
         try:
             with args.source.open('rb') as stream:
-                counts = store.ingest_canonical_rows(version, iter_canonical_rows(
-                    stream, namespace=args.namespace, member=binding['member'],
-                    compact_collision_index=True))
+                measured = _MeasuredReader(stream)
+                with io.BufferedReader(measured) as parser_stream:
+                    counts = store.ingest_canonical_rows(version, iter_canonical_rows(
+                        parser_stream, namespace=args.namespace, member=binding['member'],
+                        compact_collision_index=True))
+                if (measured.hexdigest() != source_hash or measured.size != source_size):
+                    raise ValueError('source_mismatch')
             store.set_source_records(version, counts['source_records'])
             if not (counts['source_records'] == counts['event_valid'] + counts['event_rejected']
                     and counts['event_valid'] == counts['label_eligible'] + counts['label_ineligible']

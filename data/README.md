@@ -1,10 +1,20 @@
 # Data and Git policy
 
-Feature 002 Prompt 1: [ibm_hi_small_v1.json](mappings/ibm_hi_small_v1.json) is a small
-technical mapping prepared for versioned review, explicitly pending_team_review with import
-disabled. It adopts the hash-matched pinned Kaggle v8 reference and records an
-approved synthetic UTC+00 analysis assumption, not a source timezone fact. Only
-read-only inspection consumes it. Original CSV and the separate downloaded
+## Feature 002 local import
+
+Follow the [executable quickstart](../specs/002-data-and-risk-scoring/quickstart.md)
+to build a local SQLite database from an authorized copy of the IBM v8 CSV.
+Each teammate can create their own database from the same hash-matched CSV;
+both files remain ignored and local. The CLI checks the separate team approval
+for the exact mapping, source and namespace. `inspect` keeps its read-only
+pending-configuration behavior.
+
+Feature 002 Prompt 1 historically prepared [ibm_hi_small_v1.json](mappings/ibm_hi_small_v1.json)
+with `pending_team_review` and `import_allowed=false` flags. The later collective
+approval is recorded outside the hash-approved mapping; the local import CLI now
+consumes it for the exact IBM v8 source binding. It records an approved synthetic
+UTC+00 analysis assumption, not a source timezone fact. The read-only inspector
+still reports the historical flags. Original CSV and the separate downloaded
 reference remain ignored under data/raw/; no raw labels/rows are tracked. See
 [technical resolution](../evidence/tasks/feature-002-technical-resolution.md).
 

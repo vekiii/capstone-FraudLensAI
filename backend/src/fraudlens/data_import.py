@@ -1,7 +1,4 @@
-"""Read-only inspection plus internal reviewed-policy canonical parsing.
-
-The public CLI still exposes inspection only; real IBM import remains disabled.
-"""
+"""Read-only inspection and reviewed-policy streaming canonical parsing."""
 import csv
 import hashlib
 import io
@@ -589,7 +586,7 @@ def iter_canonical_rows(source, *, namespace: str, member: str,
 
 
 def parse_canonical_source(source, *, namespace: str, member: str) -> ParseResult:
-    """Aggregate a bounded authored fixture; T015 can stream iter_canonical_rows."""
+    """Aggregate a bounded authored fixture; large imports use iter_canonical_rows."""
     events, labels, rows = [], [], []
     try:
         for row_status, event, label in iter_canonical_rows(

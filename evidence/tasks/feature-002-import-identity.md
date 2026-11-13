@@ -164,3 +164,60 @@ The three required equations hold exactly: 5,078,345 = 5,078,345 + 0; 5,078,345 
 ### Remote reconciliation and publication preparation
 
 `git add -A` initially exited 128 because the sandbox denied `.git/index.lock`; the same authorized command with elevated Git permission exited 0. The reviewed staged list contained 33 Phase 3 code/test/contract/evidence/prompt files, no raw CSV, SQLite, journal/WAL or unrelated generated artifact; `git diff --cached --check` exited 0. `git commit -m 'feat(feature-002): complete and verify local dataset import'` exited 0 and made provisional `5ce690a`. `git rebase origin/002-data-and-risk-scoring` exited 1 at three overlapping documents (`next_work.md`, offline contract, `tasks.md`). The rebase was deliberately completed rather than overwriting the remote branch. The five final-byte-approved files were restored exactly from `5ce690a`; remote approval-publication material and contribution ledger remain in the preceding three Git commits, while the intermediate remote mapping digest is explicitly marked historical in source/contract review and the technical-resolution ledger. No individual approval was inferred. Conflict-marker search found none; five SHA-256 values matched the final-byte review; JSON validation, 462 backend tests, Ruff and staged `git diff --cached --check` passed. `GIT_EDITOR=true git rebase --continue` exited 0 and produced provisional rebased commit `c0e3900` after remote `6952f1d`. Final amended/published SHA and push verification are recorded separately after completion.
+
+## Phase 3 final cleanup — 2026-11-13
+
+[Original cleanup request](../../prompts/development/002-phase-3-final-cleanup-2026-11-13.md). Starting branch `002-data-and-risk-scoring`, clean HEAD `b5f75211c9a6aa5befa602f04308918df98ac106`; `git ls-remote origin refs/heads/002-data-and-risk-scoring` exited 0 and reported the same SHA. This verifies the preceding Phase 3 publication and push. No preexisting local edits were present. Runtime: Python 3.14.7, Ruff 0.17.4, SQLite 3.53.1.
+
+The confirmed flaw was a time-of-check/time-of-use gap: `_import` computed S from one open of the CSV, then reopened the path for parsing. A same-size private label edit from `Wire,1` to `Wire,0` could therefore complete under S for different bytes. The new binary reader hashes and counts bytes delivered to the CSV decoder while streaming. After ingestion and before `complete`/`activate`, `_import` compares this digest and size with the prechecked, approved source. A mismatch raises `source_mismatch` (CLI exit 2), marks the staged version `failed`, and leaves the earlier complete active version available. The precheck and same-version fast replay remain unchanged. The source-bound approval, mapping M, namespace, time policy, DatasetVersion formula, `inspect` and Foundation v1 are unchanged.
+
+The initial two parameterized regressions (in-place edit and atomic replacement after prehash, both same size) collected and ran against the old code: **2 failed, 10 deselected**, exit **1**, both failing at the expected `assert cli.main(...) == 2` because the CLI returned 0 and `complete` under the prechange hash. After the streaming fix, both passed; a third size-change case was added and all three passed. The test also asserts `source_mismatch`, old complete/active preservation and failed new staged status.
+
+| Command | Exit | Observed result |
+|---|---:|---|
+| `PYTHONPATH=backend/src .venv/bin/python -m pytest -q --tb=short backend/tests/integration/test_data_store.py -k changed_source` (pre-fix, two cases) | 1 | 2 intended behavior failures, 10 deselected; old CLI returned `complete`. |
+| `PYTHONPATH=backend/src .venv/bin/python -m pytest -q --tb=short backend/tests/integration/test_data_store.py -k 'changed_source or cli_'` (post-fix, two cases plus existing CLI) | 0 | 5 passed, 7 deselected. |
+| `PYTHONPATH=backend/src .venv/bin/python -m pytest -q --tb=short backend/tests/integration/test_data_store.py -k changed_source` (including size case) | 0 | 3 passed, 10 deselected. |
+| `PYTHONPATH=backend/src .venv/bin/python -m pytest -q backend/tests/integration/test_data_store.py backend/tests/unit/test_data_import.py backend/tests/unit/test_data_identity.py` | 0 | 84 passed before the third size case; final count to be recorded below. |
+| `PYTHONPATH=backend/src .venv/bin/python -m pytest -q backend/tests` | 0 | 464 passed, one preexisting Starlette/httpx warning, before the third size case; final count to be recorded below. |
+| `.venv/bin/python -m ruff check backend/src backend/tests evidence/tasks/feature-002-green-smoke.py evidence/tasks/feature-002-import-verify.py evidence/tasks/feature-002-team-review-check.py` (first attempt) | 1 | New test imports were out of order; corrected without altering assertions. |
+| Same Ruff command after correction | 0 | All checks passed. |
+| `git diff --check` | 0 | No whitespace findings at that checkpoint. |
+
+Final regression rerun after the third size-change case and documentation edit: `PYTHONPATH=backend/src .venv/bin/python -m pytest -q backend/tests/integration/test_data_store.py backend/tests/unit/test_data_import.py backend/tests/unit/test_data_identity.py` exited **0**, **85 passed in 0.13 s**. `PYTHONPATH=backend/src .venv/bin/python -m pytest -q backend/tests` exited **0**, **465 passed in 0.90 s**, with the same single Starlette/httpx warning. The Ruff command above exited **0**; `git diff --check` exited **0**. `PYTHONPATH=backend/src .venv/bin/python evidence/tasks/feature-002-team-review-check.py` exited **0**, printed the unchanged final M and synthetic identity/version vectors, and the new offline documentation SHA. `cmp -s` of the attached original request and saved prompt exited **0**.
+
+The approved mapping file is byte-for-byte unchanged: raw LF and normalized M both `a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57`. The reviewed offline contract's original SHA-256 `534de0c70a6ecbec69dd8734d6fec5830a9814da81fa508afe16a0f1dcca9918` stays in the T007/T008 historical approval record. The documentation-only update explains the executable local CLI and processed-byte check; it does not change identity, money, time, privacy, API or authorization rules. Its new raw SHA-256 is `03c1faa48b425263e3039ed64aca1f8b5793949b16f55a7b6bd7f94768a39703` (`shasum -a 256 ...`, exit 0). The other four approved mapping/data-model/API/schema files remain untouched. A local Python check of relative Markdown links in the changed README, data README, quickstart and offline contract exited 0 with no missing targets. The quickstart's executable import line matches the earlier T016 command against the original ignored database; the cleanup uses the same command with a new `--store` path to preserve that database. T060 full documentation, independent teammate reproduction, scoring and later phases remain open.
+
+### Repeated T016 on a new ignored database
+
+The original `data/processed/feature-002-ibm-v8.sqlite` was preserved. `df -h data/raw data/processed` exited **0** and showed **767 GiB** available before the run; `git check-ignore -v data/processed/feature-002-ibm-v8-cleanup.sqlite` exited **0** with `.gitignore:37:/data/processed/`. The source was **475,664,283 bytes** with S `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040` before import (`shasum -a 256`, exit 0). Both runs used this exact command from the repository root, with only a fresh `--store` path compared with the executable macOS quickstart line:
+
+```sh
+/usr/bin/time -p env PYTHONPATH=backend/src .venv/bin/python -m fraudlens.pipeline_cli import --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json --namespace kaggle:ealtman2019/ibm-transactions-for-anti-money-laundering-aml:v8 --expected-sha256 b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040 --store data/processed/feature-002-ibm-v8-cleanup.sqlite
+```
+
+| Check | First cleanup import | Same-command replay |
+|---|---|---|
+| CLI exit / status / repeated | 0 / `complete` / `false` | 0 / `complete` / `true` |
+| `/usr/bin/time -p` real | 1,315.29 s | 13.41 s |
+| `source_records` | 5,078,345 | 5,078,345 |
+| `event_valid` / `event_rejected` | 5,078,345 / 0 | 5,078,345 / 0 |
+| `label_eligible` / `label_ineligible` | 5,078,345 / 0 | 5,078,345 / 0 |
+| `positives` / `negatives` | 5,177 / 5,073,168 | 5,177 / 5,073,168 |
+| DatasetVersion | `dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802` | identical to first and previous T016 |
+| S / normalized M / T | `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040` / `a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57` / `67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781` | identical |
+| SQLite schema | 1 | 1 |
+| SQLite size | 7,559,012,352 bytes (about 7.56 GB) | unchanged |
+| Whole-file SHA-256 of **new** SQLite | `a7a9495557f5462a8d08d0e31f7d0a81e54c3df10e07ddb2617b4194d7bea8cf` | identical |
+
+`shasum -a 256 data/processed/feature-002-ibm-v8-cleanup.sqlite data/raw/HI-Small_Trans.csv` exited **0** after each run: both new-database hashes match the table and source S stayed unchanged. The three equations hold: 5,078,345 = 5,078,345 + 0; 5,078,345 = 5,078,345 + 0; 5,078,345 = 5,177 + 5,073,168. The entire-source byte check in the fixed parser completed before the first version was marked complete.
+
+The read-only check ran:
+
+```sh
+/usr/bin/time -p .venv/bin/python evidence/tasks/feature-002-import-verify.py --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json --store data/processed/feature-002-ibm-v8-cleanup.sqlite
+```
+
+It exited **0** in **114.14 s** with `reconciled=true`, active `complete`, 5,078,345 distinct D IDs, 5,078,345 distinct C IDs, 5,078,345 private label records, source/stored S and mapping/stored M equal, `PRAGMA user_version=1`, and `PRAGMA quick_check=ok`. No extra identities or duplicate rows were found. The database hash comparison is only between the first and replay runs against this new path; the prior database is retained separately. A read-only `shasum -a 256 data/processed/feature-002-ibm-v8.sqlite` plus `stat` exited **0** and confirmed the old path still has its previously recorded `a7a9495557f5462a8d08d0e31f7d0a81e54c3df10e07ddb2617b4194d7bea8cf` and 7,559,012,352 bytes.
+
+Final documentation check inspected relative Markdown targets in seven changed documents and found **zero missing targets**, exit **0**. It also found the exact earlier T016 macOS import command in the quickstart, exit **0**; this cleanup's command differs only by the new ignored `--store` path. The final targeted rerun exited **0**, **85 passed in 0.10 s**; Ruff exited **0**, and `git diff --check` exited **0**. `git ls-remote origin refs/heads/002-data-and-risk-scoring` exited **0** immediately before staging and still reported the preceding published `b5f75211c9a6aa5befa602f04308918df98ac106`. Explicit `git add --` staged only the 11 cleanup code/test/documentation/prompt/evidence files, exit **0**; `git diff --cached --name-only`, `git diff --cached --check` and `git status --short` all exited **0**, with no CSV, SQLite, journal/WAL, generated or unrelated paths staged. The evidence file is restaged after this entry and the final cached whitespace check is repeated before commit.

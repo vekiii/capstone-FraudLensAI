@@ -1,8 +1,46 @@
 # Feature 002 validation quickstart
 
-Current Prompt 1 technical state, 2026-11-13: [verified source and amendments](../../evidence/tasks/feature-002-technical-resolution.md).
-Pinned v8 CSV matches the original; configuration is technically complete but
-pending team review and import-disabled. Run only read-only inspection:
+Phase 3 local import is available for the exact team-approved IBM v8 source and
+mapping. [T016 evidence](../../evidence/tasks/feature-002-import-identity.md#t016-declared-ibm-v8-import-and-exact-replay--2026-11-13)
+records the first import and immutable replay. Run these commands from the
+repository root. The CSV and generated SQLite database stay local and ignored.
+
+On macOS, prepare the locked environment and local output directory:
+
+```sh
+UV_CACHE_DIR="$PWD/.cache/uv" uv sync --locked --group dev
+mkdir -p data/processed
+PYTHONPATH=backend/src .venv/bin/python -m fraudlens.pipeline_cli import --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json --namespace kaggle:ealtman2019/ibm-transactions-for-anti-money-laundering-aml:v8 --expected-sha256 b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040 --store data/processed/feature-002-ibm-v8.sqlite
+```
+
+On PowerShell, prepare the locked environment and run the equivalent command:
+
+```powershell
+$env:SPECIFY_FEATURE_DIRECTORY = 'specs/002-data-and-risk-scoring'
+$env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'
+uv sync --locked --group dev
+New-Item -ItemType Directory -Force data/processed | Out-Null
+$env:PYTHONPATH = 'backend/src'
+.\.venv\Scripts\python.exe -m fraudlens.pipeline_cli import --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json --namespace kaggle:ealtman2019/ibm-transactions-for-anti-money-laundering-aml:v8 --expected-sha256 b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040 --store data/processed/feature-002-ibm-v8.sqlite
+```
+
+The first successful result has `status=complete`, `repeated=false`,
+`source_records=5078345` and DatasetVersion
+`dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802`.
+Repeat the same import command against the same database: it returns
+`repeated=true` and leaves the complete SQLite bytes unchanged. The measured
+database was about 7.56 GB (7,559,012,352 bytes); check disk space first.
+Read-only verification of that database:
+
+```sh
+.venv/bin/python evidence/tasks/feature-002-import-verify.py --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json --store data/processed/feature-002-ibm-v8.sqlite
+```
+
+In PowerShell, replace `.venv/bin/python` with `.\.venv\Scripts\python.exe`.
+The verifier checks the row equations, distinct D/C identities, source and
+mapping hashes, SQLite schema version and `quick_check=ok`. The CLI import is
+authorized only for the separately reviewed mapping, namespace and source hash;
+it does not turn on general import. Read-only inspection remains available:
 
 ```powershell
 $env:SPECIFY_FEATURE_DIRECTORY = 'specs/002-data-and-risk-scoring'
@@ -10,25 +48,18 @@ $env:PYTHONPATH = 'backend/src'
 .\.venv\Scripts\python.exe -m fraudlens.pipeline_cli inspect --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json
 ```
 
-Expected current exit is 2 with pending_team_review and complete observations,
-explicit assumed UTC+00 basis, unknown source timezone and import_allowed=false.
+The inspect command still exits 2 with `pending_team_review`, complete
+observations and `import_allowed=false` from the historical mapping flags.
 Generic inspection without the bound mapping still rejects duplicate headers.
-All later pipeline commands, typed v2 delivery/decoding and consumer integration
-remain unimplemented/gated. Examples below for those commands remain future work.
-
-Status: **inspection available; later validation planned**. Only the local
-`inspect` CLI and source-independent inspection tests are implemented. Mapping,
-v2 runtime contracts and all later commands remain gated. Commands marked planned
-below must not be reported as executed results. Use [plan.md](plan.md), [data-model.md](data-model.md) and
-[contracts](contracts/api.md) for expected behavior.
+Feature building, evaluation, scoring, typed v2 delivery/decoding and consumer
+integration remain planned. Use [plan.md](plan.md), [data-model.md](data-model.md)
+and [contracts](contracts/api.md) for their expected behavior.
 
 The initial 2026-11-13 [source audit](../../evidence/tasks/feature-002-source-audit.md)
 contains the exact executable inspection command and results for the authorized
 local file, including positional observation roles. It returns exit 2 for the
-observed duplicate `Account` headers and unknown release. This is a complete
-read-only scan with unresolved mapping/provenance, not an import. No source
-data is tracked. [Contract review](../../evidence/tasks/feature-002-contract-review.md)
-records remaining producer/consumer decisions.
+observed duplicate `Account` headers and unknown release. That historical
+read-only scan predates the approved source binding; no source data is tracked.
 
 ## Preconditions
 
@@ -37,29 +68,25 @@ records remaining producer/consumer decisions.
 
        $env:SPECIFY_FEATURE_DIRECTORY = 'specs/002-data-and-risk-scoring'
 
-2. Use the approved Python 3.14.x and Node 24 environment. Install from
-   generated lockfiles after the implementation adds and resolves the
-   small ML dependency set. The current Foundation has uv.lock and
-   frontend/package-lock.json; the Feature 002 ML stack is not installed
-   or validated by this planning document.
+2. Use Python 3.14.x and Node 24 for the existing locked environment. The
+   later Feature 002 ML stack is not installed or validated by this import.
 3. Acquire the authorized IBM AML HI-Small release locally under ignored
    data/raw/ through the team's permitted process. Record source/release,
    license reference and SHA-256. Do not commit the file or credentials.
    This local session verified/adopted a hash-matched v8 reference; original
-   acquisition history remains unknown and mapping team review remains pending.
+   acquisition history remains unknown; the final mapping review is recorded.
    Other checkouts require their own authorized file and hash verification.
    Before generating local files, verify the existing ignore rules for
    data/raw/, data/processed/, data/artifacts/ and evals/results/.
-4. Confirm the reviewed source mapping, feature catalog, rule policy,
-   protocol and v2 contract have been frozen and affected consumers
-   reviewed them. If the authoritative Phase 2 assignment becomes
-   available, trace it before claiming compliance.
+4. The source mapping and v2 contracts have collective final-byte approval.
+   Feature catalog, rule policy and protocol are later gates. If the
+   authoritative Phase 2 assignment becomes available, trace it before
+   claiming compliance.
 
 ## Foundation regression available now
 
 From the repository root, the existing fixture path can be checked
-without IBM data. These commands are examples of checks to run when
-validating a later implementation; **they were not run for this plan**.
+without IBM data. Record each new run's actual result separately.
 
     uv sync --locked --group dev
     uv run --locked pytest backend/tests
@@ -75,12 +102,12 @@ scorer replacement tests and frontend loading/error/empty/retry behavior
 remain valid. Record actual counts, exits, runtime and any failures in
 evidence/tasks/; do not copy historical counts as fresh results.
 
-## Planned local pipeline commands
+## Planned later local pipeline commands
 
 The following interface is specified in
-[data-and-scoring.md](contracts/data-and-scoring.md). The module and
-subcommands other than **inspect** do **not** exist yet. From the repository
-root, make backend/src importable:
+[data-and-scoring.md](contracts/data-and-scoring.md). `inspect` and `import`
+exist now; the remaining subcommands are planned. From the repository root,
+make backend/src importable:
 
     $env:PYTHONPATH = 'backend/src'
     $env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'
@@ -88,8 +115,6 @@ root, make backend/src importable:
 The exact source path, release ID, license reference, mapping and protocol
 must come from the actual reviewed source audit. Examples use placeholders:
 
-    uv run --locked python -m fraudlens.pipeline_cli inspect --source data/raw/HI-Small_Trans.csv --release <reviewed-release> --license-ref <reviewed-reference>
-    uv run --locked python -m fraudlens.pipeline_cli import --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json --namespace <reviewed-namespace>
     uv run --locked python -m fraudlens.pipeline_cli build-features --dataset-version <completed-version> --feature-version history-v1
     uv run --locked python -m fraudlens.pipeline_cli freeze-protocol --dataset-version <completed-version> --feature-version history-v1 --config <reviewed-protocol-file>
     uv run --locked python -m fraudlens.pipeline_cli evaluate --protocol-id <frozen-protocol>
