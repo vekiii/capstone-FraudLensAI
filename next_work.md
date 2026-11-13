@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## Compatible artifact freeze gate - 2026-11-13
+
+The [artifact-freeze prerequisite check](evidence/tasks/feature-002-inference-only-scope.md#artifact-freeze-prerequisite-check--2026-11-13) stopped before manifest creation. Kluey, Daemons-Q and FraudSentinel remain blocked on `history-v1` feature/preprocessing or time/identity semantics; the inference-only checklist has no recorded accepted deviations or specific approved candidate. Previously verified candidate weight hashes do not make any model compatible. No new binary was downloaded, no joblib was loaded, and no manifest, fit, inference or evaluation was produced. Original T029–T036 remain open; existing untracked protocol drafts remain untouched.
+
+One concrete next action: audit a different pretrained IBM laundering candidate for complete, immutable preprocessing and bank-qualified point-in-time features, then record the team's candidate-specific scope decision before any manifest freeze.
+
 ## Proposed inference-only Phase 5 scope - 2026-11-13
 
 The [P5I-01–P5I-06 replacement checklist](specs/002-data-and-risk-scoring/proposals/pretrained-inference-only-checklist.md) is a **proposal**, mapped task-by-task to original T029–T036; [scope evidence](evidence/tasks/feature-002-inference-only-scope.md) distinguishes the user's reported team approval of the pretrained **direction** from the unrecorded reviewer names, accepted task deviations, candidate selection and evaluation policy. T029–T036 remain open; no waiver or implementation approval for this checklist is recorded. Kluey, Daemons-Q and FraudSentinel remain blocked for `history-v1` inference. No model code, fit, prediction, metric or holdout access occurred; pre-existing untracked protocol drafts remain untouched.

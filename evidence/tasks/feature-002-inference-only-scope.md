@@ -26,3 +26,19 @@ The constitution's team-controlled scope, specification-before-implementation, i
 This was documentation work only. No model file, dataset, source mapping, application code, task checkbox, holdout or private label was modified or accessed for scoring. `git diff --check` exited **0** with no whitespace errors (only a nonfatal LF/CRLF working-copy notice for `next_work.md`). `rg -n '^\- \[ \] T0(29|30|31|32|33|34|35|36)' specs/002-data-and-risk-scoring/tasks.md` exited **0** and found all eight original tasks still unchecked. No test suite was run; no GREEN claim is made.
 
 **Next action:** identify and audit a pretrained IBM laundering model with immutable weights, full preprocessing state, bank-qualified identity, strict point-in-time `history-v1` semantics and documented training-row exposure; then present that candidate and this exact checklist for a recorded team scope decision.
+
+## Artifact-freeze prerequisite check — 2026-11-13
+
+Requested manifest freeze **stopped before artifact selection** on `model-implementations` at `49712efd4437ba4e601c6e989952cb4fbf3d9175`. The user's condition was to proceed only with a compatible model and recorded scope approval. Neither condition is met. The [replacement-model audit](feature-002-replacement-model.md) independently verified native Kluey JSON and Daemons-Q ONNX weight bytes at pinned revisions, but classifies both **BLOCKED** against `history-v1`; the [FraudSentinel graph review](feature-002-pretrained-model.md#fraudsentinel-graph-compatibility-decision---2026-11-13) also blocks that earlier candidate. Native/ONNX format alone does not supply the missing fitted preprocessing, bank/time parity or training-exposure proof. Their hashes remain candidate-audit evidence, **not** an approved manifest. No candidate was selected or re-downloaded for this gate check.
+
+The [P5I checklist](../../specs/002-data-and-risk-scoring/proposals/pretrained-inference-only-checklist.md) is still proposed. The [decision record](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md) records team approval of the pretrained **direction** through the user but no accepted replacement-task deviations, named reviewer or approval date for a specific model/manifest. All eight original T029–T036 markers remain open. Thus there is no honest source/revision, preprocessing hash, complete feature-state identity, supported runtime, safe conversion method or training-population/overlap statement that could be frozen as a *compatible* artifact.
+
+| Check | Exit | Result |
+| --- | ---: | --- |
+| `git status --short --branch`; `git rev-parse HEAD` | 0 each | Correct branch and HEAD above; only pre-existing untracked `evals/` and two protocol scripts before this handoff. |
+| Read candidate audit, P5I checklist, decision and handoff | 0 | Three candidates blocked; no approved candidate-specific scope or safe preprocessing. |
+| `rg --files specs/002-data-and-risk-scoring evidence/tasks | rg '(manifest|pretrained.*(approval|decision)|replacement-model)'` | 0 | Decision/audit files only; no approved pretrained manifest found in these tracked planning/evidence locations. |
+| `rg -n '^\- \[ \] T0(29|30|31|32|33|34|35|36)' specs/002-data-and-risk-scoring/tasks.md | Measure-Object -Line` | 0 | Eight original unchecked tasks. |
+| `git diff --check` | 0 | No whitespace errors; only nonfatal working-copy LF/CRLF notices. |
+
+No versioned manifest was created, no artifact was loaded/deserialized, no binary was downloaded into the app, and no model fit, inference, label inspection or evaluation ran. Do not use `chore(ml): freeze compatible pretrained artifact` for this blocked state. **Next action:** find a candidate whose full feature/preprocessing semantics and training exposure can pass P5I-01, then record the team's acceptance of the specific scope deviations before freezing P5I-02.
