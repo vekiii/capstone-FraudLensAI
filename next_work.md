@@ -2,6 +2,29 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## Gated pretrained inference architecture proposed — 2026-11-13
+
+On `model-implementations` from `87b69806d02e1f51902b00172a485490fcc645ba`, the
+[architecture proposal](specs/002-data-and-risk-scoring/proposals/pretrained-inference-architecture.md)
+defines a local-only, optional IEEE-CIS inference boundary, a versioned artifact
+manifest, strict feature/preprocessing and identity validation, typed failure
+outcomes, label separation, and score semantics. It preserves Foundation v1
+fixture and Phase 4 rules behavior. The [artifact evidence](evidence/tasks/feature-002-pretrained-model.md)
+rules out direct IBM HI-Small `history-v1` inference with the investigated
+models; ApexFi's native LightGBM is a conditional IEEE-only candidate. Mandatory
+safe preprocessing parity, authentic complete inputs, rights/provenance and
+team scope approval remain unresolved. This is a proposal, not implementation
+authorization. T026–T028 remain complete; T029–T036 and later IBM benchmark
+acceptance remain open. No model download, load, inference, training, API/UI
+change, or holdout access occurred in this architecture task. Existing
+uncommitted T029 drafts and the unrelated evidence edit are preserved.
+
+One concrete next step: **PML-001 team decision and prerequisites review** —
+record actual approval or rejection of the IEEE-only scope and resolve model/
+dataset rights, training provenance, authentic 446-feature IEEE examples, and
+safe fitted-preprocessing parity. Amend the approved contracts and tasks only
+after that decision; no model implementation before the gate is met.
+
 ## Pretrained artifact compatibility assessed — 2026-11-13
 
 On `model-implementations` from `b8643a42b7a1bed8f5b9199ddb31826c34d3591e`,
