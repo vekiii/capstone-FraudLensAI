@@ -1,4 +1,35 @@
 # Next work - FraudLens AI
+## Final IBM pretrained Phase 5 review — 2026-11-13
+
+On `model-implementations`, the [final review](evidence/tasks/feature-002-pretrained-final-review.md)
+confirmed the original IBM CSV hash and unchanged mapping content, the
+pinned FraudSentinel IBM AML model's native 22-feature header and local
+artifact hashes. The model card declares Apache-2.0, with separate source
+data terms. A Windows CRLF checkout defect changed the mapping's byte hash;
+separate fix `07cce92` pins its LF checkout without changing the Git
+mapping content. Backend regressions then passed **600/600** (exit 0);
+Ruff and Git whitespace checks passed. The two pretrained RED suites
+remain at **30 failed/3 passed** (loader) and **32 failed/1 passed**
+(inference), each exit 1 at its missing production interface.
+
+**Implemented:** Phase 5 temporal evaluation protocol and resource pilot,
+pretrained source/architecture reviews, synthetic RED tests, and the mapping
+checkout fix. **Executed:** file hash and native-header checks, safe
+read-only pickle opcode scan, Git tracked-path/secret-marker scan, backend
+regressions and lint. **Blocked:** real manifest, safe graph state with
+bank/account and exact cutoff provenance, approved import mapping/runtime,
+loader and scorer implementation. **Independent evaluation:** none;
+zero real IBM transactions were scored, and source overlap with the
+publisher's training population cannot be excluded. T026–T028 remain
+complete; original T029–T036 remain open. User-reported team scope approval
+is recorded; technical and named human acceptance are not invented.
+Earlier unrelated worktree changes remain preserved. No Phase 6/7 work,
+push or merge occurred.
+
+One concrete next action: **resolve the verified graph-state and source
+mapping gate, then complete Prompt 05 loader GREEN** before attempting
+transaction inference or performance evaluation.
+
 ## Prompt 08 pretrained inference verification gate — 2026-11-13
 
 At `92bdd79` on `model-implementations`, the three ignored publisher files
