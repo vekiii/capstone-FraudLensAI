@@ -15,3 +15,4 @@ direction separately from the original training-based T029–T036 tasks.
 
 The historical T026–T028 completion and open T029–T036 markers remain unchanged.
 - [ ] Implement Prompt 07 transaction inference only after loader GREEN, approved source mapping, safe graph-state provenance, native runtime and the Prompt 06 contract checks. The 2026-11-13 gate check is recorded in pretrained-model evidence.
+- [ ] Verify Prompt 08 real IBM inference only after a real approved manifest, compatible graph state and eligible label-free smoke population exist; do not claim independent performance without exposure proof and an approved protocol. The gate audit is in `evidence/tasks/feature-002-pretrained-evaluation.md`.

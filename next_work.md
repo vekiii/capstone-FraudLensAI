@@ -1,4 +1,28 @@
 # Next work - FraudLens AI
+## Prompt 08 pretrained inference verification gate — 2026-11-13
+
+At `92bdd79` on `model-implementations`, the three ignored publisher files
+rehashed to the recorded values, and 38 Foundation fixture/rules boundary
+tests passed. No approved pretrained manifest, loader, adapter, accepted
+graph state or LightGBM runtime exists. The IBM source mapping still blocks
+import. **Zero source records were selected or scored**; no prediction,
+record-level rejection count or performance metric was produced. The
+[evaluation gate audit](evidence/tasks/feature-002-pretrained-evaluation.md)
+compares the publisher's 80/20 training split and test-selected threshold
+with the local untracked 70/15/15 protocol metadata. Overlap is plausible
+and cannot be excluded; the sealed holdout was not accessed.
+
+The requested `test(ml): verify IBM pretrained inference without retraining`
+commit would imply a successful inference verification and is not justified.
+Original T029–T036 and pretrained loader/inference checklist items remain
+open. Existing unrelated edits remain preserved.
+
+One concrete next step: **complete Prompt 05 and Prompt 07 technical gates** —
+verify safe graph identity/cutoff provenance, approve the actual manifest
+and runtime, make loader and adapter tests GREEN, then select a small
+label-free eligible IBM smoke population. Prompt 09 follows only after
+truthful inference verification.
+
 ## Prompt 07 transaction inference gate — 2026-11-13
 
 On `model-implementations` at `f426cec`, the prerequisite audit found the
