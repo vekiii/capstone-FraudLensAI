@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## Loader request gate check - 2026-11-13
+
+The existing pretrained-loader suite collected 33 synthetic tests with a writable pytest temp directory: 3 passed and 30 failed at the intentionally missing loader interface (exit 1). The initial `uv` run and default-temp pytest run failed for local permission reasons and are not RED evidence. [Execution details](evidence/tasks/feature-002-pretrained-model.md#loader-green-request-gate-check---2026-11-13). The FraudSentinel candidate remains **INCOMPATIBLE** under Prompt 02; no approved compatible manifest or faithful graph state exists. No loader was implemented, no GREEN/regression/Ruff result is claimed, and the existing untracked T029 drafts were preserved.
+
+One concrete next action: investigate a different pretrained IBM artifact with compatible bank-qualified, point-in-time feature semantics before freezing a manifest or implementing a loader.
+
 ## FraudSentinel IBM graph compatibility decision - 2026-11-13
 
 The [feature-by-feature review](evidence/tasks/feature-002-pretrained-model.md#fraudsentinel-graph-compatibility-decision---2026-11-13) classifies the selected FraudSentinel AML LightGBM as **INCOMPATIBLE with current IBM-backed FraudLens `history-v1` scoring**. Its pinned source builds account-string graph maps over the entire first 80% of an unpinned Hugging Face mirror, while FraudLens requires bank-qualified identity and strict earlier 24-hour history. A label-free scan of our approved CSV found eight account strings associated with multiple banks already before the conditional 80% boundary. The local boundary minute has 318 records straddling the 80/20 row cut; publisher row membership and exact cutoff were not saved. The upstream sender paid-amount mean also combines currencies: 8,265 local pre-boundary sender keys have multiple paid currencies. Replacing those graph values with our 24-hour or currency-specific features would change what the pretrained model learned to consume.

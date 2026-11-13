@@ -1,5 +1,17 @@
 # Feature 002 pretrained artifact investigation
 
+## Loader GREEN request gate check - 2026-11-13
+
+The requested loader implementation remains blocked by the [Prompt 02 graph review](#fraudsentinel-graph-compatibility-decision---2026-11-13): this FraudSentinel model is **INCOMPATIBLE** with approved IBM-backed `history-v1` scoring. The user-reported team approval covers the pretrained direction, but no compatible, approved artifact manifest or faithful graph state exists. The existing RED tests use authored synthetic model and graph metadata; passing them would not establish that the publisher artifact is suitable for application loading. No loader or model code was changed, and no joblib was loaded.
+
+| Check | Exit | Observed |
+| --- | ---: | --- |
+| `uv run --locked pytest backend/tests/unit/test_pretrained_loader.py -q` | 1 | `uv` could not open its user-cache lock (`Access is denied`); no tests ran. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py -q` | 1 | 33 setup errors because pytest's default user temp directory was inaccessible; not RED evidence. |
+| `$env:TMP=(Join-Path (Resolve-Path .venv).Path 'tmp'); $env:TEMP=$env:TMP; .venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py -q --tb=line --basetemp .venv/pytest-pretrained -p no:cacheprovider` | 1 | 33 collected: 3 passed, 30 intended failures at the missing `fraudlens.pretrained` interface; no collection/import setup error. |
+
+Targeted GREEN, backend regressions and Ruff were not run because the incompatible candidate fails the prerequisite gate; none is claimed as passing. Next action: identify and review a different pretrained IBM artifact with compatible source, identity and point-in-time feature semantics, then approve its manifest before implementing a loader.
+
 ## FraudSentinel graph compatibility decision - 2026-11-13
 
 **Decision: INCOMPATIBLE with the currently approved IBM-backed FraudLens `history-v1` scoring contract. Stop integration of this candidate.** The model target is IBM `Is Laundering`, but target agreement does not make its graph inputs faithful to our bank-qualified, prior-event feature policy. The exact publisher graph state and train-row membership also remain **unverified**. No joblib deserialization, model inference, training or dataset modification occurred in this review.
