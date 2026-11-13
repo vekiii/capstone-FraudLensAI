@@ -1,5 +1,131 @@
 # Feature 002 pretrained artifact investigation
 
+## IBM AML LightGBM candidate correction — 2026-11-13
+
+**Status:** Primary candidate for review, not an approved production model. This corrects the earlier ApexFi IEEE-only direction while retaining IBM HI-Small as the project dataset. See the [pending source decision](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md). The historical ApexFi investigation below remains accurate for that earlier candidate.
+
+### Local state and Prompt 04
+
+Branch `model-implementations`, starting HEAD `13472f9058079687cf4ae4ce159db9286fdcb039`. Recent commits: `13472f9` architecture proposal, `87b6980` ApexFi review, `b8643a4` pretrained branch proposal, `d606fb7` resource pilot, `a2857cd` temporal protocol, `fe310c1` protocol RED tests. Starting worktree had uncommitted `next_work.md`, this evidence, and `project-evidence-plan-2026-11-12.md`, plus untracked `evals/` and two protocol scripts. Those were not discarded. `backend/tests/unit/test_pretrained_loader.py` is absent; no Prompt 04 loader RED implementation/tests or RED execution exists despite the prompt's characterization. The generic desired assertions remain valuable but are not yet test code. No training-task checkbox was changed.
+
+### Pinned upstream files and provenance
+
+`git ls-remote https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers HEAD` exited 0 and returned immutable revision `4fc397afa0e22396d26153d69e46e46304411ca0`. The upstream [file tree](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/tree/main) at that observed revision lists all **five** requested files (the request calls them four):
+
+| File | Observed availability and role |
+| --- | --- |
+| [`aml_lgbm_model.txt`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/main/aml_lgbm_model.txt) | Listed as a downloadable 9.28 MB native LightGBM text model. Actual model bytes, SHA-256, native header/version and exact encoded feature order were **not** independently verified in this documentation review. |
+| [`aml_lgbm_preproc.joblib`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/main/aml_lgbm_preproc.joblib) | Listed as a downloadable 33.1 MB Xet object. Publisher page gives Xet hash `2aa91910bec32027f1b10c4de091df544e13b28295d5869c12182ca657d191e0` and SHA-256 `189ab48262821327abfdd38c04923608954e7869ca59801ef3c1291698236a76`; neither was independently recalculated. Upstream code writes `graph`, `features` and `cat_cols` into it. Never deserialize merely to inspect. |
+| [`aml_lgbm_metrics.json`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/main/aml_lgbm_metrics.json) | Readable 1.92 kB metadata: `domain=aml`, `n_features=22`, 4,062,676 train / 1,015,669 test rows, best iteration 671, PR-AUC 0.02295 and ROC-AUC 0.82191 as **author reports**, not FraudLens results. |
+| [`aml_lgbm.py`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/main/aml_lgbm.py) | Readable 7.32 kB training and feature-construction reference, statically inspected and never executed. |
+| [`infer.py`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/main/infer.py) | Readable 5.31 kB reference. Its AMLScorer calls `joblib.load` and reproduces feature construction with account-key lookups and zero defaults; it was not executed or adopted. |
+
+The [model card](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers) declares Apache-2.0 and associates the AML LightGBM with IBM HI-Small, not IEEE-CIS. The source `load_dataset("eexzzm/IBM-Transactions-for-Anti-Money-Laundering-HI-Small-Trans")` trains with `Is Laundering` labels. The tree displayed no standalone LICENSE file; actual reuse/attribution and the source dataset's separate terms need review. FraudLens's local Kaggle IBM release is documented as CDLA-Sharing-1.0, but the author's Hugging Face mirror is not byte-verified against it. Local `pyproject.toml` requires Python `>=3.14,<3.15` and does not declare LightGBM or pandas; no compatible locked runtime was verified or installed. The historical model-card metrics and threshold are not independent FraudLens validation.
+
+### Exact source feature recipe and mismatch
+
+Upstream `FEATURES` has **22 ordered slots**: `hour`, `dow`, `log_paid`, `log_recv`, `amt_diff`, `ccy_mismatch`, `self_loop`, `is_round`, `same_bank`, `snd_out_deg`, `snd_in_deg`, `snd_out_cnt`, `snd_in_cnt`, `snd_out_amt_mean`, `rcv_out_deg`, `rcv_in_deg`, `rcv_in_cnt`, `gather_scatter`, `amt_to_snd_mean`, `Receiving Currency`, `Payment Currency`, `Payment Format`. The final three are pandas categorical columns. The source-level order is verified from `aml_lgbm.py`; saved native booster header and category-code agreement with the joblib remain unverified.
+
+| Input group | IBM source / FraudLens comparison |
+| --- | --- |
+| Time and amounts | IBM `Timestamp`, `Amount Paid`, `Amount Received`, currencies and payment format supply the raw facts for hour/day, log amounts, absolute difference, currency mismatch and round amount. FraudLens retains exact Decimal and an explicit time-basis policy; upstream converts to floats, parses naive timestamp text, and silently substitutes hour/day 0 for malformed time. Those conversions/defaults need review, not automatic reuse. |
+| Bank and self-transfer | `same_bank` compares `From Bank`/`To Bank`; `self_loop` compares unqualified `Account` and `Account.1`. FraudLens identifies an account by bank **and** account string. Equal raw account strings at different banks would be a false self-loop under upstream semantics. |
+| Graph state | `build_graph_feats(tr)` groups unqualified sender/receiver account strings over the **entire first 80%** chronological train partition to compute distinct counterparties, in/out counts, paid mean and sum. It saves tables in joblib; the sum table is saved but not one of the 22 features. `featurize` obtains sender/receiver degrees/counts/mean, `gather_scatter`, and amount-to-sender-mean. Unknown keys become zero. FraudLens `history-v1` instead uses bank-qualified identities, strict earlier events, a 24-hour window, explicit warmup/coverage and different units. It cannot be substituted for these learned inputs. |
+
+The upstream graph dictionary is built on the full train partition **before** its last 10% is used as early-stopping validation. Thus its per-row aggregates can include future transactions even within training and validation. Its test features use training-period tables, not evolving point-in-time history. This is not the approved `history-v1` policy even though the author calls the graph step train-only. The source comment mentions suspicious-history priors, but the returned graph dictionary contains no label-derived prior; do not infer extra features from that comment. A faithful adapter would require preserved training-period graph state and categorical mappings; recomputing it from the current IBM dataset could change the learned feature semantics or expose held-out rows. Neither joblib loading nor a safe primitive-state extraction has been approved.
+
+### Evaluation and security limits
+
+Upstream uses an 80/20 chronological row split and a tail slice of the 80% for early stopping. It computes `precision_recall_curve(yte, p)` and chooses routing thresholds for target recall **from test labels**, then reports test precision/recall and makes 80%-recall the default. The `1.768963856800349e-116` published threshold is therefore selected on test outcomes, cannot be called independently validated, and must not be carried into FraudLens's frozen validation-only threshold policy. The extreme value also does not establish empirical calibration.
+
+Our audited IBM file has **5,078,345** records, exactly the author's 4,062,676 + 1,015,669 total, and the author references an IBM HI-Small mirror. This strongly suggests shared source rows; exact file bytes, row identity and training exposure have **not** been proven. A FraudLens test on the same dataset cannot be advertised as independent unseen-model evaluation without an exposure audit. Do not inspect local holdout labels or reuse the author's test threshold to select a scorer.
+
+`joblib.load` may execute arbitrary Python object reconstruction. The publisher SHA-256 only establishes file identity if checked; it does not make execution safe. No joblib, model parser, third-party script, training, inference, dataset download or full IBM scan was run here. Kluey's [IBM XGBoost repository](https://github.com/Kluey/AML-Transaction-Detection) remains a separate alternative; its README describes rolling history and a validation-selected threshold, but its actual bundle bytes, schema and preprocessing compatibility have not been audited for FraudLens, so no second switch is authorized.
+
+**Approval state:** the user's candidate-switch instruction authorizes this review, not a scope exception. Original T026–T028 remain complete, T029–T036 open. The [decision proposal](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md) requires the team's actual decision on feature/identity/history semantics, safe preprocessing, license, evaluation claims and replacement tasks before production implementation.
+
+**Next action — Prompt 04C:** finish artifact/state/provenance and row-exposure review, record the team decision, approve an IBM-specific manifest and inference-only checklist, then revise/preserve generic loader RED tests. The earlier Prompt 04 test module is absent, so there is nothing to run GREEN yet.
+
+Documentation and Git hygiene: `git diff --check` exited 0 (only a local LF/CRLF warning); a relative Markdown-link check exited 0 with 138 links checked; `git status --short --branch` exited 0. The read-only `git ls-remote` above exited 0. An attempted filtered, no-checkout metadata clone did not finish within about a minute, was interrupted (exit 1), and its incomplete ignored review directory was removed after verifying its absolute path remained inside the workspace. A Hugging Face API request failed to connect, so no API-derived file metadata is claimed. No application tests or Ruff were run for this documentation-only review. Prior uncommitted acquisition/RED/GREEN gate notes in this evidence and `next_work.md` were reviewed and preserved; the unrelated project-evidence edit and T029 draft files are excluded from this commit.
+
+## Pretrained loader GREEN request gate check — 2026-11-13
+
+At HEAD `13472f9058079687cf4ae4ce159db9286fdcb039` on
+`model-implementations`, Prompt 04 has no RED test module or recorded intended
+failures, and the inference architecture is still a proposal with no approved
+artifact manifest or inference-only checklist. `backend/tests/unit/test_pretrained_loader.py`,
+`backend/src/fraudlens/pretrained.py`, and `data/artifacts/` were absent at this
+check. The existing untracked `evals/protocols/feature_002_v1.json` is a draft
+of the original IBM training benchmark, not a pretrained artifact manifest.
+The requested GREEN implementation therefore did not start. No model was
+downloaded, loaded, trained, or run.
+
+Read-only commands: `git status --short --branch`, `git rev-parse HEAD`,
+`Test-Path` for the three paths above, `rg --files` for relevant manifests/tests,
+and reads of `AGENTS.md`, `next_work.md`, the scope and architecture proposals,
+and this evidence all exited 0. Loader tests, backend regressions and Ruff were
+**not run** because no approved loader contract or RED suite exists. No GREEN
+result, integrity smoke check or implementation commit is claimed.
+
+Next: resolve PML-001, freeze an approved manifest and task checklist, then
+write and execute loader RED tests before attempting GREEN implementation.
+
+## Pretrained loader RED request gate check — 2026-11-13
+
+At HEAD `13472f9058079687cf4ae4ce159db9286fdcb039` on
+`model-implementations`, the requested RED loader tests were not written or run.
+The [inference architecture](../../specs/002-data-and-risk-scoring/proposals/pretrained-inference-architecture.md)
+is still explicitly a proposal; no approved artifact manifest instance or
+authorized inference-only task checklist exists in this branch. The existing
+[scope proposal](../../specs/002-data-and-risk-scoring/proposals/pretrained-model-integration.md)
+records the team decision as pending. The original T037 tests a different,
+locally trained artifact path and still depends on open T036. An API, accepted
+format/runtime matrix, and feature-schema identity for a pretrained loader
+would therefore be invented if tests were added now.
+
+Read-only commands: `git status --short --branch`, `git rev-parse HEAD`,
+`rg --files -g '*pretrained*' -g '*manifest*' -g '*model*' specs/002-data-and-risk-scoring
+evidence/tasks backend/tests backend/src evals`, and reads of `AGENTS.md`,
+`next_work.md`, the two proposals and current T029–T037 task entries all exited
+0. The relevant backend test directory was listed successfully. Collection,
+RED execution, dependency-version capture, and loader integrity tests were
+**not run**; there are no intended test failures to report. No loader code,
+model bytes, or original training-task checkbox was changed. The previously
+documented acquisition block remains in force.
+
+Next: record the actual scope decision; approve a concrete, versioned manifest
+and inference-only checklist; then write and run synthetic RED tests against
+that frozen contract.
+
+## Acquisition request gate check — 2026-11-13
+
+At HEAD `13472f9058079687cf4ae4ce159db9286fdcb039` on
+`model-implementations`, the requested local acquisition workflow stopped before
+download or code changes. The [scope decision](../../specs/002-data-and-risk-scoring/proposals/pretrained-model-integration.md)
+still says "team decision pending," and the [inference architecture](../../specs/002-data-and-risk-scoring/proposals/pretrained-inference-architecture.md)
+is explicitly a proposal. The ApexFi LightGBM text is a conditional IEEE-only
+candidate, not an approved IBM model. Model/data reuse rights, safe equivalence
+for mandatory fitted preprocessing, authentic complete IEEE input coverage, and
+revised source-specific contracts/tasks are unresolved. The project's Python
+requirement is `>=3.14,<3.15`; `pyproject.toml` does not declare LightGBM, so a
+locked runtime compatibility check cannot yet pass without an approved dependency
+decision. No package was installed or upgraded.
+
+Read-only checks: `git status --short --branch`, `git rev-parse HEAD`, reads of
+`AGENTS.md`, `next_work.md`, the two proposals, this evidence, constitution,
+`.gitignore`, and `pyproject.toml` all exited 0. `git check-ignore -v
+data/artifacts/lightgbm_model.txt data/raw/ieee/train_transaction.csv
+evals/results/model-output.json` exited 0 and confirmed all three ignore rules.
+No network download, artifact copy, deserialization, native parse, fit, inference,
+evaluation, or integrity rerun occurred in this request; the earlier verified
+source bytes and hashes below are historical evidence, not a newly acquired
+local artifact. No downloader/configuration was implemented and no verification
+success or commit is claimed. Existing working-tree changes were preserved.
+
+**Next gate:** Record the actual team scope/rights decision and resolve safe
+preprocessing parity, authentic IEEE examples, and the approved Python 3.14
+LightGBM runtime/contract before acquisition.
+
 **Observed 2026-11-13 on `model-implementations`, starting at
 `b8643a42b7a1bed8f5b9199ddb31826c34d3591e`.** Read-only source and byte
 inspection only. No model was deserialized, trained, fitted, tuned, invoked for

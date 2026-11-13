@@ -2,6 +2,77 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## IBM pretrained candidate corrected — 2026-11-13
+
+On `model-implementations` from `13472f9058079687cf4ae4ce159db9286fdcb039`,
+the [candidate review](evidence/tasks/feature-002-pretrained-model.md#ibm-aml-lightgbm-candidate-correction--2026-11-13)
+replaces ApexFi IEEE-CIS with FraudSentinel's IBM HI-Small LightGBM as the
+**primary candidate for review**, not an approved scorer. The upstream source
+revision is `4fc397afa0e22396d26153d69e46e46304411ca0`; all five requested
+files are listed. Its `Is Laundering` target and 22-source-feature recipe match
+IBM in broad subject, but unqualified account keys, full-train graph aggregates,
+test-label-selected routing threshold, unsafe joblib preprocessing, likely
+training-row overlap and an unverified Python 3.14 runtime block integration
+and independent benchmark claims. Actual model bytes were not downloaded or
+loaded; original IBM data, Foundation fixture and Phase 4 rules were unchanged.
+Prompt 04 RED loader tests were never created; no generic test assertions were
+discarded. [The decision record](specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md)
+keeps the material training-to-inference scope change pending team approval.
+T026–T028 remain complete; T029–T036 remain open. Prior unrelated working-tree
+changes and untracked T029 drafts were preserved.
+
+One concrete next step: **Prompt 04C** — finish artifact/preprocessing-state
+and row-exposure review, record the team's actual IBM-pretrained scope decision,
+and approve a versioned manifest and replacement checklist before loader RED
+tests or production implementation.
+
+## Pretrained loader GREEN request remains gated — 2026-11-13
+
+The [GREEN gate check](evidence/tasks/feature-002-pretrained-model.md#pretrained-loader-green-request-gate-check--2026-11-13)
+on `model-implementations` found no Prompt 04 RED loader tests, approved
+inference architecture, approved pretrained manifest, or local artifact.
+No loader implementation, tests, model load, or training occurred. The
+requested GREEN commit was not made; the existing worktree edits remain
+preserved. Original Phase 5 training task status remains unchanged.
+
+One concrete next step: **PML-001** — record the team scope decision and
+approve a concrete pretrained manifest/checklist, then complete loader RED
+tests before GREEN implementation.
+
+## Pretrained loader RED tests blocked by missing approved contract — 2026-11-13
+
+At `13472f9058079687cf4ae4ce159db9286fdcb039` on
+`model-implementations`, the [loader test gate check](evidence/tasks/feature-002-pretrained-model.md#pretrained-loader-red-request-gate-check--2026-11-13)
+found no approved inference architecture, artifact manifest instance, or
+inference-only task checklist. The existing proposal still records a pending
+team decision; original T037 is for a locally trained artifact and depends
+on open T036. No RED tests were written or run, no loader was implemented,
+and no model was downloaded or loaded. Original training task markers remain
+unchanged. The gate-check handoff is uncommitted; the requested test commit
+requires real RED evidence after contract approval.
+
+One concrete next step: **PML-001** — record the team scope decision and approve
+a specific artifact manifest and inference-only checklist before creating RED
+loader tests.
+
+## Pretrained acquisition blocked at prerequisite gate — 2026-11-13
+
+On `model-implementations` at `13472f9058079687cf4ae4ce159db9286fdcb039`,
+the [acquisition gate check](evidence/tasks/feature-002-pretrained-model.md#acquisition-request-gate-check--2026-11-13)
+confirmed the proposed IEEE-only scope still has no recorded team decision.
+Rights/provenance, safe fitted-preprocessing parity, authentic full IEEE input
+coverage, approved revised contracts and a locked Python 3.14 LightGBM runtime
+are unresolved. `.gitignore` excludes `data/artifacts/`, `data/raw/`, and
+`evals/results/` as intended. No model was downloaded in this request, no
+downloader was implemented, no integrity rerun or model execution occurred,
+and no acquisition success or commit is claimed. Prior unrelated worktree
+changes remain untouched. The block is recorded as an uncommitted handoff;
+the requested acquisition commit is conditional on a later successful check.
+
+One concrete next step: **PML-001** — record the actual team decision and
+resolve the rights, preprocessing, authentic-input and runtime gates before
+acquiring artifacts.
+
 ## Gated pretrained inference architecture proposed — 2026-11-13
 
 On `model-implementations` from `87b69806d02e1f51902b00172a485490fcc645ba`, the
