@@ -1,5 +1,13 @@
 # Next work - FraudLens AI
 
+## FraudSentinel IBM graph compatibility decision - 2026-11-13
+
+The [feature-by-feature review](evidence/tasks/feature-002-pretrained-model.md#fraudsentinel-graph-compatibility-decision---2026-11-13) classifies the selected FraudSentinel AML LightGBM as **INCOMPATIBLE with current IBM-backed FraudLens `history-v1` scoring**. Its pinned source builds account-string graph maps over the entire first 80% of an unpinned Hugging Face mirror, while FraudLens requires bank-qualified identity and strict earlier 24-hour history. A label-free scan of our approved CSV found eight account strings associated with multiple banks already before the conditional 80% boundary. The local boundary minute has 318 records straddling the 80/20 row cut; publisher row membership and exact cutoff were not saved. The upstream sender paid-amount mean also combines currencies: 8,265 local pre-boundary sender keys have multiple paid currencies. Replacing those graph values with our 24-hour or currency-specific features would change what the pretrained model learned to consume.
+
+**Stop this candidate's loader and inference integration.** The T007 IBM source mapping remains approved and unchanged; the remaining blocker belongs to this model's graph/input semantics and unverified source population. No joblib deserialization, prediction, fit, holdout evaluation or application-code change occurred. Earlier handoffs below recommending Prompt 05 GREEN for this candidate are superseded. Original T029-T036 remain open; the untracked T029 draft files remain preserved.
+
+One concrete next action: investigate a different already-trained IBM model with a verifiable source revision, safe preprocessing artifact and feature definitions compatible with the approved bank-qualified, point-in-time policy before writing loader code.
+
 ## IBM HI-Small source-mapping gate verified - 2026-11-13
 
 The [T007 re-verification](evidence/tasks/feature-002-source-audit.md#t007-source-mapping-gate-re-verification---2026-11-13) confirms that the existing collective final-byte approval covers the current unchanged mapping M `a816260a...093e57`. T007 is already complete, and the source-bound local import path was exercised in T015/T016. The mapping JSON's pending/inspect-only fields remain historical hashed bytes; they do not represent missing team approval or prohibit the approved local CLI. Controlled mapping/identity checks passed 106/106. The original IBM CSV and mapping content were unchanged.

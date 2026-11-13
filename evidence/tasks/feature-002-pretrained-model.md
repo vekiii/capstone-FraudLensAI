@@ -1,5 +1,66 @@
 # Feature 002 pretrained artifact investigation
 
+## FraudSentinel graph compatibility decision - 2026-11-13
+
+**Decision: INCOMPATIBLE with the currently approved IBM-backed FraudLens `history-v1` scoring contract. Stop integration of this candidate.** The model target is IBM `Is Laundering`, but target agreement does not make its graph inputs faithful to our bank-qualified, prior-event feature policy. The exact publisher graph state and train-row membership also remain **unverified**. No joblib deserialization, model inference, training or dataset modification occurred in this review.
+
+### Pinned upstream method and source population
+
+Read the public files at immutable model-repository revision `4fc397afa0e22396d26153d69e46e46304411ca0`: [`aml_lgbm.py`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/4fc397afa0e22396d26153d69e46e46304411ca0/aml_lgbm.py), [`infer.py`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/4fc397afa0e22396d26153d69e46e46304411ca0/infer.py) and the [model card](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/4fc397afa0e22396d26153d69e46e46304411ca0/README.md). The script calls `load_dataset("eexzzm/IBM-Transactions-for-Anti-Money-Laundering-HI-Small-Trans", split="train")` **without a dataset revision or content digest**, parses `Timestamp`, sorts by that value and takes `int(len(df)*0.8)` rows for training. The local metrics JSON reports 4,062,676 train and 1,015,669 test rows. `build_graph_feats(tr)` then aggregates over **all** training rows; the same frozen graph is applied to training, the train tail used for early stopping and test. The script saves `graph`, `features` and `cat_cols` to joblib, with no explicit source revision, cutoff timestamp, exact training-row IDs or bank-aware account map. `infer.py` loads joblib and uses unqualified account strings as keys, with zero for an unknown graph key. The model card says streaming deployment would need rolling aggregate state; it does not specify a faithful conversion from this frozen graph to our `history-v1` snapshots.
+
+The author used a separate Hugging Face IBM mirror. Its reported 5,078,345 rows equal our local Kaggle-v8 count, but matching counts do **not** establish identical source bytes, row ordering or membership. A label-free scan of our approved local CSV gives a *conditional* 80% boundary at `2022/09/08 16:12`: 4,062,463 rows have earlier timestamps, and 318 share the boundary minute. If the mirror is identical, 213 of those 318 would be in training and 105 in test. The published source does not preserve the tie membership, so the exact graph population and cutoff cannot be recovered from timestamp and row count alone. This local boundary is an observation about **our** CSV, not a verified publisher cutoff.
+
+### Feature-by-feature compatibility matrix
+
+`Account` is the sender string and `Account.1` the receiver string in the upstream pandas dataframe. Its graph is keyed only by those strings. FraudLens keys each party by `(bank, account)` and `history-v1` uses earlier events in `[t-24h,t)`, with exact currency-specific amount sums. “Derivable” below means only that raw fields exist; it does not authorize model scoring.
+
+| # | Model feature | Pinned upstream meaning | IBM / FraudLens assessment |
+|---:|---|---|---|
+| 1 | `hour` | Parsed `Timestamp` hour; malformed time defaults to 0. | Raw timestamp exists; valid minute value is derivable under our explicit analysis-time policy. The silent malformed fallback is disallowed. |
+| 2 | `dow` | Parsed timestamp day of week, Monday 0; malformed time defaults to 0. | Derivable for valid source time; same fallback and source-timezone limitation. |
+| 3 | `log_paid` | `np.log1p(Amount Paid)`. | Paid amount exists; exact float transformation/runtime would need matching, distinct from our retained Decimal value. |
+| 4 | `log_recv` | `np.log1p(Amount Received)`. | Received amount exists; same numeric qualification. |
+| 5 | `amt_diff` | Absolute numeric difference of paid and received amounts. | Both values exist, but may have different currencies; a numeric difference is not an approved monetary comparison or FX conversion. |
+| 6 | `ccy_mismatch` | Receiving currency string differs from payment currency string. | Exact source strings exist; deterministically derivable. |
+| 7 | `self_loop` | Unqualified sender `Account` equals receiver `Account.1`. | Different identity definition from bank-qualified self-transfer. No cross-bank equal-account transaction was observed in our local full-file scan, but the definition remains incompatible for general source-bound scoring. |
+| 8 | `is_round` | `float(Amount Paid) % 100 == 0`. | Paid amount exists; matching float remainder differs from the project's exact-decimal arithmetic policy. |
+| 9 | `same_bank` | `From Bank` equals `To Bank`. | Exact source fields exist; deterministically derivable. |
+| 10 | `snd_out_deg` | Distinct unqualified receiver account strings among all train-period outgoing sender rows. | Blocked: all-train, unqualified and currency-agnostic graph; `history-v1` has prior-24h bank-qualified counterparties. |
+| 11 | `snd_in_deg` | Distinct unqualified sender strings among all train-period incoming rows to this sender account. | Blocked: same graph identity/time mismatch; no corresponding approved snapshot value. |
+| 12 | `snd_out_cnt` | All train-period outgoing row count for unqualified sender. | Blocked: not the prior-24h bank-qualified sender count. |
+| 13 | `snd_in_cnt` | All train-period incoming row count for unqualified sender. | Blocked: no matching approved sender-incoming history feature. |
+| 14 | `snd_out_amt_mean` | Mean numeric `Amount Paid` over all train-period rows for unqualified sender, without currency partition. | Blocked: graph state unavailable; combines paid amounts across currencies and differs from approved currency-specific Decimal history. |
+| 15 | `rcv_out_deg` | Distinct unqualified receiver strings among all train-period outgoing rows from this receiver account. | Blocked: same graph identity/time mismatch; no matching approved snapshot value. |
+| 16 | `rcv_in_deg` | Distinct unqualified sender strings among all train-period incoming rows to receiver. | Blocked: not prior-24h bank-qualified distinct senders. |
+| 17 | `rcv_in_cnt` | All train-period incoming row count for unqualified receiver. | Blocked: not prior-24h bank-qualified receiver count. |
+| 18 | `gather_scatter` | 1 when this sender's frozen `in_deg >= 5` and `out_deg >= 5`. | Blocked: derived from two incompatible graph degrees; no faithful substitute. |
+| 19 | `amt_to_snd_mean` | Current paid amount divided by frozen sender paid mean plus `1e-6`. | Blocked: depends on unavailable mixed-currency graph mean; a currency-specific replacement changes model semantics. |
+| 20 | `Receiving_Currency` | Source `Receiving Currency` as pandas category (native booster spelling uses underscore). | Source value exists; exact category-code order must match native model and saved preprocessing, not assumed from raw text. |
+| 21 | `Payment_Currency` | Source `Payment Currency` as pandas category. | Same categorical-state requirement. |
+| 22 | `Payment_Format` | Source `Payment Format` as pandas category. | Same categorical-state requirement; missingness must follow original encoding. |
+
+The graph builder also saves `out_amt_sum`, a sum of paid amounts over all train-period outgoing rows keyed by unqualified sender, but it is **not** in the 22 model features. The source comment about label-derived suspicious-history priors does not correspond to a returned graph map; no such label feature is claimed.
+
+### Direct local collision and temporal evidence
+
+Three read-only Python `csv.reader` scans of `data/raw/HI-Small_Trans.csv` accessed timestamps, banks, accounts and paid currency only; no `Is Laundering` values were inspected or reported. The scans parsed 5,078,345 rows. They found **8 unqualified account strings associated with multiple banks** in the full file and already among the 4,062,463 rows strictly before the candidate boundary minute. Thus a graph keyed only by account string merges bank-qualified identities in the corresponding local population. Zero local rows had equal sender/receiver account strings with different banks; this narrows the observed `self_loop` impact, but does not repair graph lookup collisions. Among strictly pre-boundary rows, **8,265 sender account strings** (also 8,265 bank-qualified sender keys) had more than one `Payment Currency`. The upstream `out_amt_mean` groups only by sender account, so its numeric means combine different currencies for those local keys.
+
+The upstream graph is computed once from its whole initial 80% before any row is featurized. Earlier train rows therefore can receive later train facts, including facts from the early-stopping tail. A post-cutoff row could use an earlier frozen state only if exact publisher source and cutoff were verified; that still would not be `history-v1`'s bank-qualified, prior-24h policy. Recomputing a bank-qualified/24h/currency-specific graph changes the model input semantics. Copying the publisher's unqualified all-train graph into current FraudLens scoring violates those approved semantics. Unknown-key zero defaults in `infer.py` are part of that upstream helper, not evidence that an unavailable or incompatible graph is a genuine zero-risk observation.
+
+### Checks and disposition
+
+| Command/check | Exit | Observed |
+|---|---:|---|
+| `curl.exe --fail --location --silent --show-error --max-time 30` on each pinned `resolve/<revision>/aml_lgbm.py` and `infer.py` URL, plus a read of pinned `README.md` | 0 each with network permission | Read public source text only; no upstream code executed. An initial sandboxed curl attempt exited 1 because network access was denied; that was not used as source evidence. |
+| `Get-Content data/artifacts/aml_lgbm_metrics.json` | 0 | `source=eexzzm/...`, train 4,062,676, test 1,015,669; no exact cutoff, dataset revision or row manifest. |
+| PowerShell here-string `$scan` passed to `.venv/Scripts/python.exe -c $scan`: `csv.reader` timestamp `Counter`, first-bank-per-account collision set, and 80% cumulative timestamp boundary | 0 | 5,078,345 rows; 515,080 unqualified accounts; 8 cross-bank collision keys; local boundary minute `2022/09/08 16:12` crosses a 318-row group (213/105 conditional split). |
+| Second label-free `csv.reader` scan restricted to timestamps `< 2022/09/08 16:12` | 0 | 4,062,463 rows; 513,888 unqualified accounts; 8 cross-bank collision keys already before the boundary. |
+| Third label-free `csv.reader` scan of the same strict pre-boundary rows, comparing first paid currency per sender account and `(bank, account)` | 0 | 8,265 mixed-paid-currency keys under each identity scheme. |
+| `git status --short --branch` and review of `history-v1` catalog and approved source mapping | 0 | No working edits to raw data, mapping, model or application code; prior untracked T029 drafts preserved. |
+| `Select-String` numbered compatibility rows; `git diff --check` | 0 each | Exactly 22 matrix rows; no whitespace errors (nonfatal Git line-ending notices only). |
+
+This is a documentation/compatibility decision, **not** a model performance evaluation. No joblib or pickle load, model prediction, fitting, threshold selection, holdout-label access, package install or runtime migration occurred. The candidate is **blocked** for the requested IBM-backed FraudLens model integration. Stop Prompt 05/07 work against this artifact; do not treat locally reconstructed graph counts as its verified saved state. The next decision is to investigate a different already-trained model whose input schema and historical state can be proven compatible with the approved IBM source and feature policy. Original T029-T036 status is unchanged.
+
 **Current source-mapping status, 2026-11-13:** [T007 re-verification](feature-002-source-audit.md#t007-source-mapping-gate-re-verification---2026-11-13) confirms the unchanged IBM mapping already has collective final-byte approval, and the source-bound import path was exercised. Earlier entries below describing its embedded pending flags as a missing team approval are historical observations. Pretrained model graph-state and inference compatibility remain unresolved.
 
 ## IBM pretrained inference RED request gate — 2026-11-13
