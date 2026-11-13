@@ -2,6 +2,32 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## T028 dependency and resource pilot complete — 2026-11-13
+
+On `model-implementations` from starting HEAD
+`a2857cdfce02b9d60b2b8c3c276a2500081cbad5`, [T028 evidence](evidence/tasks/feature-002-resource-pilot.md)
+records CPython 3.14.10 / Windows x64, locked NumPy 2.5.4, SciPy 1.18.1 and
+scikit-learn 1.9.1, with no existing locked package versions changed. The
+bounded actual-source pilot processed 100,000 consecutive rows through the
+canonical importer and `history-v1`, producing 100,000 snapshots in 145.315 s;
+peak working set was 285,134,848 bytes and peak temporary files were
+262,063,538 bytes under enforced 3 GiB / 4 GiB / 30-minute limits. The records
+are all within warm-up, so none are scoreable. Pilot files were removed and the
+original CSV hash remained unchanged. No model fit or holdout access occurred.
+T028 is checked complete.
+
+The existing backend check collected 105 cases: 99 passed and six failed in
+CLI binding assertions because Windows CRLF mapping bytes differ from the
+normalized approved mapping hash; this is the previously recorded checkout
+line-ending issue. The other 99 cases pass when those six cases are deselected;
+Ruff and `git diff --check` pass. The requested IEEE reference-analysis file is
+absent in this checkout, and the booster candidates remain outside T031's
+approved grid. This does not alter the current scikit-learn plan.
+
+One concrete next step: **T029** — freeze and hash `feature_002_v1.json`, exact
+eligible split membership, and the predeclared resource/fit ceilings before
+any model fitting or validation selection.
+
 ## T027 immutable temporal protocol GREEN — 2026-11-13
 
 On `model-implementations` from T026 HEAD `fe310c1a7213655b47cc2ffb22554fc39b4e2acf`,
