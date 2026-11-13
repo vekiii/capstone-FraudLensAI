@@ -2,6 +2,31 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## Latest loader RED handoff — 2026-11-13
+
+On `model-implementations` from `81b3b9a`, the first
+[IBM pretrained loader test module](backend/tests/unit/test_pretrained_loader.py)
+was authored without changing the earlier inference tests or production code.
+The [evidence](evidence/tasks/feature-002-pretrained-model.md#ibm-pretrained-loader-red-alignment--2026-11-13)
+records 33 collected cases (exit 0) and, after resolving a pytest temp-root
+permission error, 3 passing baseline/synthetic-manifest cases and 30 failures
+at the missing loader interface (exit 1). These are **one interface gap**;
+individual hash/schema/security behaviors have not yet reached their
+assertions. Python 3.14.10 and pytest 9.2.0 are available, LightGBM is not
+installed. Ruff and `git diff --check` passed. No model or joblib was loaded,
+no training/inference occurred and no original T029–T036 status changed.
+
+The [separate checklist](specs/002-data-and-risk-scoring/checklists/pretrained-ibm-loader.md)
+tracks real native-model checksum/metadata, safe graph-state extraction and
+substantive loader RED evidence as open. Historical pending-approval notes
+below predate the user's team approval; no fresh signature is requested.
+
+One concrete next step: **Prompt 05 prerequisite verification** — obtain and
+independently hash the pinned native model, verify its header and safe graph
+representation, then make the loader assertions fail for their individual
+missing behaviors before implementing Prompt 05 GREEN. Do not download or
+deserialize joblib in the application.
+
 ## Latest IBM pretrained inference handoff — 2026-11-13
 
 The user conveyed the team's approval/verification for the IBM pretrained

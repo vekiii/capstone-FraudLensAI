@@ -357,3 +357,57 @@ reasons once the adapter exists. No full IBM dataset, real model, joblib,
 training or holdout was used. Before Prompt 07 GREEN, obtain and verify the
 native schema and safe complete graph representation, then rerun each test to
 observe the substantive behavior and adjust only incorrect assumptions.
+
+## IBM pretrained loader RED alignment — 2026-11-13
+
+Starting branch `model-implementations`, HEAD
+`81b3b9a46c99ca7dceee4e7517b441ea97f42c1f`. The Prompt 04 and Prompt
+04B gate entries above correctly reported that no loader test module or loader
+implementation existed, including in Git history. The previously committed
+`test_pretrained_ibm_inference.py` is a separate inference-boundary suite and
+was preserved. The [team decision](../../specs/002-data-and-risk-scoring/proposals/pretrained-ibm-model-decision.md)
+records approval as conveyed by the user; actual publisher artifact bytes,
+native header, safe graph export and runtime compatibility remain unverified.
+No original T029–T036 task marker was changed.
+
+[`test_pretrained_loader.py`](../../backend/tests/unit/test_pretrained_loader.py)
+adds authored native-text-like bytes and sanitized JSON graph metadata only.
+Its valid-bundle hash is computed from those exact test bytes, not claimed as
+the publisher's model hash. The publisher's displayed joblib SHA-256 is
+`189ab48262821327abfdd38c04923608954e7869ca59801ef3c1291698236a76`;
+it is a pinned **publisher claim**, not locally recalculated. No verified
+publisher SHA-256 for `aml_lgbm_model.txt` is available in this checkout, so
+the tests cannot legitimately freeze its actual checksum. The upstream revision
+`4fc397afa0e22396d26153d69e46e46304411ca0` and source-level 22-name
+feature recipe are pinned. Source pages:
+[`aml_lgbm_model.txt`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/4fc397afa0e22396d26153d69e46e46304411ca0/aml_lgbm_model.txt),
+[`aml_lgbm_preproc.joblib`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/4fc397afa0e22396d26153d69e46e46304411ca0/aml_lgbm_preproc.joblib),
+[`aml_lgbm.py`](https://huggingface.co/naazimsnh02/fraudsentinel-tier1-scorers/blob/4fc397afa0e22396d26153d69e46e46304411ca0/aml_lgbm.py).
+
+| Matrix area | Cases and present outcome |
+| --- | --- |
+| Approved source/format/schema | Synthetic manifest asserts IBM AML identity, exact revision, native LightGBM text format, 22 ordered feature names and three categorical names; one self-contained case passes. |
+| Positive load and integrity | Fake native booster, exact authored-byte hashes, missing/truncated/modified/substituted model and absent/changed graph; cases stop at absent loader. |
+| Compatibility/security | Wrong domain, IEEE replacements, wrong feature order/category metadata, unsupported runtime, identity/time/coverage mismatch, pickle/joblib/network/training spies, label/holdout metadata; cases stop at absent loader. |
+| Existing scorers | Foundation fixture score and rules scorer import pass without a pretrained file. These are smoke checks, not a full regression suite. |
+
+| Command | Exit | Observed result |
+| --- | ---: | --- |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py --collect-only -q -p no:cacheprovider` | 0 | 33 cases collected; no dependency or collection error. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py -q --tb=short -p no:cacheprovider` | 1 | First execution: 33 setup errors because default `%TEMP%/pytest-of-IsidoraPopovicLUKOWA` was inaccessible. Environment failure, **not RED**. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py -q -x --tb=line -p no:cacheprovider` | 1 | Confirmed `PermissionError [WinError 5]` at the default pytest temp root. Not RED. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py -q --tb=line -p no:cacheprovider --basetemp .cache/pytest-pretrained-loader-red-20261113` | 1 | 3 passed; 30 failed at one explicit in-test missing-loader assertion; 0 setup/collection errors. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py -q --tb=no -p no:cacheprovider --basetemp .cache/pytest-pretrained-loader-final-20261113` | 1 | Final rerun after fixture correction: 30 interface failures, 3 passes in 0.77 s. No setup error. |
+| `.venv/Scripts/ruff.exe check backend/tests/unit/test_pretrained_loader.py` | 0 | All checks passed. |
+| `.venv/Scripts/python.exe -c "import sys,pytest,joblib,importlib.util; print(sys.version.split()[0], pytest.__version__, joblib.__version__, bool(importlib.util.find_spec('lightgbm')))"` | 0 | Python 3.14.10, pytest 9.2.0, joblib 1.6.0; LightGBM absent. |
+| `git diff --check` | 0 | No whitespace errors in tracked worktree changes. |
+
+The corrected run establishes **one intentional interface-level RED condition**:
+`fraudlens.pretrained.load_approved_model` is absent. The 30 failing cases do
+not yet prove each downstream check fails for its own behavioral reason. An
+absent module caught inside a test is not an import/collection error, but it is
+also not a complete behavioral RED demonstration. No loader, model training,
+inference, joblib deserialization, publisher-model download, dataset access or
+holdout evaluation occurred. The separate
+[loader checklist](../../specs/002-data-and-risk-scoring/checklists/pretrained-ibm-loader.md)
+keeps substantive RED and real artifact verification open before Prompt 05.
