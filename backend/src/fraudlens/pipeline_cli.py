@@ -131,6 +131,17 @@ def _import(args) -> dict:
         store.close()
 
 
+def _build_features(args) -> dict:
+    store = DatasetStore(args.store)
+    try:
+        result = store.build_features(args.dataset_version,
+                                      feature_version=args.feature_version)
+        return {'status': 'complete', 'dataset_version': args.dataset_version,
+                'feature_version': args.feature_version, **result}
+    finally:
+        store.close()
+
+
 def main(argv=None):
     parser = _Arguments(description=__doc__)
     commands = parser.add_subparsers(dest='command', required=True)
@@ -152,6 +163,10 @@ def main(argv=None):
     import_command.add_argument('--namespace', required=True)
     import_command.add_argument('--expected-sha256', required=True)
     import_command.add_argument('--store', type=Path, required=True)
+    features = commands.add_parser('build-features')
+    features.add_argument('--store', type=Path, required=True)
+    features.add_argument('--dataset-version', required=True)
+    features.add_argument('--feature-version', default='history-v1')
     args = None
     try:
         args = parser.parse_args(argv)
@@ -159,6 +174,11 @@ def main(argv=None):
             report = _import(args)
             print(json.dumps(report, ensure_ascii=True, sort_keys=True))
             print('Import complete', file=sys.stderr)
+            return 0
+        if args.command == 'build-features':
+            report = _build_features(args)
+            print(json.dumps(report, ensure_ascii=True, sort_keys=True))
+            print('Feature build complete', file=sys.stderr)
             return 0
         columns = {}
         for declaration in args.column:
@@ -172,16 +192,22 @@ def main(argv=None):
                                 delimiter=args.delimiter, columns=columns or None,
                                 mapping_path=args.mapping)
     except (ValueError, OSError, sqlite3.Error, KeyError, json.JSONDecodeError) as exc:
-        if args is not None and args.command == 'import' and isinstance(exc, ValueError) and str(exc) in {
+        if args is not None and args.command in {'import', 'build-features'} and isinstance(exc, ValueError) and str(exc) in {
                 'source_binding_mismatch', 'source_mismatch', 'mapping_mismatch',
-                'mapping_approval_mismatch', 'row_reconciliation_failed'}:
+                'mapping_approval_mismatch', 'row_reconciliation_failed',
+                'dataset_incomplete', 'dataset_incompatible', 'feature_count_mismatch'}:
             code = str(exc)
         else:
-            code = 'invalid_arguments' if isinstance(exc, ValueError) else 'import_failed'
+            code = ('invalid_arguments' if isinstance(exc, ValueError) else
+                    'feature_build_failed' if args is not None and
+                    args.command == 'build-features' else 'import_failed')
         report = dict(status='failed', error_codes=[code])
     print(json.dumps(report, ensure_ascii=True, sort_keys=True))
     if args is not None and args.command == 'import':
         print(f"Import {report['status']}; {','.join(report['error_codes'])}", file=sys.stderr)
+    elif args is not None and args.command == 'build-features':
+        print(f"Feature build {report['status']}; {','.join(report['error_codes'])}",
+              file=sys.stderr)
     else:
         print(f"Inspection {report['status']}; "
               f"{','.join(report['error_codes']) or 'complete read-only scan; mapping unreviewed'}",

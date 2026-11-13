@@ -42,6 +42,27 @@ mapping hashes, SQLite schema version and `quick_check=ok`. The CLI import is
 authorized only for the separately reviewed mapping, namespace and source hash;
 it does not turn on general import. Read-only inspection remains available:
 
+## Implemented local feature build
+
+Run this against a **working copy** of the completed import, with enough disk
+space for the additional snapshots. Inputs are the SQLite store containing a
+complete, provenance-compatible DatasetVersion, its exact `dv_` ID, and the
+frozen `history-v1` catalog. The following command was executed on the IBM v8
+working copy in [Phase 4 evidence](../../evidence/tasks/feature-002-feature-rules.md#t025-actual-source-replay-and-repeatability):
+
+```sh
+PYTHONPATH=backend/src .venv/bin/python -m fraudlens.pipeline_cli build-features --store data/processed/feature-002-ibm-v8-rules-work.sqlite --dataset-version dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802 --feature-version history-v1
+```
+
+The first successful build returns JSON with `status=complete`,
+`feature_version=history-v1`, `snapshot_count=5078345` and `repeated=false`.
+The same command on that completed working copy returns `repeated=true` and
+the same count. The first 24 hours are context-only; snapshots exist for those
+events but their coverage is `incomplete` and they are not scoreable. Building
+features does not create a scored run or publish v2 API responses.
+
+## Read-only inspection
+
 ```powershell
 $env:SPECIFY_FEATURE_DIRECTORY = 'specs/002-data-and-risk-scoring'
 $env:PYTHONPATH = 'backend/src'
@@ -51,7 +72,7 @@ $env:PYTHONPATH = 'backend/src'
 The inspect command still exits 2 with `pending_team_review`, complete
 observations and `import_allowed=false` from the historical mapping flags.
 Generic inspection without the bound mapping still rejects duplicate headers.
-Feature building, evaluation, scoring, typed v2 delivery/decoding and consumer
+Evaluation, scored-run publication, typed v2 delivery/decoding and consumer
 integration remain planned. Use [plan.md](plan.md), [data-model.md](data-model.md)
 and [contracts](contracts/api.md) for their expected behavior.
 
@@ -79,7 +100,8 @@ read-only scan predates the approved source binding; no source data is tracked.
    Before generating local files, verify the existing ignore rules for
    data/raw/, data/processed/, data/artifacts/ and evals/results/.
 4. The source mapping and v2 contracts have collective final-byte approval.
-   Feature catalog, rule policy and protocol are later gates. If the
+   The feature catalog and rule policy are frozen; the evaluation protocol is a
+   later gate. If the
    authoritative Phase 2 assignment becomes available, trace it before
    claiming compliance.
 
@@ -105,8 +127,8 @@ evidence/tasks/; do not copy historical counts as fresh results.
 ## Planned later local pipeline commands
 
 The following interface is specified in
-[data-and-scoring.md](contracts/data-and-scoring.md). `inspect` and `import`
-exist now; the remaining subcommands are planned. From the repository root,
+[data-and-scoring.md](contracts/data-and-scoring.md). `inspect`, `import` and
+`build-features` exist now; the remaining subcommands are planned. From the repository root,
 make backend/src importable:
 
     $env:PYTHONPATH = 'backend/src'
@@ -115,7 +137,6 @@ make backend/src importable:
 The exact source path, release ID, license reference, mapping and protocol
 must come from the actual reviewed source audit. Examples use placeholders:
 
-    uv run --locked python -m fraudlens.pipeline_cli build-features --dataset-version <completed-version> --feature-version history-v1
     uv run --locked python -m fraudlens.pipeline_cli freeze-protocol --dataset-version <completed-version> --feature-version history-v1 --config <reviewed-protocol-file>
     uv run --locked python -m fraudlens.pipeline_cli evaluate --protocol-id <frozen-protocol>
     uv run --locked python -m fraudlens.pipeline_cli score-run --dataset-version <completed-version> --scorer-version rules-v1 --protocol-id <frozen-protocol>

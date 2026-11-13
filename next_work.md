@@ -2,6 +2,138 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: 002-data-and-risk-scoring; Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## Phase 4 final technical review — 2026-11-13
+
+[Original request](prompts/development/002-phase-4-final-review-2026-11-13.md);
+[task-by-task review, corrected scorer-boundary regression and read-only IBM coverage audit](evidence/tasks/feature-002-feature-rules.md#final-phase-4-technical-review--2026-11-13).
+On `002-data-and-risk-scoring` at HEAD `55306089b506458fcaec9b621f49c00dd971d46e`,
+all uncommitted T017–T025 work was preserved. One confirmed T022 defect allowed
+an available rules explanation with a model method, wrong scale or contributions
+not reconstructing the score; three regression cases were RED and then GREEN.
+The existing IBM work copy was read only: 5,078,345 event-valid facts and distinct
+complete snapshots, 3,963,424 full, 1,114,921 incomplete, **0 unavailable**.
+All incomplete snapshots fall before the exact 2022-09-02 00:00 UTC warm-up
+boundary; there are no other missing-coverage causes in this build. An actual
+incomplete event was rejected by the scorer. The full replay and `repeated=true`
+build remain distinct prior runs; three real-event scores repeated semantically
+across run IDs. Targeted **107 passed**, full backend **572 passed** with one
+existing warning, Ruff and `git diff --check` passed. The offline contract and
+quickstart now reflect the implemented local build and corrected rule boundary.
+Foundation v1 scorer is unchanged. No IBM reimport, full replay rerun, original
+database/CSV modification, model fit, commit or push occurred. T017–T025 remain
+complete as a rules-only Phase 4 increment; trained-model SC-003, evaluation
+and public v2 integration remain later work.
+
+One concrete next step: start **T026** RED tests for chronological partitions
+and protocol eligibility, keeping private labels outside scoring inputs.
+
+## Prompt 3 T022–T025 complete — 2026-11-13
+
+[Original request](prompts/development/002-t022-t025-prompt-3-request-2026-11-13.md);
+[RED/GREEN and actual-source rules evidence](evidence/tasks/feature-002-feature-rules.md#t022t025-prompt-3-scorer-and-rules-completion--2026-11-13).
+On `002-data-and-risk-scoring` at HEAD `55306089b506458fcaec9b621f49c00dd971d46e`,
+the uncommitted T017–T021 work was preserved. T022's original 35 RED cases are
+GREEN; the expanded v2 scorer boundary has 36 passing cases. T023 collected 10
+cases and failed only because `rule_scoring` was absent; T024's final 13 rule
+cases are GREEN with frozen Decimal `rules-v1` policy hash
+`a281d38b8777b53882f4515dda7de927ff64dce43188e99c258419b1d605b5ce`.
+The full IBM feature replay ran against the ignored copy
+`data/processed/feature-002-ibm-v8-rules-work.sqlite`: **5,078,345 complete
+snapshots**, of which **3,963,424 full** and **1,114,921 incomplete**. The
+repeat build was idempotent. Three actual-source scoreable events gave rule
+scores `0`, `0.65`, `0.65`; each pair matched semantically across two run IDs
+after excluding run ID and actual scoring time. The original database hash
+remained `a7a9495557f5462a8d08d0e31f7d0a81e54c3df10e07ddb2617b4194d7bea8cf`.
+The full backend suite passed **569 tests** with one existing Starlette/httpx
+warning; Ruff and `git diff --check` passed. No model training, IBM reimport, original database modification,
+commit or push occurred. T022–T025 are checked in `tasks.md`; trained-model
+SC-003 and later workflow remain open.
+
+One concrete next step: start T026's Phase 5 RED tests for chronological
+partitioning and evaluation protocol, using the existing complete source
+and keeping private labels outside scoring inputs.
+
+## T021 v2 scorer boundary RED complete — 2026-11-13
+
+[Original T021 request](prompts/development/002-t021-scorer-boundary-red-request-2026-11-13.md);
+[35-case RED matrix and observed results](evidence/tasks/feature-002-feature-rules.md#t021-v2-scorer-boundary-red--2026-11-13).
+On `002-data-and-risk-scoring` at HEAD `55306089b506458fcaec9b621f49c00dd971d46e`,
+the existing uncommitted T017–T020 work was preserved. T021 has **35 collected**
+synthetic contract cases; collection exits 0, execution exits 1 with **35 expected
+test-body failures**, all at the missing `ScoreRequestV2` boundary in
+`fraudlens.data_contracts`. The fixture's full coverage, identity and as-of
+preconditions were separately checked. Individual validation assertions remain
+unverified until T022 GREEN. Ruff and `git diff --check` pass. No production scorer,
+IBM replay, existing SQLite database, commit or push was touched. T021 is checked
+in `tasks.md`; T022 remains open.
+
+One concrete next step: implement T022 `ScoreRequestV2` and the fail-closed v2
+scorer validation boundary, then run these 35 cases GREEN without changing
+Foundation v1 scoring.
+
+## T020 feature replay and local build complete — 2026-11-13
+
+[Original T020 request](prompts/development/002-t020-feature-replay-green-request-2026-11-13.md);
+[RED/GREEN commands, test correction and synthetic SQLite/CLI evidence](evidence/tasks/feature-002-feature-rules.md#t020-replay-and-local-feature-build-green--2026-11-13).
+Branch `002-data-and-risk-scoring`, HEAD `55306089b506458fcaec9b621f49c00dd971d46e`;
+all uncommitted T017–T019 work was preserved. Starting RED repeated: **50 failed**
+for absent `fraudlens.feature_history` (exit 1). The `history-v1` replay,
+closed catalog, lineage checks, local `build-features` CLI and gated SQLite
+snapshot storage now pass **50 T018/T019 tests** plus **5 synthetic integration
+tests**. One authored expected count was corrected from 2 to 1 because the
+source-start event lay 36 hours before the target. Full backend: **520 passed**
+with one existing Starlette/httpx warning; Ruff and `git diff --check` passed.
+The CLI reads a complete provenance-bound version via an event-time SQL cursor,
+writes 512-row batches and exposes only complete builds. No IBM replay, existing
+IBM SQLite write, model training, commit or push occurred. T020 is checked in
+`tasks.md`; T021 remains open.
+
+One concrete next step: write and run T021 v2 scorer-boundary RED tests in
+`backend/tests/contracts/test_data_scoring.py` before implementing T022.
+
+## T018/T019 RED completed on synthetic facts — 2026-11-13
+
+[Original T018/T019 request](prompts/development/002-t018-t019-red-request-2026-11-13.md);
+[criterion-to-test matrix, hand values and commands](evidence/tasks/feature-002-feature-rules.md#t018t019-synthetic-red-matrix--2026-11-13).
+Branch `002-data-and-risk-scoring`, HEAD `55306089b506458fcaec9b621f49c00dd971d46e`;
+the uncommitted T017 contract/evidence/prompt changes remain preserved. T018 has
+14 collected replay cases and T019 has 36 collected lineage cases. Collection
+exited 0; execution exited 1 with 50 intended test-body failures because the
+T020 `fraudlens.feature_history` module does not yet exist. The authored
+assertions cover all 11 features, window/tie/held-out/coverage/label invariance,
+bank and currency direction, and fail-closed predictor/source/unknown rules.
+Ruff and `git diff --check` exited 0. T018/T019 are checked in `tasks.md` as
+completed RED tasks; T020 remains open. No IBM import, SQLite write, commit or
+push occurred. These tests are not GREEN verification or model evaluation.
+
+One concrete next step: implement T020 pure timestamp-group replay and
+versioned feature catalog/projection boundary, then run the 50 RED cases GREEN.
+
+## T017 feature catalog and rule policy frozen — 2026-11-13
+
+[Original T017 request](prompts/development/002-t017-feature-rules-request-2026-11-13.md);
+[contract, synthetic vectors, exact commands and hashes](evidence/tasks/feature-002-feature-rules.md).
+Started on clean `002-data-and-risk-scoring` at HEAD
+`55306089b506458fcaec9b621f49c00dd971d46e`; this work remains local.
+`history-v1` now freezes 11 directional, label-free features with exact
+inputs, units, availability, permitted consumers and missing semantics.
+`rules-v1` freezes R1/R2/R3 at `3/3/3`, Decimal weights `0.35/0.30/0.35`,
+exact R3 threshold and an ordinal sum. Window `[t−24h,t)`, tied-time groups,
+context-only first 24 h and full/incomplete/unavailable coverage are explicit.
+Synthetic hand calculations and an in-memory verification passed, including
+the exact R3 equality `40*3 = 2*60`, score `1.00`, below-threshold `0.65`,
+measured zero and no score for deficient coverage. Rule-policy SHA-256 is
+`a281d38b8777b53882f4515dda7de927ff64dce43188e99c258419b1d605b5ce`.
+The offline contract's T017 raw SHA-256 is
+`359c5e16292d5475cb64e559a30ecf1ecf682557c7d5445d13744d8e00a8dbeb`;
+the Phase 3 and T007/T008 hashes remain historical. Mapping/data-model bytes
+are unchanged. No IBM import, SQLite write, backend RED/GREEN tests, model
+evaluation, commit or push was run. T017 is checked in `tasks.md`; T018/T019
+remain open and T020 has not begun.
+
+One concrete next step: write and run T018's hand-calculated replay RED tests
+in `backend/tests/unit/test_feature_history.py`, followed by T019 lineage RED.
+
 ## Phase 3 final cleanup verified — 2026-11-13
 
 [Original request](prompts/development/002-phase-3-final-cleanup-2026-11-13.md);

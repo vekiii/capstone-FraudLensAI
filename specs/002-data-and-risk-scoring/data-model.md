@@ -1,19 +1,25 @@
 # Feature 002 data model and invariants
 
-Status: team-agreed technical direction, not implemented. Source-specific mappings are frozen
-only after the authorized IBM file audit and confirmation of final bytes by the responsible reviewers. Public wire details are in
+Status: team-approved identity/mapping direction; Phase 3 import and Phase 4
+`history-v1` replay, v2 scorer boundary and rules-only scoring are implemented.
+Protocol, trained-model scoring and public v2 integration remain later work.
+Source-specific mappings are frozen only after the authorized IBM file audit
+and confirmation of final bytes by the responsible reviewers. Public wire details are in
 [contracts/api.md](contracts/api.md) and [contracts/schemas.json](contracts/schemas.json).
 
 Technical amendment, 2026-11-13: pinned Kaggle v8 member equivalence is verified
 and adopted as the reproducible reference; original acquisition history remains
-unknown. [Current mapping](../../data/mappings/ibm_hi_small_v1.json) is technically
-complete but pending_team_review, with import disabled and no invented reviewer.
+unknown. [Current mapping](../../data/mappings/ibm_hi_small_v1.json) retains
+the historical `pending_team_review` and `import_allowed=false` inspection
+flags; separate final-byte team approval and the source-bound CLI gate govern
+the implemented import without inventing an individual reviewer.
 User-approved clock interpretation is an explicit fixed UTC+00 synthetic analysis
 assumption, not a source timezone fact. Source/raw minute text and equal-time
 groups remain intact. The policy hash is recorded in the mapping. The team's
 2026-11-13 technical decision and calculated working mapping hash are recorded outside
 the mapping in [the T007/T008 review record](../../evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md).
-The inspection configuration and import command remain disabled.
+The historical inspect mapping flag remains false; the separately approved,
+source-bound local import CLI is available as recorded in the Phase 3 evidence.
 
 ## Identity and version rules
 
@@ -65,9 +71,9 @@ SHA-256 of `time.selected_policy` serialized as UTF-8 JSON with sorted keys,
 compact comma/colon separators and ASCII escaping (`ensure_ascii=True`),
 as in the existing inspector. The current `T` is
 `67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781`.
-The separate review record records the current candidate `M`; its own bytes
-are never hashed into M. Final owner review must confirm it before import.
-A later mapping-content change requires a new M and new review before import.
+The separate review record records the approved `M`; its own bytes are never
+hashed into M. A later mapping-content change requires a new M and new review
+before import.
 The raw Git blob SHA-256 is a byte-level revision identifier and may differ
 from M for CRLF files. [Vectors for the previous and current mappings](../../evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md#identity-vectors)
 fix the exact recipe without claiming importer execution.

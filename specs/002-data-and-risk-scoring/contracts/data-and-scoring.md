@@ -29,8 +29,11 @@ settings; no download occurs at application startup.
 | activate-run | Completed run ID | One atomic active pointer update after compatibility/hash checks | Missing/incomplete/incompatible run => no pointer change |
 | reproduce | Report/protocol ID and matching local source/artifacts | Recomputed prediction/metric comparison under frozen tolerance | Missing hash/version or divergence => explicit failure and difference report |
 
-`inspect` and source-bound `import` are executable in Phase 3; the other
-command names are stable planning targets. Do not expose import, fit,
+`inspect`, source-bound `import`, and local `build-features` are executable;
+the other command names are stable planning targets. `build-features` requires
+an existing complete, provenance-compatible DatasetVersion and writes
+`history-v1` snapshots to the selected SQLite store. A repeated complete build
+returns `repeated=true` without rebuilding. Do not expose import, fit,
 evaluation or activation through the analyst HTTP API.
 
 ## Reviewed source mapping contract
@@ -123,8 +126,8 @@ Preserve raw time/minute ties; do not use host-local timezone. Policy hash is
 SHA-256 of canonical UTF-8 JSON (sorted keys, separators comma/colon), recorded
 in the configuration. The inspector reports the raw mapping file SHA-256;
 the normalized M used for DatasetVersion is recorded in the separate final-byte
-review. These differ for CRLF files. Phase 3 local import is implemented;
-feature building and training remain later work.
+review. These differ for CRLF files. Phase 3 local import and Phase 4 local
+feature building are implemented; protocol freezing and training remain later work.
 
 ## ScoreRequestV2 and ScorerV2
 
@@ -152,7 +155,10 @@ wrong explanation input digest or unexpected fields. Do not clamp a
 score or substitute fixture/rules/model output on failure.
 
 The rule implementation returns ordinal_rule_score and actual fired
-conditions. The initial logistic/tree model returns
+conditions. An available rule explanation must use `method=rules`,
+`explained_scale=risk_score` and reconstruct the returned score from its
+Decimal base, contributions and remainder; an inconsistent response is
+rejected. The later logistic/tree model returns
 uncalibrated_probability_estimate: the display calls it a risk score and
 does not claim calibration. Optional future calibration requires a
 new frozen artifact/protocol with separate fit/check roles and a
@@ -160,27 +166,84 @@ calibrated_probability score_kind only after independent evidence.
 
 ## Feature replay contract
 
-The input is the completed import's event-valid facts, including facts
-whose labels are ineligible. The output is exactly one feature snapshot
-per event or an explicit unscoreable warm-up/coverage state. Replay is
-deterministic under input-row permutation. Use interpreted UTC event time
-and a half-open [t−24h,t) window. All events tied at t use the same
-history from times strictly earlier than t. Only after every tied event
-has a snapshot do their observable facts update later history.
-Future events, same-time peers, labels and label-validity indicators
-cannot affect the snapshot. Prior validation/test facts can affect
-strictly later events after their time; their labels cannot.
+### Frozen `history-v1` catalog
 
-The first 24h from observed source start are context-only warm-up and
-are excluded from the scoreable benchmark view under the initial policy.
-If source span/eligibility makes that impossible, freeze a documented
-prospective amendment before fit/selection; never pick a policy by
-favorable final-test metrics.
+The replay input is only event-valid canonical operational facts from a
+**complete** DatasetVersion. The private label table and its eligibility are
+outside this interface. `J_s=(sender_bank,sender_account)` and
+`J_r=(receiver_bank,receiver_account)` are exact bank-qualified join keys;
+the two source strings remain separate and are never converted to a predictor.
+For an event at interpreted time `t`, `H(t)` contains only event-valid facts
+whose times satisfy `t−24h <= event_time < t`, in the same DatasetVersion.
+The catalog below is frozen as `history-v1`. Each historical row is computed
+from `H(t)`; `current_*` values come from the current validated event at `t`.
+All values are available immediately before scoring that event at `t` (the
+current fields at event observation, history after the prior time group has
+been applied). No future or same-time fact is available.
+
+| Exact feature key | Canonical input fields and direction / calculation | Unit | Permitted consumer; missing or unknown meaning |
+|---|---|---|---|
+| `sender_out_count_24h` | Current `J_s`; count prior outgoing events with the same `J_s` in `H(t)`. | Integer events | R1, model, rule explanation. Full coverage with no matches = measured `0`; incomplete/unavailable coverage = null, never zero. |
+| `sender_distinct_receivers_24h` | Current `J_s`; count distinct prior `J_r` pairs among that sender's outgoing events in `H(t)`. Same account text at different banks is distinct. | Integer bank-qualified counterparties | Model and approved explanation; no R1–R3 condition. Full empty history = `0`; deficient coverage = null. |
+| `sender_paid_count_same_currency_24h` | Current `J_s`, `paid_currency`; count prior outgoing events for `J_s` whose `paid_currency` exactly equals the current paid currency. | Integer events in the named paid currency | R3, model, rule explanation. Full empty/mismatched history = `0`; deficient coverage = null. |
+| `sender_paid_sum_same_currency_24h` | Sum exact Decimal text `paid_amount` from the same prior rows selected by `sender_paid_count_same_currency_24h`; no FX or float conversion. | Decimal amount in current `paid_currency` | R3, model, rule explanation. Full zero matches = exact Decimal `0` with that currency; deficient coverage = null. |
+| `receiver_in_count_24h` | Current `J_r`; count prior incoming events with the same `J_r` in `H(t)`. | Integer events | R2, model, rule explanation. Full empty history = `0`; deficient coverage = null. |
+| `receiver_distinct_senders_24h` | Current `J_r`; count distinct prior `J_s` pairs among that receiver's incoming events in `H(t)`. | Integer bank-qualified counterparties | Model and approved explanation; no R1–R3 condition. Full empty history = `0`; deficient coverage = null. |
+| `receiver_received_count_same_currency_24h` | Current `J_r`, `received_currency`; count prior incoming events for `J_r` whose `received_currency` exactly equals the current received currency. Do not compare to `paid_currency`. | Integer events in the named received currency | Model and approved explanation; no R1–R3 condition. Full empty/mismatched history = `0`; deficient coverage = null. |
+| `receiver_received_sum_same_currency_24h` | Sum exact Decimal text `received_amount` from the same prior rows selected by `receiver_received_count_same_currency_24h`; no FX or float conversion. | Decimal amount in current `received_currency` | Model and approved explanation; no R1–R3 condition. Full zero matches = exact Decimal `0` with that currency; deficient coverage = null. |
+| `current_paid_amount` | Current `paid_amount` on the sender's paid side, exactly as validated by the reviewed mapping. | Decimal amount in `current_paid_currency` | R3, model, rule explanation. Missing/invalid value rejects the event before replay; never impute it. |
+| `current_paid_currency` | Current exact source `paid_currency`; never substitute the received currency or an ISO/FX alias. | Source currency name | R3 grouping, model, rule explanation. Missing/unsupported value rejects the event before replay. A category unseen during later model fit uses that model's frozen unknown encoding, never a new fit. |
+| `current_payment_format` | Current `payment_format` only if present in the audited source mapping; IBM v8 allows its reviewed source values. | Optional source category | Model and approved explanation; R1–R3 do not use it. A blank permitted source value is explicit null, not a guessed category. A nonblank value outside the mapping is rejected before replay; a permitted category unseen during later fit uses frozen unknown encoding. If the reviewed source lacks this role, the key is absent from that feature schema/version. |
+
+The builder alone may use `J_s`, `J_r`, transaction/case/source-row IDs,
+DatasetVersion and time for joining, sorting and snapshot lineage. The model
+and rules receive only the listed feature values plus validated current facts
+required by their boundary; no raw/encoded/hashed IDs, source-order proxy,
+label, label-eligibility flag, target copy or full-file/future aggregate is a
+predictor. Snapshot metadata retains transaction and dataset/feature version,
+event time, exclusive as-of cutoff `t`, coverage start/state, typed values,
+currency units and feature-input digest. Public UI may receive only separately
+approved v2 assessment/explanation fields, not the private snapshot or labels.
+
+### Time, coverage and scoreability
+
+Sort by interpreted UTC event time, not CSV ordinal. The window is half-open
+`[t−24h,t)`: a fact exactly at `t−24h` is included; one just earlier and all
+facts at `t` are excluded. Compute a snapshot for **every** event in a tied
+time group from the same prior history, then append the entire group's
+observable facts for strictly later groups. This makes replay independent of
+input-row permutation and future append. Earlier held-out validation/test
+facts may enter strictly later history without their labels. A valid event
+with missing or ineligible private label also enters history.
+
+Let `source_start` be the earliest trusted interpreted event time of the
+completed source. Events with `t < source_start + 24h` are context-only
+warm-up: they update later history but receive no score and enter no scoreable
+benchmark denominator. At `t = source_start + 24h`, a full preceding window
+first becomes possible. `coverage_state=full` means the completed declared
+source provides the entire window relative to this benchmark's observed
+source start, with no known missing segment. Warm-up has `incomplete` window
+coverage because its lower bound precedes `source_start`. Sparse account
+activity within that complete source is a measured zero. `incomplete` means
+some window facts may be absent because coverage starts after `t−24h` or a segment is known
+missing; numerical history values are null and no rule score is emitted.
+`unavailable` means no trustworthy completed source or coverage provenance
+can establish the window; values and score are also absent. An empty account
+history under `full` is `0`, not `incomplete` or `unavailable`. A complete
+import proves file integrity, not unobserved real-world account history.
+
+If source span/eligibility makes the initial warm-up policy unusable,
+freeze a prospective amendment before fit/selection; never choose a policy
+after inspecting favorable validation/test labels.
 
 ## RulePolicy v1
 
-All conditions use the matching current canonical transaction and
-HistoricalFeatureSnapshot. The version is frozen before label inspection:
+`rules-v1` consumes only a validated current canonical transaction and its
+matching `history-v1` HistoricalFeatureSnapshot from the same complete
+DatasetVersion, with `as_of=t` and `coverage_state=full`, after warm-up.
+Otherwise the event is **unscoreable** and no ordinal score is emitted.
+Neither private label nor eligibility can change this decision. The version
+and numeric conditions are frozen before evaluation-label inspection:
 
 | Rule | Observable condition | Contribution | Unavailable behavior |
 |---|---|---:|---|
@@ -188,13 +251,50 @@ HistoricalFeatureSnapshot. The version is frozen before label inspection:
 | R2 receiver velocity | receiver_in_count_24h >= 3 | 0.30 | Same coverage rule as R1 |
 | R3 paid amount relative to sender history | sender_paid_count_same_currency_24h >= 3 and current paid amount >= 2 × (sender_paid_sum_same_currency_24h / count) | 0.35 | If count < 3, comparison unavailable/not fired, with reason |
 
-Score is the exact sum of fired contributions, finite in [0,1].
-Use Decimal comparisons before any display conversion. The score is an
-ordinal heuristic, not a calibrated probability or guilty finding.
-Reason payloads include the actual observed count/amount/currency,
-condition, threshold, contribution and rule version. A zero score
-with complete coverage says no declared rule fired, not that risk
-is proven absent.
+R1/R2 use the exact integer counts. R3 is evaluated only when its
+same-**paid**-currency prior count is at least 3; with fewer rows it is
+`comparison_unavailable`, contributes `0`, and does **not** make an otherwise
+full-coverage event unscoreable. Compare exact Decimal values by
+`current_paid_amount * count >= 2 * sender_paid_sum_same_currency_24h`;
+this is equivalent to the two-times-mean condition without division or
+premature rounding, including equality. No binary float, FX or display
+rounding enters the comparison. Each rule fires independently. The score is
+the exact Decimal sum of fired contributions (`0.35`, `0.30`, `0.35`), finite
+and bounded in `[0,1]`; it is an **ordinal rule score**, not a calibrated
+probability or a guilty finding. A full-coverage cold start can score `0.00`.
+Reasons record `rule_id`, observed count and exact amount/currency as applicable,
+comparison and threshold, `fired` or `comparison_unavailable` state,
+contribution and `rules-v1`. A zero means no declared rule
+fired, not that risk is proven absent.
+
+The machine policy identifier is `rules-v1` with feature catalog
+`history-v1`. Its policy digest is SHA-256 of the following JSON object
+serialized as UTF-8 with sorted keys, `ensure_ascii=True`, compact comma/colon
+separators and no terminal newline. Weights are decimal **strings**; the
+time/coverage semantics are supplied by the versioned `history-v1` contract.
+
+```json
+{"aggregation":"sum_fired_weights_exact_decimal","coverage_required":"full_after_source_start_plus_24h","feature_version":"history-v1","r1":{"feature":"sender_out_count_24h","minimum":3,"weight":"0.35"},"r2":{"feature":"receiver_in_count_24h","minimum":3,"weight":"0.30"},"r3":{"comparison":"current_times_count_gte_multiplier_times_sum_exact_decimal","count":"sender_paid_count_same_currency_24h","current":"current_paid_amount","minimum_count":3,"multiplier":"2","sum":"sender_paid_sum_same_currency_24h","weight":"0.35","when_count_below_minimum":"comparison_unavailable_zero_contribution"},"rule_version":"rules-v1","score_kind":"ordinal_rule_score"}
+```
+
+Policy SHA-256: `a281d38b8777b53882f4515dda7de927ff64dce43188e99c258419b1d605b5ce`.
+Any rule threshold, weight, input or catalog change requires a new policy/version and digest before
+evaluation; no label-derived tuning is permitted under `rules-v1`.
+
+### Hand-computed synthetic examples frozen for T018/T019/T023
+
+These are authored examples, not IBM observations or executed replay. Use
+`source_start = 2026-01-01 00:00 UTC` and complete, gap-free source coverage
+unless a row explicitly says otherwise. Accounts are `(bank,account)` pairs.
+
+| Example | Earlier facts / current event | Expected snapshot and rules |
+|---|---|---|
+| Window edges | At `t=2026-01-02 12:00`, sender `A:1` has outgoing facts at `t−24h−1min`, `t−24h`, and `t−1min`; another is at `t`. | Only the latter two enter `[t−24h,t)`: `sender_out_count_24h=2`; the `t` peer does not. R1 false. |
+| Tied peers and currency direction | Before `t=2026-01-02 12:00`, `A:1` sent `10`, `20`, `30` Euro at 11:00/11:10/11:20 to `B:7`, `C:7`, `D:8`; `R:1` received `7`, `9`, `11` US Dollar from `U:1`, `V:1`, `W:2` at 11:25/11:30/11:35. Two current `A:1 → R:1` peers at `t` pay `40` and `39.999999` Euro and receive US Dollar. | Both peers see sender counts `3/3`, distinct receivers `3`, paid sum `60` Euro; receiver counts `3/3`, distinct senders `3`, received sum `27` US Dollar. Neither sees the other. R1/R2 fire for both. R3 fires at exact `40*3 = 2*60`, so score `1.00`; at `39.999999*3 < 120`, R3 does not fire, so score `0.65`. The tied facts enter only later history. |
+| Count threshold and unavailable R3 | With only two prior `A:1` outgoing Euro events (`10`, `20`) and two prior incoming `R:1` events in a full window, current `A:1 → R:1` pays `40` Euro. | Sender/receiver counts `2/2`: R1/R2 false; same-paid count `2`, sum `30` Euro; R3 `comparison_unavailable` even though `40 >= 2*(30/2)`. Score `0.00`. The third prior event changes counts to `3` and permits each threshold check. |
+| Warm-up boundary | At `2026-01-01 23:59` a valid event occurs; at `2026-01-02 00:00` another occurs. | First is context-only and unscoreable; it still enters later history. Second is at `source_start+24h` and can be `full`; a fact at `source_start` is included at its lower window boundary. |
+| Measured zero versus missing history | At `2026-01-02 12:00`, new `NEW:1 → NEW:2` has no prior matching facts; compare full coverage with a known missing preceding segment and with unknown coverage provenance. | Under `full`, all counts and currency sums are measured `0`, R1/R2 false, R3 unavailable, score `0.00`. Under `incomplete` or `unavailable`, historical values are null and no score exists. |
+| Private label independence | One of the three prior `A:1` facts above has an empty/invalid private label; change only that label or append a later event at `t+1min`. | All three valid facts remain in prior history; both tied peers retain the same snapshot and score. Neither private label nor eligibility nor future event is a feature. |
 
 ## Evaluation protocol contract
 

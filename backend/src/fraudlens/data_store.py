@@ -6,6 +6,7 @@ separate table and an explicit offline role read boundary.
 import json
 import re
 import sqlite3
+from datetime import datetime
 from pathlib import Path
 
 from fraudlens.data_contracts import (
@@ -407,3 +408,199 @@ class DatasetStore:
                 'event_rejected': row[1], 'label_eligible': eligible,
                 'label_ineligible': valid - eligible, 'positives': positives,
                 'negatives': negatives}
+
+    def _ensure_feature_tables(self):
+        """Add the feature projection lazily; opening an import never changes it."""
+        with self.connection:
+            self.connection.execute('''
+                CREATE TABLE IF NOT EXISTS feature_builds (
+                    version TEXT NOT NULL REFERENCES dataset_versions(id),
+                    feature_version TEXT NOT NULL,
+                    status TEXT NOT NULL CHECK(status IN ('staged','complete','failed')),
+                    snapshot_count INTEGER NOT NULL DEFAULT 0,
+                    PRIMARY KEY(version, feature_version)
+                )''')
+            self.connection.execute('''
+                CREATE TABLE IF NOT EXISTS feature_snapshots (
+                    version TEXT NOT NULL,
+                    feature_version TEXT NOT NULL,
+                    transaction_id TEXT NOT NULL,
+                    event_time TEXT NOT NULL,
+                    as_of TEXT NOT NULL,
+                    coverage_start TEXT NOT NULL,
+                    coverage_state TEXT NOT NULL,
+                    scoreable INTEGER NOT NULL,
+                    feature_input_digest TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    PRIMARY KEY(version, feature_version, transaction_id),
+                    FOREIGN KEY(version, feature_version)
+                        REFERENCES feature_builds(version, feature_version)
+                )''')
+
+    def iter_canonical_events(self, version: str):
+        """Stream complete operational facts by event time, never private labels."""
+        if self.version_status(version) != 'complete':
+            raise ValueError('dataset_incomplete')
+        cursor = self.connection.execute('''
+            SELECT transaction_id, case_id, payload_json FROM operational_events
+            WHERE version=?
+            ORDER BY CAST(json_extract(payload_json, '$.event_time_epoch_ns') AS INTEGER),
+                     transaction_id''', (version,))
+        for transaction_id, case_id, payload in cursor:
+            if payload is None:
+                raise ValueError('dataset_incompatible')
+            facts = json.loads(payload)
+            yield CanonicalTransaction(
+                transaction_id=transaction_id, case_id=case_id,
+                source_ordinal=facts['source_ordinal'],
+                event_time_raw=facts['event_time_raw'],
+                event_time_utc=datetime.fromisoformat(facts['event_time_utc']),
+                event_time_epoch_ns=facts['event_time_epoch_ns'],
+                time_basis=facts['time_basis'],
+                sender_bank=facts['sender_bank'], sender_account=facts['sender_account'],
+                receiver_bank=facts['receiver_bank'],
+                receiver_account=facts['receiver_account'],
+                sender_join_key=bytes.fromhex(facts['sender_join_key']),
+                receiver_join_key=bytes.fromhex(facts['receiver_join_key']),
+                paid_amount=facts['paid_amount'], paid_currency=facts['paid_currency'],
+                received_amount=facts['received_amount'],
+                received_currency=facts['received_currency'],
+                payment_format=facts['payment_format'],
+                event_fact_digest=bytes.fromhex(facts['event_fact_digest']))
+
+    def feature_snapshot_count(self, version: str, feature_version: str = 'history-v1'):
+        """Only completed builds are visible, including after interrupted processes."""
+        if not self._feature_tables_exist():
+            return None
+        row = self.connection.execute('''
+            SELECT snapshot_count FROM feature_builds
+            WHERE version=? AND feature_version=? AND status='complete' ''',
+            (version, feature_version)).fetchone()
+        return row[0] if row else None
+
+    def _feature_tables_exist(self):
+        return self.connection.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='feature_builds'"
+        ).fetchone() is not None
+
+    def build_features(self, version: str, *, feature_version: str = 'history-v1') -> dict:
+        """Stage bounded snapshot batches and publish only after full reconciliation."""
+        from fraudlens.feature_history import FEATURE_VERSION, iter_feature_snapshots
+
+        if feature_version != FEATURE_VERSION:
+            raise ValueError('dataset_incompatible')
+        row = self._status(version)
+        if row is None or row[0] != 'complete':
+            raise ValueError('dataset_incomplete')
+        provenance = row[2:]
+        if (not all(isinstance(value, str) and re.fullmatch(r'[0-9a-f]{64}', value)
+                    for value in provenance)
+                or derive_dataset_version(*(bytes.fromhex(value)
+                                            for value in provenance)) != version):
+            raise ValueError('dataset_incompatible')
+        self._ensure_feature_tables()
+        existing = self.connection.execute('''
+            SELECT status,snapshot_count FROM feature_builds
+            WHERE version=? AND feature_version=?''', (version, feature_version)).fetchone()
+        if existing and existing[0] == 'complete':
+            actual = self.connection.execute('''
+                SELECT COUNT(*) FROM feature_snapshots
+                WHERE version=? AND feature_version=?''',
+                (version, feature_version)).fetchone()[0]
+            if actual != existing[1] or actual != self.event_count(version):
+                raise ValueError('dataset_incompatible')
+            return {'snapshot_count': existing[1], 'repeated': True}
+        with self.connection:
+            self.connection.execute('''
+                INSERT INTO feature_builds(version,feature_version,status,snapshot_count)
+                VALUES (?,?,'staged',0)
+                ON CONFLICT(version,feature_version)
+                DO UPDATE SET status='staged',snapshot_count=0''',
+                (version, feature_version))
+            self.connection.execute('''
+                DELETE FROM feature_snapshots WHERE version=? AND feature_version=?''',
+                (version, feature_version))
+        count = 0
+        batch = []
+        try:
+            events = self.iter_canonical_events(version)
+            first = next(events, None)
+            if first is not None:
+                from itertools import chain
+
+                for snapshot in iter_feature_snapshots(
+                        chain((first,), events), dataset_version=version,
+                        coverage_start=first.event_time_utc):
+                    values = {key: str(value) if hasattr(value, 'as_tuple') else value
+                              for key, value in snapshot.feature_values.items()}
+                    payload = json.dumps(values, sort_keys=True, separators=(',', ':'))
+                    batch.append((version, feature_version, snapshot.transaction_id,
+                                  snapshot.event_time.isoformat(), snapshot.as_of.isoformat(),
+                                  snapshot.coverage_start.isoformat(), snapshot.coverage_state,
+                                  int(snapshot.scoreable), snapshot.feature_input_digest,
+                                  snapshot.created_at.isoformat(), payload))
+                    count += 1
+                    if len(batch) >= _BATCH_SIZE:
+                        self._write_feature_batch(batch)
+                        batch.clear()
+            self._write_feature_batch(batch)
+            if count != self.event_count(version):
+                raise ValueError('feature_count_mismatch')
+            with self.connection:
+                self.connection.execute('''
+                    UPDATE feature_builds SET status='complete',snapshot_count=?
+                    WHERE version=? AND feature_version=? AND status='staged' ''',
+                    (count, version, feature_version))
+            return {'snapshot_count': count, 'repeated': False}
+        except Exception:
+            with self.connection:
+                self.connection.execute('''
+                    DELETE FROM feature_snapshots WHERE version=? AND feature_version=?''',
+                    (version, feature_version))
+                self.connection.execute('''
+                    UPDATE feature_builds SET status='failed',snapshot_count=0
+                    WHERE version=? AND feature_version=? AND status='staged' ''',
+                    (version, feature_version))
+            raise
+
+    def _write_feature_batch(self, batch):
+        if batch:
+            with self.connection:
+                self.connection.executemany('''
+                    INSERT INTO feature_snapshots(
+                        version,feature_version,transaction_id,event_time,as_of,
+                        coverage_start,coverage_state,scoreable,feature_input_digest,
+                        created_at,payload_json)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?)''', batch)
+
+    def iter_feature_snapshots(self, version: str, feature_version: str = 'history-v1'):
+        """Return only published feature snapshots; preserve Decimal value types."""
+        from decimal import Decimal
+
+        from fraudlens.feature_history import HistoricalFeatureSnapshot
+
+        if self.feature_snapshot_count(version, feature_version) is None:
+            raise ValueError('feature_build_incomplete')
+        cursor = self.connection.execute('''
+            SELECT transaction_id,event_time,as_of,coverage_start,coverage_state,
+                   scoreable,feature_input_digest,created_at,payload_json
+            FROM feature_snapshots WHERE version=? AND feature_version=?
+            ORDER BY event_time,transaction_id''', (version, feature_version))
+        decimal_keys = {'sender_paid_sum_same_currency_24h',
+                        'receiver_received_sum_same_currency_24h', 'current_paid_amount'}
+        for (transaction_id, event_time, as_of, coverage_start, state,
+             scoreable, digest, created_at, payload) in cursor:
+            values = json.loads(payload)
+            for key in decimal_keys:
+                if values[key] is not None:
+                    values[key] = Decimal(values[key])
+            yield HistoricalFeatureSnapshot(
+                transaction_id=transaction_id, dataset_version=version,
+                feature_version=feature_version,
+                event_time=datetime.fromisoformat(event_time),
+                as_of=datetime.fromisoformat(as_of),
+                coverage_start=datetime.fromisoformat(coverage_start),
+                coverage_state=state, scoreable=bool(scoreable),
+                feature_values=values, feature_input_digest=digest,
+                created_at=datetime.fromisoformat(created_at))
