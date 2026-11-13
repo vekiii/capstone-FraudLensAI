@@ -2,6 +2,28 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## Pretrained artifact compatibility assessed — 2026-11-13
+
+On `model-implementations` from `b8643a42b7a1bed8f5b9199ddb31826c34d3591e`,
+[artifact investigation](evidence/tasks/feature-002-pretrained-model.md)
+verified ApexFi's downloadable native IEEE-CIS LightGBM bytes and fitted
+preprocessing bytes by SHA-256, and the alternative repository's committed
+LightGBM/preprocessor blobs without deserializing them. The shejz reference
+has no pretrained weights in tracked files or releases. The 446-input ApexFi
+and 432-raw-input/2,703-output alternative models require IEEE card, device,
+identity, Vesta and other features unavailable in IBM HI-Small `history-v1`.
+Their `isFraud` target is not IBM `Is Laundering`. **No candidate is suitable
+for direct IBM-backed inference.** ApexFi is a conditional candidate only
+for a separately labeled IEEE-CIS demonstration. No training, inference,
+evaluation or holdout access occurred; T029–T036 remain open. Existing
+uncommitted T029 drafts and the unrelated evidence edit were preserved.
+
+One concrete next step: **team scope decision** on a separate IEEE-CIS-only
+demonstration versus an IBM-compatible model path, after license/provenance
+review. The [proposal](specs/002-data-and-risk-scoring/proposals/pretrained-model-integration.md)
+remains pending; do not implement IBM integration or amend Phase 5 contracts
+before actual approval.
+
 ## Pretrained model direction proposed — 2026-11-13
 
 The branch `model-implementations` was already active at
