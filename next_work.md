@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## Replacement pretrained IBM model audit - 2026-11-13
+
+The [Kluey and Daemons-Q candidate audit](evidence/tasks/feature-002-replacement-model.md) verified downloadable native XGBoost JSON (49 ordered features) and ONNX (114 ordered features) weight bytes at pinned revisions. **Both are BLOCKED** for the approved IBM `history-v1` scorer: Kluey requires an absent account/entity file, fitted joblib encoders and incompatible lifetime/graph state; Daemons-Q requires fitted account aggregates and batch/window graph features that can reach 17 minutes past a transaction. Daemons-Q bank-qualified account handling and exact training cutoff remain unverified. Both publishers use IBM HI-Small, so our evaluation independence is unproven. No model was loaded, no joblib was downloaded or deserialized, no records were scored, and no original T029-T036 task status changed. Existing untracked T029 drafts remain preserved.
+
+One concrete next action: audit another already-trained IBM laundering artifact with a complete immutable preprocessing manifest, bank-qualified identity, strict point-in-time `history-v1` features and documented training-row exposure; stop loader/inference work until a candidate meets those gates.
+
 ## Phase 5 pretrained reconciliation - 2026-11-13
 
 The [Phase 5 reconciliation](evidence/tasks/feature-002-pretrained-final-review.md#phase-5-task-reconciliation---2026-11-13) keeps T026–T028 complete and T029–T036 open. The team-approved pretrained direction has **no recorded replacement tasks or waivers**. Local FraudSentinel model, joblib and metrics hashes match prior evidence, but its graph features are incompatible with the approved `history-v1` identity/time policy; safe preprocessing, a real manifest, loader and adapter remain absent. Real inference: 0 transactions scored. Independent model evaluation: BLOCKED, with exact publisher/local row overlap unverified. Controlled protocol and Foundation/rules checks passed 102/102; pretrained loader 30 failures/3 passes and adapter 36 failures/1 pass remain interface RED; Ruff passed. No raw dataset, downloaded model binary, private-label source or common secret pattern was found in tracked files; existing untracked T029 drafts were preserved.
