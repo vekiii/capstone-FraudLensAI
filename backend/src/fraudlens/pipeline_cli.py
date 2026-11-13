@@ -195,7 +195,8 @@ def main(argv=None):
         if args is not None and args.command in {'import', 'build-features'} and isinstance(exc, ValueError) and str(exc) in {
                 'source_binding_mismatch', 'source_mismatch', 'mapping_mismatch',
                 'mapping_approval_mismatch', 'row_reconciliation_failed',
-                'dataset_incomplete', 'dataset_incompatible', 'feature_count_mismatch'}:
+                'dataset_incomplete', 'dataset_incompatible', 'feature_count_mismatch',
+                'feature_build_in_progress'}:
             code = str(exc)
         else:
             code = ('invalid_arguments' if isinstance(exc, ValueError) else

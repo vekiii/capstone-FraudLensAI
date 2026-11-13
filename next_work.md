@@ -2,6 +2,31 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: 002-data-and-risk-scoring; Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## T020 concurrent feature-build correction — 2026-11-13
+
+[Original request](prompts/development/002-t020-concurrent-feature-build-fix-2026-11-13.md);
+[RED reproduction and GREEN evidence](evidence/tasks/feature-002-feature-rules.md#t020-concurrent-feature-build-correction--2026-11-13).
+Started from published Phase 4 HEAD `0f5ad9ac0b04cc406e3c19b0f1934da4cc29d10d`
+on `002-data-and-risk-scoring`, with a clean tree. A two-connection synthetic
+regression reproduced the T020 race: published 3, actual 0, retry
+`dataset_incompatible` after the first attempt erased the second's complete
+snapshots. A per-database, per-version OS lock now gives an overlapping attempt
+the controlled `feature_build_in_progress` result and preserves the owner's
+complete build. The corrected test confirms three readable snapshots and a
+successful idempotent retry; the CLI also reports the controlled error.
+Interrupted/abandoned staged recovery and 512-row batch behavior remain covered.
+Targeted SQLite/CLI **20 passed**, full backend **574 passed** with one existing
+warning, Ruff and `git diff --check` exited 0. Before publication, a further
+[separate-CLI-process regression](evidence/tasks/feature-002-feature-rules.md#separate-cli-process-verification-and-publication-gate--2026-11-13)
+confirmed the in-progress response, three readable snapshots, and a successful
+retry; the updated targeted suite passed **21** and the full backend **575**.
+Snapshot content and format are unchanged, so the IBM replay was not repeated;
+the original and working IBM databases remain local. T017's stale statement
+about open T018/T019 was removed. Publication details are recorded in Git.
+
+One concrete next step: start **T026** RED tests for chronological partitioning
+and protocol eligibility, keeping private labels outside scoring inputs.
+
 ## Phase 4 final technical review — 2026-11-13
 
 [Original request](prompts/development/002-phase-4-final-review-2026-11-13.md);

@@ -218,3 +218,42 @@ SELECT COUNT(*) FROM feature_snapshots WHERE (event_time<'2022-09-02T00:00:00+00
 Reviewed file SHA-256 values after the scorer correction: `feature_history.py` `7fecb0a303918b5ed2c21997a3a20ef2052f17a30f6a8f58c23a3bebab62663e`; `rule_scoring.py` `2401bc322888d505b1d6ce8d9683c1900ef869fa360d4aeeaa1028c4aa3f679b`; `data_contracts.py` `f0822718817d10d344913ceab4d95ad0acdfe82f79bc69ce41e4cbe4b4b447b8`; `data_store.py` `9212c5ec3bff4968dd41a9baea0ffd4aa156400712b68045b5fc9b215b817b7e`. The current offline-contract raw SHA-256 is `2654f4e2bab0a17b15bc71e885307dc44912159047b8f764a0a444ceb365ee3d`; the historical T017 value `359c5e16292d5475cb64e559a30ecf1ecf682557c7d5445d13744d8e00a8dbeb` remains an earlier-byte record. This Phase 4 documentation addendum changes that file's bytes without changing its frozen catalog or rule policy. The approved Phase 3 source/mapping hashes remain in their earlier evidence.
 
 Technical conclusion: T017–T025 satisfy the rules-only Phase 4 criteria after the targeted boundary fix and are **technically ready for a later reviewed push**. T026 is the first open task. No trained-model SC-003 completion, scientific evaluation, completed scored run, v2 API/frontend integration, team signoff for this final review, commit or push is inferred.
+
+## T020 concurrent feature-build correction — 2026-11-13
+
+- [Original correction prompt](../../prompts/development/002-t020-concurrent-feature-build-fix-2026-11-13.md). Started on `002-data-and-risk-scoring` at published HEAD `0f5ad9ac0b04cc406e3c19b0f1934da4cc29d10d` with a clean working tree. This is a synthetic SQLite correction after the Phase 4 publication above; the historical review and its hashes remain unchanged.
+- Confirmed fault: two `DatasetStore` connections could build the same `(dataset_version, feature_version)` concurrently. The second reset the first `staged` row and published three snapshots. The first then hit a `UNIQUE` constraint and its unconditional exception handler deleted the second's snapshots. The metadata still claimed `complete`, `snapshot_count=3`, while the actual row count was `0`; retry returned `dataset_incompatible`.
+- The new deterministic interleaving test calls the second connection inside the first connection's batch callback, after the first has entered `staged`. Before correction, `.venv/bin/python -m pytest -q --tb=short backend/tests/integration/test_feature_store.py -k concurrent_build_cannot_erase_published_snapshots` exited **1**: **1 failed**, `published=3, actual=0, retry=dataset_incompatible`, with the first attempt's `UNIQUE constraint failed: feature_snapshots.version, feature_snapshots.feature_version, feature_snapshots.transaction_id`. This is the intended RED reason.
+- Fix: a nonblocking operating-system file lock keyed by resolved SQLite path plus `(dataset version, feature version)` surrounds the entire build, including cleanup and publication. An overlapping caller gets `feature_build_in_progress` (CLI exit 2 with that error code). The lock is released by the OS if the owner exits, so an abandoned `staged` row remains recoverable on the next attempt. The lock file stays in place to avoid unlink races; its contents do not enter the database or snapshots. Only the owner holding the lock can write or clean that key. Snapshot schema, payload, digest, ordering and `history-v1` values are unchanged; no IBM replay is required.
+- After correction, the interleaving test verifies the published count and actual rows are both **3**, all three snapshots are readable, and retry returns `{'snapshot_count': 3, 'repeated': True}`. A second test verifies the controlled CLI response while the owner is staged. Existing interruption, abandoned-stage recovery, bounded 512-row batches and same-version repeat checks remain in the SQLite suite.
+
+| Executed command from repository root | Exit | Actual result |
+|---|---:|---|
+| `.venv/bin/python -m pytest -q --tb=short backend/tests/integration/test_feature_store.py -k concurrent_build_cannot_erase_published_snapshots` before fix | 1 | 1 intended RED failure with published 3, actual 0, retry `dataset_incompatible`. |
+| Same targeted command after fix | 0 | 1 passed, 5 deselected (before the added CLI-specific case). |
+| `.venv/bin/python -m pytest -q backend/tests/integration/test_feature_store.py` after both regressions | 0 | 7 passed, including interruption/restart, abandoned-stage recovery, bounded batches and CLI idempotence. |
+| `.venv/bin/python -m pytest -q backend/tests/integration/test_feature_store.py backend/tests/integration/test_data_store.py` | 0 | **20 passed** across feature SQLite/CLI and existing datastore integration. |
+| `.venv/bin/python -m pytest -q backend/tests` | 0 | **574 passed**, one pre-existing Starlette/httpx deprecation warning. |
+| `.venv/bin/ruff check backend/src backend/tests` | 0 | `All checks passed!` |
+| `git diff --check` | 0 | No tracked-diff whitespace errors. |
+| `.venv/bin/python --version` | 0 | `Python 3.14.7`. |
+| `stat -f '%N %z bytes' data/processed/feature-002-ibm-v8.sqlite data/processed/feature-002-ibm-v8-rules-work.sqlite` | 0 | Both existing IBM databases remain: **7,559,012,352** and **12,443,103,232** bytes. Neither was opened for a new build/import. |
+
+The lock changes build coordination only; no snapshot content or format changed.
+The full IBM replay was therefore not rerun. T026 remains the first open task;
+this correction was not committed or pushed in this session.
+
+### Separate CLI process verification and publication gate — 2026-11-13
+
+[Original publication request](../../prompts/development/002-t020-concurrent-feature-build-publication-2026-11-13.md). The original regression above used two connections in one Python process. A new synthetic integration case starts two separate `python -m fraudlens.pipeline_cli build-features` processes against the same temporary SQLite file. A test-only `sitecustomize.py` in `tmp_path` pauses the first process after its staged row exists. The second CLI exits **2** with `feature_build_in_progress`; releasing the first gives a complete build with **3** snapshots. A new connection reads all 3 rows, and a third CLI process reports `repeated: true` with the same count. The hook and SQLite database are temporary, not repository artifacts. The published Phase 4 HEAD and remote both initially resolved to `0f5ad9ac0b04cc406e3c19b0f1934da4cc29d10d`.
+
+| Executed command from repository root | Exit | Actual result |
+|---|---:|---|
+| `git ls-remote --heads origin 002-data-and-risk-scoring` | 0 | Remote `0f5ad9ac0b04cc406e3c19b0f1934da4cc29d10d`; equal to starting local HEAD. Initial sandbox attempt exited 128 because DNS was unavailable; authorized network retry succeeded. |
+| `.venv/bin/python -m pytest -q backend/tests/integration/test_feature_store.py -k separate_cli_processes` | 0 | **1 passed, 7 deselected**; separate CLI processes, controlled overlap, readable complete snapshots, idempotent retry. |
+| `.venv/bin/python -m pytest -q backend/tests/integration/test_feature_store.py backend/tests/integration/test_data_store.py` | 0 | **21 passed**. |
+| `.venv/bin/python -m pytest -q backend/tests` | 0 | **575 passed**, one existing Starlette/httpx deprecation warning. |
+| `.venv/bin/ruff check backend/src backend/tests` | 0 | `All checks passed!` |
+| `git diff --check` | 0 | No whitespace errors. |
+
+This verification changes the test suite and documentation only; the existing lock fix and snapshot format are unchanged. T026 remains the first open task.

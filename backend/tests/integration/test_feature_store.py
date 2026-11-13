@@ -3,8 +3,10 @@
 import hashlib
 import json
 import os
+import sqlite3
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import pytest
@@ -75,6 +77,149 @@ def test_cli_build_features_complete_and_idempotent(tmp_path, capsys):
     assert len(snapshots) == 3
     assert snapshots[1].feature_values['sender_paid_sum_same_currency_24h'] == 10
     reopened.close()
+
+
+def test_concurrent_build_cannot_erase_published_snapshots(tmp_path, monkeypatch):
+    path = tmp_path / 'shared.sqlite'
+    first = DatasetStore(path)
+    version = seed(first)
+    second = DatasetStore(path)
+    original = first._write_feature_batch
+    interleaved = []
+
+    def build_second_while_first_is_staged(batch):
+        assert first.connection.execute('''
+            SELECT status FROM feature_builds WHERE version=? AND feature_version=?
+            ''', (version, 'history-v1')).fetchone() == ('staged',)
+        try:
+            interleaved.append(second.build_features(version))
+        except ValueError as exc:
+            interleaved.append(str(exc))
+        original(batch)
+
+    monkeypatch.setattr(first, '_write_feature_batch', build_second_while_first_is_staged)
+    first_error = None
+    try:
+        first.build_features(version)
+    except sqlite3.IntegrityError as exc:
+        first_error = str(exc)
+    published = first.feature_snapshot_count(version)
+    actual = first.connection.execute('''
+        SELECT COUNT(*) FROM feature_snapshots
+        WHERE version=? AND feature_version=?''', (version, 'history-v1')).fetchone()[0]
+    try:
+        retry = second.build_features(version)
+    except ValueError as exc:
+        retry = str(exc)
+    assert published == actual == 3, (
+        f'published={published}, actual={actual}, retry={retry}, first_error={first_error}')
+    assert interleaved == ['feature_build_in_progress']
+    assert retry == {'snapshot_count': 3, 'repeated': True}
+    assert len(list(second.iter_feature_snapshots(version))) == 3
+    first.close()
+    second.close()
+
+
+def test_cli_reports_build_in_progress_without_erasing_owner(tmp_path, monkeypatch,
+                                                             capsys):
+    path = tmp_path / 'cli-shared.sqlite'
+    owner = DatasetStore(path)
+    version = seed(owner)
+    original = owner._write_feature_batch
+
+    def attempt_cli_while_owner_is_staged(batch):
+        assert main(cli_args(path, version)) == 2
+        assert json.loads(capsys.readouterr().out) == {
+            'status': 'failed', 'error_codes': ['feature_build_in_progress']}
+        original(batch)
+
+    monkeypatch.setattr(owner, '_write_feature_batch', attempt_cli_while_owner_is_staged)
+    assert owner.build_features(version) == {'snapshot_count': 3, 'repeated': False}
+    assert len(list(owner.iter_feature_snapshots(version))) == 3
+    owner.close()
+
+
+def test_separate_cli_processes_preserve_completed_build(tmp_path):
+    path = tmp_path / 'process-shared.sqlite'
+    store = DatasetStore(path)
+    version = seed(store)
+    store.close()
+    hook_dir = tmp_path / 'hook'
+    hook_dir.mkdir()
+    staged = tmp_path / 'staged.marker'
+    release = tmp_path / 'release.marker'
+    (hook_dir / 'sitecustomize.py').write_text('''
+import os
+import time
+from pathlib import Path
+from fraudlens.data_store import DatasetStore
+
+original = DatasetStore._write_feature_batch
+
+def pause_after_stage(self, batch):
+    Path(os.environ['FRAUDLENS_STAGED_MARKER']).write_text('staged')
+    deadline = time.monotonic() + 15
+    while not Path(os.environ['FRAUDLENS_RELEASE_MARKER']).exists():
+        if time.monotonic() > deadline:
+            raise TimeoutError('test owner was not released')
+        time.sleep(0.01)
+    return original(self, batch)
+
+DatasetStore._write_feature_batch = pause_after_stage
+''')
+    command = [sys.executable, '-m', 'fraudlens.pipeline_cli',
+               *cli_args(path, version)]
+    base_env = {**os.environ, 'PYTHONPATH': str(ROOT / 'backend/src')}
+    first_env = {**base_env,
+                 'PYTHONPATH': os.pathsep.join((str(hook_dir), base_env['PYTHONPATH'])),
+                 'FRAUDLENS_STAGED_MARKER': str(staged),
+                 'FRAUDLENS_RELEASE_MARKER': str(release)}
+    owner = subprocess.Popen(command, cwd=ROOT, env=first_env,
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             text=True)
+    try:
+        deadline = time.monotonic() + 10
+        while not staged.exists():
+            assert owner.poll() is None, 'first CLI exited before staging'
+            assert time.monotonic() < deadline, 'first CLI did not reach staged build'
+            time.sleep(0.01)
+        observer = DatasetStore(path)
+        assert observer.connection.execute('''
+            SELECT status FROM feature_builds WHERE version=? AND feature_version=?
+            ''', (version, 'history-v1')).fetchone() == ('staged',)
+        observer.close()
+        overlapping = subprocess.run(command, cwd=ROOT, env=base_env,
+                                     capture_output=True, text=True, timeout=10,
+                                     check=False)
+        assert overlapping.returncode == 2, overlapping.stderr
+        assert json.loads(overlapping.stdout) == {
+            'status': 'failed', 'error_codes': ['feature_build_in_progress']}
+        release.write_text('continue')
+        owner_stdout, owner_stderr = owner.communicate(timeout=10)
+        assert owner.returncode == 0, owner_stderr
+        assert json.loads(owner_stdout) == {
+            'status': 'complete', 'dataset_version': version,
+            'feature_version': 'history-v1', 'snapshot_count': 3,
+            'repeated': False}
+        reopened = DatasetStore(path)
+        assert reopened.feature_snapshot_count(version) == 3
+        assert reopened.connection.execute('''
+            SELECT COUNT(*) FROM feature_snapshots
+            WHERE version=? AND feature_version=?
+            ''', (version, 'history-v1')).fetchone()[0] == 3
+        assert len(list(reopened.iter_feature_snapshots(version))) == 3
+        reopened.close()
+        retry = subprocess.run(command, cwd=ROOT, env=base_env,
+                               capture_output=True, text=True, timeout=10,
+                               check=False)
+        assert retry.returncode == 0, retry.stderr
+        assert json.loads(retry.stdout)['repeated'] is True
+        assert json.loads(retry.stdout)['snapshot_count'] == 3
+    finally:
+        release.write_text('continue')
+        if owner.poll() is None:
+            owner.terminate()
+            owner.communicate(timeout=10)
 
 
 def test_cli_rejects_staged_and_incompatible_versions(tmp_path, capsys):

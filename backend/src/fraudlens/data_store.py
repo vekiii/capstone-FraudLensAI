@@ -3,11 +3,20 @@
 No HTTP or CLI import surface is exposed here. Private evaluation labels use a
 separate table and an explicit offline role read boundary.
 """
+import errno
+import hashlib
 import json
+import os
 import re
 import sqlite3
+from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
+
+if os.name == 'nt':
+    import msvcrt
+else:
+    import fcntl
 
 from fraudlens.data_contracts import (
     CanonicalTransaction,
@@ -21,6 +30,40 @@ _VERSION_ID = re.compile(r'dv_[0-9a-f]{64}\Z')
 _TX_ID = re.compile(r'D[0-9a-f]{32}\Z')
 _CASE_ID = re.compile(r'C[0-9a-f]{32}\Z')
 _BATCH_SIZE = 512
+
+
+@contextmanager
+def _feature_build_lock(path: Path, version: str, feature_version: str):
+    """Serialize one versioned build, including its cleanup, across connections.
+
+    The OS releases the lock after a killed process, so a later call can
+    recover its abandoned staged row. Keep the lock file to avoid unlink races.
+    """
+    key = hashlib.sha256(f'{version}\0{feature_version}'.encode()).hexdigest()[:16]
+    database = path.resolve()
+    lock_path = database.with_name(f'{database.name}.feature-{key}.lock')
+    with lock_path.open('a+b') as handle:
+        if os.name == 'nt' and lock_path.stat().st_size == 0:
+            handle.write(b'\0')
+            handle.flush()
+        handle.seek(0)
+        try:
+            if os.name == 'nt':
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as exc:
+            if exc.errno in {errno.EACCES, errno.EAGAIN}:
+                raise ValueError('feature_build_in_progress') from exc
+            raise
+        try:
+            yield
+        finally:
+            if os.name == 'nt':
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
 
 
 class DatasetStore:
@@ -485,6 +528,10 @@ class DatasetStore:
         ).fetchone() is not None
 
     def build_features(self, version: str, *, feature_version: str = 'history-v1') -> dict:
+        with _feature_build_lock(self.path, version, feature_version):
+            return self._build_features_locked(version, feature_version=feature_version)
+
+    def _build_features_locked(self, version: str, *, feature_version: str) -> dict:
         """Stage bounded snapshot batches and publish only after full reconciliation."""
         from fraudlens.feature_history import FEATURE_VERSION, iter_feature_snapshots
 
