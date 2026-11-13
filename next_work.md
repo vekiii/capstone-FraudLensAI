@@ -1,5 +1,31 @@
 # Next work - FraudLens AI
 
+## Current feature 003 setup handoff - 2026-11-13
+Branch feature03; phase-1 baseline fd6d724b83a3a35cee9bf821651e56ffc269b2f9.
+T001-T004 complete. Isolated investigation settings/package, documented .env.example,
+81 configuration tests and runtime/evaluation data policies delivered.
+Actual RED: 81 executed failures at unimplemented importable config boundary.
+GREEN: 81 passed; foundation startup 8 passed; full backend 391 passed; Ruff PASS.
+Runtime: Python 3.14.3, uv 0.10.9, Node 24.20.0, npm 11.19.0. Existing locked sync
+succeeded; no dependency/lockfile, foundation APP_MODE, ML or frontend modifications.
+Ignore boundaries verified; generated DB/index/evaluation/temp outputs local only.
+Original untracked feature3_tasks_prompt.md preserved. No active technical blocker.
+Human review, provider model/access/corpus and producer review remain pending.
+No provider/SDK/store/retrieval/workflow/UI/CLI/evaluation implementation or execution.
+No Git publication performed.
+
+Evidence: [setup](evidence/tasks/feature-003-setup.md),
+[handoff](evidence/tasks/feature-003-phase-01-handoff.md),
+[original prompt](prompts/development/003-investigation-phase-01.md).
+
+**One concrete next step:** separately implement Phase 2 T005-T012 starting with
+T005 contract RED tests, explicitly selecting specs/003-ai-investigation. This
+handoff does not authorize beginning that phase or probing a live provider.
+
+Previous handoffs below are historical and superseded where this section differs.
+
+# Next work - FraudLens AI
+
 ## Current feature 003 plan/tasks handoff - 2026-11-13
 
 Branch `feature03`: generated [plan](specs/003-ai-investigation/plan.md),
@@ -205,3 +231,10 @@ Read AGENTS and this handoff before further work; preserve existing local change
 - Verify the current local/remote branch state with Git. The concrete next
   development step remains Feature 002 tasks.md generation and source/contract
   audit; human, Phase 2, dataset and implementation gates remain open.
+
+## Feature 003 phase 1 in progress - 2026-11-13
+T001 complete. Next T002 configuration RED. Evidence: evidence/tasks/feature-003-setup.md. No provider initialization or runtime composition.
+
+T002 RED recorded: 81 executed configuration failures, no import/setup errors. Next T003 configuration/GREEN.
+
+Feature 003 setup: T003 GREEN 81/Ruff PASS. T004 knowledge/evaluation policies written; final ignore/startup/full-regression verification next.
