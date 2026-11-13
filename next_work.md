@@ -1,5 +1,6 @@
 # Next work - FraudLens AI
-Updated 2026-11-12 Europe/Belgrade. Branch initialization; HEAD at specification start: 33bcf62.
+Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
+Current observed branch: 002-data-and-risk-scoring; HEAD: f37e67a.
 
 ## Current state
 Feature 001-project-foundation completed/accepted in its local synthetic-demo scope:
@@ -29,8 +30,9 @@ Feature **002-data-and-risk-scoring is revised after adversarial review, not imp
   [v2 contracts](specs/002-data-and-risk-scoring/contracts/api.md),
   [quickstart](specs/002-data-and-risk-scoring/quickstart.md) and
   [Codex prompts](prompts/development/002-implementation-prompts.md) are drafted.
-  tasks.md, source audit, affected-consumer contract review, implementation and
-  actual Feature 002 verification remain pending.
+  [tasks.md](specs/002-data-and-risk-scoring/tasks.md) now contains the generated
+  implementation plan. Source audit, mapping approval, affected-consumer contract
+  review, implementation and actual Feature 002 verification remain pending.
 - [Adversarial review transcript](prompts/development/002-review.md) is reflected in the
   revised specification: label-independent event history, meaningful rule baseline,
   temporal/threshold/evaluation safeguards, import/run completion, contract migration,
@@ -47,15 +49,15 @@ Feature **002-data-and-risk-scoring is revised after adversarial review, not imp
   prompts only. No Feature 002 implementation was performed by that unit.
 
 ## One concrete next step
-Generate Feature 002 tasks.md from the current spec and technical plan using
-the [Prompt 0 task-generation handoff](prompts/development/002-implementation-prompts.md),
-tracing FR-001–026 and SC-001–009 to tasks and evidence. Then begin the source audit
-and affected-consumer contract review. Track the missing authoritative Phase 2
-assignment as an open compliance source. Select specs/002-data-and-risk-scoring
-explicitly; the local .specify/feature.json is ignored, not shared through Git.
-Review/publish documentation changes through the team's normal Git workflow;
-the current publication request is recorded separately below.
-Read AGENTS and this handoff before further work; preserve existing local changes.
+Start Feature 002 T001: create the implementation evidence ledger with the actual
+working revision, original implementation prompt and environment after reading
+AGENTS.md and this handoff. The next implementation slice is source-independent
+inspection; its RED/GREEN tasks are T004–T005 after the setup/ignore prerequisites.
+Use [tasks.md](specs/002-data-and-risk-scoring/tasks.md) for exact dependencies.
+Select specs/002-data-and-risk-scoring explicitly in each PowerShell session.
+The current request authorizes planning-to-tasks only; implementation requires a
+later work request. No automatic commit/push is authorized for this unit.
+Preserve existing local changes and the Foundation v1 fixture checks.
 
 ## Contribution evidence report added 2026-11-12
 
@@ -104,3 +106,27 @@ Read AGENTS and this handoff before further work; preserve existing local change
 - Verify the current local/remote branch state with Git. The concrete next
   development step remains Feature 002 tasks.md generation and source/contract
   audit; human, Phase 2, dataset and implementation gates remain open.
+
+## Feature 002 task-generation handoff added 2026-11-13
+
+- Generated [tasks.md](specs/002-data-and-risk-scoring/tasks.md) using the local
+  speckit-tasks skill: 67 unchecked tasks, explicit dependencies, RED before GREEN,
+  five story increments and separate source audit, mapping and consumer gates.
+  Coverage tables allocate every FR-001–026 and SC-001–009 to work, tests and
+  future evidence. They do not establish requirement satisfaction.
+- [Task-generation evidence](evidence/tasks/feature-002-task-generation.md) records
+  inputs, commands, execution-policy/launch limitations and unrun work.
+  [Static inspection inventory](evidence/tasks/feature-002-task-plan-validation.json)
+  records 35 requirement rows, 23 existing paths and 51 explicitly planned paths;
+  no document-order/coverage-reference/undeclared-path issues were reported.
+  The [inspection script](evidence/tasks/feature-002-task-plan-validation.ps1)
+  only reads planning text and file metadata; it does not run application checks.
+- IBM source is absent under data/: T006 remains pending_source_unavailable;
+  mapping T007 and dependent source work remain pending. T008 requires actual
+  producer/consumer review. Phase 2 remains pending_requirements_unavailable;
+  human explanation/code review and independent reproduction remain pending.
+- No application/lockfile/v1 contract changes, dependency installs, downloads,
+  import, training, model metrics, backend/frontend tests or browser runs occurred.
+  Historical Foundation evidence is unchanged. No commit, push or branch switch
+  was issued. The 2026-11-12 publication request above is historical; this unit
+  follows the current explicit no-commit/no-push instruction.
