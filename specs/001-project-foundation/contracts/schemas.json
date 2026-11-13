@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fraudlens.example/contracts/foundation-v1",
+  "title": "FraudLens foundation response contracts",
+  "$defs": {
+    "Transaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "transaction_id": {
+          "type": "string",
+          "pattern": "^TX-[0-9]{3}(?![\\s\\S])"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z(?![\\s\\S])"
+        },
+        "sender_account": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "receiver_account": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.[0-9]{2}(?![\\s\\S])"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}(?![\\s\\S])"
+        }
+      },
+      "required": [
+        "transaction_id",
+        "occurred_at",
+        "sender_account",
+        "receiver_account",
+        "amount",
+        "currency"
+      ]
+    },
+    "RiskAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "transaction_id": {
+          "type": "string",
+          "pattern": "^TX-[0-9]{3}(?![\\s\\S])"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "fixture",
+            "rules",
+            "model"
+          ]
+        },
+        "scorer_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "scored_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z(?![\\s\\S])"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "transaction_id",
+        "score",
+        "source",
+        "scorer_version",
+        "scored_at",
+        "explanation"
+      ]
+    },
+    "CaseSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "pattern": "^CASE-[0-9]{3}(?![\\s\\S])"
+        },
+        "transaction_id": {
+          "type": "string",
+          "pattern": "^TX-[0-9]{3}(?![\\s\\S])"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "score_source": {
+          "type": "string",
+          "enum": [
+            "fixture",
+            "rules",
+            "model"
+          ]
+        }
+      },
+      "required": [
+        "case_id",
+        "transaction_id",
+        "score",
+        "score_source"
+      ]
+    },
+    "CaseDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "pattern": "^CASE-[0-9]{3}(?![\\s\\S])"
+        },
+        "transaction": {
+          "$ref": "#/$defs/Transaction"
+        },
+        "risk_assessment": {
+          "$ref": "#/$defs/RiskAssessment"
+        }
+      },
+      "required": [
+        "case_id",
+        "transaction",
+        "risk_assessment"
+      ]
+    },
+    "CaseList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CaseSummary"
+          }
+        }
+      },
+      "required": [
+        "items"
+      ]
+    },
+    "Health": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "ok"
+        },
+        "mode": {
+          "const": "fixture"
+        }
+      },
+      "required": [
+        "status",
+        "mode"
+      ]
+    },
+    "Error": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "enum": [
+                "invalid_request",
+                "case_not_found",
+                "internal_error"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ]
+        }
+      },
+      "required": [
+        "error"
+      ]
+    }
+  }
+}

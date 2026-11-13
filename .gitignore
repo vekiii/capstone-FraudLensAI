@@ -1,1 +1,38 @@
 week-03-week-04-svi-materijali-za-stampu.pdf
+
+# Local environments, dependencies and downloaded tools
+.venv/
+node_modules/
+.cache/
+
+# Build, Python, lint, test and coverage output
+dist/
+build/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.tox/
+.nox/
+.vite/
+.vitest/
+*.tsbuildinfo
+.coverage
+.coverage.*
+coverage/
+htmlcov/
+coverage.xml
+junit.xml
+*.log
+
+# Local environment values; reviewed examples remain shareable
+.env
+.env.*
+!.env.example
+
+# Large/local data and generated evaluation output
+/data/raw/
+/data/processed/
+/evals/results/

@@ -1,0 +1,182 @@
+{
+  "date": "2026-11-12T15:43:16.409Z",
+  "mode": "headless Chrome via CDP",
+  "checks": [
+    {
+      "name": "01 Open real application",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "02 Exactly three cases",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "03 Open case 1",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "04 Case 1 data/assessment",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "05 Return to list",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "06 Open case 2",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "07 Case 2 details",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "08 Open case 3",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "09 Case 3 details",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "10 Synthetic notice",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "name": "11 Unknown case",
+      "status": "PASS",
+      "details": "Injected valid list entry CASE-999; detail hits real backend 404."
+    },
+    {
+      "name": "12 Malformed ID/error handling",
+      "status": "PASS",
+      "details": "Real browser fetch CASE-1=422; injected 422 on selectable detail exercises UI controlled error."
+    },
+    {
+      "name": "13 Unavailable service and real Retry click",
+      "status": "PASS",
+      "details": "CDP ConnectionRefused fault injection, then restored real backend requests."
+    },
+    {
+      "name": "14 Empty list",
+      "status": "PASS",
+      "details": "Injected items:[], actual Chrome rendering."
+    },
+    {
+      "name": "15 Rapid switching",
+      "status": "PASS",
+      "details": "Delayed CASE-001 request; CASE-002 remains selected after old request completion/cancellation."
+    },
+    {
+      "name": "Keyboard Enter activation",
+      "status": "PASS",
+      "details": "Actual Chrome key dispatch after focusing case button; not human keyboard review."
+    },
+    {
+      "name": "Mobile layout bounds",
+      "status": "PASS",
+      "details": "390px viewport; no horizontal document overflow."
+    },
+    {
+      "name": "16 Browser console/exceptions",
+      "status": "PASS",
+      "details": "No uncaught Runtime exceptions or console.error calls. Intentional network 404/422/connection faults are expected and are not JavaScript exceptions."
+    }
+  ],
+  "errors": [],
+  "console": [
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connecting..."
+      ]
+    },
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connected."
+      ]
+    },
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connecting..."
+      ]
+    },
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connected."
+      ]
+    },
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connecting..."
+      ]
+    },
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connected."
+      ]
+    },
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connecting..."
+      ]
+    },
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connected."
+      ]
+    },
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connecting..."
+      ]
+    },
+    {
+      "type": "debug",
+      "args": [
+        "[vite] connected."
+      ]
+    }
+  ],
+  "injected": [
+    {
+      "fault": "unknown",
+      "path": "/api/cases",
+      "status": 200
+    },
+    {
+      "fault": "malformed",
+      "path": "/api/cases/CASE-001",
+      "status": 422
+    },
+    {
+      "fault": "outage",
+      "path": "/api/cases"
+    },
+    {
+      "fault": "empty",
+      "path": "/api/cases",
+      "status": 200
+    }
+  ],
+  "browser": "Chrome/157.0.8103.39",
+  "status": "PASS"
+}

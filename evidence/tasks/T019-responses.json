@@ -1,0 +1,293 @@
+{
+  "live": {
+    "http://127.0.0.1:8000": {
+      "health": {
+        "status": "ok",
+        "mode": "fixture"
+      },
+      "list": {
+        "items": [
+          {
+            "case_id": "CASE-001",
+            "transaction_id": "TX-001",
+            "score": 0.75,
+            "score_source": "fixture"
+          },
+          {
+            "case_id": "CASE-002",
+            "transaction_id": "TX-002",
+            "score": 0.4,
+            "score_source": "fixture"
+          },
+          {
+            "case_id": "CASE-003",
+            "transaction_id": "TX-003",
+            "score": 0.1,
+            "score_source": "fixture"
+          }
+        ]
+      },
+      "CASE-001": {
+        "case_id": "CASE-001",
+        "transaction": {
+          "transaction_id": "TX-001",
+          "occurred_at": "2026-01-05T09:15:00Z",
+          "sender_account": "DEMO-BANK-A:SYN-ACCOUNT-001",
+          "receiver_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+          "amount": "1250.00",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-001",
+          "score": 0.75,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-05T09:15:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "CASE-002": {
+        "case_id": "CASE-002",
+        "transaction": {
+          "transaction_id": "TX-002",
+          "occurred_at": "2026-01-05T09:42:00Z",
+          "sender_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+          "receiver_account": "DEMO-BANK-C:SYN-ACCOUNT-003",
+          "amount": "89.95",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-002",
+          "score": 0.4,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-05T09:42:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "CASE-003": {
+        "case_id": "CASE-003",
+        "transaction": {
+          "transaction_id": "TX-003",
+          "occurred_at": "2026-01-06T14:20:00Z",
+          "sender_account": "DEMO-BANK-C:SYN-ACCOUNT-004",
+          "receiver_account": "DEMO-BANK-A:SYN-ACCOUNT-005",
+          "amount": "18420.50",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-003",
+          "score": 0.1,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-06T14:20:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "404": {
+        "error": {
+          "code": "case_not_found",
+          "message": "Case not found."
+        }
+      },
+      "422:CASE-1": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      },
+      "422:CASE-0001": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      },
+      "422:case-001": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      },
+      "422:CASE-ABC": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      },
+      "422:CASE-001%0A": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      }
+    },
+    "http://127.0.0.1:5173": {
+      "health": {
+        "status": "ok",
+        "mode": "fixture"
+      },
+      "list": {
+        "items": [
+          {
+            "case_id": "CASE-001",
+            "transaction_id": "TX-001",
+            "score": 0.75,
+            "score_source": "fixture"
+          },
+          {
+            "case_id": "CASE-002",
+            "transaction_id": "TX-002",
+            "score": 0.4,
+            "score_source": "fixture"
+          },
+          {
+            "case_id": "CASE-003",
+            "transaction_id": "TX-003",
+            "score": 0.1,
+            "score_source": "fixture"
+          }
+        ]
+      },
+      "CASE-001": {
+        "case_id": "CASE-001",
+        "transaction": {
+          "transaction_id": "TX-001",
+          "occurred_at": "2026-01-05T09:15:00Z",
+          "sender_account": "DEMO-BANK-A:SYN-ACCOUNT-001",
+          "receiver_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+          "amount": "1250.00",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-001",
+          "score": 0.75,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-05T09:15:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "CASE-002": {
+        "case_id": "CASE-002",
+        "transaction": {
+          "transaction_id": "TX-002",
+          "occurred_at": "2026-01-05T09:42:00Z",
+          "sender_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+          "receiver_account": "DEMO-BANK-C:SYN-ACCOUNT-003",
+          "amount": "89.95",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-002",
+          "score": 0.4,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-05T09:42:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "CASE-003": {
+        "case_id": "CASE-003",
+        "transaction": {
+          "transaction_id": "TX-003",
+          "occurred_at": "2026-01-06T14:20:00Z",
+          "sender_account": "DEMO-BANK-C:SYN-ACCOUNT-004",
+          "receiver_account": "DEMO-BANK-A:SYN-ACCOUNT-005",
+          "amount": "18420.50",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-003",
+          "score": 0.1,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-06T14:20:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "404": {
+        "error": {
+          "code": "case_not_found",
+          "message": "Case not found."
+        }
+      },
+      "422:CASE-1": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      },
+      "422:CASE-0001": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      },
+      "422:case-001": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      },
+      "422:CASE-ABC": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      },
+      "422:CASE-001%0A": {
+        "error": {
+          "code": "invalid_request",
+          "message": "Invalid request."
+        }
+      }
+    }
+  },
+  "injected": {
+    "empty": {
+      "items": []
+    },
+    "invalid_score": {
+      "/api/cases": {
+        "error": {
+          "code": "internal_error",
+          "message": "Internal server error."
+        }
+      },
+      "/api/cases/CASE-001": {
+        "error": {
+          "code": "internal_error",
+          "message": "Internal server error."
+        }
+      }
+    },
+    "wrong_transaction": {
+      "/api/cases": {
+        "error": {
+          "code": "internal_error",
+          "message": "Internal server error."
+        }
+      },
+      "/api/cases/CASE-001": {
+        "error": {
+          "code": "internal_error",
+          "message": "Internal server error."
+        }
+      }
+    },
+    "private_exception": {
+      "/api/cases": {
+        "error": {
+          "code": "internal_error",
+          "message": "Internal server error."
+        }
+      },
+      "/api/cases/CASE-001": {
+        "error": {
+          "code": "internal_error",
+          "message": "Internal server error."
+        }
+      }
+    }
+  }
+}
