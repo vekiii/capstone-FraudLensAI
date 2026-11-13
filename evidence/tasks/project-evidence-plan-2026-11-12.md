@@ -422,3 +422,62 @@ The approval/status unit was published in **three descriptive commits** on `002-
 Thus this follow-up contributes **three commits**, authored in Git under the configured Isidora Popovic identity. The recorded attribution distinguishes that configured identity from Codex-assisted drafting and the user's team decision. Git timestamps are publication times, not measures of working duration. The approximate AI-assisted effort above is retrospective and unmetered; human hours remain unknown.
 
 No application tests were run for this documentation and evidence update. `git diff --check` passed before publication.
+
+
+## Feature 002 Phase 3?4 implementation update ? 13 November 2026
+
+This addendum records four commits published after the collective T007/T008 approval ledger. Git attributes all four commits to **Elena Kalajd?i?**. This is commit attribution; it does not claim exclusive manual authorship or prove that all work was performed without AI assistance. The task evidence, original prompts, and current `next_work.md` provide the supporting work record.
+
+| Commit time (Europe/Budapest) | Git author | Commit | Description of work |
+|---|---|---|---|
+| 10:41 | Elena Kalajd?i? | `b5f7521` ? `feat(feature-002): complete and verify local dataset import` | Completed the canonical data models, streaming importer, stable D/C identities, versioned SQLite store and local import CLI; added RED/GREEN coverage for T009?T016; recorded the final mapping/team review; imported and reconciled the declared IBM v8 dataset. The evidence reports 5,078,345 event-valid and label-eligible records, 5,177 positives, 5,073,168 negatives, and an identical same-version replay. |
+| 11:20:52 | Elena Kalajd?i? | `5530608` ? `fix(feature-002): finalize phase 3 import verification and docs` | Added source-stream hash/size checks before import completion, failure/replacement regressions, completed Phase 3 cleanup and quickstart updates. The full backend suite recorded 465 passing; the IBM import/replay and read-only database reconciliation are documented in `feature-002-import-identity.md`. |
+| 14:23:37 | Elena Kalajd?i? | `0f5ad9a` ? `feat(feature-002): complete feature replay and rules baseline` | Completed the `history-v1` feature catalog/replay, exact-decimal `rules-v1` baseline, SQLite feature snapshots, and tests/evidence for T017?T025. The full IBM work-copy replay recorded 5,078,345 snapshots: 3,963,424 full and 1,114,921 warm-up/incomplete; the rules-only Phase 4 review passed its documented checks. |
+| 14:35:38 | Elena Kalajd?i? | `27ac7d4` ? `fix(feature-002): protect concurrent feature snapshot builds` | Fixed a reproducible concurrent-build race that could erase completed snapshots. Added in-process and separate-CLI regressions, using a database/version-scoped OS lock. Targeted tests recorded 21 passing; full backend recorded 575 passing, with Ruff passing. |
+
+### Duration estimate and limits
+
+The four **committer timestamps** span **3 hours 54 minutes 38 seconds** (10:41:00?14:35:38). This is a publication window, not continuous work time. No participant supplied session start/end, breaks, or actual hours, so measured working time is **not available**.
+
+For a rough comparison with the historical report, applying its same publication-window assumptions to the three same-day gaps gives **about 2.46 low / 3.68 central / 4.91 high provisional person-hours** for this single Git author. These are assumption-based proxies, not timesheets, confidence bounds, or confirmed effort. The estimates should be replaced if Elena supplies actual active-time details. The IBM import's recorded 1,315.29-second runtime is machine execution time and is not added as a separate person's labor estimate.
+
+This update does not alter the pinned historical 19-commit calculation or its JSON snapshot. T009?T025 are recorded complete. T026, chronological split/protocol RED tests, is the next open task. Independent teammate reproduction, trained-model evaluation, and authoritative Phase 2 compliance remain outstanding.
+
+## Feature 002 Phase 5 and pretrained-model contribution ledger - 13 November 2026
+
+This ledger extends the prior contribution snapshot through the Phase 5 final review. Feature 002 baseline: `27ac7d4`. Git attributes the fourteen commits below to **Isidora Popovic**. This is commit-account attribution, not proof of exclusive manual authorship or measured work duration. User-reported team decisions are distinguished from Git commit attribution.
+
+| Commit time (Europe/Budapest) | Git author | Commit | Work recorded |
+|---|---|---|---|
+| 16:05:55 | Isidora Popovic | `fe310c1` - `test(ml): add RED chronological evaluation protocol tests` | Added synthetic T026 tests for temporal whole-timestamp partitions, warmup, label eligibility, class coverage, deterministic membership and invalid provenance. |
+| 16:15:00 | Isidora Popovic | `a2857cd` - `feat(ml): implement immutable temporal evaluation protocol` | Implemented T027 immutable split manifests and explicit eligibility; recorded controlled test results. |
+| 17:27:44 | Isidora Popovic | `d606fb7` - `chore(ml): record locked dependencies and resource pilot` | Recorded the locked Python 3.14 ML stack and bounded 100,000-row import/history pilot, measured resource use and prospective fit ceilings. |
+| 18:22:05 | Isidora Popovic | `b8643a4` - `docs(ml): prepare pretrained model integration branch` | Recorded the proposed inference-only direction and conflicts with original training tasks. |
+| 18:34:27 | Isidora Popovic | `87b6980` - `docs(ml): assess pretrained model artifacts and input compatibility` | Compared pretrained candidates and documented data, feature-schema, licensing and compatibility findings. |
+| 18:38:36 | Isidora Popovic | `13472f9` - `docs(ml): define gated pretrained inference architecture` | Defined the proposed local inference boundary, artifact manifest and fail-closed compatibility behavior. |
+| 19:21:00 | Isidora Popovic | `c872375` - `docs(ml): switch pretrained candidate to IBM AML LightGBM` | Corrected the proposed candidate to IBM AML LightGBM while retaining scope and technical gates. |
+| 20:21:47 | Isidora Popovic | `81b3b9a` - `test(ml): add RED IBM pretrained inference tests` | Added synthetic RED tests for IBM transaction input and inference contracts. |
+| 21:02:46 | Isidora Popovic | `79987df` - `test(ml): align pretrained loader RED tests with IBM model` | Aligned loader RED tests to the pinned model schema and artifact requirements. |
+| 21:14:13 | Isidora Popovic | `f426cec` - `test(ml): add RED IBM pretrained inference tests` | Extended inference tests against observed model metadata; missing-adapter failures remained intentional RED. |
+| 21:16:56 | Isidora Popovic | `92bdd79` - `docs(ml): record blocked IBM pretrained inference gate` | Recorded graph provenance, mapping and manifest blockers to production loading. |
+| 21:20:13 | Isidora Popovic | `429d6ec` - `docs(ml): record pretrained inference verification gate` | Recorded that no real inference or independent performance evaluation could be claimed. |
+| 21:24:13 | Isidora Popovic | `07cce92` - `fix(data): preserve approved mapping bytes on Windows` | Pinned LF checkout for the unchanged mapping content; subsequent backend regressions passed. |
+| 21:28:14 | Isidora Popovic | `570b344` - `docs(ml): finalize IBM pretrained inference handoff` | Finalized state, blockers, tests, artifact provenance and next technical gate. |
+
+A subsequent evidence/checklist reconciliation commit is recorded as `docs(ml): reconcile pretrained model gate evidence`; the Git log provides its exact ID and timestamp. This ledger update is itself committed in the subject that contains this section; a commit cannot embed its own hash without changing it.
+
+### Attribution and effort limits
+
+The fourteen listed commit timestamps span 5 hours, 22 minutes and 19 seconds. This is a publication window, not continuous work. No participant supplied a start/end log or breaks, so actual working time is unknown and no person-hours are inferred. The user reported collective team approval for the proposed pretrained direction; technical artifact/input compatibility remains unresolved. Original T029-T036 remain open, and pretrained inference was not implemented or evaluated.
+
+### Follow-up documentation commits - 13 November 2026
+
+The evidence and handoff commits published after `570b344` are:
+
+| Commit time (Europe/Budapest) | Git author | Commit | Work recorded |
+|---|---|---|---|
+| 22:01:41 | Isidora Popovic | `ddf5ceb` - `docs(ml): reconcile pretrained model gate evidence` | Reconciled artifact, security, feature, test and evaluation gate evidence; updated the pretrained checklist without completing original training tasks. |
+| 22:01:54 | Isidora Popovic | `24a44c2` - `docs: record phase 5 contribution handoff` | Updated `next_work.md` with the final state, blockers and next action. |
+| 13 Nov 2026; exact time in Git history | Isidora Popovic | This commit - `docs(evidence): record phase 5 contribution ledger` | Added the commit-by-commit Phase 5 attribution ledger and clarified publication-time limits. Its hash is in Git history because a commit cannot contain its own hash. |
+
+All Git authorship above records the configured Git identity. It does not claim that Git timestamps measure active work or that the named author alone performed every human decision.
