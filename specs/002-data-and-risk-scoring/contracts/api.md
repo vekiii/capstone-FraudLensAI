@@ -1,6 +1,7 @@
 # Feature 002 dataset API contract v2
 
-Status: technically amended and collectively team-approved on 2026-11-13; runtime integration remains pending. See the Feature 002 contract-review evidence for the approval basis.
+Status: technically amended with explicit user approval on 2026-11-13;
+producer/affected-consumer team review and runtime integration remain pending.
 [schemas.json](schemas.json) is the machine-readable
 public shape; [data-and-scoring.md](data-and-scoring.md) covers offline and
 internal boundaries. Foundation fixture v1 remains authoritative in
@@ -133,7 +134,7 @@ is authoritative for field-level validation.
     {
       "contract_version": 2,
       "snapshot_ref": "run_example_1",
-      "dataset_version": "dv_example_1",
+      "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "data_source": "ibm_aml_hi_small",
       "score_source": "rules",
       "scorer_version": "rules-v1",
@@ -155,7 +156,7 @@ is authoritative for field-level validation.
     {
       "contract_version": 2,
       "snapshot_ref": "run_example_1",
-      "dataset_version": "dv_example_1",
+      "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "case_id": "C0123456789abcdef0123456789abcdef",
       "transaction": {
         "transaction_id": "D0123456789abcdef0123456789abcdef",
@@ -171,7 +172,7 @@ is authoritative for field-level validation.
       "risk_assessment": {
         "transaction_id": "D0123456789abcdef0123456789abcdef",
         "run_id": "run_example_1",
-        "dataset_version": "dv_example_1",
+        "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "score": 0.65,
         "score_kind": "ordinal_rule_score",
         "score_source": "rules",

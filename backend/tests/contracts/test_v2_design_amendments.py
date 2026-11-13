@@ -29,10 +29,18 @@ def test_v2_preserves_observed_currency_name_lengths(currency):
 
 @pytest.mark.parametrize('name,value', [('TransactionId', 'D' + 'a' * 32),
                                       ('CaseId', 'C' + 'a' * 32), ('RunId', 'run_example'),
-                                      ('DatasetVersionId', 'dv_example')])
+                                      ('DatasetVersionId', 'dv_' + 'a' * 64)])
 def test_v2_identifiers_have_exact_terminal_matching(name, value):
     assert valid(name, value)
     assert not valid(name, value + '\n')
+
+
+@pytest.mark.parametrize('invalid', [
+    'dv_example', 'dv_' + 'a' * 63, 'dv_' + 'a' * 65,
+    'dv_' + 'A' * 64, 'dv_' + 'a' * 64 + '\n',
+])
+def test_dataset_version_requires_full_lowercase_digest(invalid):
+    assert not valid('DatasetVersionId', invalid)
 
 
 def test_v2_money_has_exact_terminal_matching():
@@ -73,4 +81,4 @@ def test_published_examples_match_schema_and_agree_on_snapshot_versions():
     missing = {k: v for k, v in detail.items() if k != 'dataset_version'}
     assert not validator.is_valid(missing)
     # Honest limitation: future backend/decoder semantic checks must enforce equality.
-    assert validator.is_valid({**detail, 'dataset_version': 'dv_wrong'})
+    assert validator.is_valid({**detail, 'dataset_version': 'dv_' + 'b' * 64})

@@ -1,6 +1,8 @@
 # Feature 002 offline and scoring interfaces
 
-Status: technically amended and collectively team-approved on 2026-11-13. Pinned v8 source equivalence and reference-implementation semantics are verified; runtime import and v2 integration remain unimplemented. This document specifies the boundaries tasks must
+Status: team-agreed technical direction from the 2026-11-13 decision,
+communicated by the user. Pinned v8 source equivalence and reference-implementation
+semantics are verified. This document specifies the boundaries tasks must
 implement; it is not executable code or evidence of a trained model.
 See [data-model.md](../data-model.md) for entity invariants and
 [api.md](api.md) for public read responses.
@@ -51,16 +53,52 @@ roles, ambiguous aliases and unreviewed target-like columns block import.
 Unknown fields are reported but never included as predictors without an
 explicit mapping revision.
 
-The mapping's SHA-256 contributes to DatasetVersion. A modified mapping
+The final reviewed mapping's normalized SHA-256 contributes to DatasetVersion. A modified mapping
 never silently overwrites a completed import. The importer assigns a
 source-row reference before applying event or label validation. A valid
 event with invalid label remains available to history and is excluded
 from fit/evaluation.
 
-### Technically selected HI-Small policy; collective team approval recorded
+### Exact identity and version bytes
+
+The separate [team review record](../../../evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md)
+records the current candidate mapping hash and vectors. For nonempty reviewed namespace
+and exact member name, encode each as UTF-8 without Unicode normalization or
+case folding. Let `I = U32BE(namespace byte length) || namespace bytes ||
+U32BE(member byte length) || member bytes || U64BE(pre-filter CSV ordinal)`.
+The lengths are unsigned four-byte big-endian values; the one-based ordinal is
+unsigned eight-byte big-endian, valid 1..2^64−1. A multiline quoted record
+counts once. `D` is `D` plus the lowercase hex of the first 16 bytes of
+`SHA256(ASCII("FraudLensAI/tx/v1") || 0x00 || I)`; `C` is `C` plus the same
+16-byte prefix of `SHA256(ASCII("FraudLensAI/case/v1") || 0x00 || I)`.
+The public suffix is 32 lowercase hex digits. Retain each full digest, framed
+input and label-free fact digest for collision/changed-fact detection; fail
+instead of overwriting. Neither label nor source-file hash enters D/C.
+
+For `DatasetVersion`, let `S` be SHA-256 of the exact original CSV bytes,
+`M` be SHA-256 of the complete mapping file's UTF-8 bytes after CRLF-to-LF
+replacement, and `T` be the existing selected time-policy SHA-256. Mapping
+normalization rejects BOM or bare CR, keeps every other byte and never
+reserializes JSON. `T` uses UTF-8 JSON of `time.selected_policy`, sorted keys,
+compact comma/colon separators and ASCII escaping (`ensure_ascii=True`).
+Use the full 32-byte digests in order: `dv_` plus all 64 lowercase hex digits
+of `SHA256(ASCII("FraudLensAI/dataset-version/v1") || 0x00 || S || M || T)`.
+No hex text or added framing is inserted between these fixed-width digests.
+The separate review record is excluded from M. A mapping-content change
+requires a new M and new review before import; changed IBM v8 CSV bytes fail
+the pinned source SHA-256 even if only a private label changed.
+
+### Team-agreed HI-Small technical policy; import disabled
 
 The current configuration is [ibm_hi_small_v1.json](../../../data/mappings/ibm_hi_small_v1.json).
-The mapping records collective team approval conveyed by the user on 2026-11-13 and is executable_mapping=true. Import remains disabled and only read-only inspection is supported because the CLI has no import command. A future importer must validate the approved mapping and its recorded hash; no importer is implemented in this slice.
+The file is still the pending inspection configuration:
+`pending_team_review`, `executable_mapping=false`, `import_allowed=false`;
+only read-only inspection is supported. Its historical null review fields are
+not individual approvals. The subsequent joint technical decision, source,
+date and calculated working hash live in the separate review record; the final
+diff still needs responsible owner review. The CLI has no import
+command; a future importer must require a reviewed matching M and an explicit
+import-enabled policy before activation. Neither is inferred from this document.
 
 Verified reference: Kaggle v8 HI-Small_Trans.csv, SHA-256
 `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`.
@@ -81,8 +119,9 @@ assumed_utc_for_synthetic_benchmark. It assigns minute coordinates at fixed +00:
 without claiming source UTC, clock synchronization or lifecycle semantics.
 Preserve raw time/minute ties; do not use host-local timezone. Policy hash is
 SHA-256 of canonical UTF-8 JSON (sorted keys, separators comma/colon), recorded
-in the configuration. Mapping file hash identifies the technical bytes; a
-team-approved mapping hash remains unassigned until real review. No import,
+in the configuration. The inspector reports the raw mapping file SHA-256;
+the normalized M used for DatasetVersion is calculated in the separate review
+record pending final confirmation. These differ for CRLF files. No import,
 identity creation, feature building or training occurs in this slice.
 
 ## ScoreRequestV2 and ScorerV2

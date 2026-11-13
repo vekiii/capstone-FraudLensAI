@@ -20,7 +20,10 @@
     "source_data_license": "CDLA-Sharing-1.0"
   },
   "time_policy_sha256": "67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781",
-  "team_approved_mapping_sha256": "27445724712e9bca6f0d22ac991a2f923a18d5df33fc79a41c852244cd439699",
+  "team_approved_mapping_sha256": "a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57",
+  "intermediate_remote_approval_mapping_sha256": "27445724712e9bca6f0d22ac991a2f923a18d5df33fc79a41c852244cd439699",
+  "final_byte_review": "evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md",
+  "phase3_import_evidence": "evidence/tasks/feature-002-import-identity.md",
   "review_input_sha256": {
     "data/mappings/ibm_hi_small_v1.json": "4a8200f72c3fcd8f1d0c1ce99dd054a37d0972e4159c23c803174cdefaf207bf",
     "specs/002-data-and-risk-scoring/contracts/api.md": "a77e93675055a322056eda2f17900ece33370bb21edac4cb61c1d1a29c736cc8",
@@ -62,6 +65,7 @@
     "cross-bank clock synchronization",
     "transaction lifecycle stage"
   ],
-  "remaining_required_gate": "none for T007/T008; import remains disabled because no import command is implemented",
+  "historical_remaining_gate": "none for T007/T008; import remains disabled because no import command is implemented",
+  "remaining_required_gate": "none for Phase 3 T007-T016; later v2 runtime integration remains",
   "prohibited_work_performed": false
 }

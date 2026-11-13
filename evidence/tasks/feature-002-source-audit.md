@@ -1,5 +1,23 @@
 # Feature 002 source inspection, audit and mapping decisions
 
+**Current Phase 3 outcome:** [T015/T016 actual import and replay](feature-002-import-identity.md#t016-declared-ibm-v8-import-and-exact-replay--2026-11-13) completed against the final-byte mapping M `a816260a…093e57`. Its embedded pending/inspect-only fields remain historical; the local CLI requires the separate collective final-byte review, exact M, namespace/member and S before execution. Earlier import-disabled statements below record the state before T015.
+
+## Collective final mapping approval — 2026-11-13
+
+[The user's confirmation](../../prompts/development/002-t007-t008-final-team-approval-2026-11-13.md) reports that the entire team reviewed and approved the final T007 mapping and identity/hash rules, with no blocking objections. This collective report is the review source and decision; no individual names or signatures were supplied or inferred. Reviewed state: uncommitted working diff on branch `002-data-and-risk-scoring` against HEAD `182d0b290c8819e602fc5d77e8df8e904228b032`, pinned by mapping SHA-256 M `a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57` (also raw LF SHA-256 on this checkout), data-model SHA-256 `e8235e358c6d01fc13e3f5f9a8ad0600d2d98c44d4afda4aa75809aa3efa0987`, offline identity contract SHA-256 `534de0c70a6ecbec69dd8734d6fec5830a9814da81fa508afe16a0f1dcca9918`. Read-only comparison with the previous final-byte evidence found 3/3 matching values and no later edit. [Full approval and hash check](feature-002-t007-t008-team-review-2026-11-13.md#collective-final-byte-approval-conveyed-by-the-user).
+
+T007 review gate is complete. The reviewed mapping bytes are frozen by this separate record; its embedded `pending_team_review`, `executable_mapping=false`, and `import_allowed=false` remain untouched, so import is still disabled. The original source S and selected time-policy T are unchanged. A future hashed mapping-content change needs a new external review binding. Historical pending entries below document earlier states.
+
+## Current Codex correction check — 2026-11-13
+
+The [current working-diff verification](feature-002-t007-t008-team-review-2026-11-13.md#codex-correction-and-preparatory-red-verification--2026-11-13) fixes the prior N/F ambiguity: N is exactly `source.namespace`, F exactly `source.member`, independently length-framed. Current raw LF/normalized mapping SHA-256 is `a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57`; raw CRLF-copy SHA-256 is `9a87e1ddaad2c6825d76111eae4fdcf54e2bec5ed0c7c25685b1ea8a0dd42ae1`, and normalizing that copy gives the same M. `python3 evidence/tasks/feature-002-team-review-check.py` exited 0; 380 existing backend tests and Ruff passed. The prior `e829…` M below is historical. The team's joint technical decision remains recorded; actual final-byte producer/affected-consumer review is pending. No individual review is inferred. T007 remains open and import disabled.
+
+## Joint T007 technical decision — 2026-11-13
+
+The user [relayed the team's joint decision](../../prompts/development/002-t007-t008-team-decision-and-red-request-2026-11-13.md) to adopt the exact D/C and `dv_` byte recipes, CRLF-normalized full-file mapping hash and separate review record. This is a **collective technical decision**, not a claim of individual data/scoring or consumer signatures. The [separate T007/T008 record](feature-002-t007-t008-team-review-2026-11-13.md) identifies reference commit `182d0b290c8819e602fc5d77e8df8e904228b032`, the uncommitted working diff, rationale, vectors and calculated SHA-256 values. The current mapping's normalized M pending final owner review is `e82903264382ae710b8b93ce43a3e37d954ec6a6629414e217b698664e6769d6`; source S is `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`; selected time-policy T is `67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781`. Exact source bytes, ordered headers, Account positions, money/currency/label and assumed UTC+00 analysis policy were already technically audited in the sections and linked evidence below. The team decision adopts those choices; no unknown source timezone or original acquisition history is inferred.
+
+The old self-referential mapping hash field was removed. Review identity lives outside the mapping, so a later content edit invalidates the pinned M. The current file remains an import-disabled pending inspection configuration; the future importer must check the matching external record and explicit import enablement. No import or activation was performed. Earlier pending-review statements below describe the state *before* this user-relayed decision and remain as history.
+
 **Current resolution:** [authorized technical/source verification](feature-002-technical-resolution.md)
 completes T006: the pinned v8 CSV hash matches, its listing license is verified,
 and account/binary semantics have publisher reference-code support. The user
@@ -128,7 +146,9 @@ No `data/mappings/ibm_hi_small_v1.json` created. Mapping version/hash, timezone-
 T006 remains incomplete on provenance; T007 `pending_mapping_review`; [T008 review](feature-002-contract-review.md) `pending_consumer_review`. Substantive evaluation stays pending. One next step: obtain the exact acquired-release evidence and review these mapping/contract blockers with the producing and affected consuming owners before import.
 
 
-## Collective team approval update ? 2026-11-13
+## Historical remote collective-approval publication — 2026-11-13
+
+This section came from the three remote documentation commits ending at `6952f1d`. It records the team's earlier collective approval convention and an **intermediate** mapping digest `27445724…439699`. That digest does not match the current final-byte mapping. The later, separately [confirmed final-byte review](#collective-final-mapping-approval--2026-11-13) pins M `a816260a…093e57`, which the T015 CLI checks. The remote commits and their contribution ledger remain in branch history; this dated note preserves their record without treating the intermediate digest as the import authorization.
 
 The user confirms the team works jointly on project code and documentation and that one member?s approval represents the team. The user explicitly approved T007 and T008; this is recorded as collective project-team approval conveyed by the user. Individual owner names are not asserted.
 

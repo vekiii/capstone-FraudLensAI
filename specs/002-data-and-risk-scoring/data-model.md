@@ -1,7 +1,7 @@
 # Feature 002 data model and invariants
 
-Status: technical design, not implemented. Source-specific mappings are frozen
-only after the authorized IBM file audit. Public wire details are in
+Status: team-agreed technical direction, not implemented. Source-specific mappings are frozen
+only after the authorized IBM file audit and confirmation of final bytes by the responsible reviewers. Public wire details are in
 [contracts/api.md](contracts/api.md) and [contracts/schemas.json](contracts/schemas.json).
 
 Technical amendment, 2026-11-13: pinned Kaggle v8 member equivalence is verified
@@ -10,8 +10,10 @@ unknown. [Current mapping](../../data/mappings/ibm_hi_small_v1.json) is technica
 complete but pending_team_review, with import disabled and no invented reviewer.
 User-approved clock interpretation is an explicit fixed UTC+00 synthetic analysis
 assumption, not a source timezone fact. Source/raw minute text and equal-time
-groups remain intact. The policy hash is recorded in the mapping; an approved
-mapping hash remains pending real producing/affected-consuming review.
+groups remain intact. The policy hash is recorded in the mapping. The team's
+2026-11-13 technical decision and calculated working mapping hash are recorded outside
+the mapping in [the T007/T008 review record](../../evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md).
+The inspection configuration and import command remain disabled.
 
 ## Identity and version rules
 
@@ -20,20 +22,34 @@ mapping hash remains pending real producing/affected-consuming review.
   For a multi-file release, include a declared member key. A source row can
   produce one event, one event rejection, or a file-level failure that leaves
   the import incomplete.
-- **Source namespace:** reviewed release identifier plus source member. It
-  cannot be inferred from a target label. A changed event fact under the
+- **Source namespace and member:** `N` is exactly the UTF-8 encoding of
+  mapping `source.namespace`; `F` is exactly the UTF-8 encoding of mapping
+  `source.member`. The member is encoded separately and is not appended to N.
+  Neither value can be inferred from a target label. A changed event fact under the
   same namespace/row key is a collision requiring review, not a silent update.
-- **Transaction ID:** prefix D followed by 32 lowercase hexadecimal digits,
-  the first 128 bits of SHA-256 over a length-delimited source namespace,
-  member, and source-row ordinal. **Case ID:** prefix C with the same digest
-  input plus a distinct domain separator. Full input is retained locally
-  for collision checks. These IDs are opaque URL-safe keys, not source
-  accounts or labels. A same-file reimport yields the same IDs; equal-valued
-  distinct rows remain distinct.
-- **DatasetVersion ID:** prefix dv_ plus a digest of the raw content SHA-256,
-  mapping hash and time-policy hash. Unlike transaction ID, this changes
-  when a label-only file edit changes raw content. The underlying event
-  identity can remain stable, and histories must remain unchanged.
+- **Transaction/Case IDs:** encode N and F without Unicode normalization or
+  case folding. Let `o` be the one-based pre-filter CSV record ordinal
+  (1..2^64−1). `I = U32BE(len(N)) || N || U32BE(len(F)) || F || U64BE(o)`;
+  lengths count bytes, each is an unsigned four-byte big-endian integer, and
+  ordinal is an unsigned eight-byte big-endian integer. Namespace/member must
+  be nonempty and fit U32. `D = "D" || lowercase_hex(SHA256(
+  ASCII("FraudLensAI/tx/v1") || 0x00 || I)[0:16])` and
+  `C = "C" || lowercase_hex(SHA256(ASCII("FraudLensAI/case/v1") ||
+  0x00 || I)[0:16])`. The 16-byte digest prefix gives exactly 32 lowercase
+  hex digits after each letter; retain the full 32-byte digest, framed input
+  and label-free event-fact digest locally to detect collisions or changed
+  facts under one row identity. Never silently overwrite a collision.
+  These opaque URL-safe keys exclude accounts, labels, raw source hash and
+  accepted-row position. Equal-valued distinct rows retain distinct IDs.
+- **DatasetVersion ID:** `S = SHA256(exact original CSV bytes)`,
+  `M = SHA256(NormalizeLF(exact mapping-file bytes))`, and `T` is the
+  existing time-policy digest defined below. Use the three full 32-byte
+  digests, not their hexadecimal text: `"dv_" || lowercase_hex(SHA256(
+  ASCII("FraudLensAI/dataset-version/v1") || 0x00 || S || M || T))`.
+  Fixed 32-byte widths require no added delimiters. The `dv_` suffix is
+  all 64 lowercase hex digits. A label-only edit changes S/dv_ while D/C
+  and observable facts stay fixed; edited IBM v8 bytes fail its pinned
+  original-source SHA-256 check and cannot be imported as that release.
 - **Run ID:** unique local execution identifier. Reproduction compares
   semantic fingerprint, predictions and metrics rather than requiring
   wall-clock execution timestamps or run IDs to match.
@@ -41,11 +57,20 @@ mapping hash remains pending real producing/affected-consuming review.
   requires that reference and succeeds only while it still names the active
   complete run. A switch yields a controlled stale-snapshot error.
 
-The digest scheme is a proposed reviewed contract choice. Do not implement
-it before the source audit confirms a stable source namespace/member/row
-reference. The full SHA-256 is checked for collisions even though public IDs
-are shorter. No target label, raw file hash or accepted-row position appears
-in the transaction/case identity input.
+`NormalizeLF` requires strict UTF-8 without a BOM, rejects bare CR bytes,
+then replaces each CRLF byte pair with LF; it preserves all other bytes,
+including JSON spacing, key order, status fields and final newline. JSON
+validity and duplicate-key rejection are separate prerequisites. `T` is
+SHA-256 of `time.selected_policy` serialized as UTF-8 JSON with sorted keys,
+compact comma/colon separators and ASCII escaping (`ensure_ascii=True`),
+as in the existing inspector. The current `T` is
+`67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781`.
+The separate review record records the current candidate `M`; its own bytes
+are never hashed into M. Final owner review must confirm it before import.
+A later mapping-content change requires a new M and new review before import.
+The raw Git blob SHA-256 is a byte-level revision identifier and may differ
+from M for CRLF files. [Vectors for the previous and current mappings](../../evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md#identity-vectors)
+fix the exact recipe without claiming importer execution.
 
 ## DatasetVersion
 

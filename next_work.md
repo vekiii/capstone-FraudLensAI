@@ -1,20 +1,90 @@
 # Next work - FraudLens AI
-Updated 2026-11-13 Europe/Budapest. Current branch: 002-data-and-risk-scoring. Approval publication ledger is current; `git log -1` identifies the resulting HEAD.
+Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
+Current observed branch: 002-data-and-risk-scoring; Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
-## Collective team approval ? 2026-11-13
+## Phase 3 T015/T016 import complete — 2026-11-13
 
-The user confirms that project work and documentation are produced collectively and that one member?s approval represents team approval. The user explicitly approved T007/T008; record this as collective team approval conveyed by the user, without inventing individual reviewer names. Mapping and contract review records are updated, and T007/T008 are checked complete.
+[Original request](prompts/development/002-t015-t016-complete-and-publish-2026-11-13.md); [CLI RED/GREEN and actual IBM import/replay evidence](evidence/tasks/feature-002-import-identity.md#t015-local-cli-implementation--2026-11-13). T015 source-bound local import CLI passes its 3 new integration cases and preserves inspect/Foundation v1; T016 imported all **5,078,345** declared IBM v8 records with **5,078,345 event-valid**, 0 rejected, **5,078,345 label-eligible**, 5,177 positives and 5,073,168 negatives. The identical replay returned the same `dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802` without changing the SQLite file hash. Read-only SQL found 5,078,345 distinct D and C IDs and `quick_check=ok`. Source S and reviewed mapping M stayed unchanged. The ignored database is 7,559,012,352 bytes; no real data are staged.
 
-- T007 source mapping is approved by the collective team decision. Its source hash, release, source semantics and explicit synthetic UTC+00 analysis assumption remain documented.
-- T008 v2 contract amendments are approved by the collective team decision; Foundation v1 remains unchanged.
-- Import remains disabled because the CLI has no import command. Model training, activation and v2 application integration are not authorized/performed by this approval.
-- Evidence: `evidence/tasks/feature-002-source-audit.md`, `evidence/tasks/feature-002-contract-review.md`, and `evidence/tasks/feature-002-technical-resolution.json`.
+Backend **462 passed** with one preexisting Starlette/httpx warning; targeted T009–T015 **82 passed**; Ruff and `git diff --check` passed. T015/T016 are checked in `tasks.md`. The remote feature branch advanced by three documentation commits (to `6952f1d`) while this local work was underway. Rebase retained those commits and the reviewed five final-byte files, including executable M `a816260a…093e57`; intermediate remote approval hashes are marked historical in the reconciled evidence. Historical sections below describe prior states.
 
-The approval and contribution update is published in three commits: `dab61f3`, `ae98c63`, and the current final ledger commit (hash resolved by `git log -1`). Full subjects and attribution are in `evidence/tasks/project-evidence-plan-2026-11-12.md`. After publication, proceed with the next authorized Feature 002 tasks (T009?T011); this approval does not authorize model training, activation, or unrelated scope.
+One concrete next step after this Phase 3 publication: start T017 feature-catalog and RulePolicy freeze in a later authorized session. No Phase 4 code was started here.
+
+## T012–T014 GREEN completed on synthetic inputs — 2026-11-13
+
+[Original request](prompts/development/002-t012-t014-green-2026-11-13.md); [actual RED/GREEN commands, test corrections and limitations](evidence/tasks/feature-002-import-identity.md#t012t014-green-on-authored-inputs--2026-11-13). Branch `002-data-and-risk-scoring`, HEAD `182d0b290c8819e602fc5d77e8df8e904228b032`; earlier local changes retained. T012 internal canonical/private/report/version models, T013 reviewed-policy streaming parser and D/C/`dv_` identity, and T014 staged/complete/failed SQLite store with private table, bounded batches, reconciliation, immutable replay and restart safety are implemented. The CLI still has no import command; mapping `import_allowed=false` and actual IBM import was not run.
+
+Initial RED repeated: **79 failed**, exit 1. After GREEN and two contract-aligned test corrections, targeted **79 passed**, exit 0; full backend **459 passed**, exit 0, with one preexisting Starlette/httpx warning. Ruff passed, exit 0. The first full regression revealed a helper-name collision with the read-only inspector (23 failures); the new canonical helper was renamed and the final full suite passed. Approved mapping/offline hashes stayed unchanged. The [reproducible authored-only smoke](evidence/tasks/feature-002-green-smoke.py) passed for bound-stage import, exact money, private-status gating, immutable replay and restart. T012–T014 are checked in `tasks.md`; T015/T016 remain open. Historical RED/pending sections below describe earlier states.
+
+One concrete next step: T015 — wire the approved source hash, namespace/member and streaming iterator to the local import CLI, preserving the explicit import-disabled gate until a separately reviewed execution policy enables actual IBM import; then perform T016 in its own evidence step.
+
+## Completed T009–T011 RED and next GREEN unit — 2026-11-13
+
+[Original Prompt 2 continuation](prompts/development/002-t009-t011-complete-red-2026-11-13.md); [requirement-to-test matrix and actual commands](evidence/tasks/feature-002-import-identity.md#completed-t009t011-red-matrix--2026-11-13). Branch `002-data-and-risk-scoring`, HEAD `182d0b290c8819e602fc5d77e8df8e904228b032`; preexisting local work preserved. The 20 existing RED tests were retained and expanded in their three files to cover T009 CSV boundaries, malformed/encoding/partial files, exact money/time and private labels; T010 pre-filter/multiline/rejected-row identity, namespace/member/version distinctions, collision and replay; T011 unsupported SQLite schema, label-private operational boundary, reconciliation, interrupted/new-version retry/restart and same-version idempotence.
+
+Final collection **79 tests**, exit 0. Final execution **79 intended RED failures**, exit 1, all in test bodies for missing T013 parser/identity or T014 SQLite repository; no collection/environment errors. Ruff on the three test files and `git diff --check` passed, exit 0. These are synthetic authored tests, not IBM import or GREEN verification. T009, T010 and T011 are checked as completed RED tasks in `tasks.md`; T007/T008 remain complete. Import remains disabled (`import_allowed=false`) and no application import/store implementation was added.
+
+One concrete next step: implement T012 canonical/import models, then T013 parser/identity and T014 SQLite store against this RED suite; run it GREEN and relevant Foundation regressions before progressing to T015/T016.
+
+## Collective T007/T008 approval and next RED work — 2026-11-13
+
+[User confirmation](prompts/development/002-t007-t008-final-team-approval-2026-11-13.md) reports that the entire team approved the final mapping, D/C and `dv_` identity/hash rules and v2 contracts with strict `DatasetVersionId`, with no blocking objections. [Collective approval, reviewed uncommitted diff against HEAD `182d0b290c8819e602fc5d77e8df8e904228b032`, full SHA-256 table and current match check](evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md#collective-final-byte-approval-conveyed-by-the-user); [source audit](evidence/tasks/feature-002-source-audit.md#collective-final-mapping-approval--2026-11-13); [contract review and later migrations](evidence/tasks/feature-002-contract-review.md#collective-final-v2-contract-approval--2026-11-13). All five approved file hashes match the prior final-byte evidence exactly; no later edits to those approved files were found. No individual roles/signatures were inferred. This session ran `git diff --check` from repository root: exit 0, no output or working-diff whitespace errors. T007 and T008 are now **complete** in `tasks.md`. Earlier pending-review sections below are historical.
+
+[Existing 20-test RED record](evidence/tasks/feature-002-import-identity.md) collected successfully and failed for missing parser/identity/SQLite behavior, but is **partial** against the explicit T009–T011 matrices. T009 still lacks zero and supported-scale boundaries, unsupported labels and the full T004 structural/header/encoding/partial-file import cases and predictor exclusion. T010 lacks explicit rejected-row and quoted-multiline identity stability, mapping/release/source-member changes as separate version scenarios, deliberate digest/fact collisions and repeat-import identity checks. T011 lacks schema-version mismatch, private-label role exclusion, changed-version coexistence/retry after failure, injected parser failure and restart reconciliation. Thus T009, T010 and T011 remain **open**; T012–T014 GREEN is not yet the next task. Import remains disabled (`import_allowed=false`); no IBM import or v2 runtime integration occurred in this approval-recording session.
+
+One concrete next step for the user's independent implementation: complete and run the missing T009 synthetic RED cases in `backend/tests/unit/test_data_import.py`, then finish T010/T011 RED before beginning T012–T014 GREEN.
+
+## Current technical corrections and preparatory RED — 2026-11-13
+
+[Exact request](prompts/development/002-t007-t008-fixes-and-t009-t011-red-request-2026-11-13.md); [corrected current hashes, vectors and checks](evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md#codex-correction-and-preparatory-red-verification--2026-11-13); [T009–T011 RED evidence](evidence/tasks/feature-002-import-identity.md). Branch `002-data-and-risk-scoring`, unchanged HEAD `182d0b290c8819e602fc5d77e8df8e904228b032`; earlier local edits and historical evidence preserved.
+
+The two Codex findings are technically resolved: v2 `DatasetVersionId` now requires `dv_` plus exactly 64 lowercase hex digits and absolute end; all three examples and negative schema tests agree. Mapping/data model explicitly bind N=`source.namespace`, F=`source.member`, separately framed. Current LF/normalized mapping M `a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57`; raw CRLF hash `9a87e1ddaad2c6825d76111eae4fdcf54e2bec5ed0c7c25685b1ea8a0dd42ae1`, whose normalized M is equal. Synthetic blank/label-1 versions are `dv_55e9a2fe16d796aa75aa917f82c516b92caeb7d91fc2f3ee59efc757fca0bb3d` / `dv_33e5d9754468adc36e4ceb77a71c4e1e7ab0faad94cd37da29f8e5282b809dfa`; D/C unchanged. Current full hashes are in the linked evidence; earlier M/vectors below are historical. No new technical blocker found.
+
+Targeted v2/mapping tests: **34 passed**; existing backend regression excluding new RED files: **380 passed**; frontend **151 passed**; reproducible hash script, Ruff and `git diff --check` exited 0. The user's explicit preparatory exception produced **20 collected** synthetic T009–T011 tests (collection exit 0), then **20 intended failures** (test exit 1) for missing parser/identity/SQLite behavior. These are partial RED coverage, not completed T009–T011 or GREEN. T007/T008 remain open solely for actual final-byte producing/affected-consumer review with real date, findings/decision and remaining migrations; no signatures are inferred. T009–T011 checkboxes remain open; import and v2 runtime integration remain disabled/unimplemented. Historical validation and three branch-comparison EOF warnings remain separate.
+
+One concrete next step: obtain and record actual final-diff review for data/scoring and affected v2 consumers, then complete the remaining T009–T011 RED cases before starting T012–T016 GREEN.
+
+## Codex review of final local diff — 2026-11-13
+
+[Original request](prompts/development/002-final-local-diff-review-request-2026-11-13.md); [technical findings, exact hashes, component impact and commands](evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md#codex-technical-review-of-the-final-local-diff--2026-11-13). The user's earlier joint team technical direction remains recorded separately in that evidence. This review inspected the working diff against full HEAD `182d0b290c8819e602fc5d77e8df8e904228b032`, including untracked evidence, without changing mapping/contract/schema behavior or assigning individual approvals.
+
+T007 mapping preserves directional bank/account roles, exact paid/received Decimal and named currencies, raw minute time with explicit synthetic UTC+00 analysis assumption, and private labels outside operations. Repeated D/C and old/current `dv_` vectors matched; current LF mapping M is `e82903264382ae710b8b93ce43a3e37d954ec6a6629414e217b698664e6769d6`, equal to the normalized CRLF M. Actual source SHA-256 matches. Read-only full mapped inspect parsed 5,078,345 rows and exited 2 for the still-disabled review gate. Foundation v1 code/contracts are unchanged; 375 backend and 151 frontend tests passed.
+
+**Technical corrections before freeze:** v2 JSON Schema accepts impossible `dv_` shapes although the new recipe requires exactly 64 lowercase hex digits; its examples/tests use those short shapes. The mapping still describes D/C as “proposed”, and the data model ambiguously describes whether the member is inside the namespace before the byte recipe appends it. Align these texts/schema/examples/tests with the adopted recipe, then recalculate mapping M and vectors if mapping bytes change. T007/T008 also still require real final-diff producing/affected-consumer review with date, findings/decision and remaining migrations; the prior joint direction did not supply that review. Thus T007/T008 remain unchecked; T009–T011 remain not started by dependency, and import remains disabled. Backend active-run/list-detail checks, frontend v1/v2 decoding and investigation/priority adapters are later integration, not implemented here. No commit/push.
+
+One concrete next step: correct the two documented identity/contract inconsistencies, recalculate the final hashes/vectors, and present that exact diff to the actual producing and affected-consuming reviewers for the required recorded review before starting T009–T011.
+
+## Current T007/T008 team direction and gate — 2026-11-13
+
+The user [communicated the team's joint technical decision](prompts/development/002-t007-t008-team-decision-and-red-request-2026-11-13.md) adopting the handoff's byte-level D/C and `dv_` recipes, LF-normalized mapping hash in a separate review record, and the current v2/strict Foundation v1 direction. [Decision, current hashes, old/new vectors and actual checks](evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md); [macOS handoff and prior proposal](evidence/tasks/feature-002-macos-handoff.md); [source audit](evidence/tasks/feature-002-source-audit.md); [contract review](evidence/tasks/feature-002-contract-review.md). HEAD remains `182d0b290c8819e602fc5d77e8df8e904228b032`; the working diff is uncommitted and earlier local changes are preserved.
+
+Current candidate M is `e82903264382ae710b8b93ce43a3e37d954ec6a6629414e217b698664e6769d6` after removing self-referential `approved_mapping_sha256`; source S and policy T remain pinned. The existing historical manifest is unchanged. The reference commit's mapping M and the changed working M yield different synthetic `dv_` vectors; D/C remain stable under a label-only change. Targeted mapping/v2/Foundation tests passed **122/122**; the reproducible hash/vector script, source SHA-256 check, Ruff and working `git diff --check` passed. A premature exploratory 8-failure RED run was removed when the final owner-review gate was recognized; no RED test files or GREEN implementation remain.
+
+**Status:** T007/T008 open because the new final working bytes and component impacts still need actual producing/affected-consuming review with real status, date, findings/decision and remaining migrations. The user's joint direction is recorded without individual signatures or invented component findings. T009–T011 not started; import remains `false` and the CLI has no import command. The prior proposal and earlier pending-review sections below are historical snapshots. No browser, IBM import, v2 runtime integration or model evaluation occurred in this session.
+
+One concrete next step: actual data/scoring, frontend/API, investigation and priority/simulation reviewers inspect the current working diff and hash table in the linked decision record, then communicate their real review outcome and remaining migrations; only then close T007/T008 and start Prompt 2 RED tests.
+
+## T007 byte-level identity and hash proposal — 2026-11-13
+
+[Proposal, actual in-memory command and synthetic vectors](evidence/tasks/feature-002-macos-handoff.md#t007-reproducible-identity-and-hash-proposal--2026-11-13-not-approved); [exact user request](prompts/development/002-identity-hash-proposal-request-2026-11-13.md). Against commit `182d0b290c8819e602fc5d77e8df8e904228b032`, proposed D/C identities use domain-separated SHA-256 over UTF-8 length-framed namespace/member and U64BE pre-filter ordinal; `dv_` uses the raw 32-byte source, normalized-mapping and existing time-policy digests in fixed order. A read-only Python calculation produced stable D/C IDs for a label-only synthetic change, distinct `dv_` values, and the same proposed mapping SHA-256 after LF/CRLF normalization. These are **proposal checks only**, not T009–T011 execution or IBM import.
+
+One concrete next step: actual data/scoring and affected-consuming owners decide whether to adopt the exact byte framing/domain/output recipe, LF-normalized full-file mapping hash, and separate approval record pinned to final mapping bytes; they must also decide how final review state and import enablement are represented without a self-referential hash. Record real names, dates, findings and decisions before freezing T007/T008. Current mapping/manifest/contracts/importer are unchanged, `import_allowed=false`, T007/T008 remain open and T009–T011 still depend on T008.
+
+## macOS local verification and owner-review preparation — 2026-11-13
+
+[Actual commands, versions, exits, source scan, Git hash audit and owner questions](evidence/tasks/feature-002-macos-handoff.md); [original verification prompt](prompts/development/002-macos-verification-request-2026-11-13.md); [documentation continuation](prompts/development/002-macos-review-handoff-request-2026-11-13.md). This documentation handoff uses the clean verification commit above as its reference and remains uncommitted.
+
+- Locked uv sync succeeded after moving the cache to a writable local path; npm ci succeeded. Backend 375 passed, frontend 151 passed, Ruff and typecheck/build passed. In-process fixture smoke passed five HTTP assertions after setting `PYTHONPATH`. Initial default-cache sync and first smoke import failed; both attempts and retries are recorded in the evidence. No browser or live-server result was supplied or claimed.
+- Local CSV SHA-256 matched the source manifest. Read-only mapped inspect parsed 5,078,345 rows in 25.76 s, then exited 2 for `pending_team_review`; `complete_parse=true` and `import_allowed=false`. No import, model evaluation or Prompt 2.
+- Git review-hash audit: 5/15 manifest values match raw Git bytes and 10/15 match only after LF→CRLF conversion. The manifest remains unchanged; full raw Git hashes for mapping and three v2 contracts are in the evidence. Branch comparison with `origin/initialization` reports three pre-existing blank-line-at-EOF findings; worktree `git diff --check` was clean during verification.
+- T007/T008 remain unchecked. The mapping still has `pending_team_review`, `executable_mapping=false` and `import_allowed=false`; no actual owner review, approval or independent teammate reproduction is inferred.
+- [T009–T011 technical findings and proposed tests](evidence/tasks/feature-002-macos-handoff.md#t009t011-technical-findings-and-proposed-tests--not-executed) are documentation only and unexecuted: valid `Euro` versus rejected `EUR`, bank-qualified accounts, separate money scales, missing private label, pre-filter ordinals, interrupted new-version import, idempotent same-version reimport and the two distinct label-only/hash checks. The next implementation step T009–T011 depends on completed T008; no RED tests were written.
+
+One concrete next step: the actual data/scoring, frontend/API, investigation and priority/simulation owners review the pinned commit and raw Git hashes, then record their real names, dates, findings, decisions and remaining migrations in the source-audit/contract-review evidence before considering the T007/T008 gates. T009–T011 implementation follows only after T008 is complete.
 
 ## Current Prompt 1 technical resolution — 2026-11-13
 
-**T001-T008 complete; T007/T008 collective team approval is recorded in the current update above.**
+**T001–T006 complete; T007/T008 technical work complete, actual team review pending.**
 [Resolution and actual commands](evidence/tasks/feature-002-technical-resolution.md),
 [current review hashes](evidence/tasks/feature-002-technical-resolution.json),
 [user technical approval](prompts/development/002-technical-resolution-request-2026-11-13.md).
@@ -32,7 +102,9 @@ The approval and contribution update is published in three commits: `dab61f3`, `
 - [Technical mapping](data/mappings/ibm_hi_small_v1.json) binds exact headers,
   Account positions 2/4, source hash/member/v8 namespace, decimal/currency/label
   policy and the user-approved explicit synthetic UTC+00 analysis assumption.
-  Raw timestamp text/minute ties are preserved. Configuration records collective team approval, executable_mapping=true and import_allowed=false because no importer is implemented.
+  Raw timestamp text/minute ties are preserved. Configuration remains
+  pending_team_review, executable_mapping=false and import_allowed=false; actual
+  producing/affected-consuming review entries remain pending/null.
 - Feature 002 schema/API/offline contract now contain currency length 17,
   required detail-envelope dataset_version and equality obligations, strict end
   assertions, exact source-bound duplicate exception and explicit assumed-clock
@@ -40,14 +112,19 @@ The approval and contribution update is published in three commits: `dab61f3`, `
   Foundation v1 application/schema/fixture/frontend/order/banner/locks unchanged.
 - Inspect supports --mapping for read-only observation; generic inspection
   remains strict. Full mapped scan: 5,078,345 records, complete_parse=true,
-  historical inspection exit 2 while review was pending, import_allowed=false. No import command,
+  controlled exit 2 pending_team_review, import_allowed=false. No import command,
   model training, activation or v2 application/decoder integration exists here.
 - RED: 21 intended mapping/schema failures in test bodies. GREEN: 57 targeted;
   after additional boundary/example checks, full backend **375 passed**, frontend
   **151 passed**, Ruff/typecheck/build passed. Existing Starlette/httpx warning only.
-  Collective team approval is recorded per the user?s stated team convention. Independent teammate reproduction, model result and Phase 2 assignment compliance are not inferred. No commit/push; current branch preserved.
+  No human review, independent teammate reproduction, model result or Phase 2
+  assignment compliance inferred. No commit/push; current branch preserved.
 
-Historical next-step text above is superseded by the collective team approval update at the top. Import remains disabled until an import command is implemented and verified. Do not start model training or activation without separate authorization. Absolute source clock/lifecycle claims would
+One concrete next step: have the actual data/scoring producer, frontend/API and
+affected investigation/priority owners review the current hash manifest and
+record their real findings/decisions. Keep T007/T008 unchecked and import disabled
+until the required gates are satisfied. Do not start Prompt 2 from this handoff
+without its separate authorization. Absolute source clock/lifecycle claims would
 still need publisher evidence; the approved analysis assumption resolves only
 this prototype's coordinate policy.
 

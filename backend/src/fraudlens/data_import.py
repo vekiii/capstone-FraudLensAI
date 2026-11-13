@@ -1,14 +1,27 @@
-"""Read-only, bounded CSV reconnaissance. No IBM mapping or import is frozen here."""
+"""Read-only inspection plus internal reviewed-policy canonical parsing.
+
+The public CLI still exposes inspection only; real IBM import remains disabled.
+"""
 import csv
 import hashlib
 import io
 import json
 import re
+import struct
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import UTC, datetime
 from decimal import Decimal
 from functools import lru_cache
 from pathlib import Path
+
+from fraudlens.data_contracts import (
+    CanonicalTransaction,
+    ImportReport,
+    ImportRow,
+    ParseResult,
+    PrivateEvaluationLabel,
+    SourceIdentity,
+)
 
 REQUIRED_ROLES = frozenset({
     'timestamp', 'sender_bank', 'sender_account', 'receiver_bank', 'receiver_account',
@@ -370,3 +383,229 @@ def inspect_source(*, source: Path, source_name: str | None, release: str | None
         report.update(status='failed', error_codes=[code], row_count=None,
                       complete_parse=False, columns=[])
     return report
+
+
+# Canonical import boundary. The inspected mapping is pinned externally; this
+# parser may be called with authored bytes while the real import CLI stays absent.
+_APPROVED_MAPPING_M = 'a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57'
+_CANONICAL_TIME = re.compile(r'[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}:[0-9]{2}\Z')
+_CANONICAL_MONEY = re.compile(r'(0|[1-9][0-9]*)(?:\.([0-9]{1,6}))?\Z')
+
+
+def _reviewed_mapping():
+    path = Path(__file__).resolve().parents[3] / 'data/mappings/ibm_hi_small_v1.json'
+    raw = path.read_bytes()
+    if hashlib.sha256(raw.replace(b'\r\n', b'\n')).hexdigest() != _APPROVED_MAPPING_M:
+        raise ValueError('Reviewed mapping bytes changed')
+    return json.loads(raw)
+
+
+def _frame(value: str) -> bytes:
+    if not isinstance(value, str) or not value:
+        raise ValueError('Identity namespace/member must be nonempty')
+    raw = value.encode('utf-8')
+    if len(raw) >= 2**32:
+        raise ValueError('Identity member is too long')
+    return struct.pack('>I', len(raw)) + raw
+
+
+def derive_source_identity(namespace: str, member: str, ordinal: int) -> SourceIdentity:
+    """Domain-separated public 128-bit D/C IDs; retain full collision inputs."""
+    if type(ordinal) is not int or not 1 <= ordinal < 2**64:
+        raise ValueError('Invalid pre-filter CSV ordinal')
+    framed = _frame(namespace) + _frame(member) + struct.pack('>Q', ordinal)
+    tx = hashlib.sha256(b'FraudLensAI/tx/v1\x00' + framed).digest()
+    case = hashlib.sha256(b'FraudLensAI/case/v1\x00' + framed).digest()
+    return SourceIdentity('D' + tx[:16].hex(), 'C' + case[:16].hex(), tx, case, framed)
+
+
+def derive_dataset_version(source_digest: bytes, mapping_digest: bytes,
+                           policy_digest: bytes) -> str:
+    if any(type(digest) is not bytes or len(digest) != 32
+           for digest in (source_digest, mapping_digest, policy_digest)):
+        raise ValueError('DatasetVersion requires three full SHA-256 digests')
+    return 'dv_' + hashlib.sha256(b'FraudLensAI/dataset-version/v1\x00'
+                                   + source_digest + mapping_digest + policy_digest).hexdigest()
+
+
+def verify_source_digest(raw: bytes, expected_sha256: str) -> bool:
+    return (isinstance(raw, bytes) and isinstance(expected_sha256, str)
+            and re.fullmatch(r'[0-9a-f]{64}', expected_sha256) is not None
+            and hashlib.sha256(raw).hexdigest() == expected_sha256)
+
+
+class IdentityRegistry:
+    """Detect public-ID, full-digest, input and observable-fact collisions."""
+
+    def __init__(self):
+        self._seen = {}
+
+    def register(self, public_id: str, full_digest: bytes,
+                 framed_input: bytes, fact_digest: bytes) -> None:
+        if (not isinstance(public_id, str) or len(public_id) != 33
+                or public_id[0] not in 'DC'
+                or re.fullmatch(r'[0-9a-f]{32}', public_id[1:]) is None
+                or len(full_digest) != 32):
+            raise ValueError('Invalid identity registry entry')
+        identity = (bytes(full_digest), bytes(framed_input), bytes(fact_digest))
+        existing = self._seen.get(public_id)
+        if existing is not None and existing != identity:
+            raise ValueError('Identity collision or changed fact')
+        self._seen[public_id] = identity
+
+    def __len__(self):
+        return len(self._seen)
+
+
+def _join_key(bank: str, account: str) -> bytes:
+    return _frame(bank) + _frame(account)
+
+
+def _time_coordinate(raw: str):
+    if _CANONICAL_TIME.fullmatch(raw) is None:
+        raise ValueError('invalid_timestamp')
+    try:
+        wall = datetime.strptime(raw, '%Y/%m/%d %H:%M').replace(tzinfo=UTC)
+    except ValueError:
+        raise ValueError('invalid_timestamp') from None
+    epoch = datetime(1970, 1, 1, tzinfo=UTC)
+    delta = wall - epoch
+    ns = ((delta.days * 86400 + delta.seconds) * 1_000_000_000)
+    return wall, ns
+
+
+def _canonical_amount(raw: str) -> str:
+    match = _CANONICAL_MONEY.fullmatch(raw)
+    if match is None or len(raw.split('.', 1)[0]) > 13:
+        raise ValueError('invalid_amount')
+    return raw
+
+
+def _party(raw: str) -> str:
+    if not isinstance(raw, str) or not raw.strip() or len(raw) > 120:
+        raise ValueError('invalid_party')
+    return raw
+
+
+def _read_canonical_csv(source):
+    """Yield source records from a binary stream; CSV ordinal counts records, not lines."""
+    stream = io.BytesIO(source) if isinstance(source, bytes) else source
+    text = io.TextIOWrapper(stream, encoding='utf-8', errors='strict', newline='')
+    reader = csv.reader(text, delimiter=',', quotechar='"', doublequote=True,
+                        skipinitialspace=False, strict=True)
+    try:
+        header = next(reader, None)
+        if header is None:
+            raise ValueError('empty_source')
+        if '\x00' in ''.join(header) or header != HI_SMALL_HEADERS:
+            raise ValueError('mapping_header_mismatch')
+        ordinal = 0
+        for row in reader:
+            ordinal += 1
+            if len(row) != 11 or '\x00' in ''.join(row):
+                raise ValueError('record_width_or_encoding_mismatch')
+            yield ordinal, row
+        if ordinal == 0:
+            raise ValueError('header_only')
+    except (UnicodeDecodeError, csv.Error) as exc:
+        raise ValueError('malformed_csv_or_encoding') from exc
+    finally:
+        if not isinstance(source, bytes):
+            text.detach()
+
+
+def _private_label(raw: str):
+    if raw == '0':
+        return 'eligible_negative', 0
+    if raw == '1':
+        return 'eligible_positive', 1
+    if raw == '':
+        return 'missing', None
+    return 'invalid', None
+
+
+def _canonical_event(row, identity, ordinal, mapping):
+    time, epoch_ns = _time_coordinate(row[0])
+    sender_bank, sender_account = _party(row[1]), _party(row[2])
+    receiver_bank, receiver_account = _party(row[3]), _party(row[4])
+    received_amount, paid_amount = _canonical_amount(row[5]), _canonical_amount(row[7])
+    currencies = mapping['money_policy']['source_currency_allowlist']
+    if row[6] not in currencies or row[8] not in currencies:
+        raise ValueError('unsupported_currency')
+    payment = row[9] or None
+    if payment is not None and payment not in mapping['payment_format_policy']['allowed_source_values']:
+        raise ValueError('unsupported_payment_format')
+    facts = [row[0], sender_bank, sender_account, receiver_bank, receiver_account,
+             received_amount, row[6], paid_amount, row[8], payment]
+    fact_digest = hashlib.sha256(json.dumps(facts, ensure_ascii=True,
+                             separators=(',', ':')).encode('utf-8')).digest()
+    return CanonicalTransaction(
+        transaction_id=identity.transaction_id, case_id=identity.case_id,
+        source_ordinal=ordinal, event_time_raw=row[0], event_time_utc=time,
+        event_time_epoch_ns=epoch_ns,
+        time_basis='assumed_utc_for_synthetic_benchmark',
+        sender_bank=sender_bank, sender_account=sender_account,
+        receiver_bank=receiver_bank, receiver_account=receiver_account,
+        sender_join_key=_join_key(sender_bank, sender_account),
+        receiver_join_key=_join_key(receiver_bank, receiver_account),
+        paid_amount=paid_amount, paid_currency=row[8],
+        received_amount=received_amount, received_currency=row[6],
+        payment_format=payment, event_fact_digest=fact_digest)
+
+
+def iter_canonical_rows(source, *, namespace: str, member: str,
+                        compact_collision_index: bool = False):
+    """Stream one accounted record at a time for a transactional staged importer.
+
+    A structural error can occur after earlier yielded records; callers must
+    discard/mark failed the whole stage and must not publish a partial report.
+    """
+    mapping = _reviewed_mapping()
+    _frame(namespace)
+    _frame(member)
+    registry = IdentityRegistry() if not compact_collision_index else None
+    seen_ids = set() if compact_collision_index else None
+    for ordinal, row in _read_canonical_csv(source):
+        identity = derive_source_identity(namespace, member, ordinal)
+        try:
+            event = _canonical_event(row, identity, ordinal, mapping)
+        except ValueError as exc:
+            yield ImportRow(ordinal, 'event_rejected', str(exc), None), None, None
+            continue
+        if compact_collision_index:
+            keys = (b'D' + identity.full_digest[:16],
+                    b'C' + identity.case_full_digest[:16])
+            if any(key in seen_ids for key in keys):
+                raise ValueError('Identity collision')
+            seen_ids.update(keys)
+        else:
+            registry.register(identity.transaction_id, identity.full_digest,
+                              identity.framed_input, event.event_fact_digest)
+            registry.register(identity.case_id, identity.case_full_digest,
+                              identity.framed_input, event.event_fact_digest)
+        status, value = _private_label(row[10])
+        label = PrivateEvaluationLabel(identity.transaction_id, ordinal, status, value)
+        yield ImportRow(ordinal, 'event_valid', None, status), event, label
+
+
+def parse_canonical_source(source, *, namespace: str, member: str) -> ParseResult:
+    """Aggregate a bounded authored fixture; T015 can stream iter_canonical_rows."""
+    events, labels, rows = [], [], []
+    try:
+        for row_status, event, label in iter_canonical_rows(
+                source, namespace=namespace, member=member):
+            rows.append(row_status)
+            if event is not None:
+                events.append(event)
+                labels.append(label)
+    except (ValueError, OSError, UnicodeDecodeError) as exc:
+        report = ImportReport(None, 0, 0, 0, 0, 0, 0, False, (str(exc),))
+        return ParseResult('failed', report)
+    eligible = sum(label.value is not None for label in labels)
+    positives = sum(label.value == 1 for label in labels)
+    negatives = sum(label.value == 0 for label in labels)
+    report = ImportReport(len(rows), len(events), len(rows) - len(events),
+                          eligible, len(events) - eligible, positives, negatives, True)
+    if not report.reconciled():
+        raise AssertionError('Import row accounting invariant failed')
+    return ParseResult('complete', report, events, labels, rows)

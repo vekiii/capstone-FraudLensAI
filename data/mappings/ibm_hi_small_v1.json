@@ -1,12 +1,11 @@
 {
   "proposal_id": "ibm-hi-small-mapping-review-2026-11-13",
-  "status": "approved_by_collective_team",
-  "executable_mapping": true,
+  "status": "pending_team_review",
+  "executable_mapping": false,
   "review": {
-    "reviewer": "FraudLens project team (collective approval conveyed by user)",
-    "date": "2026-11-13",
-    "decision": "approved",
-    "basis": "User confirms project work and documentation are produced collectively and one member approval represents the team; user explicitly approved T007/T008."
+    "reviewer": null,
+    "date": null,
+    "decision": null
   },
   "source": {
     "distribution": "ealtman2019/ibm-transactions-for-anti-money-laundering-aml",
@@ -152,7 +151,9 @@
     "current_behavior": "read-only inspection allowed; import unavailable pending required team review",
     "time_policy_sha256": "67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781"
   },
-  "unresolved_gates": [],
+  "unresolved_gates": [
+    "producer and affected-consumer team review; no approval recorded"
+  ],
   "schema_version": 1,
   "mapping_version": "ibm-hi-small-v1-technical",
   "technical_approval": {
@@ -166,33 +167,32 @@
     "import_allowed": false,
     "allowed_commands": [
       "inspect"
-    ],
-    "current_behavior": "read-only inspection allowed; mapping approved by collective team decision; import unavailable because no import command is implemented"
+    ]
   },
   "required_reviews": {
     "data_scoring_producer": {
-      "status": "approved_by_collective_team",
-      "reviewer": "FraudLens project team (collective approval conveyed by user)",
-      "date": "2026-11-13",
-      "decision": "approved under the team collective-approval convention"
+      "status": "pending",
+      "reviewer": null,
+      "date": null,
+      "decision": null
     },
     "frontend_api": {
-      "status": "approved_by_collective_team",
-      "reviewer": "FraudLens project team (collective approval conveyed by user)",
-      "date": "2026-11-13",
-      "decision": "approved under the team collective-approval convention"
+      "status": "pending",
+      "reviewer": null,
+      "date": null,
+      "decision": null
     },
     "investigation": {
-      "status": "approved_by_collective_team",
-      "reviewer": "FraudLens project team (collective approval conveyed by user)",
-      "date": "2026-11-13",
-      "decision": "approved under the team collective-approval convention"
+      "status": "pending",
+      "reviewer": null,
+      "date": null,
+      "decision": null
     },
     "priority_simulation": {
-      "status": "approved_by_collective_team",
-      "reviewer": "FraudLens project team (collective approval conveyed by user)",
-      "date": "2026-11-13",
-      "decision": "approved under the team collective-approval convention"
+      "status": "pending",
+      "reviewer": null,
+      "date": null,
+      "decision": null
     }
   },
   "party_policy": {
@@ -276,15 +276,17 @@
     "new_value": "reject pending explicit mapping revision"
   },
   "identity": {
-    "source_member_domain": "namespace plus exact member plus pre-filter CSV record ordinal",
-    "transaction_and_case_ids": "existing proposed distinct-domain D/C + 32 lowercase hexadecimal SHA-256 prefix scheme; no implementation here",
+    "namespace_input": "N is UTF-8(source.namespace), exactly as declared above; do not append the member to N",
+    "member_input": "F is UTF-8(source.member), encoded separately from N; no Unicode normalization or case folding",
+    "source_member_domain": "I = U32BE(byte length of N) || N || U32BE(byte length of F) || F || U64BE(one-based CSV record ordinal before filtering)",
+    "transaction_and_case_ids": "D/C use separate ASCII domains FraudLensAI/tx/v1 and FraudLensAI/case/v1, each followed by 0x00 and I; public ID is D/C plus lowercase hex of first 16 SHA-256 digest bytes; retain full digest and I for collision checks",
     "fact_collision_policy": "retain/check full digest inputs and label-free event facts; fail on collision or changed facts under same source-row identity",
     "dataset_version_inputs": [
       "raw source SHA-256",
-      "approved mapping SHA-256",
-      "approved time-policy SHA-256"
+      "32-byte SHA-256 of complete mapping UTF-8 bytes after CRLF-to-LF normalization, confirmed in separate review record",
+      "32-byte selected time-policy SHA-256"
     ],
-    "approved_mapping_sha256": null,
+    "dataset_version_recipe": "dv_ plus lowercase hex of SHA-256(ASCII FraudLensAI/dataset-version/v1 || 0x00 || source digest || normalized mapping digest || time-policy digest); all three input digests are full 32 raw bytes",
     "label_only_changes": "new dataset version; no label-dependent transaction/case identity"
   }
 }
