@@ -1,4 +1,12 @@
 # Next work - FraudLens AI
+
+## IBM HI-Small source-mapping gate verified - 2026-11-13
+
+The [T007 re-verification](evidence/tasks/feature-002-source-audit.md#t007-source-mapping-gate-re-verification---2026-11-13) confirms that the existing collective final-byte approval covers the current unchanged mapping M `a816260a...093e57`. T007 is already complete, and the source-bound local import path was exercised in T015/T016. The mapping JSON's pending/inspect-only fields remain historical hashed bytes; they do not represent missing team approval or prohibit the approved local CLI. Controlled mapping/identity checks passed 106/106. The original IBM CSV and mapping content were unchanged.
+
+The separate pretrained model still lacks proven bank/account graph-state compatibility and an exact training cutoff. Its loader, inference adapter and independent evaluation remain open. Earlier Phase 5 handoffs below that call the **source mapping** an unresolved approval gate are superseded by this correction; they remain accurate about the **pretrained graph-state** gate. Current LF-normalized data-model and offline contract bytes differ from their historical T008 review hashes after Phase 3/4 revisions; review their current versions separately before claiming exact current-byte T008 approval.
+
+One concrete next step: establish the pretrained graph state's account-collision and training-cutoff provenance, then freeze a faithful artifact manifest before implementing the loader.
 ## Final IBM pretrained Phase 5 review — 2026-11-13
 
 On `model-implementations`, the [final review](evidence/tasks/feature-002-pretrained-final-review.md)

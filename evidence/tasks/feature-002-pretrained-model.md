@@ -1,5 +1,7 @@
 # Feature 002 pretrained artifact investigation
 
+**Current source-mapping status, 2026-11-13:** [T007 re-verification](feature-002-source-audit.md#t007-source-mapping-gate-re-verification---2026-11-13) confirms the unchanged IBM mapping already has collective final-byte approval, and the source-bound import path was exercised. Earlier entries below describing its embedded pending flags as a missing team approval are historical observations. Pretrained model graph-state and inference compatibility remain unresolved.
+
 ## IBM pretrained inference RED request gate — 2026-11-13
 
 At `c872375e3457bf16a148541c407063a02615553a` on

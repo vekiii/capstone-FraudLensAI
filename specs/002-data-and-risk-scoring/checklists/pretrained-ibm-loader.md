@@ -5,6 +5,7 @@ verification remain open. This checklist tracks the team-approved pretrained
 direction separately from the original training-based T029–T036 tasks.
 
 - [x] Team scope approval reported by the user on 2026-11-13; recorded in the [decision](../proposals/pretrained-ibm-model-decision.md).
+- [x] T007 IBM source mapping already has collective final-byte approval at the unchanged pinned M; the local source-bound import path was exercised. See the [re-verification](../../../evidence/tasks/feature-002-source-audit.md#t007-source-mapping-gate-re-verification---2026-11-13). This does not resolve pretrained graph identity or cutoff compatibility.
 - [x] IBM AML LightGBM source revision, 22-name source feature recipe and publisher preprocessing SHA-256 recorded in [artifact evidence](../../../evidence/tasks/feature-002-pretrained-model.md).
 - [x] Synthetic loader test module authored and collected without dependency or collection error.
 - [x] Independently verify the native model's exact bytes, size, SHA-256, header and categorical metadata (see the 2026-11-13 acquisition gate in artifact evidence).

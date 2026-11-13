@@ -1,5 +1,7 @@
 # Feature 002 IBM pretrained model: final Phase 5 review
 
+**Source-mapping correction, 2026-11-13:** The [T007 re-verification](feature-002-source-audit.md#t007-source-mapping-gate-re-verification---2026-11-13) confirms that collective approval of the unchanged M is already recorded and the source-bound IBM import path was exercised. Statements below that infer an unapproved import solely from the mapping JSON's historical `pending_team_review`/`import_allowed=false` fields are superseded. The separate pretrained graph identity, cutoff, safe preprocessing and loader gates still block model inference; zero model predictions and no independent evaluation remain the final-review outcome.
+
 Review date: 2026-11-13. Branch: `model-implementations`. Starting HEAD `429d6ec8c9b15a4a2e5cc223aa0005ab42a97c2d`; verified regression-fix commit `07cce92cc5924cb6c3bd66888c14b165f618e3af`. This is a repository and local-artifact review, **not** acceptance of a working pretrained scorer or independent performance benchmark. Phase 6 and Phase 7 were not started.
 
 ## History, authority and task state

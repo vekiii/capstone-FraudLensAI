@@ -1,5 +1,30 @@
 # Feature 002 source inspection, audit and mapping decisions
 
+## T007 source-mapping gate re-verification - 2026-11-13
+
+**Result: complete; no new mapping approval is required.** The user's [collective final-byte confirmation](../../prompts/development/002-t007-t008-final-team-approval-2026-11-13.md) and the [separate review record](feature-002-t007-t008-team-review-2026-11-13.md#collective-final-byte-approval-conveyed-by-the-user) approve the exact IBM HI-Small mapping under normalized SHA-256 `a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57`. The current LF working file has that raw and normalized digest, `git diff --exit-code -- data/mappings/ibm_hi_small_v1.json` found no change, and Git reports LF in index and worktree. T007 was already checked in `tasks.md`; this review leaves its marker and mapping bytes unchanged.
+
+The mapping requires the exact 11 ordered headers. Positions 2 and 4 distinguish sender and receiver `Account`. The importer preserves exact bank/account strings and frames each bank/account pair for joins. D/C transaction and case IDs use the reviewed namespace, member and one-based pre-filter CSV ordinal with separate hash domains. DatasetVersion binds source, normalized mapping and time-policy digests. `Timestamp` remains raw and is interpreted as a minute-resolution fixed +00:00 **analysis coordinate**; the source timezone remains unknown. `Amount Received`/`Receiving Currency` and `Amount Paid`/`Payment Currency` remain separate. Amount strings are validated as exact plain decimals without FX or rounding, and the reviewed currency names are preserved. `Is Laundering` produces a separate private evaluation label; it is absent from canonical event facts and scorer predictor fields. Unsupported fields or values fail the reviewed policy.
+
+The JSON's embedded `pending_team_review`, `executable_mapping=false`, `import_allowed=false` and null reviewer fields are historical inspection metadata deliberately retained inside the hashed file. The local import CLI checks the **external** final-byte approval, pinned mapping/source hashes, namespace/member, source size and time policy before staging. T015/T016 evidence records a completed IBM import and replay through that source-bound path. These embedded flags do not reopen T007 or block this approved local CLI. They do not authorize changed data or mappings. The separate pretrained graph-state account/cutoff compatibility gate remains open.
+
+The mapping digest still matches its approved record. Among the four other files pinned in the combined T007/T008 final-byte review, current LF-normalized `contracts/api.md` (`fbf7be0d...17b13e`) and `contracts/schemas.json` (`bf487d84...f88`) match their reviewed digests. The current LF-normalized `data-model.md` is `4b3a8ff93dba0750132f55f06fe7d90965bb9e5cb282b3f7e66377cb2ebc8ff0` (reviewed: `e8235e35...a0987`), and `contracts/data-and-scoring.md` is `2654f4e2bab0a17b15bc71e885307dc44912159047b8f764a0a444ceb365ee3d` (reviewed: `534de0c7...a9918`). Both have later Phase 3/4 content revisions. This is a **current-contract review distinction**, not a change to M or a reopened source-mapping decision. Review those later revisions separately before claiming exact current-byte T008 approval.
+
+Checks from repository root on `model-implementations` at `a031b16`:
+
+| Check | Exit | Observed |
+|---|---:|---|
+| `Get-FileHash -Algorithm SHA256` on mapping and raw CSV; source size check | 0 | M `a816260a...093e57`; source S `b19d39f5...c5b040`, 475,664,283 bytes; both match pinned evidence. |
+| `git diff --exit-code -- data/mappings/ibm_hi_small_v1.json`; `git ls-files --eol` | 0 | No mapping diff; index and worktree both LF. |
+| `.venv/Scripts/python.exe evidence/tasks/feature-002-team-review-check.py` | 0 | Final M, LF/CRLF equivalence, D/C synthetic vectors and time-policy digest matched. |
+| `.venv/Scripts/python.exe -m pytest -q -p no:cacheprovider backend/tests/unit/test_data_identity.py backend/tests/unit/test_source_mapping_inspection.py backend/tests/unit/test_data_import.py backend/tests/contracts/test_v2_design_amendments.py --tb=short --basetemp data/artifacts/pytest-mapping-gate` | 0 | 106 passed in 1.26 s; controlled contract checks, not a new full-source import. |
+| `.venv/Scripts/python.exe -c` with `hashlib.sha256(Path(p).read_bytes().replace(b'\r\n', b'\n'))` for the four reviewed contract paths | 0 | API and schema match; data model and offline data/scoring contract differ after later revisions as shown above. |
+| `.venv/Scripts/python.exe -m json.tool data/mappings/ibm_hi_small_v1.json` | 0 | Mapping JSON parses; no content edit. |
+| `Test-Path` for the three new local evidence/prompt link targets | 0 | All three paths exist. |
+| `git diff --check` | 0 | No whitespace errors; Git emitted nonfatal LF-to-CRLF notices. |
+
+No raw CSV, mapping, model, holdout or generated store was modified for this review.
+
 **Current Phase 3 outcome:** [T015/T016 actual import and replay](feature-002-import-identity.md#t016-declared-ibm-v8-import-and-exact-replay--2026-11-13) completed against the final-byte mapping M `a816260a…093e57`. Its embedded pending/inspect-only fields remain historical; the local CLI requires the separate collective final-byte review, exact M, namespace/member and S before execution. Earlier import-disabled statements below record the state before T015.
 
 ## Collective final mapping approval — 2026-11-13
