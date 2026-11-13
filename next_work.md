@@ -1,6 +1,16 @@
 # Next work - FraudLens AI
-Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
-Current observed branch: 002-data-and-risk-scoring; HEAD: 63d3384.
+Updated 2026-11-13 Europe/Budapest. Current branch: 002-data-and-risk-scoring; HEAD: 182d0b2.
+
+## Collective team approval ? 2026-11-13
+
+The user confirms that project work and documentation are produced collectively and that one member?s approval represents team approval. The user explicitly approved T007/T008; record this as collective team approval conveyed by the user, without inventing individual reviewer names. Mapping and contract review records are updated, and T007/T008 are checked complete.
+
+- T007 source mapping is approved by the collective team decision. Its source hash, release, source semantics and explicit synthetic UTC+00 analysis assumption remain documented.
+- T008 v2 contract amendments are approved by the collective team decision; Foundation v1 remains unchanged.
+- Import remains disabled because the CLI has no import command. Model training, activation and v2 application integration are not authorized/performed by this approval.
+- Evidence: `evidence/tasks/feature-002-source-audit.md`, `evidence/tasks/feature-002-contract-review.md`, and `evidence/tasks/feature-002-technical-resolution.json`.
+
+One concrete next step: proceed with the next authorized Feature 002 implementation tasks after T008; do not treat this approval as authorization for model training, activation, or unrelated scope.
 
 ## Current Prompt 1 technical resolution — 2026-11-13
 
@@ -22,9 +32,7 @@ Current observed branch: 002-data-and-risk-scoring; HEAD: 63d3384.
 - [Technical mapping](data/mappings/ibm_hi_small_v1.json) binds exact headers,
   Account positions 2/4, source hash/member/v8 namespace, decimal/currency/label
   policy and the user-approved explicit synthetic UTC+00 analysis assumption.
-  Raw timestamp text/minute ties are preserved. Configuration remains
-  pending_team_review, executable_mapping=false and import_allowed=false; actual
-  producing/affected-consuming review entries remain pending/null.
+  Raw timestamp text/minute ties are preserved. Configuration records collective team approval, executable_mapping=true and import_allowed=false because no importer is implemented.
 - Feature 002 schema/API/offline contract now contain currency length 17,
   required detail-envelope dataset_version and equality obligations, strict end
   assertions, exact source-bound duplicate exception and explicit assumed-clock
@@ -32,19 +40,14 @@ Current observed branch: 002-data-and-risk-scoring; HEAD: 63d3384.
   Foundation v1 application/schema/fixture/frontend/order/banner/locks unchanged.
 - Inspect supports --mapping for read-only observation; generic inspection
   remains strict. Full mapped scan: 5,078,345 records, complete_parse=true,
-  controlled exit 2 pending_team_review, import_allowed=false. No import command,
+  historical inspection exit 2 while review was pending, import_allowed=false. No import command,
   model training, activation or v2 application/decoder integration exists here.
 - RED: 21 intended mapping/schema failures in test bodies. GREEN: 57 targeted;
   after additional boundary/example checks, full backend **375 passed**, frontend
   **151 passed**, Ruff/typecheck/build passed. Existing Starlette/httpx warning only.
-  No human review, independent teammate reproduction, model result or Phase 2
-  assignment compliance inferred. No commit/push; current branch preserved.
+  Collective team approval is recorded per the user?s stated team convention. Independent teammate reproduction, model result and Phase 2 assignment compliance are not inferred. No commit/push; current branch preserved.
 
-One concrete next step: have the actual data/scoring producer, frontend/API and
-affected investigation/priority owners review the current hash manifest and
-record their real findings/decisions. Keep T007/T008 unchecked and import disabled
-until the required gates are satisfied. Do not start Prompt 2 from this handoff
-without its separate authorization. Absolute source clock/lifecycle claims would
+Historical next-step text above is superseded by the collective team approval update at the top. Import remains disabled until an import command is implemented and verified. Do not start model training or activation without separate authorization. Absolute source clock/lifecycle claims would
 still need publisher evidence; the approved analysis assumption resolves only
 this prototype's coordinate policy.
 

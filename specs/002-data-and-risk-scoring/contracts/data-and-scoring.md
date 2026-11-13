@@ -1,8 +1,6 @@
 # Feature 002 offline and scoring interfaces
 
-Status: technically amended with user approval on 2026-11-13. Pinned v8 source
-equivalence and reference-implementation semantics are verified; producing and
-affected-consuming team review remains pending. This document specifies the boundaries tasks must
+Status: technically amended and collectively team-approved on 2026-11-13. Pinned v8 source equivalence and reference-implementation semantics are verified; runtime import and v2 integration remain unimplemented. This document specifies the boundaries tasks must
 implement; it is not executable code or evidence of a trained model.
 See [data-model.md](../data-model.md) for entity invariants and
 [api.md](api.md) for public read responses.
@@ -59,15 +57,10 @@ source-row reference before applying event or label validation. A valid
 event with invalid label remains available to history and is excluded
 from fit/evaluation.
 
-### Technically selected HI-Small policy; team review pending
+### Technically selected HI-Small policy; collective team approval recorded
 
 The current configuration is [ibm_hi_small_v1.json](../../../data/mappings/ibm_hi_small_v1.json).
-It is explicitly pending_team_review, executable_mapping=false, import_allowed=false;
-only read-only inspection is supported. All required producing/consuming review
-entries remain pending, with no reviewer/date/decision. User technical approval is
-recorded separately and does not substitute for those reviews. The CLI has no
-import command. A future importer must refuse this configuration until all
-required gates and actual reviews are satisfied; that importer is outside Prompt 1.
+The mapping records collective team approval conveyed by the user on 2026-11-13 and is executable_mapping=true. Import remains disabled and only read-only inspection is supported because the CLI has no import command. A future importer must validate the approved mapping and its recorded hash; no importer is implemented in this slice.
 
 Verified reference: Kaggle v8 HI-Small_Trans.csv, SHA-256
 `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`.

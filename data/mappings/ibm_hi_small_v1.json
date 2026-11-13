@@ -1,11 +1,12 @@
 {
   "proposal_id": "ibm-hi-small-mapping-review-2026-11-13",
-  "status": "pending_team_review",
-  "executable_mapping": false,
+  "status": "approved_by_collective_team",
+  "executable_mapping": true,
   "review": {
-    "reviewer": null,
-    "date": null,
-    "decision": null
+    "reviewer": "FraudLens project team (collective approval conveyed by user)",
+    "date": "2026-11-13",
+    "decision": "approved",
+    "basis": "User confirms project work and documentation are produced collectively and one member approval represents the team; user explicitly approved T007/T008."
   },
   "source": {
     "distribution": "ealtman2019/ibm-transactions-for-anti-money-laundering-aml",
@@ -151,9 +152,7 @@
     "current_behavior": "read-only inspection allowed; import unavailable pending required team review",
     "time_policy_sha256": "67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781"
   },
-  "unresolved_gates": [
-    "producer and affected-consumer team review; no approval recorded"
-  ],
+  "unresolved_gates": [],
   "schema_version": 1,
   "mapping_version": "ibm-hi-small-v1-technical",
   "technical_approval": {
@@ -167,32 +166,33 @@
     "import_allowed": false,
     "allowed_commands": [
       "inspect"
-    ]
+    ],
+    "current_behavior": "read-only inspection allowed; mapping approved by collective team decision; import unavailable because no import command is implemented"
   },
   "required_reviews": {
     "data_scoring_producer": {
-      "status": "pending",
-      "reviewer": null,
-      "date": null,
-      "decision": null
+      "status": "approved_by_collective_team",
+      "reviewer": "FraudLens project team (collective approval conveyed by user)",
+      "date": "2026-11-13",
+      "decision": "approved under the team collective-approval convention"
     },
     "frontend_api": {
-      "status": "pending",
-      "reviewer": null,
-      "date": null,
-      "decision": null
+      "status": "approved_by_collective_team",
+      "reviewer": "FraudLens project team (collective approval conveyed by user)",
+      "date": "2026-11-13",
+      "decision": "approved under the team collective-approval convention"
     },
     "investigation": {
-      "status": "pending",
-      "reviewer": null,
-      "date": null,
-      "decision": null
+      "status": "approved_by_collective_team",
+      "reviewer": "FraudLens project team (collective approval conveyed by user)",
+      "date": "2026-11-13",
+      "decision": "approved under the team collective-approval convention"
     },
     "priority_simulation": {
-      "status": "pending",
-      "reviewer": null,
-      "date": null,
-      "decision": null
+      "status": "approved_by_collective_team",
+      "reviewer": "FraudLens project team (collective approval conveyed by user)",
+      "date": "2026-11-13",
+      "decision": "approved under the team collective-approval convention"
     }
   },
   "party_policy": {

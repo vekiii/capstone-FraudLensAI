@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://fraudlens.local/specs/002/contracts/schemas.json",
   "title": "FraudLens Feature 002 public dataset responses",
-  "description": "Feature 002 technical contract amended with user approval on 2026-11-13; producer/affected-consumer team review and runtime integration remain pending. Foundation v1 is unchanged.",
+  "description": "Feature 002 technical contract amended and collectively team-approved on 2026-11-13; runtime integration remains pending. Foundation v1 is unchanged.",
   "$comment": "Cross-object version/run equality requires coordinated semantic validators before runtime integration; see api.md. The assumed UTC basis is an approved analysis assumption, not a source timezone fact.",
   "oneOf": [
     {"$ref": "#/$defs/HealthV2"},

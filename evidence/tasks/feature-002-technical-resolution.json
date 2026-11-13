@@ -1,11 +1,16 @@
 {
-  "status": "technical_work_complete_pending_team_review",
+  "status": "technical_work_and_collective_team_review_complete",
   "user_technical_approval": "prompts/development/002-technical-resolution-request-2026-11-13.md",
-  "human_team_review": "pending; no reviewers, dates or approvals supplied",
+  "human_team_review": {
+    "status": "approved",
+    "reviewer": "FraudLens project team (collective approval conveyed by user)",
+    "date": "2026-11-13",
+    "basis": "User confirms project work and documentation are produced collectively and one member approval represents the team; user explicitly approved T007/T008."
+  },
   "tasks": {
     "T006": "complete",
-    "T007": "technical_complete_pending_team_review",
-    "T008": "technical_complete_pending_producer_consumer_review"
+    "T007": "complete_by_collective_team_approval",
+    "T008": "complete_by_collective_team_approval"
   },
   "reproducible_reference": {
     "release": "Kaggle v8",
@@ -15,7 +20,7 @@
     "source_data_license": "CDLA-Sharing-1.0"
   },
   "time_policy_sha256": "67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781",
-  "team_approved_mapping_sha256": null,
+  "team_approved_mapping_sha256": "27445724712e9bca6f0d22ac991a2f923a18d5df33fc79a41c852244cd439699",
   "review_input_sha256": {
     "data/mappings/ibm_hi_small_v1.json": "4a8200f72c3fcd8f1d0c1ce99dd054a37d0972e4159c23c803174cdefaf207bf",
     "specs/002-data-and-risk-scoring/contracts/api.md": "a77e93675055a322056eda2f17900ece33370bb21edac4cb61c1d1a29c736cc8",
@@ -57,6 +62,6 @@
     "cross-bank clock synchronization",
     "transaction lifecycle stage"
   ],
-  "remaining_required_gate": "actual producer and affected-consuming owner review",
+  "remaining_required_gate": "none for T007/T008; import remains disabled because no import command is implemented",
   "prohibited_work_performed": false
 }

@@ -70,15 +70,24 @@ Responsibility streams are from the Foundation procedure; they do not assign nam
 
 | Required owner/consumer | Review required | Actual reviewer/date/decision |
 |---|---|---|
-| Data/scoring producing owner (A) | Source provenance, mapping/time/money/identity, canonical/ScoreRequest/assessment schema, label isolation. | Pending / not supplied / no approval |
-| Frontend/API consuming owner | v1/v2 decoder and endpoint compatibility, currency bound, event ordering, snapshot/error behavior, truthful banner. | Pending / not supplied / no approval |
-| Investigation consumer (C) | Label-free directional facts, source/run/time/coverage/explanation identity; future investigation inputs. | Pending / not supplied / no approval |
-| Priority/simulation consumer (D) | Score meaning/threshold/run compatibility, stable identities, observable ordering and snapshot counts; no label inputs. | Pending / not supplied / no approval |
+| Data/scoring producing owner (A) | Source provenance, mapping/time/money/identity, canonical/ScoreRequest/assessment schema, label isolation. | Approved by collective team decision conveyed by user, 2026-11-13 |
+| Frontend/API consuming owner | v1/v2 decoder and endpoint compatibility, currency bound, event ordering, snapshot/error behavior, truthful banner. | Approved by collective team decision conveyed by user, 2026-11-13 |
+| Investigation consumer (C) | Label-free directional facts, source/run/time/coverage/explanation identity; future investigation inputs. | Approved by collective team decision conveyed by user, 2026-11-13 |
+| Priority/simulation consumer (D) | Score meaning/threshold/run compatibility, stable identities, observable ordering and snapshot counts; no label inputs. | Approved by collective team decision conveyed by user, 2026-11-13 |
 
-No owner contact/messages sent. The user's provenance clarification is evidence of acquisition, not mapping/contract approval. Foundation's earlier accepted review does not approve Feature 002.
+No owner contact/messages were sent. At the time this original review was written, approvals were pending; the later collective team approval is recorded in the dated update below. Foundation's earlier accepted review did not approve Feature 002.
 
 ## Checks and integration state
 
 Read Foundation v1 API/schema, backend models/service/scorer/settings/routes, frontend strict decoders/client/main/views and existing unit/contract/integration/UI tests. Static `Draft202012Validator.check_schema` passed on unchanged v2 (exit 0). **Correction:** the earlier standalone probes retained the root response union, so their reported ID-newline rejections were invalid. Correctly isolated continuation probes accept valid ordinary IDs/decimals, reject Australian Dollar/Canadian Dollar specifically for currency maxLength, and demonstrate final-newline ID/money acceptance. The exact candidate fixes and passing review probes are in the [investigation](feature-002-source-investigation.md). Historical application regressions remain in the [ledger](feature-002-implementation.md); they were not rerun for this documentation continuation.
 
 No v2 implementation, contract amendment, mapping freeze or dependent breaking integration performed. T008 stays unchecked and `pending_consumer_review`; T007 must be resolved first. Human review and independent reproduction pending. One next step: supply release provenance and obtain actual producer/affected-consumer decisions for the four blockers above before import/integration.
+
+
+## Collective team approval update ? 2026-11-13
+
+The user confirms the team works jointly on project code and documentation and that one member?s approval represents the team. The user explicitly approved T007 and T008; this is recorded as collective project-team approval conveyed by the user. Individual owner names are not asserted.
+
+- T007 mapping review: approved collectively on 2026-11-13; approved mapping SHA-256: `27445724712e9bca6f0d22ac991a2f923a18d5df33fc79a41c852244cd439699`.
+- T008 producer/consumer contract review: approved collectively on 2026-11-13; the reviewed Feature 002 contract hashes remain the ones in the technical-resolution manifest. The v1 compatibility boundary is preserved.
+- This collective approval closes the T007/T008 review gates. Import remains disabled pending implementation of an import command; no runtime importer or v2 application integration is claimed.

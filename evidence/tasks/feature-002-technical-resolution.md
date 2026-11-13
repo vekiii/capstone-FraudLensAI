@@ -99,3 +99,12 @@ exited 0. Branch and HEAD are unchanged; all original raw bytes are preserved.
 No remaining account/download/license/binary-label evidence step blocks this adopted reference. Source timezone, lifecycle stage, cross-bank synchronization and original acquisition history remain unavailable facts; the approved synthetic-clock policy is clearly separate. Absolute real-world timing claims would require new publisher evidence. The Phase 2 assignment remains unavailable under its separate earlier gate; no course-compliance claim.
 
 Required producing/affected-consuming owners must actually review the current mapping/time policy/canonical/scoring/API/schema changes and migration obligations, with real participants, dates and findings. **T007 and T008 remain unchecked; no import-ready freeze or v2 integration is claimed.** One concrete next step: conduct that owner review against the current hash manifest and record actual decisions. No Prompt 2, dataset import, model training, activation, application v2 integration, team messages, commit or push was performed.
+
+
+## Collective team approval update ? 2026-11-13
+
+The user confirms the team works jointly on project code and documentation and that one member?s approval represents the team. The user explicitly approved T007 and T008; this is recorded as collective project-team approval conveyed by the user. Individual owner names are not asserted.
+
+- T007 mapping review: approved collectively on 2026-11-13; approved mapping SHA-256: `27445724712e9bca6f0d22ac991a2f923a18d5df33fc79a41c852244cd439699`.
+- T008 producer/consumer contract review: approved collectively on 2026-11-13; the reviewed Feature 002 contract hashes remain the ones in the technical-resolution manifest. The v1 compatibility boundary is preserved.
+- This collective approval closes the T007/T008 review gates. Import remains disabled pending implementation of an import command; no runtime importer or v2 application integration is claimed.

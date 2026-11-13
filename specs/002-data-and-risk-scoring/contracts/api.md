@@ -1,7 +1,6 @@
 # Feature 002 dataset API contract v2
 
-Status: technically amended with explicit user approval on 2026-11-13;
-producer/affected-consumer team review and runtime integration remain pending.
+Status: technically amended and collectively team-approved on 2026-11-13; runtime integration remains pending. See the Feature 002 contract-review evidence for the approval basis.
 [schemas.json](schemas.json) is the machine-readable
 public shape; [data-and-scoring.md](data-and-scoring.md) covers offline and
 internal boundaries. Foundation fixture v1 remains authoritative in

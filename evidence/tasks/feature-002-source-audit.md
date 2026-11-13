@@ -126,3 +126,12 @@ No `data/mappings/ibm_hi_small_v1.json` created. Mapping version/hash, timezone-
 6. Review binary label meanings/eligibility separately from valid event facts, label-free features and operational delivery. Missing/invalid-label behavior remains required even though none was observed here. Freeze any optional payment-format mapping only with actual review.
 
 T006 remains incomplete on provenance; T007 `pending_mapping_review`; [T008 review](feature-002-contract-review.md) `pending_consumer_review`. Substantive evaluation stays pending. One next step: obtain the exact acquired-release evidence and review these mapping/contract blockers with the producing and affected consuming owners before import.
+
+
+## Collective team approval update ? 2026-11-13
+
+The user confirms the team works jointly on project code and documentation and that one member?s approval represents the team. The user explicitly approved T007 and T008; this is recorded as collective project-team approval conveyed by the user. Individual owner names are not asserted.
+
+- T007 mapping review: approved collectively on 2026-11-13; approved mapping SHA-256: `27445724712e9bca6f0d22ac991a2f923a18d5df33fc79a41c852244cd439699`.
+- T008 producer/consumer contract review: approved collectively on 2026-11-13; the reviewed Feature 002 contract hashes remain the ones in the technical-resolution manifest. The v1 compatibility boundary is preserved.
+- This collective approval closes the T007/T008 review gates. Import remains disabled pending implementation of an import command; no runtime importer or v2 application integration is claimed.
