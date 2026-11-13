@@ -95,6 +95,33 @@ provenance and freeze a real manifest**, then implement Prompt 05 loader GREEN
 before attempting Prompt 07 inference adapter GREEN. The source mapping still
 blocks import, and original T029–T036 tasks remain open.
 
+## Pinned IBM artifact gate check — 2026-11-13
+
+On `model-implementations` at `79987df`, the three IBM AML files were fetched
+from the pinned Hugging Face revision into ignored `data/artifacts/`. Their
+sizes and locally calculated SHA-256 values are recorded in
+[artifact evidence](evidence/tasks/feature-002-pretrained-model.md#pinned-ibm-artifact-and-loader-gate-check--2026-11-13).
+The joblib digest matches the publisher listing. A static opcode scan did not
+deserialize it and found no executable pickle opcodes, but this alone does not
+authorize ordinary joblib loading. The native header confirms 22 features and
+three categorical vocabularies. Its categorical feature names use underscores,
+unlike the current synthetic loader test header.
+
+**Prompt 05 remains blocked at the input-policy gate.** The published saved
+state supplies graph maps but no bank-qualified account collision index or
+verified train-period cutoff. The current fail-closed contract requires both.
+No loader, converter, or model inference was implemented, no LightGBM package
+was installed, and no requested GREEN commit was made. Loader collection still
+passes (33); execution remains 30 missing-interface failures and 3 passes.
+Existing unrelated worktree changes are preserved. Original T029–T036 remain
+open.
+
+One concrete next step: **resolve the IBM graph-state provenance contract** —
+obtain a verifiable bank/account collision map and exact graph training cutoff
+from the pinned source data, or approve a documented isolated mode that does
+not claim safe IBM transaction scoring. Then revise the RED fixture to match
+the native underscore names and freeze a real manifest before Prompt 05 GREEN.
+
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
@@ -147,6 +174,49 @@ One concrete next step: **Prompt 04C artifact verification** — inspect the
 pinned native model header and safely obtain a complete primitive graph-state
 representation, then reconcile the RED test assumptions before Prompt 07
 implementation.
+
+## IBM pretrained inference RED request gated — 2026-11-13
+
+At `c872375e3457bf16a148541c407063a02615553a` on
+`model-implementations`, the [input-test gate check](evidence/tasks/feature-002-pretrained-model.md#ibm-pretrained-inference-red-request-gate--2026-11-13)
+found the IBM source mapping still pending team review and the pretrained
+identity/history policy pending decision. The author's 22-name source recipe
+is known, but native/categorical metadata and saved graph state are not
+safely verified. No exact-vector RED tests were created, collected or run;
+there is no RED commit or production adapter. Existing uncommitted work and
+T026–T036 status remain unchanged.
+
+One concrete next step: **finish Prompt 04C** — approve the source/model
+mapping and verify the pinned preprocessing metadata safely, then write
+synthetic RED tests before Prompt 07 GREEN.
+
+## IBM pretrained loader implementation gated — 2026-11-13
+
+The [implementation gate check](evidence/tasks/feature-002-pretrained-model.md#ibm-pretrained-loader-implementation-gate--2026-11-13)
+on `model-implementations` at `c872375e3457bf16a148541c407063a02615553a`
+found no recorded team approval, approved IBM artifact manifest or safe graph
+preprocessing plan, and no Prompt 04/04C RED loader tests. No artifact was
+downloaded or loaded, no loader code was written, and no GREEN/integrity/
+regression checks were run. The requested implementation commit was not made.
+Existing fixture/rules code, original training task status and unrelated
+working-tree changes remain intact. This is an uncommitted partial handoff.
+
+One concrete next step: **Prompt 04C** — finish artifact/state/security and
+row-exposure review, record the actual team scope and feature-policy decision,
+and approve a versioned manifest/checklist before loader RED tests.
+
+## Prompt 04B loader RED alignment gated — 2026-11-13
+
+At `c872375e3457bf16a148541c407063a02615553a` on
+`model-implementations`, the [gate check](evidence/tasks/feature-002-pretrained-model.md#prompt-04b-loader-red-alignment-gate--2026-11-13)
+found no existing Prompt 04 loader test file or history, approved IBM pretrained
+manifest/checksum, inference-only checklist or team scope decision. No tests
+were added or run; no valid RED evidence or test commit exists. Original
+T026–T036 status and the unrelated working-tree changes were preserved.
+
+One concrete next step: **Prompt 04C** — finish the artifact/security and
+row-exposure review, record the team decision, and approve the IBM manifest
+and replacement checklist before loader RED tests.
 
 ## IBM pretrained candidate corrected — 2026-11-13
 
@@ -853,3 +923,9 @@ Preserve existing local changes and the Foundation v1 fixture checks.
   Historical Foundation evidence is unchanged. No commit, push or branch switch
   was issued. The 2026-11-12 publication request above is historical; this unit
   follows the current explicit no-commit/no-push instruction.
+
+## Phase 5 commits and contribution ledger updated - 2026-11-13
+
+Prepared the final pretrained gate evidence/checklist reconciliation and updated the project contribution ledger with the fourteen commits from the Feature 002 baseline through `570b344`, including Git author, local commit time and work description. All fourteen are attributed by Git to Isidora Popovic; the ledger states that timestamps are publication times, not measured work hours. Original T029-T036 remain open. The T029 protocol JSON and two local validation scripts remain untracked drafts and are not being represented as a completed T029 freeze.
+
+One concrete next step: resolve the source-mapping and graph-state provenance gate, then make the pretrained loader tests GREEN before implementing transaction inference. No model inference or independent evaluation is claimed.
