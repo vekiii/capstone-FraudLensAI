@@ -1,0 +1,115 @@
+{
+  "proposal_id": "ibm-hi-small-mapping-review-2026-11-13",
+  "status": "pending_mapping_review",
+  "executable_mapping": false,
+  "review": {"reviewer": null, "date": null, "decision": null},
+  "source": {
+    "distribution": "ealtman2019/ibm-transactions-for-anti-money-laundering-aml",
+    "member": "HI-Small_Trans.csv",
+    "expected_sha256": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040",
+    "expected_size_bytes": 475664283,
+    "verified_local_release": null,
+    "public_current_version_candidate": 8,
+    "source_data_license": "CDLA-Sharing-1.0",
+    "license_listing_verified": true,
+    "local_release_binding_verified": false,
+    "namespace": null,
+    "namespace_template_after_review": "kaggle:ealtman2019/ibm-transactions-for-anti-money-laundering-aml:v{verified_or_explicitly_adopted_version}"
+  },
+  "csv": {
+    "encoding": "utf-8",
+    "allow_initial_utf8_bom": false,
+    "delimiter": ",",
+    "quotechar": "\"",
+    "doublequote": true,
+    "escapechar": null,
+    "skipinitialspace": false,
+    "strict": true,
+    "all_ordered_header_positions_required": true,
+    "expected_ordered_headers": ["Timestamp", "From Bank", "Account", "To Bank", "Account", "Amount Received", "Receiving Currency", "Amount Paid", "Payment Currency", "Payment Format", "Is Laundering"],
+    "proposed_duplicate_exception": {
+      "requires_contract_approval": true,
+      "exact_header": "Account",
+      "zero_based_positions": [2, 4],
+      "only_with_exact_ordered_headers_and_source_binding": true
+    },
+    "all_other_duplicate_or_normalized_collision_headers": "reject",
+    "unknown_or_extra_target_like_columns": "reject_pending_mapping_revision",
+    "aliases": [],
+    "source_row_ordinal": "one-based CSV record ordinal excluding header, before any filtering; multiline record counts once"
+  },
+  "columns": [
+    {"index": 0, "header": "Timestamp", "role": "event_time_raw", "value_required": true},
+    {"index": 1, "header": "From Bank", "role": "sender_bank", "value_required": true},
+    {"index": 2, "header": "Account", "occurrence": 1, "role": "sender_account", "value_required": true},
+    {"index": 3, "header": "To Bank", "role": "receiver_bank", "value_required": true},
+    {"index": 4, "header": "Account", "occurrence": 2, "role": "receiver_account", "value_required": true},
+    {"index": 5, "header": "Amount Received", "role": "received_amount", "value_required": true},
+    {"index": 6, "header": "Receiving Currency", "role": "received_currency", "value_required": true},
+    {"index": 7, "header": "Amount Paid", "role": "paid_amount", "value_required": true},
+    {"index": 8, "header": "Payment Currency", "role": "paid_currency", "value_required": true},
+    {"index": 9, "header": "Payment Format", "role": "payment_format", "value_required": false},
+    {"index": 10, "header": "Is Laundering", "role": "private_evaluation_label", "value_required": false}
+  ],
+  "party_policy_proposed": {
+    "representation": "exact source strings; no int conversion, trimming, case folding or zero removal",
+    "non_whitespace_length": "at least one non-whitespace character; total length 1..120",
+    "join_key": "length-delimited bank plus account; directional sides remain separate",
+    "model_feature_use": "join only; neither raw nor encoded/hashed identifiers become predictors"
+  },
+  "money_policy_proposed": {
+    "representation": "exact original nonnegative plain decimal string; Decimal arithmetic only",
+    "max_integer_digits": 13,
+    "max_fractional_digits": 6,
+    "accepted_scales": [0, 1, 2, 3, 4, 5, 6],
+    "observed_scales": [2, 6],
+    "zero_allowed": true,
+    "zero_observed": false,
+    "maximum_supported_value": "9999999999999.999999",
+    "reject": ["negative", "nonfinite", "scientific notation", "leading plus", "redundant integer leading zeros", "too many digits", "missing amount or currency"],
+    "rounding_or_fx": "none",
+    "currency_preserve_exact_text": true,
+    "currency_max_length": 17,
+    "source_currency_allowlist": ["Australian Dollar", "Bitcoin", "Brazil Real", "Canadian Dollar", "Euro", "Mexican Peso", "Ruble", "Rupee", "Saudi Riyal", "Shekel", "Swiss Franc", "UK Pound", "US Dollar", "Yen", "Yuan"],
+    "new_currency_policy": "reject pending explicit mapping revision; no implicit ISO conversion"
+  },
+  "time": {
+    "observed_format": "%Y/%m/%d %H:%M",
+    "observed_lexical_resolution": "minute",
+    "verified_source_timezone": null,
+    "selected_policy": null,
+    "current_behavior": "block import pending documented source interpretation or explicit team-approved analysis convention",
+    "proposed_analysis_convention_if_approved": {
+      "policy_id": "synthetic-common-wall-clock-fixed-offset-zero-v1",
+      "time_basis": "assumed_utc_for_synthetic_benchmark",
+      "offset_minutes": 0,
+      "seconds": "00 as a minute-coordinate convention, not measured second-level precision",
+      "claim": "analysis coordinate only; source timezone and cross-bank clock synchronization are not verified",
+      "requires_explicit_team_decision": true,
+      "prohibits_host_local_timezone": true,
+      "preserve_raw_time_and_recorded_minute_ties": true,
+      "time_policy_hash": null
+    }
+  },
+  "labels_proposed": {
+    "positive_token": "1",
+    "negative_token": "0",
+    "binary_meaning_status": "proposed; publisher binary-token definition still pending",
+    "missing_or_other_token": "supervised-ineligible; valid event facts retained",
+    "public_or_prediction_projection": "excluded, including eligibility indicators"
+  },
+  "payment_format_policy_proposed": {
+    "allowed_source_values": ["ACH", "Bitcoin", "Cash", "Cheque", "Credit Card", "Reinvestment", "Wire"],
+    "missing_value": "null; do not reject otherwise valid event facts",
+    "new_value": "reject pending explicit mapping revision"
+  },
+  "identity_proposed": {
+    "source_member_domain": "namespace plus exact member plus pre-filter CSV record ordinal",
+    "transaction_and_case_ids": "existing proposed distinct-domain D/C + 32 lowercase hexadecimal SHA-256 prefix scheme; no implementation here",
+    "fact_collision_policy": "retain/check full digest inputs and label-free event facts; fail on collision or changed facts under same source-row identity",
+    "dataset_version_inputs": ["raw source SHA-256", "approved mapping SHA-256", "approved time-policy SHA-256"],
+    "approved_mapping_sha256": null,
+    "label_only_changes": "new dataset version; no label-dependent transaction/case identity"
+  },
+  "unresolved_gates": ["exact local release binding", "publisher binary label definition", "timestamp policy approval", "duplicate-header contract amendment approval", "producer and affected-consumer review"]
+}

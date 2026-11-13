@@ -1,5 +1,13 @@
 # Data and Git policy
 
+Feature 002 Prompt 1: [ibm_hi_small_v1.json](mappings/ibm_hi_small_v1.json) is a small
+technical mapping prepared for versioned review, explicitly pending_team_review with import
+disabled. It adopts the hash-matched pinned Kaggle v8 reference and records an
+approved synthetic UTC+00 analysis assumption, not a source timezone fact. Only
+read-only inspection consumes it. Original CSV and the separate downloaded
+reference remain ignored under data/raw/; no raw labels/rows are tracked. See
+[technical resolution](../evidence/tasks/feature-002-technical-resolution.md).
+
 Track small, reviewed, synthetic fixtures under `data/fixtures/` when later tasks
 create them. Do not put real customer/account data, ground-truth evaluation labels,
 credentials or large datasets into application fixtures or evidence logs. Phase 1

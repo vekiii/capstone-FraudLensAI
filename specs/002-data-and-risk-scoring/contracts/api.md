@@ -1,7 +1,8 @@
 # Feature 002 dataset API contract v2
 
-Status: proposed technical contract for producer/affected-consumer review
-before implementation. [schemas.json](schemas.json) is the machine-readable
+Status: technically amended with explicit user approval on 2026-11-13;
+producer/affected-consumer team review and runtime integration remain pending.
+[schemas.json](schemas.json) is the machine-readable
 public shape; [data-and-scoring.md](data-and-scoring.md) covers offline and
 internal boundaries. Foundation fixture v1 remains authoritative in
 [its existing contract](../../001-project-foundation/contracts/api.md).
@@ -73,19 +74,37 @@ at most once in a completed run's alert list.
 
 ## CaseDetailV2
 
-Fields: contract_version=2, snapshot_ref, case_id, transaction,
+Fields: contract_version=2, snapshot_ref, dataset_version, case_id, transaction,
 risk_assessment. The transaction and assessment IDs match the case list
-item. The assessment run_id equals snapshot_ref; its dataset_version
-matches the transaction and list. Detail never returns private labels.
+item. The assessment run_id equals snapshot_ref. The required detail-envelope
+dataset_version equals risk_assessment.dataset_version, the pinned list's
+dataset_version and the selected completed run's dataset_version. The repository
+also checks its internal canonical transaction.dataset_version against that run.
+Public TransactionV2 intentionally has no dataset_version property. These are
+mandatory semantic equality rules for later coordinated producer/consumer
+validators; JSON Schema alone does not enforce cross-object equality. Detail
+never returns private labels.
 
 TransactionV2 contains transaction_id, event_time_utc, event_time_raw,
 time_basis, sender and receiver bank/account objects, paid and received
 amount/currency objects, and payment_format (string or null). Amounts
 are exact nonnegative decimal strings with source-supported scale;
 they are not converted or forced into Foundation's two-decimal form.
-time_basis identifies an explicit source timezone or a reviewed source
-timezone assumption. Source-row ordinals and private labels are omitted
+time_basis is source_explicit_timezone, documented_source_timezone, or
+assumed_utc_for_synthetic_benchmark. The last is the user-approved fixed UTC+00
+analysis convention for this synthetic source: it does not assert source UTC,
+clock synchronization or transaction settlement time. Preserve raw minute text
+and minute ties; `:00` seconds are a coordinate convention, not measured precision.
+The selected policy/hash must match the source mapping and completed run, and
+the dataset UI/investigation/priority context must disclose the assumption.
+Actual scored_at remains real execution time in UTC. Source-row ordinals and private labels are omitted
 from this analyst response.
+
+Money preserves the original source amount/currency on each side. Currency
+length is 1–17 characters; the import mapping additionally restricts the exact
+reviewed source currency names. No ISO conversion, truncation or FX inference.
+All identifier/amount/instant patterns use strict terminal assertions; a final
+newline is invalid even where a regular-expression dollar anchor would match.
 
 AssessmentV2 contains transaction_id, run_id, dataset_version, score,
 score_kind (ordinal_rule_score, uncalibrated_probability_estimate,
@@ -137,16 +156,17 @@ is authoritative for field-level validation.
     {
       "contract_version": 2,
       "snapshot_ref": "run_example_1",
+      "dataset_version": "dv_example_1",
       "case_id": "C0123456789abcdef0123456789abcdef",
       "transaction": {
         "transaction_id": "D0123456789abcdef0123456789abcdef",
         "event_time_utc": "2026-01-01T10:00:00Z",
-        "event_time_raw": "2026-01-01 10:00:00",
-        "time_basis": "documented_source_timezone",
+        "event_time_raw": "2026/01/01 10:00",
+        "time_basis": "assumed_utc_for_synthetic_benchmark",
         "sender": {"bank": "SYNTH-BANK-A", "account": "001"},
         "receiver": {"bank": "SYNTH-BANK-B", "account": "002"},
-        "paid": {"amount": "1250.000", "currency": "EUR"},
-        "received": {"amount": "1250.000", "currency": "EUR"},
+        "paid": {"amount": "1250.000", "currency": "Australian Dollar"},
+        "received": {"amount": "1250.000", "currency": "Australian Dollar"},
         "payment_format": null
       },
       "risk_assessment": {

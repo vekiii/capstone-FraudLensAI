@@ -22,6 +22,8 @@ def main(argv=None):
     inspect.add_argument('--release')
     inspect.add_argument('--license-ref')
     inspect.add_argument('--expected-sha256')
+    inspect.add_argument('--mapping', type=Path,
+                         help='Source-bound pending configuration for read-only inspection only')
     inspect.add_argument('--encoding', default='utf-8')
     inspect.add_argument('--delimiter', default=',')
     inspect.add_argument('--column', action='append', default=[], metavar='ROLE=INDEX',
@@ -37,7 +39,8 @@ def main(argv=None):
         report = inspect_source(source=args.source, source_name=args.source_name,
                                 release=args.release, license_ref=args.license_ref,
                                 expected_sha256=args.expected_sha256, encoding=args.encoding,
-                                delimiter=args.delimiter, columns=columns or None)
+                                delimiter=args.delimiter, columns=columns or None,
+                                mapping_path=args.mapping)
     except ValueError:
         report = dict(status='failed', error_codes=['invalid_arguments'])
     print(json.dumps(report, ensure_ascii=True, sort_keys=True))

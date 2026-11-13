@@ -2,6 +2,7 @@
 import csv
 import hashlib
 import io
+import json
 import re
 from collections import Counter, defaultdict
 from datetime import datetime
@@ -14,6 +15,12 @@ REQUIRED_ROLES = frozenset({
     'paid_amount', 'paid_currency', 'received_amount', 'received_currency', 'label',
 })
 ALLOWED_ROLES = REQUIRED_ROLES | {'payment_format'}
+HI_SMALL_HEADERS = ['Timestamp', 'From Bank', 'Account', 'To Bank', 'Account',
+                    'Amount Received', 'Receiving Currency', 'Amount Paid',
+                    'Payment Currency', 'Payment Format', 'Is Laundering']
+_MAPPING_ROLES = ['event_time_raw', 'sender_bank', 'sender_account', 'receiver_bank',
+                  'receiver_account', 'received_amount', 'received_currency', 'paid_amount',
+                  'paid_currency', 'payment_format', 'private_evaluation_label']
 _PLAIN = re.compile(r'[+-]?[0-9]+(?:\.[0-9]+)?\Z')
 _TIME = re.compile(
     r'[0-9]{4}[-/][0-9]{2}[-/][0-9]{2}[ T][0-9]{2}:[0-9]{2}'
@@ -35,6 +42,63 @@ def _digest(stream):
     while chunk := stream.read(1024 * 1024):
         digest.update(chunk)
     return digest.hexdigest()
+
+
+def _inspection_mapping(path):
+    """Read a source-bound pending config for inspection, never approval or import."""
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError('Duplicate mapping member')
+            result[key] = value
+        return result
+
+    try:
+        with Path(path).open('rb') as stream:
+            raw = stream.read(65537)
+        if len(raw) > 65536:
+            raise ValueError('Mapping too large')
+        mapping = json.loads(raw.decode('utf-8'), object_pairs_hook=unique)
+        source, policy = mapping['source'], mapping['time']['selected_policy']
+        if (any(not isinstance(source[name], str) or not source[name].strip()
+                for name in ('source_name', 'release', 'source_data_license', 'member'))
+                or Path(source['member']).name != source['member']
+                or type(source['expected_size_bytes']) is not int
+                or source['expected_size_bytes'] < 1):
+            raise ValueError('Invalid source declaration')
+        if (mapping['schema_version'] != 1 or mapping['status'] != 'pending_team_review'
+                or mapping['executable_mapping'] is not False
+                or mapping['execution_policy'] != {'inspection_allowed': True,
+                    'import_allowed': False, 'allowed_commands': ['inspect']}
+                or mapping['technical_approval']['status'] != 'approved_by_user'
+                or source['verified_local_release'] != 8
+                or source['local_release_binding_verified'] is not True
+                or re.fullmatch(r'[0-9a-f]{64}', source['expected_sha256']) is None
+                or source['reference_sha256'] != source['expected_sha256']
+                or mapping['csv']['expected_ordered_headers'] != HI_SMALL_HEADERS
+                or [column['index'] for column in mapping['columns']] != list(range(11))
+                or [column['header'] for column in mapping['columns']] != HI_SMALL_HEADERS
+                or [column['role'] for column in mapping['columns']] != _MAPPING_ROLES
+                or mapping['csv']['duplicate_exception']['exact_header'] != 'Account'
+                or mapping['csv']['duplicate_exception']['zero_based_positions'] != [2, 4]
+                or not isinstance(mapping['required_reviews'], dict)
+                or set(mapping['required_reviews']) != {'data_scoring_producer', 'frontend_api',
+                                                      'investigation', 'priority_simulation'}
+                or mapping['time']['verified_source_timezone'] is not None
+                or policy['time_basis'] != 'assumed_utc_for_synthetic_benchmark'
+                or policy['offset_minutes'] != 0 or policy['approved_as_assumption'] is not True):
+            raise ValueError('Invalid pending inspection configuration')
+        canonical_policy = json.dumps(policy, sort_keys=True, separators=(',', ':')).encode()
+        if hashlib.sha256(canonical_policy).hexdigest() != mapping['time']['time_policy_sha256']:
+            raise ValueError('Changed time policy')
+        if any(review['status'] != 'pending' or any(review[key] is not None
+                for key in ('reviewer', 'date', 'decision'))
+               for review in mapping['required_reviews'].values()):
+            raise ValueError('This inspection configuration cannot claim team approval')
+        return mapping, hashlib.sha256(raw).hexdigest()
+    except (OSError, ValueError, KeyError, TypeError):
+        raise _InvalidSource('invalid_inspection_mapping') from None
 
 
 def _select(headers, columns, aliases):
@@ -191,7 +255,8 @@ def inspect_source(*, source: Path, source_name: str | None, release: str | None
                    license_ref: str | None, expected_sha256: str | None = None,
                    encoding: str = 'utf-8', delimiter: str = ',',
                    columns: dict[str, int] | None = None,
-                   aliases: dict[str, list[str]] | None = None) -> dict:
+                   aliases: dict[str, list[str]] | None = None,
+                   mapping_path: Path | None = None) -> dict:
     """Scan an explicit local file; declarations/ordinal roles are never review approval.
 
     UTF-8 (optional BOM), explicit delimiter, RFC-style double quotes, strict parsing.
@@ -206,8 +271,33 @@ def inspect_source(*, source: Path, source_name: str | None, release: str | None
                                escapechar=None, skipinitialspace=False, strict=True,
                                policy='explicit; successful parse is compatibility evidence'),
                   headers=[], columns=[], row_count=None, complete_parse=False,
-                  ambiguities=['mapping_unreviewed'])
+                  ambiguities=['mapping_unreviewed'], import_allowed=False)
+    mapping = None
     try:
+        if mapping_path is not None:
+            mapping, mapping_hash = _inspection_mapping(mapping_path)
+            bound = mapping['source']
+            if (columns is not None or aliases is not None
+                    or encoding != mapping['csv']['encoding']
+                    or delimiter != mapping['csv']['delimiter']):
+                raise _InvalidSource('invalid_inspection_options')
+            declarations = (source_name, release, license_ref, expected_sha256)
+            expected = (bound['source_name'], bound['release'], bound['source_data_license'],
+                        bound['expected_sha256'])
+            if Path(source).name != bound['member'] or any(
+                    value is not None and value != target
+                    for value, target in zip(declarations, expected)):
+                raise _InvalidSource('mapping_source_mismatch')
+            source_name, release, license_ref, expected_sha256 = expected
+            columns = {('timestamp' if role == 'event_time_raw' else
+                        'label' if role == 'private_evaluation_label' else role): index
+                       for index, role in enumerate(_MAPPING_ROLES)}
+            report.update(mapping_status='pending_team_review', mapping_sha256=mapping_hash,
+                          time_policy=mapping['time']['selected_policy'], source_timezone=None,
+                          label_semantics={'1': mapping['labels']['positive_meaning'],
+                                           '0': mapping['labels']['negative_meaning']},
+                          provenance=dict(source_name=source_name, release=release,
+                                          license_ref=license_ref), ambiguities=['pending_team_review'])
         if encoding not in {'utf-8', 'utf-8-sig'}:
             raise _InvalidSource('unsupported_encoding')
         if delimiter not in {',', ';', '\t', '|'} or (expected_sha256 is not None and
@@ -217,6 +307,8 @@ def inspect_source(*, source: Path, source_name: str | None, release: str | None
             report['size_bytes'] = binary.seek(0, 2)
             report['sha256'] = _digest(binary)
             if expected_sha256 is not None and report['sha256'] != expected_sha256:
+                raise _InvalidSource('source_mismatch')
+            if mapping is not None and report['size_bytes'] != mapping['source']['expected_size_bytes']:
                 raise _InvalidSource('source_mismatch')
             binary.seek(0)
             prefix = binary.read(4)
@@ -236,7 +328,14 @@ def inspect_source(*, source: Path, source_name: str | None, release: str | None
                 if len(headers) > 128 or any(len(header) > 200 for header in headers):
                     raise _InvalidSource('schema_limits_exceeded')
                 report['headers'] = headers
+                if mapping is not None and (headers != HI_SMALL_HEADERS or report['bom']):
+                    raise _InvalidSource('mapping_header_mismatch')
                 selected, schema, errors = _select(headers, columns, aliases)
+                if mapping is not None:
+                    # The exact header, content digest and pending profile were checked above.
+                    errors.remove('duplicate_headers')
+                    report['approved_duplicate_observation'] = [2, 4]
+                    errors.append('pending_team_review')
                 report.update(schema)
                 count, summaries = _summarize(reader, headers, selected)
             finally:
@@ -254,8 +353,9 @@ def inspect_source(*, source: Path, source_name: str | None, release: str | None
         for item in summaries:
             if item['role'] == 'timestamp' and item['timestamp']['timezone_counts'].get('absent'):
                 report['ambiguities'].append('timezone_absent')
-            if item['role'] == 'label':
+            if item['role'] == 'label' and mapping is None:
                 report['ambiguities'].append('label_meaning_unreviewed')
+        report['ambiguities'] = list(dict.fromkeys(report['ambiguities']))
         report.update(status='blocked' if errors else 'inspected', error_codes=errors,
                       row_count=count, complete_parse=True, columns=summaries)
     except (_InvalidSource, OSError, UnicodeError, csv.Error) as exc:

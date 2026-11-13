@@ -1,0 +1,23 @@
+{
+  "retrieved_at_utc": "2026-11-13T05:05:29.569398+00:00",
+  "source": "https://raw.githubusercontent.com/IBM/Multi-GNN/11056bb128b6048ecc94ec4fe9dec2cc0a4a3e7e/data_loading.py",
+  "revision": "11056bb128b6048ecc94ec4fe9dec2cc0a4a3e7e",
+  "body_sha256": "aa4f50f574d971f3094fa7ed8a3d2890ab1da586466a71b8bbeb84b93e14bbfc",
+  "relevant_line_numbers": {
+    "label_source": [
+      26
+    ],
+    "illicit_count_from_sum": [
+      28
+    ]
+  },
+  "binary_semantics": {
+    "1": "synthetic laundering transaction",
+    "0": "synthetic non-laundering transaction"
+  },
+  "basis": "publisher reference implementation reads Is Laundering unchanged and calculates illicit count as sum(y); combined with observed binary domain, 1 is illicit",
+  "scope": "reference-implementation evidence; not a legal finding and not an inference from class prevalence",
+  "source_timezone": "not documented in inspected primary sources",
+  "approved_analysis_assumption": "synthetic common wall clock at fixed UTC+00; raw text and minute ties preserved; no claim of source UTC",
+  "acquisition_history": "unknown"
+}

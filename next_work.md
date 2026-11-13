@@ -1,8 +1,91 @@
 # Next work - FraudLens AI
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
-Current observed branch: 002-data-and-risk-scoring; HEAD: 3568c7d.
+Current observed branch: 002-data-and-risk-scoring; HEAD: 63d3384.
 
-## Current Feature 002 inspection handoff — 2026-11-13
+## Current Prompt 1 technical resolution — 2026-11-13
+
+**T001–T006 complete; T007/T008 technical work complete, actual team review pending.**
+[Resolution and actual commands](evidence/tasks/feature-002-technical-resolution.md),
+[current review hashes](evidence/tasks/feature-002-technical-resolution.json),
+[user technical approval](prompts/development/002-technical-resolution-request-2026-11-13.md).
+
+- Authorized download fetched only pinned Kaggle v8 HI-Small_Trans.csv into
+  ignored data/raw/release-verification/v8-20261113-approved/. HTTP 200 text/csv;
+  no account or extra tool/dependency install needed. Both CSVs are 475,664,283
+  bytes and SHA-256 b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040.
+  Original before/after hashes unchanged. Adopt v8 as the reproducible reference;
+  original acquisition history remains unknown. [Receipt](evidence/tasks/feature-002-verify-v8.json).
+- Publisher metadata identifies CDLA-Sharing-1.0 for version 8 at transfer time.
+  IBM reference code supports Account directions and binary 1=laundering /
+  0=non-laundering for these synthetic labels. [Semantics](evidence/tasks/feature-002-source-semantics.json).
+  No source timezone, synchronization or lifecycle-stage fact was invented.
+- [Technical mapping](data/mappings/ibm_hi_small_v1.json) binds exact headers,
+  Account positions 2/4, source hash/member/v8 namespace, decimal/currency/label
+  policy and the user-approved explicit synthetic UTC+00 analysis assumption.
+  Raw timestamp text/minute ties are preserved. Configuration remains
+  pending_team_review, executable_mapping=false and import_allowed=false; actual
+  producing/affected-consuming review entries remain pending/null.
+- Feature 002 schema/API/offline contract now contain currency length 17,
+  required detail-envelope dataset_version and equality obligations, strict end
+  assertions, exact source-bound duplicate exception and explicit assumed-clock
+  discriminator. Examples/data model/spec/plan/research/quickstart are aligned.
+  Foundation v1 application/schema/fixture/frontend/order/banner/locks unchanged.
+- Inspect supports --mapping for read-only observation; generic inspection
+  remains strict. Full mapped scan: 5,078,345 records, complete_parse=true,
+  controlled exit 2 pending_team_review, import_allowed=false. No import command,
+  model training, activation or v2 application/decoder integration exists here.
+- RED: 21 intended mapping/schema failures in test bodies. GREEN: 57 targeted;
+  after additional boundary/example checks, full backend **375 passed**, frontend
+  **151 passed**, Ruff/typecheck/build passed. Existing Starlette/httpx warning only.
+  No human review, independent teammate reproduction, model result or Phase 2
+  assignment compliance inferred. No commit/push; current branch preserved.
+
+One concrete next step: have the actual data/scoring producer, frontend/API and
+affected investigation/priority owners review the current hash manifest and
+record their real findings/decisions. Keep T007/T008 unchecked and import disabled
+until the required gates are satisfied. Do not start Prompt 2 from this handoff
+without its separate authorization. Absolute source clock/lifecycle claims would
+still need publisher evidence; the approved analysis assumption resolves only
+this prototype's coordinate policy.
+
+## Prior Prompt 1 investigation/proposal handoff — 2026-11-13
+
+Independent research and concrete proposal work is complete; T006–T008 remain
+unchecked because provenance/decisions/review are still pending. [Investigation](evidence/tasks/feature-002-source-investigation.md),
+[review packet](specs/002-data-and-risk-scoring/proposals/README.md),
+[mapping draft](specs/002-data-and-risk-scoring/proposals/source-mapping.json),
+[exact v2 patch proposal](specs/002-data-and-risk-scoring/proposals/v2-contract-changes.json).
+
+- Public unauthenticated Kaggle metadata verifies current version 8 (2025-07-08)
+  and CDLA-Sharing-1.0 on that listing. HI-Small member size matches the local
+  475,664,283 bytes, but no publisher checksum was returned. Exact local release
+  and original acquisition history remain unknown; v8 is a candidate reference.
+- IBM's pinned official formatter supports sender Account at index 2 paired with
+  From Bank and receiver Account at index 4 paired with To Bank. It parses naive
+  minute timestamps and does not establish a source timezone or clock semantics.
+- Mapping draft requires exact source-bound ordered-header/Account occurrence
+  validation, separate sides, exact Decimal/source currencies, proposed 13 integer
+  digits/scales 0–6/zero support and pre-filter CSV ordinal identity. Namespace,
+  selected time policy, approved mapping/time hashes and reviewers remain null.
+- Core v2 proposal: currency maxLength 17; required detail-envelope dataset_version;
+  strict terminal-pattern fixes. Optional separate assumed_utc_for_synthetic_benchmark
+  basis requires an explicit team decision; it is not a source UTC fact. Default
+  import block remains. Public transaction version is checked internally and via
+  detail/assessment/list/run equality; future semantic validators remain unimplemented.
+- Corrected prior standalone-schema probe construction (root oneOf was retained).
+  Proper probes demonstrate current ID/money final-newline acceptance and the
+  candidate fix. Review probes pass; [exact hashes/results](evidence/tasks/feature-002-proposal-validation.json).
+- No account access, dataset/PDF download, product/authoritative contract changes,
+  import, training, activation or messages. No application tests rerun in this
+  documentation slice; prior 346/151 results below remain historical. No commit/push.
+  Baseline was clean at 63d3384; branch and existing work preserved.
+
+One concrete next step: review the packet and supply retained provenance, or
+authorize its single-file pinned-v8 verification, then record actual producer and
+affected-consumer decisions before freezing mapping/contracts. Exact download,
+hash comparison and missing-document steps are in the packet and were not run.
+
+## Initial Feature 002 inspection handoff — 2026-11-13
 
 This update supersedes planning-era source-absent/not-implemented statements below
 for the inspection slice only. T001–T005 complete; T006 partial on source provenance;

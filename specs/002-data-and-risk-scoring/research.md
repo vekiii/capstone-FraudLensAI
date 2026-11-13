@@ -1,5 +1,15 @@
 # Feature 002 technical decisions and evidence gates
 
+Current technical resolution (2026-11-13): [source/mapping resolution](../../evidence/tasks/feature-002-technical-resolution.md).
+The historical research below predates the audit. Pinned v8 CSV equivalence,
+release-specific listing license and publisher reference-code account/label
+semantics are now verified. User approved the exact positional exception,
+currency length 17, detail-envelope dataset_version, strict pattern endings and
+explicit assumed UTC+00 analysis policy. [Mapping](../../data/mappings/ibm_hi_small_v1.json)
+remains pending team review and import-disabled; original acquisition history,
+source timezone, cross-bank clock synchronization and lifecycle stage are not
+invented. The selected synthetic policy resolves the analysis convention only.
+
 Date: 2026-11-12. Status: planning decisions; no source data, model, or Feature 002
 runtime has been executed. Read with [spec.md](spec.md), [plan.md](plan.md), and
 the [adversarial review](../../prompts/development/002-review.md).

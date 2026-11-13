@@ -1,5 +1,14 @@
 # Feature 002 implementation ledger — inspection slice
 
+Current authorized T006–T008 technical implementation/source verification:
+[resolution](feature-002-technical-resolution.md), [request/approval](../../prompts/development/002-technical-resolution-request-2026-11-13.md).
+T006 is complete; T007/T008 remain pending real team review. New regression
+results supersede only the runtime counts for the new unit, not this historical ledger.
+
+Later T006–T008-only continuation at HEAD 63d3384: [independent investigation](feature-002-source-investigation.md)
+and [concrete proposal packet](../../specs/002-data-and-risk-scoring/proposals/README.md).
+This historical ledger's runtime counts were not rerun for that documentation work.
+
 - Date: 2026-11-13 Europe/Belgrade (execution around 05:00 local).
 - Scope: T001–T005 independent setup/inspection; T006–T008 evidence and review preparation only. FR-001–004, FR-018, FR-023, FR-026; no SC-001/004/008/009 acceptance claim.
 - [Original request and provenance clarification](../../prompts/development/002-source-inspection-request-2026-11-13.md).

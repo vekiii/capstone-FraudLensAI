@@ -1,12 +1,28 @@
 # Feature 002 validation quickstart
 
+Current Prompt 1 technical state, 2026-11-13: [verified source and amendments](../../evidence/tasks/feature-002-technical-resolution.md).
+Pinned v8 CSV matches the original; configuration is technically complete but
+pending team review and import-disabled. Run only read-only inspection:
+
+```powershell
+$env:SPECIFY_FEATURE_DIRECTORY = 'specs/002-data-and-risk-scoring'
+$env:PYTHONPATH = 'backend/src'
+.\.venv\Scripts\python.exe -m fraudlens.pipeline_cli inspect --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json
+```
+
+Expected current exit is 2 with pending_team_review and complete observations,
+explicit assumed UTC+00 basis, unknown source timezone and import_allowed=false.
+Generic inspection without the bound mapping still rejects duplicate headers.
+All later pipeline commands, typed v2 delivery/decoding and consumer integration
+remain unimplemented/gated. Examples below for those commands remain future work.
+
 Status: **inspection available; later validation planned**. Only the local
 `inspect` CLI and source-independent inspection tests are implemented. Mapping,
 v2 runtime contracts and all later commands remain gated. Commands marked planned
 below must not be reported as executed results. Use [plan.md](plan.md), [data-model.md](data-model.md) and
 [contracts](contracts/api.md) for expected behavior.
 
-The 2026-11-13 [source audit](../../evidence/tasks/feature-002-source-audit.md)
+The initial 2026-11-13 [source audit](../../evidence/tasks/feature-002-source-audit.md)
 contains the exact executable inspection command and results for the authorized
 local file, including positional observation roles. It returns exit 2 for the
 observed duplicate `Account` headers and unknown release. This is a complete
@@ -29,8 +45,9 @@ records remaining producer/consumer decisions.
 3. Acquire the authorized IBM AML HI-Small release locally under ignored
    data/raw/ through the team's permitted process. Record source/release,
    license reference and SHA-256. Do not commit the file or credentials.
-   This local session has inspected a supplied source; its exact release and
-   mapping remain pending. Other checkouts require their own authorized file.
+   This local session verified/adopted a hash-matched v8 reference; original
+   acquisition history remains unknown and mapping team review remains pending.
+   Other checkouts require their own authorized file and hash verification.
    Before generating local files, verify the existing ignore rules for
    data/raw/, data/processed/, data/artifacts/ and evals/results/.
 4. Confirm the reviewed source mapping, feature catalog, rule policy,

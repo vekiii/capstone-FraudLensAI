@@ -1,5 +1,12 @@
 # Feature Specification: Data Ingestion and Risk Scoring
 
+Prompt 1 implementation status, 2026-11-13: [technical resolution](../../evidence/tasks/feature-002-technical-resolution.md).
+Pinned v8 source equivalence and data-license identification are verified; user
+approved the source-bound mapping and explicit synthetic UTC+00 assumption.
+That assumption is not source timezone evidence. Technical contracts are amended
+while mapping/team-review gates remain pending. Historical source-absence and
+planning statements below describe their original dates, not this current state.
+
 **Feature Branch**: `initialization` (unchanged; directory: `002-data-and-risk-scoring`)
 **Created**: 2026-11-12
 **Status**: Revised after adversarial review; human review and technical planning pending

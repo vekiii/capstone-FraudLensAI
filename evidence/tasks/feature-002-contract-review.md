@@ -1,5 +1,21 @@
 # Feature 002 shared-contract review preparation
 
+**Current technical state, 2026-11-13:** user-approved amendments are applied to
+the Feature 002 API/offline/schema documents; [resolution](feature-002-technical-resolution.md)
+and [current exact hash manifest](feature-002-technical-resolution.json) supersede
+the old proposal/base hashes below for future team review. Currency length 17,
+required detail-envelope dataset_version, strict endings, source-bound Account
+positions and the explicit assumed-clock basis are technically resolved.
+Mapping/configuration and T008 remain pending actual producer/affected-consumer
+team review. No typed v2 API/decoder integration or human approval is claimed.
+The remaining sections preserve the earlier review history and pending register.
+
+T006–T008 continuation: [investigation and evidence correction](feature-002-source-investigation.md)
+and [concrete review packet](../../specs/002-data-and-risk-scoring/proposals/README.md).
+The proposal chooses currency maxLength 17 and a required detail-envelope dataset_version,
+adds demonstrated strict-end pattern corrections, and separates an optional assumed-clock
+enum amendment. All are unapproved proposals; current authoritative contracts remain unchanged.
+
 2026-11-13 Europe/Belgrade. T008 **pending_consumer_review**, dependent T007 **pending_mapping_review**. This is agent document/code inspection and a proposal record, not completed owner review or approval. [Prompt/revision/environment](feature-002-implementation.md), [actual source audit](feature-002-source-audit.md). FR-003, FR-023, FR-026; no SC-008 acceptance claim.
 
 Procedure: [Foundation shared-contract change review](../../docs/decisions/foundation.md#shared-contract-change-review), steps 1–4. This record performs proposal/impact documentation and independent regression checks. Producing and affected consuming owners have not supplied reviewer/date/decision; dependent integration remains gated. No authoritative schema, decoder, API or application behavior changed in this slice.
@@ -26,7 +42,7 @@ Exact source evidence: `[2,4]` duplicate header indices; timestamp no zone in ev
 ## Unresolved decisions and concrete proposal
 
 1. **Currency bound:** Draft schema Money.currency maxLength 12 contradicts preserving the local source names. Propose a reviewed source-supported bound of at least 17 with exact source text, or an explicit reversible mapping with separately retained source currency. No truncation, assumed ISO conversion, or schema edit performed. Must align data mapping, JSON Schema, backend typed models, frontend decoder, examples and negative tests before integration.
-2. **Duplicate headers:** Draft offline contract blocks duplicates after normalization. Actual source contains duplicate `Account`. Proposed occurrence/index mapping must be bound to the exact ordered header and source hash and approved as an explicit contract decision; no bypass implemented. Account direction and namespace remain pending.
+2. **Duplicate headers:** Draft offline contract blocks duplicates after normalization. Actual source contains duplicate `Account`. Proposed occurrence/index mapping must be bound to the exact ordered header and source hash and approved as an explicit contract decision; no bypass implemented. IBM's reference formatter now supports sender position 2 / receiver position 4; namespace and approval of the exception remain pending.
 3. **Detail version wording:** api.md says assessment.dataset_version matches “the transaction and list”, but public TransactionV2 has no dataset_version (schema and example agree on its absence). Proposed clarification: compare assessment.dataset_version to the pinned list/run repository context, or explicitly review a version field on the detail envelope. Choose one before parity tests/runtime implementation; do not pretend that a missing transaction property exists.
 4. **Source/time policy:** No exact acquired release or timezone evidence. No source namespace, mapping hash or UTC policy can be frozen. Upstream license statement verified; applicability to exact local release still pending.
 5. **Semantic parity:** Schema alone cannot express all cross-object identity/count/run/score-kind/explanation-scale/additivity invariants. Plan coordinated backend/frontend semantic tests, 409/503 client behavior and persistent v1 regressions under T049–T058. Explanation base/remainder nullability is a shape allowance, not permission to claim an unchecked reconstruction.
@@ -63,6 +79,6 @@ No owner contact/messages sent. The user's provenance clarification is evidence 
 
 ## Checks and integration state
 
-Read Foundation v1 API/schema, backend models/service/scorer/settings/routes, frontend strict decoders/client/main/views and existing unit/contract/integration/UI tests. Static `Draft202012Validator.check_schema` passed on unchanged v2 (exit 0). Targeted schema probes rejected source currency examples Australian Dollar/Canadian Dollar, confirming the bound conflict. Current Python 3.14.7/jsonschema 4.26.0 probes also rejected trailing-newline TransactionId/CaseId/RunId/DatasetVersionId values; no unsupported regex defect claimed. Commands and all runtime regressions are in the [ledger](feature-002-implementation.md).
+Read Foundation v1 API/schema, backend models/service/scorer/settings/routes, frontend strict decoders/client/main/views and existing unit/contract/integration/UI tests. Static `Draft202012Validator.check_schema` passed on unchanged v2 (exit 0). **Correction:** the earlier standalone probes retained the root response union, so their reported ID-newline rejections were invalid. Correctly isolated continuation probes accept valid ordinary IDs/decimals, reject Australian Dollar/Canadian Dollar specifically for currency maxLength, and demonstrate final-newline ID/money acceptance. The exact candidate fixes and passing review probes are in the [investigation](feature-002-source-investigation.md). Historical application regressions remain in the [ledger](feature-002-implementation.md); they were not rerun for this documentation continuation.
 
 No v2 implementation, contract amendment, mapping freeze or dependent breaking integration performed. T008 stays unchecked and `pending_consumer_review`; T007 must be resolved first. Human review and independent reproduction pending. One next step: supply release provenance and obtain actual producer/affected-consumer decisions for the four blockers above before import/integration.

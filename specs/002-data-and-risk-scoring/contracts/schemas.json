@@ -2,7 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://fraudlens.local/specs/002/contracts/schemas.json",
   "title": "FraudLens Feature 002 public dataset responses",
-  "description": "Design contract. Foundation fixture v1 remains in specs/001-project-foundation/contracts/schemas.json.",
+  "description": "Feature 002 technical contract amended with user approval on 2026-11-13; producer/affected-consumer team review and runtime integration remain pending. Foundation v1 is unchanged.",
+  "$comment": "Cross-object version/run equality requires coordinated semantic validators before runtime integration; see api.md. The assumed UTC basis is an approved analysis assumption, not a source timezone fact.",
   "oneOf": [
     {"$ref": "#/$defs/HealthV2"},
     {"$ref": "#/$defs/CaseListV2"},
@@ -13,23 +14,23 @@
     "Instant": {
       "type": "string",
       "format": "date-time",
-      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z$"
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z(?![\\s\\S])"
     },
     "TransactionId": {
       "type": "string",
-      "pattern": "^D[0-9a-f]{32}$"
+      "pattern": "^D[0-9a-f]{32}(?![\\s\\S])"
     },
     "CaseId": {
       "type": "string",
-      "pattern": "^C[0-9a-f]{32}$"
+      "pattern": "^C[0-9a-f]{32}(?![\\s\\S])"
     },
     "RunId": {
       "type": "string",
-      "pattern": "^run_[A-Za-z0-9_-]{1,64}$"
+      "pattern": "^run_[A-Za-z0-9_-]{1,64}(?![\\s\\S])"
     },
     "DatasetVersionId": {
       "type": "string",
-      "pattern": "^dv_[A-Za-z0-9_-]{1,64}$"
+      "pattern": "^dv_[A-Za-z0-9_-]{1,64}(?![\\s\\S])"
     },
     "Score": {
       "type": "number",
@@ -64,12 +65,12 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 200,
-          "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+          "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?(?![\\s\\S])"
         },
         "currency": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 12
+          "maxLength": 17
         }
       }
     },
@@ -92,7 +93,7 @@
         "event_time_utc": {"$ref": "#/$defs/Instant"},
         "event_time_raw": {"type": "string", "minLength": 1, "maxLength": 120},
         "time_basis": {
-          "enum": ["source_explicit_timezone", "documented_source_timezone"]
+          "enum": ["source_explicit_timezone", "documented_source_timezone", "assumed_utc_for_synthetic_benchmark"]
         },
         "sender": {"$ref": "#/$defs/BankAccount"},
         "receiver": {"$ref": "#/$defs/BankAccount"},
@@ -339,11 +340,13 @@
         "snapshot_ref",
         "case_id",
         "transaction",
-        "risk_assessment"
+        "risk_assessment",
+        "dataset_version"
       ],
       "properties": {
         "contract_version": {"const": 2},
         "snapshot_ref": {"$ref": "#/$defs/RunId"},
+        "dataset_version": {"$ref": "#/$defs/DatasetVersionId"},
         "case_id": {"$ref": "#/$defs/CaseId"},
         "transaction": {"$ref": "#/$defs/TransactionV2"},
         "risk_assessment": {"$ref": "#/$defs/AssessmentV2"}

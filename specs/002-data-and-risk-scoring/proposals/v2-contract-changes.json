@@ -1,0 +1,134 @@
+{
+  "proposal_id": "feature-002-v2-review-2026-11-13",
+  "status": "pending_consumer_review",
+  "base_schema": "specs/002-data-and-risk-scoring/contracts/schemas.json",
+  "base_schema_sha256": "de826ba607d9b0852c75d985b1fae11eef20b7d623a209c79edc5b8c661a7154",
+  "base_api_sha256": "019ccaa1ef6e3f136ea34e918b67d20892928a2954ab589371e66f020feb474d",
+  "base_offline_contract_sha256": "d77ee191d8c448795c4c60895a6a71b97298d777fe6449c750feb8d7fb51fdd6",
+  "review": {
+    "reviewer": null,
+    "date": null,
+    "decision": null
+  },
+  "core_schema_patch_rfc6902": [
+    {
+      "op": "test",
+      "path": "/$defs/Money/properties/currency/maxLength",
+      "value": 12
+    },
+    {
+      "op": "replace",
+      "path": "/$defs/Money/properties/currency/maxLength",
+      "value": 17
+    },
+    {
+      "op": "test",
+      "path": "/$defs/CaseDetailV2/required",
+      "value": [
+        "contract_version",
+        "snapshot_ref",
+        "case_id",
+        "transaction",
+        "risk_assessment"
+      ]
+    },
+    {
+      "op": "add",
+      "path": "/$defs/CaseDetailV2/required/-",
+      "value": "dataset_version"
+    },
+    {
+      "op": "add",
+      "path": "/$defs/CaseDetailV2/properties/dataset_version",
+      "value": {
+        "$ref": "#/$defs/DatasetVersionId"
+      }
+    },
+    {
+      "op": "test",
+      "path": "/$defs/Instant/pattern",
+      "value": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z$"
+    },
+    {
+      "op": "replace",
+      "path": "/$defs/Instant/pattern",
+      "value": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?Z(?![\\s\\S])"
+    },
+    {
+      "op": "test",
+      "path": "/$defs/TransactionId/pattern",
+      "value": "^D[0-9a-f]{32}$"
+    },
+    {
+      "op": "replace",
+      "path": "/$defs/TransactionId/pattern",
+      "value": "^D[0-9a-f]{32}(?![\\s\\S])"
+    },
+    {
+      "op": "test",
+      "path": "/$defs/CaseId/pattern",
+      "value": "^C[0-9a-f]{32}$"
+    },
+    {
+      "op": "replace",
+      "path": "/$defs/CaseId/pattern",
+      "value": "^C[0-9a-f]{32}(?![\\s\\S])"
+    },
+    {
+      "op": "test",
+      "path": "/$defs/RunId/pattern",
+      "value": "^run_[A-Za-z0-9_-]{1,64}$"
+    },
+    {
+      "op": "replace",
+      "path": "/$defs/RunId/pattern",
+      "value": "^run_[A-Za-z0-9_-]{1,64}(?![\\s\\S])"
+    },
+    {
+      "op": "test",
+      "path": "/$defs/DatasetVersionId/pattern",
+      "value": "^dv_[A-Za-z0-9_-]{1,64}$"
+    },
+    {
+      "op": "replace",
+      "path": "/$defs/DatasetVersionId/pattern",
+      "value": "^dv_[A-Za-z0-9_-]{1,64}(?![\\s\\S])"
+    },
+    {
+      "op": "test",
+      "path": "/$defs/Money/properties/amount/pattern",
+      "value": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+    },
+    {
+      "op": "replace",
+      "path": "/$defs/Money/properties/amount/pattern",
+      "value": "^(0|[1-9][0-9]*)(\\.[0-9]+)?(?![\\s\\S])"
+    }
+  ],
+  "optional_schema_patch_only_if_time_convention_approved_rfc6902": [
+    {
+      "op": "test",
+      "path": "/$defs/TransactionV2/properties/time_basis/enum",
+      "value": [
+        "source_explicit_timezone",
+        "documented_source_timezone"
+      ]
+    },
+    {
+      "op": "add",
+      "path": "/$defs/TransactionV2/properties/time_basis/enum/-",
+      "value": "assumed_utc_for_synthetic_benchmark"
+    }
+  ],
+  "semantic_invariants_for_later_coordinated_validators": [
+    "CaseDetailV2.dataset_version equals risk_assessment.dataset_version equals pinned list.dataset_version equals completed run.dataset_version",
+    "Canonical transaction.dataset_version is checked in the repository boundary; public TransactionV2 has no dataset_version property",
+    "snapshot_ref equals risk_assessment.run_id and the selected completed run",
+    "currency length is 1..17; exact source allowlist is enforced by the approved import mapping",
+    "source and documented timezone bases require their actual evidence; optional assumed basis requires an approved bound time-policy hash and explicit UI disclosure"
+  ],
+  "offline_contract_replacement_proposed": "Reject all duplicate or normalized-collision headers except the explicitly approved HI-Small Account occurrences at zero-based positions 2 and 4, only when the entire ordered raw header and reviewed source member/content binding match. All other schema drift, aliases, unknown columns and extra target-like columns stop import pending review.",
+  "api_wording_replacement_proposed": "CaseDetailV2 includes dataset_version at the envelope. It equals the assessment, pinned list and completed run dataset_version. Validate canonical transaction.dataset_version internally; do not read a nonexistent public TransactionV2.dataset_version field.",
+  "migration": "Apply only after actual owner review. Update authoritative API/schema/offline contract, typed backend models, frontend strict decoders, adapters, examples and negative tests together in the later authorized implementation. Foundation v1 remains unchanged.",
+  "terminal_anchor_correction": "Replace terminal dollar anchors with strict end assertions for backend/frontend parity; corrected isolated probes demonstrate newline acceptance in the current ID and Money definitions."
+}

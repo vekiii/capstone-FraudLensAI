@@ -1,0 +1,23 @@
+{
+  "status": "passed_applied_technical_contract_checks_not_runtime_acceptance",
+  "technical_mapping_sha256": "4a8200f72c3fcd8f1d0c1ce99dd054a37d0972e4159c23c803174cdefaf207bf",
+  "applied_schema_sha256": "9e93f40da78381d280da52a2a6ea421837e14c7d46420ccc85a41f1b404c0fc7",
+  "mapping_proposal_sha256": "ee6acba4d9a9195e091a583c605ac5722eb33b38056ab7fcfc73234f7574686c",
+  "v2_proposal_sha256": "9ca5232d43dd24384d8112bf1f03b1f04e843a30796af981de28b6e386b96338",
+  "candidate_core_schema_canonical_sha256": "f22228723fbfab0d9a306030f4b1baf6fe422a0fb59c401143c63cf982acfbb7",
+  "candidate_with_optional_time_schema_canonical_sha256": "2f938b51537ef9a244f1f31087a23fec004f77bdf34be73c7eacc507e24ee0e3",
+  "checks": [
+    "base hashes and patch preconditions",
+    "three schemas well formed",
+    "15 source currency tokens fit",
+    "currency boundary negatives",
+    "properly isolated definition probes; ID/money terminal-newline negatives",
+    "required detail version negatives",
+    "closed label-free envelope",
+    "explicit optional assumed-time basis",
+    "mapping positions and pending gates",
+    "applied schema equals approved proposal definitions; team/import gates pending"
+  ],
+  "schema_only_version_mismatch_still_accepted": true,
+  "runtime_backend_frontend_semantic_validators": "not implemented; pending consumer review"
+}

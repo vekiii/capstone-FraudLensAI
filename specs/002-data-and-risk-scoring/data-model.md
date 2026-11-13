@@ -4,6 +4,15 @@ Status: technical design, not implemented. Source-specific mappings are frozen
 only after the authorized IBM file audit. Public wire details are in
 [contracts/api.md](contracts/api.md) and [contracts/schemas.json](contracts/schemas.json).
 
+Technical amendment, 2026-11-13: pinned Kaggle v8 member equivalence is verified
+and adopted as the reproducible reference; original acquisition history remains
+unknown. [Current mapping](../../data/mappings/ibm_hi_small_v1.json) is technically
+complete but pending_team_review, with import disabled and no invented reviewer.
+User-approved clock interpretation is an explicit fixed UTC+00 synthetic analysis
+assumption, not a source timezone fact. Source/raw minute text and equal-time
+groups remain intact. The policy hash is recorded in the mapping; an approved
+mapping hash remains pending real producing/affected-consuming review.
+
 ## Identity and version rules
 
 - **SourceRowRef:** one-based CSV record ordinal assigned before validation;
@@ -81,7 +90,7 @@ Operational projection, with no target or label-validity field:
 |---|---|
 | transaction_id, dataset_version, source_row_ref | Stable identity and provenance; source-row reference stays internal. |
 | event_time_raw | Exact source timestamp text. |
-| event_time_utc, event_time_epoch_ns | Lossless interpreted UTC time and sortable integer nanoseconds under the reviewed policy. If source precision cannot be represented losslessly, block mapping/import until resolved. |
+| event_time_utc, event_time_epoch_ns | Lossless interpreted time coordinate and sortable integer nanoseconds under the selected policy. For assumed_utc_for_synthetic_benchmark this is a fixed UTC+00 analysis coordinate, not verified source UTC; minute `:00` padding does not claim second-level measurement. If source precision cannot be represented losslessly, block mapping/import until resolved. |
 | sender_bank, sender_account | Nonempty source values preserved with reviewed normalization; qualified join key is derived with unambiguous length-delimited encoding. |
 | receiver_bank, receiver_account | Same, separately directed; never swapped or inferred. |
 | paid_amount, paid_currency | Exact nonnegative decimal text and source currency. No binary float or FX conversion in canonical storage. |

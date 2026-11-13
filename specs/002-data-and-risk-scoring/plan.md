@@ -1,5 +1,12 @@
 # Implementation Plan: Data Ingestion and Risk Scoring
 
+Prompt 1 technical update, 2026-11-13: [resolution evidence](../../evidence/tasks/feature-002-technical-resolution.md).
+The original planning observations below are historical. Source audit now uses
+the hash-matched pinned Kaggle v8 reference; user-approved technical mapping/API
+amendments are applied. The assumed UTC+00 policy is an explicit synthetic clock
+convention. Mapping and producer/affected-consumer review gates remain pending;
+no import, training or application v2 integration is authorized/performed here.
+
 **Git branch:** initialization (the setup script's logical feature name is
 002-data-and-risk-scoring; it did not switch branches)
 

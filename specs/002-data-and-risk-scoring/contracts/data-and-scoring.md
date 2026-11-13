@@ -1,7 +1,8 @@
 # Feature 002 offline and scoring interfaces
 
-Status: proposed technical contract, pending source audit and affected
-consumer review. This document specifies the boundaries tasks must
+Status: technically amended with user approval on 2026-11-13. Pinned v8 source
+equivalence and reference-implementation semantics are verified; producing and
+affected-consuming team review remains pending. This document specifies the boundaries tasks must
 implement; it is not executable code or evidence of a trained model.
 See [data-model.md](../data-model.md) for entity invariants and
 [api.md](api.md) for public read responses.
@@ -41,7 +42,13 @@ received amount/currency; optional payment format; and private target
 label. It records CSV encoding/dialect, header normalization and aliases,
 unknown-column policy, decimal magnitude/scale/zero handling, currency
 syntax, timestamp format/timezone/precision, label mapping and source
-namespace/member. Duplicate headers after normalization, missing required
+namespace/member. Duplicate headers after normalization block processing except
+the exact, user-approved source-bound HI-Small Account occurrences at positions
+2 and 4: the complete eleven ordered raw headers, member, source SHA-256 and
+verified v8 reference binding must all match. Every other normalized collision,
+alias, missing/extra field, reorder or target-like extra stops processing.
+The current inspector can observe this exact pair through the pending mapping;
+that exception does not satisfy the team-review/import gate. Missing required
 roles, ambiguous aliases and unreviewed target-like columns block import.
 Unknown fields are reported but never included as predictors without an
 explicit mapping revision.
@@ -51,6 +58,39 @@ never silently overwrites a completed import. The importer assigns a
 source-row reference before applying event or label validation. A valid
 event with invalid label remains available to history and is excluded
 from fit/evaluation.
+
+### Technically selected HI-Small policy; team review pending
+
+The current configuration is [ibm_hi_small_v1.json](../../../data/mappings/ibm_hi_small_v1.json).
+It is explicitly pending_team_review, executable_mapping=false, import_allowed=false;
+only read-only inspection is supported. All required producing/consuming review
+entries remain pending, with no reviewer/date/decision. User technical approval is
+recorded separately and does not substitute for those reviews. The CLI has no
+import command. A future importer must refuse this configuration until all
+required gates and actual reviews are satisfied; that importer is outside Prompt 1.
+
+Verified reference: Kaggle v8 HI-Small_Trans.csv, SHA-256
+`b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`.
+Original acquisition history stays unknown. Accounts remain exact separate
+bank/account strings; source-bound position 2 is sender, position 4 receiver.
+Paid/received amounts use Decimal text, at most 13 integer and 6 fractional
+digits, supported scales 0–6, zero allowed as a design policy (not observed).
+Currencies remain the fifteen exact source names, maxLength 17; no FX/ISO coercion.
+Values outside the selected policy are rejected explicitly. Optional payment
+format values remain source-backed; unknown categories require mapping review.
+Binary labels are private: 1=synthetic laundering, 0=synthetic non-laundering,
+supported by the publisher's reference implementation. Missing/invalid labels
+make only supervised use ineligible; valid observable facts remain available.
+
+Source timezone is unknown. The user-approved analysis policy is
+synthetic-common-wall-clock-fixed-offset-zero-v1, basis
+assumed_utc_for_synthetic_benchmark. It assigns minute coordinates at fixed +00:00
+without claiming source UTC, clock synchronization or lifecycle semantics.
+Preserve raw time/minute ties; do not use host-local timezone. Policy hash is
+SHA-256 of canonical UTF-8 JSON (sorted keys, separators comma/colon), recorded
+in the configuration. Mapping file hash identifies the technical bytes; a
+team-approved mapping hash remains unassigned until real review. No import,
+identity creation, feature building or training occurs in this slice.
 
 ## ScoreRequestV2 and ScorerV2
 

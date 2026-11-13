@@ -1,0 +1,99 @@
+{
+  "scope": "T006-T008 public metadata and source-document investigation only",
+  "local_source": {
+    "member": "HI-Small_Trans.csv",
+    "size_bytes": 475664283,
+    "sha256": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040"
+  },
+  "public_evidence": {
+    "kaggle_view": {
+      "url": "https://www.kaggle.com/api/v1/datasets/view/ealtman2019/ibm-transactions-for-anti-money-laundering-aml",
+      "status": 200,
+      "body_sha256": "e8e71babf0938791163646e8caf20698e3cead9d6cc0d2fdcccbf580e0ebad79",
+      "retrieved_at_utc": "2026-11-13T04:36:34.305144+00:00",
+      "selected_metadata": {
+        "id": 2948142,
+        "title": "IBM Transactions for Anti Money Laundering (AML)",
+        "currentVersionNumber": 8,
+        "lastUpdated": "2025-07-08T14:59:13.28Z",
+        "licenseName": "Community Data License Agreement - Sharing - Version 1.0"
+      },
+      "published_version_entries": [
+        {
+          "versionNumber": 8,
+          "creationDate": "2025-07-08T14:59:13.28Z",
+          "versionNotes": "Update 2025-07-08",
+          "status": "Ready"
+        }
+      ],
+      "description_mentions_post_primary_period_laundering": true
+    },
+    "kaggle_files": {
+      "url": "https://www.kaggle.com/api/v1/datasets/list/ealtman2019/ibm-transactions-for-anti-money-laundering-aml",
+      "status": 200,
+      "body_sha256": "d85fcab2966befd9903b5248b26de224936c4406d2a71d4e7bd4328a290b6c0d",
+      "retrieved_at_utc": "2026-11-13T04:36:34.526883+00:00",
+      "listed_member_count": 18,
+      "selected_member": {
+        "name": "HI-Small_Trans.csv",
+        "totalBytes": 475664283,
+        "creationDate": "2025-07-08T15:02:26.907Z"
+      },
+      "member_metadata_keys": [
+        "columns",
+        "creationDate",
+        "datasetRef",
+        "description",
+        "fileType",
+        "hasDatasetRef",
+        "hasDescription",
+        "hasFileType",
+        "hasName",
+        "hasOwnerRef",
+        "hasUrl",
+        "name",
+        "nameNullable",
+        "ownerRef",
+        "ref",
+        "totalBytes",
+        "url"
+      ]
+    },
+    "ibm_readme": {
+      "url": "https://raw.githubusercontent.com/IBM/AML-Data/366436e605ac7713bf4eee8b4fbc45984d64427c/README.md",
+      "status": 200,
+      "body_sha256": "e9aa468628ce39f50c91baf8ba88986821fff04263e405e0b22633c51e541458",
+      "retrieved_at_utc": "2026-11-13T04:36:34.800208+00:00",
+      "explicit_data_license_identifier": "CDLA-Sharing-1.0"
+    },
+    "ibm_formatter": {
+      "url": "https://raw.githubusercontent.com/IBM/Multi-GNN/31d5d4578c9f1b9bc89a890a5b344787ee39e6ee/format_kaggle_files.py",
+      "status": 200,
+      "body_sha256": "fe320f4dcf0cc998d41a7279e7dd4a24dbe37b9fe6d1ecb66f1c388e3bd2fc26",
+      "retrieved_at_utc": "2026-11-13T04:36:35.102848+00:00",
+      "relevant_line_numbers": {
+        "sender_bank_with_column_2": [
+          60
+        ],
+        "receiver_bank_with_column_4": [
+          63
+        ],
+        "naive_datetime_parse": [
+          41
+        ],
+        "timestamp_conversion": [
+          42
+        ]
+      }
+    },
+    "kaggle_cli_docs": {
+      "url": "https://raw.githubusercontent.com/Kaggle/kaggle-api/main/docs/datasets.md",
+      "status": 200,
+      "body_sha256": "a02b10000ca0b26e2a9265613110ccb3c61df400682c642a6183ee9cc9ae098a",
+      "retrieved_at_utc": "2026-11-13T04:36:35.162313+00:00"
+    }
+  },
+  "local_release_verification": "pending; size match is not a byte or acquisition-history match",
+  "source_timezone": "not established by inspected sources",
+  "review_status": "pending_mapping_review / pending_consumer_review"
+}

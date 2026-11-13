@@ -1,5 +1,20 @@
 # Feature 002 source inspection, audit and mapping decisions
 
+**Current resolution:** [authorized technical/source verification](feature-002-technical-resolution.md)
+completes T006: the pinned v8 CSV hash matches, its listing license is verified,
+and account/binary semantics have publisher reference-code support. The user
+approved an explicit assumed UTC+00 analysis policy. [Technical mapping](../../data/mappings/ibm_hi_small_v1.json)
+is now present but pending team review and import-disabled. Earlier observations
+below are the preserved initial audit; its missing-release/mapping statements
+are historical, not current blockers. Source timezone and acquisition history
+remain unknown facts and are not invented.
+
+Continuation: [independent publisher-source investigation](feature-002-source-investigation.md)
+now verifies public Kaggle v8/license metadata and IBM's positional account direction.
+Local release binding and clock/owner decisions remain pending. The [concrete review
+packet](../../specs/002-data-and-risk-scoring/proposals/README.md) supersedes the
+preliminary alternatives below; no approved mapping has been created.
+
 2026-11-13 Europe/Belgrade. T004/T005 complete; T006 audit **partial: release and local license binding pending**; T007 `pending_mapping_review`. FR-001–004, FR-026. [Original request](../../prompts/development/002-source-inspection-request-2026-11-13.md), [revision/environment/verification ledger](feature-002-implementation.md). No import, canonical mapping freeze, model evaluation or SC-001 acceptance.
 
 ## Source and provenance

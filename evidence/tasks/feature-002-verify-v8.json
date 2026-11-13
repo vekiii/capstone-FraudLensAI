@@ -1,0 +1,26 @@
+{
+  "requested_version": 8,
+  "requested_member": "HI-Small_Trans.csv",
+  "endpoint": "https://www.kaggle.com/api/v1/datasets/download/ealtman2019/ibm-transactions-for-anti-money-laundering-aml/HI-Small_Trans.csv?datasetVersionNumber=8",
+  "original_sha256_before": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040",
+  "started_at_utc": "2026-11-13T05:03:19.865843+00:00",
+  "publisher_metadata": {
+    "id": 2948142,
+    "currentVersionNumber": 8,
+    "lastUpdated": "2025-07-08T14:59:13.28Z",
+    "licenseName": "Community Data License Agreement - Sharing - Version 1.0"
+  },
+  "publisher_metadata_sha256": "df43ef05e4ba554dec5d2528d9c91d01fb87d1159e69d94156e29438cb8ee508",
+  "http_status": 200,
+  "content_type": "text/csv",
+  "final_host": "storage.googleapis.com",
+  "download_bytes": 475664283,
+  "download_sha256": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040",
+  "reference_size_bytes": 475664283,
+  "reference_sha256": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040",
+  "reference_path": "data/raw/release-verification/v8-20261113-approved/HI-Small_Trans.csv",
+  "status": "verified_v8_equivalent",
+  "original_acquisition_history": "unknown; v8 is an adopted reproducible reference",
+  "original_sha256_after": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040",
+  "finished_at_utc": "2026-11-13T05:03:39.045565+00:00"
+}

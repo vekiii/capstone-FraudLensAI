@@ -1,6 +1,10 @@
 # Codex prompts for Feature 002
 
+Authorized technical resolution: [user approval, pinned-member download and T006–T008 limits](002-technical-resolution-request-2026-11-13.md).
+Actual result: [technical resolution](../../evidence/tasks/feature-002-technical-resolution.md).
+
 Executed request, 2026-11-13: [source-inspection slice and provenance clarification](002-source-inspection-request-2026-11-13.md).
+Continuation limited to T006–T008: [independent investigation and concrete mapping/contract proposal](002-source-mapping-review-request-2026-11-13.md).
 Actual results and open gates: [implementation ledger](../../evidence/tasks/feature-002-implementation.md).
 
 Created 2026-11-12. These are **future copy-ready prompts**, not executed
