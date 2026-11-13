@@ -1,5 +1,5 @@
 # Next work - FraudLens AI
-Updated 2026-11-13 Europe/Budapest. Current branch: 002-data-and-risk-scoring; HEAD: 182d0b2.
+Updated 2026-11-13 Europe/Budapest. Current branch: 002-data-and-risk-scoring. Approval publication ledger is current; `git log -1` identifies the resulting HEAD.
 
 ## Collective team approval ? 2026-11-13
 
@@ -10,11 +10,11 @@ The user confirms that project work and documentation are produced collectively 
 - Import remains disabled because the CLI has no import command. Model training, activation and v2 application integration are not authorized/performed by this approval.
 - Evidence: `evidence/tasks/feature-002-source-audit.md`, `evidence/tasks/feature-002-contract-review.md`, and `evidence/tasks/feature-002-technical-resolution.json`.
 
-The T007/T008 approval changes are committed as `dab61f3`. The contribution ledger and original prompt are being published in two follow-up evidence commits; final commit IDs will be recorded there. After publication, proceed with the next authorized Feature 002 tasks (T009?T011); this approval does not authorize model training, activation, or unrelated scope.
+The approval and contribution update is published in three commits: `dab61f3`, `ae98c63`, and the current final ledger commit (hash resolved by `git log -1`). Full subjects and attribution are in `evidence/tasks/project-evidence-plan-2026-11-12.md`. After publication, proceed with the next authorized Feature 002 tasks (T009?T011); this approval does not authorize model training, activation, or unrelated scope.
 
 ## Current Prompt 1 technical resolution — 2026-11-13
 
-**T001–T006 complete; T007/T008 technical work complete, actual team review pending.**
+**T001-T008 complete; T007/T008 collective team approval is recorded in the current update above.**
 [Resolution and actual commands](evidence/tasks/feature-002-technical-resolution.md),
 [current review hashes](evidence/tasks/feature-002-technical-resolution.json),
 [user technical approval](prompts/development/002-technical-resolution-request-2026-11-13.md).

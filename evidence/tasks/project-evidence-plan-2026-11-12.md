@@ -411,6 +411,14 @@ The user stated that the team works jointly on the project and that one member's
 | User, conveying collective team approval | 13 Nov 2026 | Approved T007 source mapping and T008 contract review under the team's collective-approval convention. | No human working duration supplied. |
 | Codex-assisted repository work; configured Git author is Isidora Popovic | 13 Nov 2026 | Reconciled the handoff and review requirements; updated mapping, task status, contract status, review evidence and handoff; prepared this attribution/commit record. | Retrospective estimate: about **0.3 hours (roughly 15?25 minutes)** of active AI-assisted work, not clocked. This is not a human timesheet or person-hour attribution. |
 
-The approval/status unit is being published in **three descriptive commits**: one for the T007/T008 state and two for the original-request/contribution ledger and final commit reconciliation. The first commit is `dab61f3` (`docs(feature-002): record collective T007/T008 approval`). This addendum will be finalized in a subsequent evidence commit with all actual commit IDs, subjects and resulting HEAD. Git publication timestamps will identify when commits were created; they do not measure working duration.
+The approval/status unit was published in **three descriptive commits** on `002-data-and-risk-scoring`:
+
+| # | Commit | Subject | Scope |
+|---|---|---|---|
+| 1 | `dab61f3` | `docs(feature-002): record collective T007/T008 approval` | Recorded the team decision, closed T007/T008, and aligned mapping, contract and handoff statuses. |
+| 2 | `ae98c63` | `docs(evidence): attribute collective approval and effort` | Preserved the original request and added this contribution/time addendum. |
+| 3 | This ledger commit; resolve its hash with `git log -1` | `docs(evidence): finalize approval publication ledger` | Reconciles all three commit IDs/subjects in the master report and handoff. A commit cannot contain its own hash without changing that hash. |
+
+Thus this follow-up contributes **three commits**, authored in Git under the configured Isidora Popovic identity. The recorded attribution distinguishes that configured identity from Codex-assisted drafting and the user's team decision. Git timestamps are publication times, not measures of working duration. The approximate AI-assisted effort above is retrospective and unmetered; human hours remain unknown.
 
 No application tests were run for this documentation and evidence update. `git diff --check` passed before publication.
