@@ -2,6 +2,25 @@
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 
+## Pretrained model direction proposed — 2026-11-13
+
+The branch `model-implementations` was already active at
+`d606fb7137be1c4f43cce6b89c8c89d350054862` when the team requested an
+inference-only direction using a downloaded, already-trained fraud model.
+[The deviation proposal](specs/002-data-and-risk-scoring/proposals/pretrained-model-integration.md)
+maps conflicts with T026–T036 and records benefit, schedule impact and the
+pending team decision. It changes no approved specification, task checkbox,
+model code or holdout state. T026–T028 remain complete; T029–T036 remain open.
+Uncommitted T029 draft files and the unrelated contribution-evidence edit in
+the worktree are preserved outside this proposal commit. No pretrained
+artifact has been verified, so no inference or model-evaluation claim is made.
+
+One concrete next step: **pretrained model artifact investigation** — identify
+and verify a downloadable artifact's provenance, license, training target,
+feature/preprocessing schema, trust properties and IBM `history-v1`
+compatibility, then obtain the team's actual scope decision before changing
+the approved Phase 5 contracts or implementing model code.
+
 ## T028 dependency and resource pilot complete — 2026-11-13
 
 On `model-implementations` from starting HEAD
