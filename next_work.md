@@ -1,6 +1,24 @@
 # Next work - FraudLens AI
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
-Current observed branch: 002-data-and-risk-scoring; Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
+Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
+
+## T026 chronological protocol RED tests — 2026-11-13
+
+On `model-implementations` from Feature 002 HEAD `27ac7d49e3d638717c752dce225216d291bf9e87`,
+[T026 synthetic test matrix and commands](evidence/tasks/feature-002-protocol.md)
+cover whole-timestamp 70/15/15 splits, warm-up and coverage exclusions,
+membership before private-label eligibility, class/positive minimums,
+explicit ineligibility and provenance failures. Test collection exited 0
+with **20 cases**; execution exited 1 with **19 intended RED failures** at
+the missing `fraudlens.evaluation.build_split_manifest` behavior and **1
+passing replay fixture check**. Ruff and `git diff --check` passed. The
+downstream assertions remain unverified until T027. No evaluator, model,
+IBM import, training, metrics or holdout access occurred. An unrelated
+uncommitted contribution-report edit remains preserved.
+
+One concrete next step: **T027 GREEN** — implement immutable split/eligibility
+state, run the T026 assertions through completion and record results in the
+protocol evidence.
 
 ## T020 concurrent feature-build correction — 2026-11-13
 
