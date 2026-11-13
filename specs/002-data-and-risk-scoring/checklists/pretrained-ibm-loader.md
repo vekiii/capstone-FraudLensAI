@@ -14,3 +14,4 @@ direction separately from the original training-based T029–T036 tasks.
 - [ ] Implement Prompt 05 loader GREEN and run fixture/rules regressions without fitting or holdout evaluation.
 
 The historical T026–T028 completion and open T029–T036 markers remain unchanged.
+- [ ] Implement Prompt 07 transaction inference only after loader GREEN, approved source mapping, safe graph-state provenance, native runtime and the Prompt 06 contract checks. The 2026-11-13 gate check is recorded in pretrained-model evidence.

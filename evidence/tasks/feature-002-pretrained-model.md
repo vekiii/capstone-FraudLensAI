@@ -428,3 +428,27 @@ The new self-contained contract check asserts all eleven raw header positions an
 | `.venv/Scripts/python.exe -c "import sys,pytest; print('python',sys.version.split()[0],'pytest',pytest.__version__)"` | 0 | Python 3.14.10; pytest 9.2.0. |
 
 The RED outcome establishes the intended **absent adapter boundary**, not 32 independent behavioral failures. Every adapter case reaches the same explicit missing-interface assertion before its vector/rejection assertions. The one passing case verifies the checked-in pending mapping and observed native metadata only. No IBM dataset, publisher model, joblib deserialization, training or inference was run. Prompt 07 remains gated by safe graph-state provenance and a reviewed real manifest; the original T029–T036 markers remain unchanged. Next: resolve that gate, then implement the adapter against these tests.
+
+## Prompt 07 transaction inference prerequisite audit — 2026-11-13
+
+Starting branch `model-implementations`, HEAD `f426cec2e759a325a64e4058537ca95d94c8e2c4`. This is a gate audit under the user's explicit instruction to avoid fabricated success if faithful inference is blocked. The earlier team scope approval is recorded in the IBM candidate decision; it does not establish technical graph-state provenance. Original T029–T036 remain open. Pre-existing worktree edits and untracked files were preserved.
+
+| Prerequisite | Observed state |
+| --- | --- |
+| Prompt 05 loader GREEN | **Failed:** 30 missing-loader failures, 3 passes. `backend/src/fraudlens/pretrained.py` does not exist. |
+| Prompt 06 RED | Recorded and rerun: 32 in-test missing-adapter failures, 1 mapping/schema pass. It remains interface RED, not individual behavioral RED. |
+| Exact preprocessing compatibility | **Unresolved:** no safe primitive graph representation, bank/account collision index, exact graph training cutoff or real approved manifest. The publisher joblib cannot be loaded in the application. |
+| IBM source contract | `data/mappings/ibm_hi_small_v1.json` says `pending_team_review`, `executable_mapping=false`, `import_allowed=false`. Existing IBM data and mapping were not changed. |
+| Runtime | LightGBM is not installed in the current Python environment. No dependency was installed or lockfile changed. |
+| Native files | Three pinned ignored files are present with the sizes and hashes below. Their presence does not make a scoring path eligible. |
+
+| Command | Exit | Observed result |
+| --- | ---: | --- |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_loader.py -q -p no:cacheprovider --basetemp data/artifacts/pytest-loader-prompt07-gate --tb=no` | 1 | 30 failed at absent loader, 3 passed. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_ibm_inference.py -q -p no:cacheprovider --basetemp data/artifacts/pytest-inference-prompt07-gate --tb=no` | 1 | 32 failed at absent adapter, 1 passed. |
+| `.venv/Scripts/python.exe -c <mapping/runtime/module-presence probe>` | 0 | Mapping pending, import disallowed, LightGBM absent, loader/adapter/converted graph absent. |
+| `Get-Item` and `Get-FileHash -Algorithm SHA256` for three pinned files | 0 | Model 9,281,152 bytes / `5c20d22e5e395d3b7e1f2741583f350bdac10d43afcc697ccbcd5373efcfd798`; joblib 33,080,466 / `189ab48262821327abfdd38c04923608954e7869ca59801ef3c1291698236a76`; metrics 1,917 / `8c821488ac8a42c7461f958a3669d95e1ef5067e82831e15bd0ed79d8b27c974`. |
+| `.venv/Scripts/ruff.exe check backend/tests/unit/test_pretrained_loader.py backend/tests/unit/test_pretrained_ibm_inference.py` | 0 | All checks passed; no source was edited. |
+| `git diff --check` | 0 | No whitespace errors; Git emitted only LF-to-CRLF notices. |
+
+The transaction scorer, real smoke prediction, backend regression suite and weight-immutability comparison were **not run** because no verified loadable scorer exists. No scoring time, exact prediction, eligibility pass, or success outcome can be reported. No production code, existing scorer, frontend, public v1 API, IBM data or mapping was changed. The proposed `feat(ml): implement IBM pretrained risk scoring` commit is not justified. Next: resolve the graph identity/cutoff provenance and mapping/runtime/manifest gates, implement Prompt 05 loader GREEN, then resume Prompt 07.

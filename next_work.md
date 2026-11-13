@@ -1,4 +1,27 @@
 # Next work - FraudLens AI
+## Prompt 07 transaction inference gate — 2026-11-13
+
+On `model-implementations` at `f426cec`, the prerequisite audit found the
+Prompt 05 loader suite still at 30 missing-interface failures and 3 passes;
+the Prompt 06 suite remains 32 missing-adapter failures and 1 pass. The
+production loader and inference adapter are absent, LightGBM is not installed,
+and no sanitized graph state or real approved artifact manifest exists. The
+IBM source mapping still reports `pending_team_review`,
+`executable_mapping=false`, and `import_allowed=false`. The three ignored
+publisher files remain present with matching locally measured SHA-256 values.
+The user's reported team scope approval is recorded; technical provenance is
+still unresolved. See [gate evidence](evidence/tasks/feature-002-pretrained-model.md#prompt-07-transaction-inference-prerequisite-audit--2026-11-13).
+
+No scorer code, model inference, fitting or holdout access was performed.
+Prompt 07 GREEN and a real smoke prediction were not run; no
+`feat(ml): implement IBM pretrained risk scoring` commit was made. Existing
+unrelated worktree changes were preserved and original T029–T036 are open.
+
+One concrete next step: **complete Prompt 05's safe graph-state and loader
+gates**: obtain verifiable bank/account collision and training-cutoff
+provenance, freeze an IBM artifact manifest and compatible runtime, then run
+loader tests GREEN before implementing transaction inference.
+
 ## IBM inference RED extension — 2026-11-13
 
 On `model-implementations` at `79987df`, the existing IBM inference test
