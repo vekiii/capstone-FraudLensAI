@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## Pretrained evaluation independence audit - 2026-11-13
+
+The [evaluation-independence audit](evidence/tasks/feature-002-pretrained-evaluation.md#independent-performance-evaluation-audit---2026-11-13) classifies independent performance evaluation of the selected FraudSentinel model on our current IBM HI-Small data as **BLOCKED**. Publisher mirror/source-row identity is unpinned; its first 80% train population and test-label-selected routing threshold cannot be proven disjoint from our source/split. Our 70/15/15 protocol JSON is untracked and T029 is open. Exact row overlap remains unverified. No holdout, labels, predictions, metrics, model fit or threshold change occurred; real inference remains absent and separate from performance evidence.
+
+One concrete next action: investigate a compatible pretrained IBM model whose training and threshold-selection exposure can be documented against a genuinely disjoint evaluation population.
+
 ## Real pretrained smoke request gate - 2026-11-13
 
 The requested real IBM pretrained inference smoke stopped before record selection because FraudSentinel remains **INCOMPATIBLE** with the approved bank-qualified, point-in-time feature policy, and both production loader and adapter are absent. Zero transactions were selected or scored; no predictions or model-integrity/inference claims were made. Foundation and rules regressions passed 38/38 (exit 0). [Actual commands and limits](evidence/tasks/feature-002-pretrained-evaluation.md#real-inference-smoke-request---2026-11-13). Existing untracked T029 drafts remain untouched.
