@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## IBM inference RED extension - 2026-11-13
+
+The existing synthetic inference contract now has four additional fail-closed and parameter-integrity checks. Collection: 37 tests (exit 0); execution: 36 failed at the missing `fraudlens.pretrained_inference` interface and 1 passed (exit 1); Ruff passed. [Exact RED evidence and limits](evidence/tasks/feature-002-pretrained-model.md#ibm-inference-red-extension---2026-11-13). No adapter, training or real IBM inference was implemented. This candidate remains **INCOMPATIBLE** under Prompt 02, and the deeper assertions have not yet executed against production behavior. The original T029-T036 markers stay open.
+
+One concrete next action: assess a different pretrained IBM model with verified bank-qualified, point-in-time-compatible features before freezing a manifest or building inference.
+
 ## Loader request gate check - 2026-11-13
 
 The existing pretrained-loader suite collected 33 synthetic tests with a writable pytest temp directory: 3 passed and 30 failed at the intentionally missing loader interface (exit 1). The initial `uv` run and default-temp pytest run failed for local permission reasons and are not RED evidence. [Execution details](evidence/tasks/feature-002-pretrained-model.md#loader-green-request-gate-check---2026-11-13). The FraudSentinel candidate remains **INCOMPATIBLE** under Prompt 02; no approved compatible manifest or faithful graph state exists. No loader was implemented, no GREEN/regression/Ruff result is claimed, and the existing untracked T029 drafts were preserved.

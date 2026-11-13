@@ -2,6 +2,8 @@
 
 These examples use authored facts, graph maps and a fake predictor. They never
 deserialize the publisher's preprocessing file or load IBM source records.
+The synthetic success cases do not approve the incompatible FraudSentinel graph
+state for real IBM-backed FraudLens scoring.
 """
 
 import importlib
@@ -308,6 +310,31 @@ def test_training_period_graph_cannot_score_earlier_transaction():
     assert_rejected(lambda: vector(event(), state), 'future_graph_state')
 
 
+def test_rejected_publisher_candidate_cannot_predict_even_with_matching_hashes():
+    predictor = FakePredictor()
+    rejected = manifest(compatibility_status='incompatible')
+    assert_rejected(
+        lambda: score(spec=rejected, predictor=predictor),
+        'incompatible_model',
+    )
+    assert predictor.calls == []
+
+
+def test_timestamp_source_and_canonical_time_must_agree():
+    tx = event(event_time_raw='2026/01/04 13:45')
+    assert_rejected(lambda: vector(tx), 'invalid_source_event')
+
+
+def test_qualified_identity_must_match_graph_bank_index_before_prediction():
+    predictor = FakePredictor()
+    tx = event(sender_bank='Bank B')
+    assert_rejected(
+        lambda: score(tx=tx, predictor=predictor),
+        'ambiguous_account_identity',
+    )
+    assert predictor.calls == []
+
+
 def test_missing_graph_aggregates_are_not_invented_zeroes():
     state = graph(out_deg={}, coverage_complete=False)
     assert_rejected(lambda: vector(event(), state), 'incomplete_graph_coverage')
@@ -373,3 +400,16 @@ def test_fake_inference_never_trains_or_uses_private_labels():
     score(predictor=predictor)
     assert len(predictor.calls) == 1
     assert 'Is Laundering' not in repr(predictor.calls[0])
+
+
+def test_prediction_does_not_mutate_model_parameters():
+    class FrozenFakePredictor(FakePredictor):
+        def __init__(self):
+            super().__init__()
+            self.learned_parameters = (0.125, -0.5, 0.75)
+
+    predictor = FrozenFakePredictor()
+    before = predictor.learned_parameters
+    score(predictor=predictor)
+    assert predictor.learned_parameters == before
+    assert len(predictor.calls) == 1

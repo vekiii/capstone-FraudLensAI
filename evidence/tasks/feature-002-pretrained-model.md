@@ -1,5 +1,17 @@
 # Feature 002 pretrained artifact investigation
 
+## IBM inference RED extension - 2026-11-13
+
+Extended the existing synthetic `backend/tests/unit/test_pretrained_ibm_inference.py` contract without changing its prior assertions. Four new checks require rejection of an explicitly incompatible model before prediction, agreement between raw and canonical timestamps, bank-qualified identity agreement before graph lookup, and preservation of learned parameters. Existing checks already cover the ordered 22-feature vector, amounts/currencies/categories, graph cutoff and coverage, label exclusion, bounded output, provenance and transaction identity. No IBM rows, publisher graph state, joblib file or model weights were loaded; no inference or training was run.
+
+| Command | Exit | Observed |
+| --- | ---: | --- |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_ibm_inference.py --collect-only -q -p no:cacheprovider` | 0 | 37 tests collected, no collection error. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_ibm_inference.py -q --tb=no --basetemp .venv/pytest-pretrained-inference -p no:cacheprovider` | 1 | 36 failed, 1 passed. First failure with `-x --tb=short` showed `pytest.fail('RED: fraudlens.pretrained_inference adapter is not implemented')` inside the test, following `ModuleNotFoundError` for that absent production module. The four new tests fail at the same missing-interface boundary. This is RED for absent adapter behavior, **not** evidence that the detailed negative assertions were exercised. |
+| `.venv/Scripts/python.exe -m ruff check backend/tests/unit/test_pretrained_ibm_inference.py` | 0 | All checks passed. |
+
+The synthetic success fixtures remain hypothetical contract examples, not authorization to score real IBM records with this rejected FraudSentinel candidate. Prompt 02 found its graph construction incompatible with the approved bank-qualified, point-in-time policy. No adapter implementation or GREEN claim follows from these tests. Next action: investigate a compatible pretrained IBM artifact and revise/freeze its own manifest and test fixtures before implementing inference.
+
 ## Loader GREEN request gate check - 2026-11-13
 
 The requested loader implementation remains blocked by the [Prompt 02 graph review](#fraudsentinel-graph-compatibility-decision---2026-11-13): this FraudSentinel model is **INCOMPATIBLE** with approved IBM-backed `history-v1` scoring. The user-reported team approval covers the pretrained direction, but no compatible, approved artifact manifest or faithful graph state exists. The existing RED tests use authored synthetic model and graph metadata; passing them would not establish that the publisher artifact is suitable for application loading. No loader or model code was changed, and no joblib was loaded.
