@@ -1,5 +1,34 @@
 # Next work - FraudLens AI
 
+## Current feature 003 handoff - 2026-11-13
+
+On user-created branch `feature03`, baseline `0fbe313`, created
+[003-ai-investigation/spec.md](specs/003-ai-investigation/spec.md) and its
+[quality checklist](specs/003-ai-investigation/checklists/requirements.md).
+Specification covers curated RAG, context/evidence tools, bounded AI report
+generation, saved state, analyst disposition and independent evaluation.
+Status: specification only, agent-reviewed; not implemented or team-accepted.
+Documentation structure/ID/link/placeholder checks and Git whitespace passed;
+no runtime tests or live-provider evaluation were performed.
+Feature 002/ML files were not changed. The latest inspected producer reference
+is `origin/model-implementations` at `2dd815d`; its contracts are newer than
+this main baseline, so planning must reconcile them before dataset integration.
+
+OpenAI key availability and intended GPT-6 Luna name are user-reported; actual
+API model ID, access and capabilities have NOT been verified. No secret read
+or provider call occurred. Development may use clearly labeled fixtures while
+live report evaluation remains pending.
+
+[Original request](prompts/development/003-specification-request-2026-11-13.md);
+[workflow evidence and limits](evidence/tasks/feature-003-specification.md).
+One concrete next step: run `speckit-plan` with
+`$env:SPECIFY_FEATURE_DIRECTORY = 'specs/003-ai-investigation'`, defining
+schemas, provider/evidence boundaries and evaluation rubric; generate tasks
+only after the plan. No automatic commit/push.
+
+Earlier merge/recovery sections below are historical and do not describe
+the current feature03 branch or current remote ML implementation state.
+
 ## Latest recovery - 2026-11-13
 
 The user's pull of feature 002 into main started a merge with `0f5ad9a` and
