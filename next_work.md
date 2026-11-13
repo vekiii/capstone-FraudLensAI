@@ -1,4 +1,22 @@
 # Next work - FraudLens AI
+## IBM inference RED extension — 2026-11-13
+
+On `model-implementations` at `79987df`, the existing IBM inference test
+module was extended from 27 to 33 cases using the pinned native model's
+feature spellings, categorical levels and independently calculated SHA-256.
+The source-position check passed. Test collection exited 0; execution exited
+1 with 32 intentional missing-adapter failures and 1 pass. These are
+interface-level RED only: individual vector and rejection assertions have not
+executed. Ruff and `git diff --check` passed. See
+[evidence](evidence/tasks/feature-002-pretrained-model.md#ibm-inference-red-extension-against-pinned-native-metadata--2026-11-13).
+No adapter, joblib deserialization, training, full dataset scan or inference
+was performed. Existing unrelated worktree changes remain preserved.
+
+One concrete next step: **resolve the pinned graph-state identity and cutoff
+provenance and freeze a real manifest**, then implement Prompt 05 loader GREEN
+before attempting Prompt 07 inference adapter GREEN. The source mapping still
+blocks import, and original T029–T036 tasks remain open.
+
 Updated 2026-11-13 Europe/Belgrade. Historical specification-start HEAD: 33bcf62.
 Current observed branch: model-implementations, created from `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87`. Phase 3 was rebased over remote documentation through `6952f1d`. Use `git log -1` for the resulting Phase 3 commit SHA; earlier `182d0b2` references are historical review baselines.
 

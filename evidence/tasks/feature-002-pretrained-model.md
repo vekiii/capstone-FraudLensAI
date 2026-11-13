@@ -411,3 +411,20 @@ inference, joblib deserialization, publisher-model download, dataset access or
 holdout evaluation occurred. The separate
 [loader checklist](../../specs/002-data-and-risk-scoring/checklists/pretrained-ibm-loader.md)
 keeps substantive RED and real artifact verification open before Prompt 05.
+
+## IBM inference RED extension against pinned native metadata — 2026-11-13
+
+Starting branch `model-implementations`, HEAD `79987df7723e892fc6797acb1ee2981c383a0a8b`. The previously committed 27-case [inference suite](../../backend/tests/unit/test_pretrained_ibm_inference.py) was retained and extended. The [artifact gate check above](#pinned-ibm-artifact-and-loader-gate-check--2026-11-13) supplies the independently computed model SHA-256, real native feature spellings and categorical vocabulary. The source mapping JSON remains `pending_team_review` and `executable_mapping=false`; this test-only work does not enable import or claim production compatibility. The graph state and dataset version in the fixture are authored synthetic values, not a reconstruction of the publisher's saved state.
+
+The new self-contained contract check asserts all eleven raw header positions and their canonical roles, including the two `Account` occurrences, the separate paid/received sides, and private-only `Is Laundering`. The adapter cases add the real native underscore names, all 15/15/7 category levels and expected synthetic category codes, the measured model hash, an opposite-direction amount example, midnight/day-of-week, absent graph bank/cutoff provenance, missing graph lookup under an asserted-complete state, incorrect native names/category order, and an incorrect time basis. Existing cases still cover source validation, labels/IEEE fields, identity collisions, future aggregate state, provenance, prediction bounds, and absence of training. The hand-calculated vectors follow pinned `aml_lgbm.py` and `infer.py`; no third-party code was executed.
+
+| Command | Exit | Observed result |
+| --- | ---: | --- |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_ibm_inference.py --collect-only -q -p no:cacheprovider --basetemp data/artifacts/pytest-ibm-inference-collect2` | 0 | 33 tests collected; no collection or dependency error. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_ibm_inference.py -q -p no:cacheprovider --basetemp data/artifacts/pytest-ibm-inference-red2 --tb=no` | 1 | 32 intentional in-test missing-adapter failures, 1 mapping/schema check passed; no setup errors. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_pretrained_ibm_inference.py::test_recorded_source_positions_and_native_schema_are_exact -q -p no:cacheprovider --basetemp data/artifacts/pytest-ibm-mapping --tb=short` | 0 | The self-contained source-position/native-metadata check passed. |
+| `.venv/Scripts/ruff.exe check backend/tests/unit/test_pretrained_ibm_inference.py` | 0 | All checks passed. |
+| `git diff --check` | 0 | No whitespace errors; only LF-to-CRLF notices. |
+| `.venv/Scripts/python.exe -c "import sys,pytest; print('python',sys.version.split()[0],'pytest',pytest.__version__)"` | 0 | Python 3.14.10; pytest 9.2.0. |
+
+The RED outcome establishes the intended **absent adapter boundary**, not 32 independent behavioral failures. Every adapter case reaches the same explicit missing-interface assertion before its vector/rejection assertions. The one passing case verifies the checked-in pending mapping and observed native metadata only. No IBM dataset, publisher model, joblib deserialization, training or inference was run. Prompt 07 remains gated by safe graph-state provenance and a reviewed real manifest; the original T029–T036 markers remain unchanged. Next: resolve that gate, then implement the adapter against these tests.

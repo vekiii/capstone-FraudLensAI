@@ -5,9 +5,11 @@ deserialize the publisher's preprocessing file or load IBM source records.
 """
 
 import importlib
+import json
 import math
 from dataclasses import replace
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 
 import pytest
 
@@ -16,7 +18,7 @@ from fraudlens.data_contracts import CanonicalTransaction
 REVISION = '4fc397afa0e22396d26153d69e46e46304411ca0'
 VERSION = 'dv_' + 'a' * 64
 SOURCE_SHA = 'b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040'
-MODEL_SHA = 'b' * 64  # synthetic test manifest, not a claim about published bytes
+MODEL_SHA = '5c20d22e5e395d3b7e1f2741583f350bdac10d43afcc697ccbcd5373efcfd798'
 GRAPH_SHA = 'c' * 64  # synthetic test state, not a published checksum
 AT = datetime(2026, 1, 5, 13, 45, tzinfo=UTC)  # Monday
 NAMES = (
@@ -27,6 +29,17 @@ NAMES = (
     'Receiving Currency', 'Payment Currency', 'Payment Format',
 )
 CATEGORIES = ('Receiving Currency', 'Payment Currency', 'Payment Format')
+NATIVE_NAMES = NAMES[:-3] + (
+    'Receiving_Currency', 'Payment_Currency', 'Payment_Format',
+)
+CURRENCIES = (
+    'Australian Dollar', 'Bitcoin', 'Brazil Real', 'Canadian Dollar', 'Euro',
+    'Mexican Peso', 'Ruble', 'Rupee', 'Saudi Riyal', 'Shekel', 'Swiss Franc',
+    'UK Pound', 'US Dollar', 'Yen', 'Yuan',
+)
+FORMATS = (
+    'ACH', 'Bitcoin', 'Cash', 'Cheque', 'Credit Card', 'Reinvestment', 'Wire',
+)
 DEFAULT = object()
 
 
@@ -87,12 +100,13 @@ def manifest(**changes):
         'dataset_version': VERSION, 'revision': REVISION,
         'model_sha256': MODEL_SHA, 'graph_state_sha256': GRAPH_SHA,
         'feature_policy': 'fraudsentinel-ibm-aml-v1',
-        'feature_names': NAMES, 'categorical_columns': CATEGORIES,
-        # Authored fake vocabulary tests validation behavior, not publisher codes.
+        'feature_names': NAMES, 'native_feature_names': NATIVE_NAMES,
+        'categorical_columns': CATEGORIES,
+        # Exact category order from the pinned native LightGBM footer.
         'categorical_vocabulary': {
-            'Receiving Currency': ('US Dollar',),
-            'Payment Currency': ('Euro',),
-            'Payment Format': ('Wire',),
+            'Receiving Currency': CURRENCIES,
+            'Payment Currency': CURRENCIES,
+            'Payment Format': FORMATS,
         },
         'score_kind': 'uncalibrated_model_score',
     }
@@ -159,8 +173,42 @@ def test_ibm_source_fields_map_to_exact_ordered_22_feature_vector():
     assert values[19:] == ('US Dollar', 'Euro', 'Wire')
 
 
+def test_recorded_source_positions_and_native_schema_are_exact():
+    mapping_path = (
+        Path(__file__).resolve().parents[3] / 'data' / 'mappings'
+        / 'ibm_hi_small_v1.json'
+    )
+    mapping = json.loads(mapping_path.read_text(encoding='utf-8'))
+    assert tuple(mapping['csv']['expected_ordered_headers']) == (
+        'Timestamp', 'From Bank', 'Account', 'To Bank', 'Account',
+        'Amount Received', 'Receiving Currency', 'Amount Paid',
+        'Payment Currency', 'Payment Format', 'Is Laundering',
+    )
+    assert tuple(col['role'] for col in mapping['columns']) == (
+        'event_time_raw', 'sender_bank', 'sender_account', 'receiver_bank',
+        'receiver_account', 'received_amount', 'received_currency',
+        'paid_amount', 'paid_currency', 'payment_format',
+        'private_evaluation_label',
+    )
+    assert len(NAMES) == len(NATIVE_NAMES) == 22
+    assert NATIVE_NAMES[-3:] == (
+        'Receiving_Currency', 'Payment_Currency', 'Payment_Format',
+    )
+
+
+def test_pinned_categorical_codes_are_stable_and_ordered():
+    assert CURRENCIES.index('US Dollar') == 12
+    assert CURRENCIES.index('Euro') == 4
+    assert FORMATS.index('Wire') == 6
+    got = vector()
+    assert tuple(got.values)[19:] == ('US Dollar', 'Euro', 'Wire')
+    assert tuple(got.categorical_codes) == (12, 4, 6)
+
+
 def test_exact_money_and_currency_meaning_are_preserved():
-    got = vector(event(paid_amount='100.125000', received_amount='90.250000'))
+    tx = event(paid_amount='100.125000', received_amount='90.250000')
+    got = vector(tx)
+    assert (tx.paid_amount, tx.received_amount) == ('100.125000', '90.250000')
     values = tuple(got.values)
     assert values[2] == pytest.approx(math.log1p(100.125))
     assert values[3] == pytest.approx(math.log1p(90.25))
@@ -168,14 +216,31 @@ def test_exact_money_and_currency_meaning_are_preserved():
     assert values[19:] == ('US Dollar', 'Euro', 'Wire')
 
 
+def test_paid_and_received_sides_are_not_swapped_or_currency_converted():
+    tx = event(
+        paid_amount='90.00', paid_currency='US Dollar',
+        received_amount='100.00', received_currency='Euro',
+    )
+    values = tuple(vector(tx).values)
+    assert values[2:5] == pytest.approx(
+        (math.log1p(90), math.log1p(100), 10.0)
+    )
+    assert values[19:] == ('Euro', 'US Dollar', 'Wire')
+
+
+def test_synthetic_midnight_uses_recorded_minute_not_host_timezone():
+    at = datetime(2026, 1, 6, 0, 0, tzinfo=UTC)  # Tuesday
+    tx = event(
+        event_time_raw='2026/01/06 00:00', event_time_utc=at,
+        event_time_epoch_ns=int(at.timestamp()) * 1_000_000_000,
+    )
+    assert tuple(vector(tx).values)[:2] == (0, 1)
+
+
 def test_matching_currency_and_account_values_follow_upstream_semantics():
     tx = event(receiver_account='sender-1', received_currency='Euro')
     state = graph(account_bank_index={'sender-1': 'Bank A'})
-    spec = manifest(categorical_vocabulary={
-        'Receiving Currency': ('US Dollar', 'Euro'),
-        'Payment Currency': ('Euro',), 'Payment Format': ('Wire',),
-    })
-    got = vector(tx, state, spec)
+    got = vector(tx, state)
     assert tuple(got.values)[5:7] == (0, 1)
     assert tuple(got.values)[19:21] == ('Euro', 'Euro')
 
@@ -212,6 +277,16 @@ def test_graph_state_is_required_and_bound_to_source_and_model():
         assert_rejected(lambda state=state: vector(event(), state), 'incompatible_graph_state')
 
 
+def test_missing_identity_or_cutoff_provenance_cannot_be_inferred_from_graph_maps():
+    for state in (
+        graph(account_bank_index=None),
+        graph(identity_policy=None),
+        graph(training_end_exclusive=None),
+    ):
+        assert_rejected(lambda state=state: vector(event(), state),
+                        'incompatible_graph_state')
+
+
 def test_dataset_and_feature_lineage_must_match():
     for spec in (manifest(dataset_version='dv_' + '0' * 64),
                  manifest(feature_policy='history-v1'),
@@ -236,6 +311,8 @@ def test_training_period_graph_cannot_score_earlier_transaction():
 def test_missing_graph_aggregates_are_not_invented_zeroes():
     state = graph(out_deg={}, coverage_complete=False)
     assert_rejected(lambda: vector(event(), state), 'incomplete_graph_coverage')
+    state = graph(out_deg={})
+    assert_rejected(lambda: vector(event(), state), 'incomplete_graph_coverage')
 
 
 def test_native_feature_order_and_category_metadata_must_match():
@@ -243,6 +320,24 @@ def test_native_feature_order_and_category_metadata_must_match():
                     'incompatible_feature_schema')
     assert_rejected(lambda: vector(event(), graph(), manifest(categorical_columns=())),
                     'incompatible_feature_schema')
+    native = NATIVE_NAMES[:-1] + ('Payment Format',)
+    assert_rejected(
+        lambda: vector(event(), graph(), manifest(native_feature_names=native)),
+        'incompatible_feature_schema',
+    )
+    bad_vocab = dict(manifest()['categorical_vocabulary'])
+    bad_vocab['Payment Format'] = tuple(reversed(FORMATS))
+    assert_rejected(
+        lambda: vector(event(), graph(), manifest(categorical_vocabulary=bad_vocab)),
+        'incompatible_feature_schema',
+    )
+
+
+def test_synthetic_time_basis_must_match_documented_assumption():
+    assert_rejected(
+        lambda: vector(event(time_basis='source_explicit_timezone')),
+        'incompatible_lineage',
+    )
 
 
 def test_prediction_identity_provenance_and_uncalibrated_score():
