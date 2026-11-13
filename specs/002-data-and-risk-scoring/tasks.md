@@ -127,6 +127,10 @@ Independent test: controlled populations prove membership/eligibility, train-onl
 
 - [ ] T036 [US3] GREEN — Wire freeze-protocol and evaluate commands in `backend/src/fraudlens/pipeline_cli.py` to the tested protocol/evaluation behavior. Record command tests GREEN in `evidence/tasks/feature-002-model-metrics.md`; controlled samples establish behavior only. No real test-label disclosure yet; the substantive benchmark follows artifact/explanation safety (FR-010–018, SC-004–005). (Depends: T035.)
 
+### Proposed inference-only replacement (not adopted)
+
+The separate [P5I-01–P5I-06 proposal](proposals/pretrained-inference-only-checklist.md) maps artifact verification, loader, inference, smoke checks and independent-evaluation limits to each original T029–T036 requirement. The user-reported team approval covers investigation of the pretrained direction; no recorded reviewer names or accepted deviations approve this replacement checklist. All original T029–T036 checkboxes above remain open until an explicit team decision formally supersedes or completes them. The [replacement-model audit](../../evidence/tasks/feature-002-replacement-model.md) blocks every candidate inspected so far; no production inference work is authorized by this proposal.
+
 ## Phase 6: US4 — explanations and artifact safety (P1)
 
 Goal: faithful per-assessment evidence and safe loading of a frozen local model.

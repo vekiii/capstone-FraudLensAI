@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## Proposed inference-only Phase 5 scope - 2026-11-13
+
+The [P5I-01–P5I-06 replacement checklist](specs/002-data-and-risk-scoring/proposals/pretrained-inference-only-checklist.md) is a **proposal**, mapped task-by-task to original T029–T036; [scope evidence](evidence/tasks/feature-002-inference-only-scope.md) distinguishes the user's reported team approval of the pretrained **direction** from the unrecorded reviewer names, accepted task deviations, candidate selection and evaluation policy. T029–T036 remain open; no waiver or implementation approval for this checklist is recorded. Kluey, Daemons-Q and FraudSentinel remain blocked for `history-v1` inference. No model code, fit, prediction, metric or holdout access occurred; pre-existing untracked protocol drafts remain untouched.
+
+One concrete next action: audit another pretrained IBM laundering candidate for exact bank-qualified, point-in-time feature compatibility and training-row exposure, then present the specific candidate and proposed checklist for a recorded team scope decision before implementation.
+
 ## Replacement pretrained IBM model audit - 2026-11-13
 
 The [Kluey and Daemons-Q candidate audit](evidence/tasks/feature-002-replacement-model.md) verified downloadable native XGBoost JSON (49 ordered features) and ONNX (114 ordered features) weight bytes at pinned revisions. **Both are BLOCKED** for the approved IBM `history-v1` scorer: Kluey requires an absent account/entity file, fitted joblib encoders and incompatible lifetime/graph state; Daemons-Q requires fitted account aggregates and batch/window graph features that can reach 17 minutes past a transaction. Daemons-Q bank-qualified account handling and exact training cutoff remain unverified. Both publishers use IBM HI-Small, so our evaluation independence is unproven. No model was loaded, no joblib was downloaded or deserialized, no records were scored, and no original T029-T036 task status changed. Existing untracked T029 drafts remain preserved.
