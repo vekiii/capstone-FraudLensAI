@@ -1,5 +1,17 @@
 # IBM pretrained inference verification — gate audit
 
+## Real inference smoke request - 2026-11-13
+
+Branch `model-implementations`, starting HEAD `1a770a592f91cdcf26e57cdb3babc29af9b51c80`. The [Prompt 02 compatibility decision](feature-002-pretrained-model.md#fraudsentinel-graph-compatibility-decision---2026-11-13) remains **INCOMPATIBLE** for approved bank-qualified, point-in-time `history-v1` features. `backend/src/fraudlens/pretrained.py` and `backend/src/fraudlens/pretrained_inference.py` are absent. No approved real artifact manifest or faithful primitive graph state exists. The smoke request therefore stopped before selecting transactions: **0 selected, 0 scored, 0 record-level rejection outcomes, no predictions**. No `Is Laundering` labels, IBM rows, joblib objects, model weights or holdout data were read; no fit, train, tune or LightGBM predict call occurred. This is a prerequisite failure, not a measured failure rate on source transactions.
+
+| Command | Exit | Actual result |
+| --- | ---: | --- |
+| `git status --short --branch; git rev-parse HEAD` | 0 | Correct branch and starting HEAD; unrelated untracked T029 drafts preserved. |
+| `Test-Path backend/src/fraudlens/pretrained_inference.py; Test-Path backend/src/fraudlens/pretrained.py` | 0 | `False`, `False`. |
+| `.venv/Scripts/python.exe -m pytest backend/tests/unit/test_fixture_scoring.py backend/tests/unit/test_rule_scoring.py backend/tests/unit/test_scoring_boundary.py -q -p no:cacheprovider --basetemp .venv/pytest-pretrained-smoke-baseline --tb=no` | 0 | 38 passed in 0.52 s. This verifies fixture/rules regressions only, not pretrained inference. |
+
+No model inference test, deterministic repeat, malformed-record rejection, feature-vector verification, score-range check or resource measurement was possible without an approved compatible path. Next action: investigate and approve a different pretrained IBM artifact whose feature/identity/history semantics can be reproduced, then implement and verify its loader and adapter before a real smoke test.
+
 Date: 2026-11-13. Branch: `model-implementations`. Starting HEAD: `92bdd79dbbfd11a2d43567296d114a51a5725dd6`.
 
 ## Outcome

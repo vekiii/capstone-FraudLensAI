@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## Real pretrained smoke request gate - 2026-11-13
+
+The requested real IBM pretrained inference smoke stopped before record selection because FraudSentinel remains **INCOMPATIBLE** with the approved bank-qualified, point-in-time feature policy, and both production loader and adapter are absent. Zero transactions were selected or scored; no predictions or model-integrity/inference claims were made. Foundation and rules regressions passed 38/38 (exit 0). [Actual commands and limits](evidence/tasks/feature-002-pretrained-evaluation.md#real-inference-smoke-request---2026-11-13). Existing untracked T029 drafts remain untouched.
+
+One concrete next action: find and review a pretrained IBM model with reproducible, compatible feature semantics before attempting a real inference smoke test.
+
 ## IBM inference RED extension - 2026-11-13
 
 The existing synthetic inference contract now has four additional fail-closed and parameter-integrity checks. Collection: 37 tests (exit 0); execution: 36 failed at the missing `fraudlens.pretrained_inference` interface and 1 passed (exit 1); Ruff passed. [Exact RED evidence and limits](evidence/tasks/feature-002-pretrained-model.md#ibm-inference-red-extension---2026-11-13). No adapter, training or real IBM inference was implemented. This candidate remains **INCOMPATIBLE** under Prompt 02, and the deeper assertions have not yet executed against production behavior. The original T029-T036 markers stay open.
