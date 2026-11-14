@@ -1,12 +1,14 @@
 # Runtime knowledge boundary (feature 003 setup)
-Current Phase 3 update (2026-11-14): six candidate documents and a staged manifest
-now exist. Vedran confirmed reviewing only the manifest; source-text/reuse review
-is pending. Nothing in that corpus has been published. Offline implementation is
-verified separately with authored test data. The setup-only description below
-records the earlier delivery; its source/privacy rules remain applicable.
+Current Phase 3 update (2026-11-14): Milan Gavrić approved all six source texts
+and documented reuse/applicability without changes. Manifest status is reviewed;
+all reviewer/date fields and source hashes pass production stage validation.
+T013 complete; corpus publication and actual-source runtime recheck remain pending.
+See ../../evidence/tasks/feature-003-corpus-review.md. The setup-only description
+below records earlier delivery; its source/privacy rules remain applicable.
 
 Only deliberately ingested, human-reviewed corpus content may be searched.
-Future T013/T015 supply and review fraudlens-aml-knowledge-v1: provenance, source
+T013 supplies reviewed fraudlens-aml-knowledge-v1; T015 publication remains pending.
+Required metadata includes provenance, source
 URL/identity, included sections, publication/version date (or explicit unknown),
 retrieval date, jurisdiction/historical context, reuse terms and content hash.
 Do not copy official documents without actual provenance and allowed reuse.

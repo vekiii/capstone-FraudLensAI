@@ -1,4 +1,23 @@
-# Current handoff - feature 003 Phase 3, 2026-11-14
+# Current handoff - feature 003 human corpus review, 2026-11-14
+Branch feature03; inspected HEAD 47c1a96. Human source/reuse/applicability review
+complete: Milan Gavrić explicitly approved all six texts without changes (6/6).
+All reviewed_by/at recorded; no other teammate review asserted. Manifest status
+reviewed; production stage validation PASS (6 documents/6 passages, unchanged
+source hashes). T013 complete. T015/T017/T019/T021/T022 remain partial until
+actual reviewed-corpus publish/recheck. No real corpus publish or T023+ work.
+Evidence/approval binding: [corpus review](evidence/tasks/feature-003-corpus-review.md).
+Environment checked this session: Python 3.14.7, uv 0.10.9 available through
+`py -3.14 -m uv` (bare uv absent from PATH), Node 24.20.0, npm 11.19.0.
+Locked offline sync PASS; targeted knowledge/retrieval/API/startup 44 PASS;
+frontend 156 PASS; Ruff/typecheck/build PASS. Full backend not repeated;
+historical three deliberate T035 failures are not resolved by these checks.
+Preexisting .gitignore edit preserved. No commit/push.
+**Next step:** agree continuation scope with Milan: T015 reviewed-corpus publish,
+then remaining Phase 3 actual-source API/proxy/UI checks through T022.
+Review is complete; remaining implementation awaits that scope agreement.
+Earlier handoffs below are historical where superseded.
+
+# Previous handoff - feature 003 Phase 3, 2026-11-14
 Scope T013-T022 only; branch feature03, HEAD 83b587b. Phase partial; T023+ untouched.
 T014/T016/T018/T020 complete by test-task type. Loader/BM25/API/UI implemented and
 verified independently; T013/T015/T017/T019/T021/T022 remain partial pending actual

@@ -1,5 +1,13 @@
 # Feature 003 Phase 3 handoff - 2026-11-14 Europe/Belgrade
 
+Later source-review update (2026-11-14): Milan Gavrić explicitly approved all six
+texts and documented reuse/applicability without changes. T013 is now complete;
+manifest status reviewed and production stage validation PASS. No actual corpus
+publish/runtime recheck performed. T015/T017/T019/T021/T022 remain partial.
+See [current approval evidence](feature-003-corpus-review.md) and root next_work.md.
+The original implementation handoff below is historical; its pending-review and
+manifest-only statements are superseded by that evidence. T023+ remains untouched.
+
 Scope: T013-T022 only. Phase is **partial**; T023+ not started.
 Branch `feature03`, baseline/current HEAD
 `83b587bcc17f8ad703ea67ca593b3785d7fc4391`; no commit/push/merge/deploy.

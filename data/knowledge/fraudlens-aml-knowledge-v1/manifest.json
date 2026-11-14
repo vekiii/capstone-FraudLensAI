@@ -1,7 +1,7 @@
 {
   "manifest_version": 1,
   "corpus_id": "fraudlens-aml-knowledge-v1",
-  "status": "staged",
+  "status": "reviewed",
   "documents": [
     {
       "path": "sim-review.md",
@@ -15,14 +15,14 @@
         "retrieved_at": "2026-11-14T00:00:00Z",
         "jurisdiction": "SIMULATED - educational; not bank policy",
         "version": "authored-v1-2026-11-14",
-        "reviewed_by": null,
-        "reviewed_at": null,
+        "reviewed_by": "Milan Gavrić",
+        "reviewed_at": "2026-11-14T10:13:38Z",
         "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
         "content_sha256": "4a18944611dc634b6f4a099ebdcaf649b405a1243917443086d2f8853e3b07ae",
         "included_sections": [
           "Review"
         ],
-        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+        "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
       }
     },
     {
@@ -37,14 +37,14 @@
         "retrieved_at": "2026-11-14T00:00:00Z",
         "jurisdiction": "SIMULATED - educational; not bank policy",
         "version": "authored-v1-2026-11-14",
-        "reviewed_by": null,
-        "reviewed_at": null,
+        "reviewed_by": "Milan Gavrić",
+        "reviewed_at": "2026-11-14T10:15:33Z",
         "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
         "content_sha256": "7285d239e0a34b3868559035e5e64479af1d83ae505f0886528117d48a1f9044",
         "included_sections": [
           "Narrative"
         ],
-        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+        "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
       }
     },
     {
@@ -59,14 +59,14 @@
         "retrieved_at": "2026-11-14T00:00:00Z",
         "jurisdiction": "SIMULATED - educational; not bank policy",
         "version": "authored-v1-2026-11-14",
-        "reviewed_by": null,
-        "reviewed_at": null,
+        "reviewed_by": "Milan Gavrić",
+        "reviewed_at": "2026-11-14T10:20:01Z",
         "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
         "content_sha256": "6e5ee8f44a5a9653dac71b431b4c7cec704a30e99d1f09db38598fff33e138b4",
         "included_sections": [
           "Missingness"
         ],
-        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+        "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
       }
     },
     {
@@ -81,14 +81,14 @@
         "retrieved_at": "2026-11-14T00:00:00Z",
         "jurisdiction": "Synthetic benchmark - no real-customer claim",
         "version": "authored-v1-2026-11-14",
-        "reviewed_by": null,
-        "reviewed_at": null,
+        "reviewed_by": "Milan Gavrić",
+        "reviewed_at": "2026-11-14T10:20:01Z",
         "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
         "content_sha256": "f9c01b0d842287cc3b797e01ac3a23085b699edcceec46d432295132ac7f2ff4",
         "included_sections": [
           "Field limitations"
         ],
-        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+        "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
       }
     },
     {
@@ -103,14 +103,14 @@
         "retrieved_at": "2026-11-14T00:00:00Z",
         "jurisdiction": "United States - historical 2007 guidance, not Serbian law",
         "version": "authored-v1-2026-11-14",
-        "reviewed_by": null,
-        "reviewed_at": null,
-        "reuse_terms": "Short attributed excerpt (under 25 quoted words per source) plus original authored summary, not full-text reproduction or an invented license. Human reuse/applicability review pending.",
+        "reviewed_by": "Milan Gavrić",
+        "reviewed_at": "2026-11-14T10:20:01Z",
+        "reuse_terms": "Short attributed excerpt (under 25 quoted words per source) plus original authored summary, not full-text reproduction or an invented license. Human reuse/applicability review recorded in review metadata; no website-wide license claimed.",
         "content_sha256": "971fb8be66ebd2795982b46bca9173713ceb9578a06307be3dcd41fff1ef2f6b",
         "included_sections": [
           "Supporting documentation"
         ],
-        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+        "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
       }
     },
     {
@@ -125,14 +125,14 @@
         "retrieved_at": "2026-11-14T00:00:00Z",
         "jurisdiction": "United States - historical 2010 guidance, not Serbian law",
         "version": "authored-v1-2026-11-14",
-        "reviewed_by": null,
-        "reviewed_at": null,
-        "reuse_terms": "Short attributed excerpt (under 25 quoted words per source) plus original authored summary, not full-text reproduction or an invented license. Human reuse/applicability review pending.",
+        "reviewed_by": "Milan Gavrić",
+        "reviewed_at": "2026-11-14T10:20:01Z",
+        "reuse_terms": "Short attributed excerpt (under 25 quoted words per source) plus original authored summary, not full-text reproduction or an invented license. Human reuse/applicability review recorded in review metadata; no website-wide license claimed.",
         "content_sha256": "f0787d7c21d1df278081a5c70dd996a60f3d86d12a601e6e9d46e30874d9e866",
         "included_sections": [
           "Scope"
         ],
-        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+        "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
       }
     }
   ]

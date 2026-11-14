@@ -37,15 +37,17 @@ Goal: validated immutable contexts, typed reports and minimal durable repository
 ## Phase 3: US1 - Knowledge search and sources (T013-T022, P1)
 
 Status (2026-11-14): partial. T014/T016/T018/T020 complete by test-task type.
-T013 source-text/reuse review pending (user inspected manifest only); T015/T017/
-T019/T021/T022 independently implemented/verified with authored TEST corpus but
-remain partial until actual reviewed corpus publish/recheck. Real corpus staged,
-no review metadata invented. Full backend 517 passed / 3 intended future T035
+T013 complete: Milan Gavrić approved all six source texts/reuse/applicability
+without changes; manifest reviewed, production stage validation PASS (6 documents,
+6 passages). See ../../evidence/tasks/feature-003-corpus-review.md.
+T015/T017/T019/T021/T022 independently implemented/verified with authored TEST
+corpus but remain partial until actual reviewed corpus publish/recheck. No real
+corpus published. Historical full backend 517 passed / 3 intended future T035
 failures; frontend 156 passed. See ../../evidence/tasks/feature-003-phase-03-handoff.md.
 
 Goal: useful search/source screen without a provider. Independent test: six reviewed documents, expected passage/no-match, historical citation text and original fixture browsing. No held-out tuning in this phase.
 
-- [ ] T013 [US1] Prepare six source documents and provenance manifest at `data/knowledge/fraudlens-aml-knowledge-v1/manifest.json` and `documents/`: three simulated procedures, IBM limitations guide and >=2 official sections; actual human source review, reuse terms, section/date/jurisdiction/context/hash metadata in `evidence/tasks/feature-003-corpus-review.md`. Do not invent reviewer/date/permission; pending source review remains pending. (Depends: T011; FR-005-007, SC-001.)
+- [x] T013 [US1] Prepare six source documents and provenance manifest at `data/knowledge/fraudlens-aml-knowledge-v1/manifest.json` and `documents/`: three simulated procedures, IBM limitations guide and >=2 official sections; actual human source review, reuse terms, section/date/jurisdiction/context/hash metadata in `evidence/tasks/feature-003-corpus-review.md`. Do not invent reviewer/date/permission; pending source review remains pending. (Depends: T011; FR-005-007, SC-001.)
 - [x] T014 [P] [US1] Write knowledge RED tests in `backend/tests/unit/test_investigation_knowledge.py`: hash/date/review metadata checks, normalized LF without trimming, BOM/bare-CR rejection, 'passages <=2400 characters', <=200 initial passages, no cross-section chunks, stable subpassage identities, archived old versions and runtime exclusion of eval/reference/development-prompt paths. Use authored test sources independent of official downloads. (Depends: T006; FR-004-007, FR-025.)
 - [ ] T015 [US1] Implement `backend/src/fraudlens/investigation/knowledge.py` and `prepare-knowledge` in `backend/src/fraudlens/investigation/cli.py`; stage/publish validated complete corpus to the separate store, reject changed reviewed hashes, persist exact historical passages/provenance and safe local paths. Record GREEN and actual six-document ingest only when T013 review exists in `evidence/tasks/feature-003-knowledge.md`. (Depends: T010, T013, T014; FR-005-007, SC-001.)
 - [x] T016 [P] [US1] Write deterministic BM25/search RED tests in `backend/tests/unit/test_investigation_retrieval.py`: fixed k1=1.2/b=0.75, NFKC/casefold tokens, <=5 ranked passages, stable passage-ID tie order, development-config cutoff, no adequate match, trimmed 1-500 queries, unsupported inputs and archived corpus identity. (Depends: T006, T011; FR-007-008.)

@@ -1,8 +1,9 @@
 # Feature 003 validation quickstart
 
 Status: Phase 3 knowledge loader/search/API/UI are implemented and verified on
-authored test sources. The real six-document corpus is staged: human review of
-its texts remains pending. Investigation/provider/worker/report commands below
+authored test sources. Milan Gavrić approved all six real corpus texts and their
+documented reuse/applicability; manifest status reviewed, stage validation PASS.
+Actual corpus publication/runtime recheck remains pending. Investigation/provider/worker/report commands below
 remain future implementation targets; only prepare-knowledge exists currently.
 Run from repository root on `feature03` (or a reviewed descendant), preserving
 the existing feature 002/ML branches. No automatic commit, push or merge.
