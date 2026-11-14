@@ -1,0 +1,53 @@
+{
+  "mode": "automated headless Chrome; authored TEST corpus, not reviewed real corpus",
+  "checks": [
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:8000",
+      "status": "PASS"
+    },
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:5173",
+      "status": "PASS"
+    },
+    {
+      "name": "Original three-case list/detail/back",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Exact historical source/provenance inspected after controlled corpus replacement",
+      "detail": "corpus_3652a2c324cfe84ba65563816d7b73843291af784e7ec1fe009862492f0a6e1c",
+      "status": "PASS"
+    },
+    {
+      "name": "No-match UI",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Actual missing-store UI, no fabricated hits",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Missing-store Retry recovery to new corpus",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Real backend shutdown/restart original Retry",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "No uncaught browser exceptions",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "browser": "Chrome/157.0.8103.52",
+  "status": "PASS"
+}

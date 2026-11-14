@@ -9,6 +9,7 @@ from starlette.exceptions import HTTPException
 
 from fraudlens.cases import CaseNotFoundError, CaseScoringError, CaseService, FixtureLoadError
 from fraudlens.contracts import CaseDetail, CaseId, CaseList, Error, ErrorBody, Health
+from fraudlens.investigation.api import router as knowledge_router
 from fraudlens.scoring import FixtureScorer, Scorer
 from fraudlens.settings import Settings, load_settings
 
@@ -42,6 +43,7 @@ def get_case_service(config: Annotated[Settings, Depends(get_settings)],
 
 def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -> FastAPI:
     app = FastAPI(title='FraudLens AI')
+    app.include_router(knowledge_router)
     app.state.settings = settings if settings is not None else load_settings()
     app.state.scorer = scorer if scorer is not None else FixtureScorer()
 

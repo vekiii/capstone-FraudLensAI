@@ -61,3 +61,27 @@ FAILED backend/tests/integration/test_investigation_feature_toggle.py::test_muta
 ```
 
 Full-suite expected RED is recorded in phase-02 handoff. It is not GREEN.
+
+## Phase 3 continuation - 2026-11-14 Europe/Belgrade. Branch feature03; baseline 83b587bcc17f8ad703ea67ca593b3785d7fc4391. Existing phase-02 handoff/next_work changes preserved.
+Prompt: ../../prompts/development/003-investigation-phase-03.md. Human source review pending.
+T018 RED: 9 actual route assertion failures (old 404/envelope), no import errors.
+T019 targeted GREEN: 9 knowledge API tests pass. Combined with T012: 13 passed,
+3 expected T035 failures remain: investigation attempt envelope, cross-origin POST
+403 and JSON POST 422. Knowledge part T012 now passes. Foundation handlers preserved.
+T019 code complete against synthetic injected archive; true source-review dependency
+remains partial. No route initialization/provider requests at startup.
+
+Final full backend: 517 passed / 3 failed / 1 warning, exit 1. Knowledge API module
+9 passed; T012 knowledge/disabled assertions pass. Three exact retained RED IDs:
+```text
+backend/tests/integration/test_investigation_feature_toggle.py::test_new_errors_are_feature_specific[/api/investigation/attempts/att_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-investigation_not_found]
+backend/tests/integration/test_investigation_feature_toggle.py::test_cross_origin_mutation_rejected
+backend/tests/integration/test_investigation_feature_toggle.py::test_mutation_requires_json
+```
+First still receives foundation 404 instead of future investigation envelope;
+remaining two receive 404 instead of future mutation 403/422. All require T035,
+outside this phase. No tests skipped or weakened; no placeholder future routes.
+Full command, absolute temp/cache and warning are recorded in knowledge evidence.
+Ruff PASS. Actual API/proxy/browser smoke PASS against authored TEST archive.
+Closed SearchResult remains unchanged: X-Results-Truncated true/false carries
+additional truncation information without adding JSON properties or limit override.

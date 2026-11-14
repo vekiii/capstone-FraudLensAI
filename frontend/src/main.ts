@@ -1,3 +1,4 @@
+import { mountKnowledge } from './investigation/controller';
 import { ApiError, getCase, getCases } from './api';
 import type { CaseDetail, CaseList, CaseSummary } from './contracts';
 import { createCaseView } from './views';
@@ -103,8 +104,27 @@ export function mountCaseApp(
   };
 }
 
+export function mountApplication(root: HTMLElement): () => void {
+  const navigation = document.createElement('nav');
+  navigation.setAttribute('aria-label', 'Prikazi aplikacije');
+  const cases = document.createElement('button'); cases.type = 'button'; cases.textContent = 'Slu\u010dajevi';
+  const knowledge = document.createElement('button'); knowledge.type = 'button'; knowledge.textContent = 'Izvori i pretraga';
+  const content = document.createElement('div'); navigation.append(cases, knowledge); root.replaceChildren(navigation, content);
+  let dispose = mountCaseApp(content);
+  function select(kind: 'cases' | 'knowledge') {
+    dispose();
+    cases.setAttribute('aria-pressed', String(kind === 'cases'));
+    knowledge.setAttribute('aria-pressed', String(kind === 'knowledge'));
+    dispose = kind === 'cases' ? mountCaseApp(content) : mountKnowledge(content);
+  }
+  cases.setAttribute('aria-pressed', 'true'); knowledge.setAttribute('aria-pressed', 'false');
+  cases.addEventListener('click', () => select('cases'));
+  knowledge.addEventListener('click', () => select('knowledge'));
+  return () => { dispose(); root.replaceChildren(); };
+}
+
 const root = document.querySelector<HTMLElement>('#app');
 if (root) {
-  const dispose = mountCaseApp(root);
+  const dispose = mountApplication(root);
   import.meta.hot?.dispose(dispose);
 }

@@ -1,0 +1,139 @@
+{
+  "manifest_version": 1,
+  "corpus_id": "fraudlens-aml-knowledge-v1",
+  "status": "staged",
+  "documents": [
+    {
+      "path": "sim-review.md",
+      "metadata": {
+        "doc_id": "sim-review",
+        "title": "Simulated review and escalation",
+        "origin_kind": "simulated",
+        "source_uri": "local:fraudlens/sim-review",
+        "published_at": "2026-11-14",
+        "unknown_date_reason": null,
+        "retrieved_at": "2026-11-14T00:00:00Z",
+        "jurisdiction": "SIMULATED - educational; not bank policy",
+        "version": "authored-v1-2026-11-14",
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
+        "content_sha256": "4a18944611dc634b6f4a099ebdcaf649b405a1243917443086d2f8853e3b07ae",
+        "included_sections": [
+          "Review"
+        ],
+        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+      }
+    },
+    {
+      "path": "sim-citation.md",
+      "metadata": {
+        "doc_id": "sim-citation",
+        "title": "Simulated narrative and citation",
+        "origin_kind": "simulated",
+        "source_uri": "local:fraudlens/sim-citation",
+        "published_at": "2026-11-14",
+        "unknown_date_reason": null,
+        "retrieved_at": "2026-11-14T00:00:00Z",
+        "jurisdiction": "SIMULATED - educational; not bank policy",
+        "version": "authored-v1-2026-11-14",
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
+        "content_sha256": "7285d239e0a34b3868559035e5e64479af1d83ae505f0886528117d48a1f9044",
+        "included_sections": [
+          "Narrative"
+        ],
+        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+      }
+    },
+    {
+      "path": "sim-missing.md",
+      "metadata": {
+        "doc_id": "sim-missing",
+        "title": "Simulated missing and conflicting facts",
+        "origin_kind": "simulated",
+        "source_uri": "local:fraudlens/sim-missing",
+        "published_at": "2026-11-14",
+        "unknown_date_reason": null,
+        "retrieved_at": "2026-11-14T00:00:00Z",
+        "jurisdiction": "SIMULATED - educational; not bank policy",
+        "version": "authored-v1-2026-11-14",
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
+        "content_sha256": "6e5ee8f44a5a9653dac71b431b4c7cec704a30e99d1f09db38598fff33e138b4",
+        "included_sections": [
+          "Missingness"
+        ],
+        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+      }
+    },
+    {
+      "path": "ibm-guide.md",
+      "metadata": {
+        "doc_id": "ibm-guide",
+        "title": "IBM synthetic data field limitations",
+        "origin_kind": "dataset_guide",
+        "source_uri": "https://github.com/IBM/AML-Data/blob/main/README.md",
+        "published_at": null,
+        "unknown_date_reason": "Repository source has no publication date declared in the inspected README.",
+        "retrieved_at": "2026-11-14T00:00:00Z",
+        "jurisdiction": "Synthetic benchmark - no real-customer claim",
+        "version": "authored-v1-2026-11-14",
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
+        "content_sha256": "f9c01b0d842287cc3b797e01ac3a23085b699edcceec46d432295132ac7f2ff4",
+        "included_sections": [
+          "Field limitations"
+        ],
+        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+      }
+    },
+    {
+      "path": "us-records.md",
+      "metadata": {
+        "doc_id": "us-records",
+        "title": "US supporting records: historical guidance",
+        "origin_kind": "official",
+        "source_uri": "https://www.fincen.gov/resources/statutes-regulations/guidance/suspicious-activity-report-supporting-documentation",
+        "published_at": "2007-06-13",
+        "unknown_date_reason": null,
+        "retrieved_at": "2026-11-14T00:00:00Z",
+        "jurisdiction": "United States - historical 2007 guidance, not Serbian law",
+        "version": "authored-v1-2026-11-14",
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "reuse_terms": "Short attributed excerpt (under 25 quoted words per source) plus original authored summary, not full-text reproduction or an invented license. Human reuse/applicability review pending.",
+        "content_sha256": "971fb8be66ebd2795982b46bca9173713ceb9578a06307be3dcd41fff1ef2f6b",
+        "included_sections": [
+          "Supporting documentation"
+        ],
+        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+      }
+    },
+    {
+      "path": "us-confidentiality.md",
+      "metadata": {
+        "doc_id": "us-confidentiality",
+        "title": "US affiliate confidentiality",
+        "origin_kind": "official",
+        "source_uri": "https://www.fincen.gov/resources/statutes-regulations/guidance/sharing-suspicious-activity-reports-depository-institutions",
+        "published_at": "2010-11-23",
+        "unknown_date_reason": null,
+        "retrieved_at": "2026-11-14T00:00:00Z",
+        "jurisdiction": "United States - historical 2010 guidance, not Serbian law",
+        "version": "authored-v1-2026-11-14",
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "reuse_terms": "Short attributed excerpt (under 25 quoted words per source) plus original authored summary, not full-text reproduction or an invented license. Human reuse/applicability review pending.",
+        "content_sha256": "f0787d7c21d1df278081a5c70dd996a60f3d86d12a601e6e9d46e30874d9e866",
+        "included_sections": [
+          "Scope"
+        ],
+        "applicability_notes": "Reviewed source candidate; staged until actual human review. Historical US sources are not Serbian law. Authored summaries are not original source quotations."
+      }
+    }
+  ]
+}

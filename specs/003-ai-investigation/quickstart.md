@@ -1,7 +1,9 @@
 # Feature 003 validation quickstart
 
-Status: implementation target. Planned modules/CLI/routes below do not exist yet.
-Do not report these commands as executed until their implementing tasks pass.
+Status: Phase 3 knowledge loader/search/API/UI are implemented and verified on
+authored test sources. The real six-document corpus is staged: human review of
+its texts remains pending. Investigation/provider/worker/report commands below
+remain future implementation targets; only prepare-knowledge exists currently.
 Run from repository root on `feature03` (or a reviewed descendant), preserving
 the existing feature 002/ML branches. No automatic commit, push or merge.
 
@@ -33,6 +35,7 @@ $env:INVESTIGATION_PROVIDER = 'test'
 $env:INVESTIGATION_SOURCE = 'fixture'
 $env:INVESTIGATION_STORE = 'data/processed/investigations.sqlite'
 $env:INVESTIGATION_ANALYST = 'local-demo-analyst'
+$env:PYTHONPATH = Join-Path $PWD 'backend/src'
 uv run --locked python -m fraudlens.investigation.cli prepare-knowledge --manifest data/knowledge/fraudlens-aml-knowledge-v1/manifest.json --store data/processed/investigations.sqlite
 uv run --locked python -m uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
 ```

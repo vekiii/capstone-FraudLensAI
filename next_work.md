@@ -1,3 +1,29 @@
+# Current handoff - feature 003 Phase 3, 2026-11-14
+Scope T013-T022 only; branch feature03, HEAD 83b587b. Phase partial; T023+ untouched.
+T014/T016/T018/T020 complete by test-task type. Loader/BM25/API/UI implemented and
+verified independently; T013/T015/T017/T019/T021/T022 remain partial pending actual
+source review/publish. User confirmed reviewing only manifest. Six real candidate
+texts stay staged with null review fields; no real corpus published.
+Demo cutoff 0.5 is user-requested heuristic, not quality-evaluated.
+Final backend 517 PASS / 3 deliberate T035 RED; frontend 156 PASS; Ruff,
+typecheck/build PASS. Automated Chrome/API/proxy smoke PASS with authored TEST
+corpus; no human-review/LLM-evaluation claim. Existing lockfiles/contracts/fixtures,
+shared instructions and preexisting edits preserved. No Git publication.
+Evidence and exact commands/failures: [phase 3 handoff](evidence/tasks/feature-003-phase-03-handoff.md).
+**Next step:** actual human review of all six source texts and reuse/applicability
+notes, recording reviewer/date/decision in [corpus review](evidence/tasks/feature-003-corpus-review.md).
+Do not start Phase 4. Earlier handoffs below are historical.
+
+# Latest phase 2 re-verification - 2026-11-14
+Repeated attachment matches original phase-02 prompt byte-for-byte. On feature03
+HEAD 83b587b, initially clean tree, existing T005-T012 implementation was verified.
+Fresh full backend: 480 passed / 4 intended T012 RED failures; Ruff/diff PASS.
+No application/test/config changes needed. No future routes added or tests skipped.
+Evidence: [phase 2 handoff](evidence/tasks/feature-003-phase-02-handoff.md), re-verification section.
+Next concrete step remains separately authorized phase 3 from T013 source review.
+Human/provider/producer/corpus gates remain pending. No commit/push/merge/deploy.
+Earlier sections below retain historical execution details.
+
 # Current feature 003 phase 2 handoff - 2026-11-14
 Branch feature03; baseline 6db94af. T001-T012 complete by task type.
 T005/T006 contracts: 70 PASS. T007/T008 context: 8 PASS. T009/T010 repository: 8 PASS.
@@ -198,7 +224,7 @@ Feature **002-data-and-risk-scoring is revised after adversarial review, not imp
 ## One concrete next step
 Generate Feature 002 tasks.md from the current spec and technical plan using
 the [Prompt 0 task-generation handoff](prompts/development/002-implementation-prompts.md),
-tracing FR-001–026 and SC-001–009 to tasks and evidence. Then begin the source audit
+tracing FR-001â€“026 and SC-001â€“009 to tasks and evidence. Then begin the source audit
 and affected-consumer contract review. Track the missing authoritative Phase 2
 assignment as an open compliance source. Select specs/002-data-and-risk-scoring
 explicitly; the local .specify/feature.json is ignored, not shared through Git.
@@ -212,7 +238,7 @@ Read AGENTS and this handoff before further work; preserve existing local change
   with the complete 19-commit ledger through f63bffe, three identifiable contributors,
   task-level attribution, shared T019 credit and future evidence/time capture plan.
 - [Reproducible calculation](evidence/tasks/project-evidence-calculations-2026-11-12.json)
-  gives 10.76 provisional person-hours centrally, 7.17–14.34 under explicit
+  gives 10.76 provisional person-hours centrally, 7.17â€“14.34 under explicit
   publication-window assumptions. These are not measured hours or confidence bounds.
   No work/hours assigned to an unnamed fourth member, per current user clarification.
 - Documentation only; no application tests/browser runs, feature implementation,
@@ -240,7 +266,7 @@ Read AGENTS and this handoff before further work; preserve existing local change
   tasks, human review and independent reproduction are open.
 - This handoff preserves existing local edits and makes no Git commit/push.
 
-## Documentation publication request — 2026-11-12
+## Documentation publication request â€” 2026-11-12
 
 - The user explicitly requested commits and a push for all pending documentation;
   see the [original publication request](prompts/development/002-publication-request-2026-11-12.md).

@@ -199,3 +199,27 @@ backend/tests/unit/test_investigation_context.py backend/tests/integration/test_
 Exit 0, 86 passed. Ruff exit 0. Final git diff --check and per-new-file
 --no-index --check NUL passed. No after-implement hook configuration exists.
 No live quality or human acceptance inferred from these results.
+
+
+## Repeated-request verification - 2026-11-14
+User resent the same phase-02 instruction; byte SHA256 of new attachment and saved
+original both a5f94471e51b0668f8fedefcc80c06f8f7ec44dab30cd3839452ea5d04fb5b13.
+No new scope or changed instruction. Branch feature03, current baseline
+83b587bcc17f8ad703ea67ca593b3785d7fc4391, initially clean working tree.
+Read AGENTS/next_work, compared existing implementation/task/evidence state.
+Local speckit-implement applied only to re-verification of T005-T012; prerequisite
+script exit 0, checklist 16/16, no hook config. No artificial RED or duplicate code.
+Actual command:
+uv run --locked pytest backend/tests --basetemp
+D:/AIBootcamp/capstone/.cache/phase2-recheck-d369df8b58474c5087579a68c9d0edbe
+-o cache_dir=D:/AIBootcamp/capstone/.cache/phase2-recheck-cache-d369df8b58474c5087579a68c9d0edbe
+--tb=short -q
+Result: pytest exit 1, 480 passed / 4 expected T012 failures, 1 known Starlette/httpx
+warning. Same exact four node IDs/reasons as feature-003-api.md: two missing feature
+envelopes, missing cross-origin 403 and JSON 422 guards, old routes give 404.
+uv run --locked ruff check backend: exit 0. git diff --check: exit 0.
+No source/test/fixture/config/schema/lockfile edits, no new provider/browser/evaluation
+execution or human approval. Existing targeted counts remain historical; full suite
+was freshly rerun. T005-T012 remain complete by task type; T012 intentionally RED.
+Only this handoff and next_work updated. Next: separately authorize phase 3 T013;
+no T013 or later work, commit/push/merge/deploy performed.
