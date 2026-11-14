@@ -181,6 +181,7 @@ class InvestigationService:
         deadline = time.monotonic() + limits['total_timeout_seconds']
         messages = [dict(type='context', data=outbound_context(context, self.repo.get(attempt_id)['run_id']))]
         retries, repairs = 0, 0
+        provider = None
         try:
             self.context_reader.resolve(context['case_id'], context['source_mode'], context['snapshot_ref'])
             provider = self.provider_factory(binding)
@@ -261,4 +262,7 @@ class InvestigationService:
         except asyncio.CancelledError:
             self.fail(attempt_id, 'interrupted', True)
             raise
+        finally:
+            if provider is not None and hasattr(provider, 'aclose'):
+                await provider.aclose()
         return self.read(attempt_id)

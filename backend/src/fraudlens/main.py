@@ -9,6 +9,8 @@ from starlette.exceptions import HTTPException
 
 from fraudlens.cases import CaseNotFoundError, CaseScoringError, CaseService, FixtureLoadError
 from fraudlens.contracts import CaseDetail, CaseId, CaseList, Error, ErrorBody, Health
+from fraudlens.investigation.api import error as investigation_error
+from fraudlens.investigation.api import investigation_router
 from fraudlens.investigation.api import router as knowledge_router
 from fraudlens.scoring import FixtureScorer, Scorer
 from fraudlens.settings import Settings, load_settings
@@ -44,6 +46,7 @@ def get_case_service(config: Annotated[Settings, Depends(get_settings)],
 def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -> FastAPI:
     app = FastAPI(title='FraudLens AI')
     app.include_router(knowledge_router)
+    app.include_router(investigation_router)
     app.state.settings = settings if settings is not None else load_settings()
     app.state.scorer = scorer if scorer is not None else FixtureScorer()
 
@@ -77,10 +80,12 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -
         return _error_response(exc.status_code, headers=headers)
 
     @app.exception_handler(Exception)
-    async def server_error(_request: Request, exc: Exception) -> JSONResponse:
+    async def server_error(request: Request, exc: Exception) -> JSONResponse:
         # Starlette's ServerErrorMiddleware still re-raises after sending this
         # response. Programming errors remain observable; no fallback is used.
         logger.error('Unhandled application failure (%s)', type(exc).__name__)
+        if request.url.path.startswith(('/api/investigation/', '/api/knowledge/')):
+            return investigation_error(500, 'internal_error')
         return _error_response(500)
 
     @app.get('/api/health', response_model=Health, responses={500: {'model': Error}})

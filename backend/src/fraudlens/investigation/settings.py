@@ -12,9 +12,10 @@ class InvestigationSettings(BaseModel):
     model_config = ConfigDict(frozen=True, extra='forbid', hide_input_in_errors=True)
     enabled: bool = False
     provider: Literal['test', 'openai'] = 'test'
+    test_scenario: Literal['grounded', 'needs_information', 'invalid_citation', 'refusal', 'incomplete'] = 'grounded'
     source: Literal['fixture', 'dataset'] = 'fixture'
     store: Path = ROOT / 'data/processed/investigations.sqlite'
-    analyst: str = Field(default='local-demo-analyst', min_length=1)
+    analyst: str = Field(default='local-demo-analyst', min_length=1, max_length=80)
     api_key: SecretStr = Field(default_factory=lambda: SecretStr(''), repr=False, exclude=True)
     model: SecretStr = Field(default_factory=lambda: SecretStr(''), repr=False, exclude=True)
     max_provider_requests: int = Field(default=8, ge=1, le=8)

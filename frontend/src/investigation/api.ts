@@ -1,9 +1,11 @@
 import { decodeDocuments, decodeKnowledgeError, decodePassage, decodeSearch } from './contracts';
 
+import { decodeRun, decodeRuns, decodeEvidence, decodeInvestigationError, investigationStatuses, decodeContextBinding } from './contracts';
+
 export class KnowledgeError extends Error {
   constructor(readonly code: string) { super('Pretraga nije spremna ili zahtev nije uspeo.'); }
 }
-async function request<T>(url: string, decode: (value: unknown, response: Response) => T, signal?: AbortSignal): Promise<T> {
+async function request<T>(url: string, decode: (value: unknown, response: Response) => T, signal?: AbortSignal, options?: RequestInit, success = 200, investigation = false): Promise<T> {
   if (signal?.aborted) throw new KnowledgeError('cancelled');
   const controller = new AbortController();
   let rejectStop: (error: Error) => void = () => {};
@@ -12,12 +14,12 @@ async function request<T>(url: string, decode: (value: unknown, response: Respon
   signal?.addEventListener('abort', cancel, { once: true });
   const timeout = setTimeout(() => { rejectStop(new KnowledgeError('timeout')); controller.abort(); }, 5000);
   const receive = async () => {
-    const response = await fetch(url, { signal: controller.signal });
+    const response = await fetch(url, { ...options, signal: controller.signal });
     if (response.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') throw new KnowledgeError('invalid_response');
     const value: unknown = await response.json();
-    if (response.status !== 200) {
-      const code = decodeKnowledgeError(value);
-      const statuses = { invalid_request: 422, knowledge_unavailable: 503, evidence_not_found: 404, internal_error: 500 };
+    if (response.status !== success) {
+      const code = investigation ? decodeInvestigationError(value) : decodeKnowledgeError(value);
+      const statuses = investigationStatuses;
       if (response.status !== statuses[code]) throw new KnowledgeError('invalid_response');
       throw new KnowledgeError(code);
     }
@@ -45,3 +47,34 @@ export function getPassage(id: string, corpus: string, signal?: AbortSignal) {
   }, signal);
 }
 export const knowledgeClient = { documents: getDocuments, search: searchKnowledge, passage: getPassage };
+
+export function listInvestigations(caseId: string, signal?: AbortSignal) {
+  return request('/api/investigation/runs?' + new URLSearchParams({ case_id: caseId }), (value, response) => {
+    const result = decodeRuns(value);
+    const binding = decodeContextBinding(response.headers.get('x-investigation-snapshot'), response.headers.get('x-investigation-context'));
+    if (result.items.some(run => run.case_id !== caseId || run.context_revision !== binding.context_revision || run.snapshot_ref !== binding.snapshot_ref)) throw new KnowledgeError('invalid_response');
+    return { ...result, ...binding };
+  }, signal, undefined, 200, true);
+}
+export function createInvestigation(caseId: string, snapshot: string, revision: string, key: string, signal?: AbortSignal) {
+  return request('/api/investigation/runs', value => {
+    const result = decodeRun(value);
+    if (result.case_id !== caseId || result.snapshot_ref !== snapshot || result.context_revision !== revision) throw new KnowledgeError('invalid_response');
+    return result;
+  }, signal, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key }, body: JSON.stringify({ case_id: caseId, source_mode: 'fixture', snapshot_ref: snapshot }) }, 202, true);
+}
+export function getInvestigation(id: string, caseId: string, revision: string, signal?: AbortSignal) {
+  return request('/api/investigation/attempts/' + encodeURIComponent(id), value => {
+    const result = decodeRun(value);
+    if (result.attempt_id !== id || result.case_id !== caseId || result.context_revision !== revision) throw new KnowledgeError('invalid_response');
+    return result;
+  }, signal, undefined, 200, true);
+}
+export function getEvidence(attempt: string, id: string, revision: string, signal?: AbortSignal) {
+  return request(`/api/investigation/attempts/${encodeURIComponent(attempt)}/evidence/${encodeURIComponent(id)}`, value => {
+    const result = decodeEvidence(value);
+    if (result.evidence_id !== id || result.attempt_id !== attempt || result.context_revision !== revision) throw new KnowledgeError('invalid_response');
+    return result;
+  }, signal, undefined, 200, true);
+}
+export const reportClient = { list: listInvestigations, create: createInvestigation, attempt: getInvestigation, evidence: getEvidence };

@@ -1,6 +1,6 @@
 # Investigation and knowledge API v1 (planned)
 
-Status: proposed consumer contract, not implemented endpoints. Local same-origin FastAPI routes under `/api/investigation` and `/api/knowledge`; keep all existing feature 001/002 endpoints and errors unchanged. [schemas.json](schemas.json) defines closed request/response bodies. GETs never cause provider requests. All responses are JSON with explicit `contract_version=1`; no raw exception/provider body or path is returned.
+Status (2026-11-15): knowledge and Phase 4 create/list/attempt/evidence routes implemented offline. Retry/cancel/review endpoints below remain planned later phases. Local same-origin FastAPI routes under `/api/investigation` and `/api/knowledge`; existing feature 001/002 endpoints and errors unchanged. [schemas.json](schemas.json) defines closed request/response bodies. GETs never cause provider requests. All responses are JSON with explicit `contract_version=1`; no raw exception/provider body or path is returned.
 
 ## Request identity and local access
 
@@ -28,6 +28,15 @@ Global new-route statuses: 422 invalid_request, 403 forbidden_scope (cross-origi
 Knowledge search query is trimmed 1-500 characters; corpus/retrieval parameters must name configured complete versions (no paths). Limit fixed to 5, no browser override. List runs returns at most the latest 20 with explicit truncated flag and total_count; order created_at descending then run_id. A run view identifies its active/latest attempt; old attempts remain fetchable. All UI detail updates check case_id/context_revision/attempt_id and generation token, not selected case ID alone.
 
 ## Context proposal and producer review
+
+Phase 4 fixture binding clarification (2026-11-14): list accepts `case_id` alone
+to resolve the server's current source context without modifying foundation JSON.
+It returns `X-Investigation-Snapshot` and `X-Investigation-Context` headers alongside
+the unchanged closed RunList body. Supplying `context_revision` pins subsequent
+reads; a current-source mismatch returns 409 stale_snapshot. The browser uses the
+resolved snapshot in CreateRequest, never a fabricated placeholder or source path.
+Historical attempts remain accessible by their immutable attempt ID. No dataset
+producer approval is implied. Retry/cancel/review endpoints remain later phases.
 
 `InvestigationContext` is an internal immutable boundary defined by schemas + [data model](../data-model.md), not a new publicly writable context endpoint. Client create payload cannot send source_payload, actor, corpus filesystem paths, permissions or arbitrary model ID. Server selects context/provider/retrieval configurations.
 

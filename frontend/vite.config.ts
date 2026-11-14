@@ -6,7 +6,8 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     proxy: {
-      '/api': 'http://127.0.0.1:8000',
+      // Preserve the browser Host so backend same-origin mutation checks agree.
+      '/api': { target: 'http://127.0.0.1:8000', changeOrigin: false },
     },
   },
   test: {

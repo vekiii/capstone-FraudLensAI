@@ -1,4 +1,4 @@
-"""Composition checks; three intended T035 RED cases remain for future routes."""
+"""Composition regression; the three former T035 RED cases are now implemented."""
 import socket
 
 import httpx

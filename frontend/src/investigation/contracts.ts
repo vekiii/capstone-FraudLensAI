@@ -53,6 +53,82 @@ export function decodeSearch(value: unknown) {
   return { contract_version: 1, corpus_version: version, retrieval_version: digest(v.retrieval_version), query: text(v.query, 500), status, hits };
 }
 export type Search = ReturnType<typeof decodeSearch> & { truncated?: boolean };
+const safeMax = Number.MAX_SAFE_INTEGER;
+function bool(v: unknown): boolean { return typeof v === 'boolean' ? v : fail(); }
+function id(v: unknown, prefix: string) { const t = text(v, prefix.length + 32); return new RegExp('^' + prefix + '[a-f0-9]{32}(?![\\s\\S])').test(t) ? t : fail(); }
+function caseId(v: unknown) { const t = text(v, 8); return /^CASE-[0-9]{3}(?![\s\S])/.test(t) ? t : fail(); }
+const evidenceId = (v: unknown) => id(v, 'ev_');
+const attemptId = (v: unknown) => id(v, 'att_');
+function unique<T>(values: T[]) { return new Set(values).size === values.length ? values : fail(); }
+function decodeClaim(value: unknown) {
+  const v = closed(value, ['text', 'kind', 'evidence_refs', 'exact_assertions', 'quotes']);
+  const refs = array(v.evidence_refs, 20, evidenceId); if (!refs.length) return fail();
+  const assertion = (item: unknown) => { const a = closed(item, ['evidence_ref', 'path', 'value']); const ref = evidenceId(a.evidence_ref); if (!refs.includes(ref)) return fail(); return { evidence_ref: ref, path: text(a.path, 200), value: text(a.value, 2400) }; };
+  const quote = (item: unknown) => { const q = closed(item, ['evidence_ref', 'text']); const ref = evidenceId(q.evidence_ref); if (!refs.includes(ref)) return fail(); return { evidence_ref: ref, text: text(q.text, 2400) }; };
+  return { text: text(v.text, 2000), kind: choice(v.kind, ['observation', 'hypothesis', 'procedure']), evidence_refs: refs, exact_assertions: array(v.exact_assertions, 20, assertion), quotes: array(v.quotes, 20, quote) };
+}
+function decodeDraft(value: unknown) {
+  const v = closed(value, ['outcome', 'summary', 'observed_facts', 'risk_indicators', 'alternative_explanations', 'missing_information', 'recommended_checks', 'limitations', 'citations']);
+  const result = { outcome: choice(v.outcome, ['ready_for_review', 'needs_information']), summary: array(v.summary, 20, decodeClaim), observed_facts: array(v.observed_facts, 20, decodeClaim), risk_indicators: array(v.risk_indicators, 20, decodeClaim), alternative_explanations: array(v.alternative_explanations, 20, decodeClaim), missing_information: array(v.missing_information, 20, x => text(x, 2000)), recommended_checks: array(v.recommended_checks, 20, decodeClaim), limitations: array(v.limitations, 20, x => text(x, 2000)), citations: unique(array(v.citations, 100, evidenceId)) };
+  const refs = new Set([result.summary, result.observed_facts, result.risk_indicators, result.alternative_explanations, result.recommended_checks].flat().flatMap(c => c.evidence_refs));
+  if (refs.size !== result.citations.length || result.citations.some(ref => !refs.has(ref))) return fail();
+  if (result.outcome === 'ready_for_review' && (!result.summary.length || !result.observed_facts.length || !result.citations.length)) return fail();
+  if (result.outcome === 'needs_information' && !result.limitations.length) return fail();
+  return result;
+}
+function decodeReport(value: unknown) {
+  const v = closed(value, ['report_id', 'attempt_id', 'context_revision', 'created_at', 'validation', 'semantic_review', 'draft']);
+  return { report_id: digest(v.report_id), attempt_id: attemptId(v.attempt_id), context_revision: digest(v.context_revision), created_at: instant(v.created_at), validation: choice(v.validation, ['schema_reference_passed']), semantic_review: choice(v.semantic_review, ['not_reviewed', 'reviewed_with_notes']), draft: decodeDraft(v.draft) };
+}
+function decodeReview(value: unknown) {
+  const v = closed(value, ['review_id', 'report_id', 'actor', 'disposition', 'rationale', 'correction_note', 'supersedes_review_id', 'created_at']);
+  return { review_id: id(v.review_id, 'rev_'), report_id: digest(v.report_id), actor: text(v.actor, 80), disposition: choice(v.disposition, ['escalate', 'close', 'request_more_information']), rationale: text(v.rationale, 2000), correction_note: nullable(v.correction_note, x => text(x, 2000)), supersedes_review_id: nullable(v.supersedes_review_id, x => id(x, 'rev_')), created_at: instant(v.created_at) };
+}
+function decodeFailure(value: unknown) {
+  const v = closed(value, ['code', 'message', 'outcome_unknown']);
+  return { code: choice(v.code, ['provider_access', 'provider_refusal', 'provider_incomplete', 'provider_failure', 'unsupported_capability', 'output_invalid', 'budget_exhausted', 'interrupted', 'stale_snapshot', 'tool_result_too_large', 'context_unavailable']), message: text(v.message, 200), outcome_unknown: bool(v.outcome_unknown) };
+}
+export function decodeRun(value: unknown) {
+  const v = closed(value, ['contract_version', 'run_id', 'attempt_id', 'parent_attempt_id', 'case_id', 'context_revision', 'source_mode', 'snapshot_ref', 'corpus_version', 'retrieval_version', 'provider_mode', 'requested_model', 'returned_model', 'state', 'revision', 'created_at', 'updated_at', 'budget', 'trace', 'report', 'review', 'failure']);
+  if (v.contract_version !== 1) return fail();
+  const b = closed(v.budget, ['provider_requests', 'tool_calls', 'repairs', 'transient_retries', 'deadline']);
+  const result = { contract_version: 1, run_id: id(v.run_id, 'inv_'), attempt_id: attemptId(v.attempt_id), parent_attempt_id: nullable(v.parent_attempt_id, attemptId), case_id: caseId(v.case_id), context_revision: digest(v.context_revision), source_mode: choice(v.source_mode, ['fixture', 'dataset']), snapshot_ref: text(v.snapshot_ref, 120), corpus_version: corpus(v.corpus_version), retrieval_version: digest(v.retrieval_version), provider_mode: choice(v.provider_mode, ['test', 'openai']), requested_model: nullable(v.requested_model, x => text(x, 200)), returned_model: nullable(v.returned_model, x => text(x, 200)), state: choice(v.state, ['created', 'gathering_evidence', 'drafting', 'ready_for_review', 'needs_information', 'failed', 'cancelled', 'reviewed']), revision: integer(v.revision, 1, safeMax), created_at: instant(v.created_at), updated_at: instant(v.updated_at),
+    budget: { provider_requests: integer(b.provider_requests, 0, 8), tool_calls: integer(b.tool_calls, 0, 12), repairs: integer(b.repairs, 0, 1), transient_retries: integer(b.transient_retries, 0, 1), deadline: nullable(b.deadline, instant) },
+    trace: array(v.trace, 12, item => { const t = closed(item, ['sequence', 'name', 'status', 'elapsed_ms', 'evidence_refs']); return { sequence: integer(t.sequence, 1, safeMax), name: choice(t.name, ['get_case_facts', 'get_account_history', 'search_procedures']), status: choice(t.status, ['completed', 'rejected', 'failed']), elapsed_ms: integer(t.elapsed_ms, 0, safeMax), evidence_refs: array(t.evidence_refs, 100, evidenceId) }; }),
+    report: nullable(v.report, decodeReport), review: nullable(v.review, decodeReview), failure: nullable(v.failure, decodeFailure) };
+  if (result.report && (result.report.attempt_id !== result.attempt_id || result.report.context_revision !== result.context_revision)) return fail();
+  const complete = ['ready_for_review', 'needs_information', 'reviewed'].includes(result.state);
+  if (complete !== (result.report !== null) || (result.state === 'failed') !== (result.failure !== null)) return fail();
+  if (result.report && result.state !== 'reviewed' && result.report.draft.outcome !== result.state) return fail();
+  if ((result.state === 'reviewed') !== (result.review !== null) || (result.review && result.review.report_id !== result.report?.report_id)) return fail();
+  return result;
+}
+export type Run = ReturnType<typeof decodeRun>;
+export function decodeRuns(value: unknown) {
+  const v = closed(value, ['contract_version', 'total_count', 'truncated', 'items']); if (v.contract_version !== 1) return fail();
+  const result = { contract_version: 1, total_count: integer(v.total_count, 0, safeMax), truncated: bool(v.truncated), items: array(v.items, 20, decodeRun) };
+  if (result.items.length !== Math.min(20, result.total_count) || result.truncated !== (result.total_count > 20)) return fail();
+  unique(result.items.map(item => item.run_id)); return result;
+}
+export function decodeEvidence(value: unknown) {
+  const v = closed(value, ['contract_version', 'evidence_id', 'attempt_id', 'context_revision', 'kind', 'text', 'facts', 'passage', 'history', 'returned_count', 'eligible_count', 'truncated', 'content_sha256', 'created_at']);
+  if (v.contract_version !== 1) return fail();
+  const result = { contract_version: 1, evidence_id: evidenceId(v.evidence_id), attempt_id: attemptId(v.attempt_id), context_revision: digest(v.context_revision), kind: choice(v.kind, ['case_fact', 'history', 'procedure']), text: text(v.text, 16000),
+    facts: array(v.facts, 500, item => { const f = closed(item, ['path', 'value']); return { path: text(f.path, 200), value: text(f.value, 2400) }; }), passage: nullable(v.passage, decodePassage),
+    history: nullable(v.history, item => { const h = closed(item, ['availability', 'cutoff', 'coverage', 'start', 'lookback_days', 'view_scope', 'reason']); if (h.lookback_days !== 7) return fail(); return { availability: choice(h.availability, ['available', 'unavailable']), cutoff: nullable(h.cutoff, instant), coverage: choice(h.coverage, ['full', 'incomplete', 'unavailable']), start: nullable(h.start, instant), lookback_days: 7, view_scope: choice(h.view_scope, ['authored_fixture', 'synthetic_shared_banks']), reason: nullable(h.reason, x => text(x, 2000)) }; }),
+    returned_count: integer(v.returned_count, 0, safeMax), eligible_count: nullable(v.eligible_count, x => integer(x, 0, safeMax)), truncated: bool(v.truncated), content_sha256: digest(v.content_sha256), created_at: instant(v.created_at) };
+  if ((result.kind === 'procedure') !== (result.passage !== null) || (result.kind === 'history') !== (result.history !== null)) return fail();
+  return result;
+}
+export type Evidence = ReturnType<typeof decodeEvidence>;
+export function decodeInvestigationError(value: unknown) {
+  const v = closed(value, ['contract_version', 'error']); if (v.contract_version !== 1) return fail();
+  const e = closed(v.error, ['code', 'message', 'retryable']); text(e.message, 200); bool(e.retryable);
+  const code = choice(e.code, ['invalid_request', 'forbidden_scope', 'case_not_found', 'investigation_not_found', 'evidence_not_found', 'stale_snapshot', 'request_conflict', 'revision_conflict', 'invalid_transition', 'knowledge_unavailable', 'context_unavailable', 'provider_unavailable', 'store_busy', 'internal_error']);
+  if (e.retryable !== (investigationStatuses[code] >= 500)) return fail(); return code;
+}
+export const investigationStatuses = { invalid_request: 422, forbidden_scope: 403, case_not_found: 404, investigation_not_found: 404, evidence_not_found: 404, stale_snapshot: 409, request_conflict: 409, revision_conflict: 409, invalid_transition: 409, knowledge_unavailable: 503, context_unavailable: 503, provider_unavailable: 503, store_busy: 503, internal_error: 500 };
+export function decodeContextBinding(snapshot: unknown, revision: unknown) { return { snapshot_ref: text(snapshot, 120), context_revision: digest(revision) }; }
 export function decodeKnowledgeError(value: unknown) {
   const v = closed(value, ['contract_version', 'error']);
   if (v.contract_version !== 1) return fail();

@@ -1,5 +1,6 @@
 import { mountKnowledge } from './investigation/controller';
 import { ApiError, getCase, getCases } from './api';
+import { mountReports } from './investigation/controller';
 import type { CaseDetail, CaseList, CaseSummary } from './contracts';
 import { createCaseView } from './views';
 import type { UiState } from './views';
@@ -12,12 +13,14 @@ export interface CaseClient {
 
 export function mountCaseApp(
   root: HTMLElement, client: CaseClient = { getCases, getCase },
+  reportMount?: typeof mountReports,
 ): () => void {
   let items: CaseSummary[] = [];
   let state: UiState = { kind: 'list-loading' };
   let generation = 0;
   let pending: AbortController | undefined;
   let disposed = false;
+  let disposeReports: (() => void) | undefined;
 
   const view = createCaseView(root, {
     select: caseId => { void loadDetail(caseId); },
@@ -38,6 +41,7 @@ export function mountCaseApp(
     // Invalidate first: even a synchronous abort reaction belongs to the old request.
     generation += 1;
     pending?.abort();
+    disposeReports?.(); disposeReports = undefined;
     pending = undefined;
     return generation;
   }
@@ -85,6 +89,13 @@ export function mountCaseApp(
       if (!current(token)) return;
       state = { kind: 'detail', detail };
       view.render(state, items);
+      if (reportMount) {
+        const reportRoot = document.createElement('section'); reportRoot.className = 'investigation-panel';
+        const open = document.createElement('button'); open.type = 'button'; open.textContent = 'Prikaži AI istragu'; open.dataset.investigationOpen = '';
+        open.addEventListener('click', () => { disposeReports = reportMount(reportRoot, detail.case_id); }, { once: true });
+        reportRoot.append(open);
+        root.querySelector('.case-panel')?.append(reportRoot);
+      }
     } catch (error) {
       if (!current(token)) return;
       const failure = publicError(error);
@@ -110,12 +121,13 @@ export function mountApplication(root: HTMLElement): () => void {
   const cases = document.createElement('button'); cases.type = 'button'; cases.textContent = 'Slu\u010dajevi';
   const knowledge = document.createElement('button'); knowledge.type = 'button'; knowledge.textContent = 'Izvori i pretraga';
   const content = document.createElement('div'); navigation.append(cases, knowledge); root.replaceChildren(navigation, content);
-  let dispose = mountCaseApp(content);
+  const casesApp = () => mountCaseApp(content, undefined, mountReports);
+  let dispose = casesApp();
   function select(kind: 'cases' | 'knowledge') {
     dispose();
     cases.setAttribute('aria-pressed', String(kind === 'cases'));
     knowledge.setAttribute('aria-pressed', String(kind === 'knowledge'));
-    dispose = kind === 'cases' ? mountCaseApp(content) : mountKnowledge(content);
+    dispose = kind === 'cases' ? casesApp() : mountKnowledge(content);
   }
   cases.setAttribute('aria-pressed', 'true'); knowledge.setAttribute('aria-pressed', 'false');
   cases.addEventListener('click', () => select('cases'));

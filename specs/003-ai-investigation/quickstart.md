@@ -1,14 +1,18 @@
 # Feature 003 validation quickstart
 
-Status: Phase 3 T013-T022 complete. Milan Gavrić approved all six source texts and
-documented reuse/applicability. Exact reviewed corpus published locally;
-actual-source API/proxy/automated Chrome verification PASS. See
-../../evidence/tasks/feature-003-phase-03-completion.md. Provider/worker/report
-commands below remain future targets; only prepare-knowledge exists currently.
+Status (2026-11-15): Phase 4 offline T023-T032/T034-T038 complete; Phase 3 reviewed
+corpus preserved. Provider SDK adapter, worker, run API and report UI implemented;
+actual fixture browser/API/proxy/worker journey PASS. T033 live probe and Phase 5+
+remain pending. See ../../evidence/tasks/feature-003-fixture-journey.md.
 Run from repository root on `feature03` (or a reviewed descendant), preserving
 the existing feature 002/ML branches. No automatic commit, push or merge.
 
 ## Setup and feature selection
+
+The current laptop already has SDK 3.51.0 installed manually. Do not repeat uv
+installation through the agent: earlier attempts coincided with system crashes.
+Use its existing .venv directly for commands below. The setup block is for a fresh
+checkout with dependencies not yet prepared; it is not required on this laptop.
 
 ```powershell
 $env:SPECIFY_FEATURE_DIRECTORY = 'specs/003-ai-investigation'
@@ -42,8 +46,8 @@ $env:INVESTIGATION_SOURCE = 'fixture'
 $env:INVESTIGATION_STORE = 'data/processed/investigations.sqlite'
 $env:INVESTIGATION_ANALYST = 'local-demo-analyst'
 $env:PYTHONPATH = Join-Path $PWD 'backend/src'
-py -3.14 -m uv run --locked python -m fraudlens.investigation.cli prepare-knowledge --manifest data/knowledge/fraudlens-aml-knowledge-v1/manifest.json --store data/processed/investigations.sqlite
-py -3.14 -m uv run --locked python -m uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
+.venv/Scripts/python.exe -m fraudlens.investigation.cli prepare-knowledge --manifest data/knowledge/fraudlens-aml-knowledge-v1/manifest.json --store data/processed/investigations.sqlite
+.venv/Scripts/python.exe -m uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
 ```
 
 In another terminal run `npm.cmd --prefix frontend run dev`. Search knowledge
@@ -62,15 +66,14 @@ node evidence/tasks/feature-003-knowledge-smoke.mjs --reviewed
 It uses an isolated .cache store/profile, leaves the default archive intact,
 checks actual-source historical text and original cases, and stops owned services.
 
-## Planned investigation increment (T023+, not implemented)
+## Implemented offline investigation (Phase 4)
 
-Commands/journeys from here through evaluation are future validation targets.
-Start investigation: creation must
-return a queued attempt without a provider call. In a separate root terminal
+Open a case, click Prikaži AI istragu, then Pokreni novu istragu. Creation returns
+a queued attempt without a provider call. In a separate root terminal
 with the same feature settings run:
 
 ```powershell
-uv run --locked python -m fraudlens.investigation.cli worker --store data/processed/investigations.sqlite --once
+.venv/Scripts/python.exe -m fraudlens.investigation.cli worker --store data/processed/investigations.sqlite --once
 ```
 
 Poll the returned attempt; inspect actual test-provider tool trace, labeled
@@ -79,7 +82,18 @@ The CLI supports --poll for explicit single-worker execution. Do not run multipl
 uncoordinated workers. A queued attempt's 120-second execution deadline starts
 when claimed; if the worker is not running, UI says queued, not gathering.
 
-## Recovery and review journeys
+For an explicit continuous single worker use --poll instead of --once; Ctrl+C
+stops it. Backend-only INVESTIGATION_TEST_SCENARIO defaults to grounded; optional
+authored needs_information/invalid_citation/refusal/incomplete scenarios are pinned
+when a new attempt is created. They are diagnostics, not model quality evidence.
+Report list returns at most 20 saved runs. UI polls at most 120 times, then offers
+read-only refresh. Navigate away to stop browser polling; this does not cancel the
+durable worker attempt. Retry/cancel/review controls belong to later phases.
+
+Reproduce the complete isolated offline journey with free 8000/5173/9228 and Chrome:
+`node evidence/tasks/feature-003-fixture-journey.mjs --reviewed`.
+
+## Planned recovery and review journeys (Phase 5+, not implemented)
 
 1. Force a controlled provider timeout in a test script. Confirm failed state,
    exact counters, saved evidence and controlled error, not a completed report.
@@ -105,7 +119,7 @@ unless implementation deliberately provides that capability; environment
 variables are the specified interface. Set INVESTIGATION_PROVIDER=openai.
 
 ```powershell
-uv run --locked python -m fraudlens.investigation.cli probe-provider --synthetic-only
+.venv/Scripts/python.exe -m fraudlens.investigation.cli probe-provider --synthetic-only
 ```
 
 Run only when intentionally authorizing this small live synthetic check. Capture

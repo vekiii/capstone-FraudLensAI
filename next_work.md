@@ -1,4 +1,27 @@
-# Current handoff - feature 003 Phase 4 in progress, 2026-11-14
+# Current handoff - feature 003 Phase 4 offline complete, 2026-11-15
+Branch feature03, unchanged HEAD fece114. T023-T032 and T034-T038 complete.
+Saved T027-T030 reconciled against code/tests and recovered RED pytest caches.
+T031/T032 real SDK adapter + synthetic-only probe CLI verified with MockTransport;
+SDK module 18 PASS, probe 4 PASS. SDK 3.51.0 was manually installed by Milan;
+no installer repeated and no actual provider/key/model call in this continuation.
+T034 8 RED -> API/feature-toggle GREEN; unexpected-500 envelope RED -> GREEN,
+API/feature-toggle now 16 PASS. T036 8 RED/1 PASS -> report UI 10 PASS.
+Explicit case report panel, queued create, separate --once/--poll worker,
+closed decoders, bound citation inspection, bounded polling and navigation abort.
+Actual browser found Vite Host rewriting; changeOrigin=false fixes same-origin POST.
+Final full backend **629 PASS**, frontend **166 PASS**, Ruff/typecheck/build PASS.
+Actual Chrome/API/proxy/worker journey **9 PASS**, owned cleanup/ports PASS.
+Reviewed corpus/source/producer contracts/lockfiles preserved; no ML integration
+or model quality/human report approval claim. T033 live probe remains pending;
+Phase 5+ not started. No commit/push. Evidence and exact limits:
+[fixture journey](evidence/tasks/feature-003-fixture-journey.md),
+[provider](evidence/tasks/feature-003-provider.md),
+[original prompt](prompts/development/003-investigation-phase-04-resume.md).
+**Next step:** Milan reviews/commits this offline Phase 4 change; separately agree
+the next scope (Phase 5 or configured opt-in T033). No automatic continuation.
+Earlier handoffs below are historical.
+
+# Previous handoff - feature 003 Phase 4 in progress, 2026-11-14
 Branch feature03; baseline 1a99c34. User authorized Phase 4 continuation.
 T023/T024 tools complete: executed 23 RED, then tools+store 31 PASS, Ruff PASS.
 Evidence: [tools](evidence/tasks/feature-003-tools.md),

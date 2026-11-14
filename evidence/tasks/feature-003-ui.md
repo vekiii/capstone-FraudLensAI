@@ -42,3 +42,31 @@ See [completion evidence](feature-003-phase-03-completion.md) and
 [reviewed results](feature-003-reviewed-knowledge-smoke-results.json). This is
 automated browser verification, not human clicking, peer reproduction or live
 report-quality evaluation. Earlier pending dependency statements are historical.
+
+## T036/T037 completed, 2026-11-15 Europe/Belgrade
+
+Initial new report module: **8 RED / 1 PASS** (positive decoder threw the explicit
+stub error; controller rendered nothing). Implemented strict closed nested report/
+run/evidence/failure/review projections with version/bounds/date checks, exact
+attempt/context/report identity and citation union. Added client wire/status
+regression: new module **10 PASS**, complete frontend **166 PASS**; typecheck/build
+PASS. Original decoders/fixture payloads retained. Commands: `npm.cmd --prefix
+frontend test -- --run`, `npm.cmd --prefix frontend run build`.
+
+Explicit Prikaži AI istragu opens a case-bound panel; only explicit Pokreni novu
+istragu enqueues. Render saved attempts, queued/worker-waiting, gathering, drafting,
+ready, needs-information, failed and controlled errors. Typed observations/
+hypotheses/procedures, exact numbers/quotes, missingness, source fixture/score and
+semantic-review notices remain literal DOM text. Citation click retrieves exact
+same-attempt evidence and archived procedure provenance; headings receive focus.
+Poll at 1-second intervals, max 120 reads, each with 5-second timeout. After the
+bound, explicit read-only refresh remains available. Generation tokens and abort
+controllers prevent stale case/context/attempt/evidence responses; navigation
+disposes the panel. No model tool authority, automatic disposition or retry action.
+
+Initial full regression: **165 PASS / 1 FAIL**, because automatically opening the
+panel introduced a feature error alert during an old fixture-race test. The panel
+is now opt-in, preserving original no-provider browsing; old assertions unchanged.
+Actual browser/proxy RED exposed Host rewriting, fixed with changeOrigin=false
+while retaining strict Origin checks. Full journey **9 PASS**:
+[results](feature-003-fixture-journey-results.json), [notes](feature-003-fixture-journey.md).

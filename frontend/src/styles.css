@@ -59,6 +59,11 @@ dt { color: #4c6271; font-size: 0.9rem; }
 dd { margin: 0; font-weight: 550; }
 .risk-score { color: var(--accent); font-size: 2rem; font-weight: 750; margin-bottom: 0.2rem; }
 .explanation { white-space: pre-wrap; margin-bottom: 0; }
+.investigation-panel { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.investigation-panel button { min-height: 44px; margin: 0 0.5rem 0.75rem 0; padding: 0.5rem 0.75rem; }
+.investigation-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; padding: 0.8rem; background: #eef4f7; }
+.investigation-panel h3 { margin-top: 1rem; }
+.investigation-panel :focus-visible { outline: 3px solid #145cb4; outline-offset: 3px; }
 
 @media (max-width: 700px) {
   #app { padding: 1.5rem 1rem 2rem; }

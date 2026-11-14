@@ -96,3 +96,37 @@ a fresh nonexistent tmp_path store, preserving assertions. Final full backend
 517 PASS / 3 existing T035 RED, Ruff PASS. See
 [completion evidence](feature-003-phase-03-completion.md) for actual commands,
 RED/GREEN and browser/proxy results. No future route placeholders or skip/xfail.
+
+## T034/T035 completed, 2026-11-15 Europe/Belgrade
+
+`backend/tests/integration/test_investigation_api.py`: **8 actual RED** missing
+route/envelope failures, then GREEN. Combined API + feature-toggle **15 PASS**;
+all three previously retained T035 failures now pass. No assertions weakened.
+Full backend **629 PASS**, Ruff PASS. Tests use prepared authored stores, no key
+or actual model. Executed with existing .venv Python, unique existing .cache parent
+for --basetemp and cache_dir; no uv install/run bootstrap.
+
+POST creates a queued immutable binding, never provider work. Server-owned actor,
+UUID key replay/conflict, source snapshot checks, closed <=4096-byte streamed body,
+JSON/local Host/same-origin guards before configuration lookup. Feature-specific
+safe envelopes; ETag revision; GET/list/evidence dispatch no provider. Latest 20
+saved runs ordered by created_at descending then run_id; total_count/truncated
+explicit. Evidence lookup checks exact attempt ownership. List resolves current
+fixture binding via two documented response headers without changing foundation
+JSON or closed RunList; optional revision pins list reads and rejects stale source.
+See [contract clarification](../../specs/003-ai-investigation/contracts/api.md).
+
+Explicit `worker --store <prepared-path> --once|--poll`; no worker on HTTP startup.
+--once processes one existing item or reports idle. --poll is an explicit 1-second
+loop using the single durable lease; Ctrl+C exits. Test scenario is typed backend
+configuration, pinned at create, never supplied by browser. Defaults grounded;
+alternative authored needs_information/invalid_citation/refusal/incomplete are
+diagnostics, not live behavior or arbitrary script paths. No retry/cancel/review
+routes implemented (later phases). Real HTTP/proxy/browser proof in
+[fixture journey](feature-003-fixture-journey.md).
+
+Final fault-injection RED found unexpected new-route exceptions still used the
+foundation 500 envelope. The shared exception handler now selects the closed
+feature envelope only under investigation/knowledge paths, keeps foundation
+behavior and logs the exception type without its private detail. New real 500
+test GREEN; API + feature-toggle now **16 PASS**, full backend **629 PASS**.

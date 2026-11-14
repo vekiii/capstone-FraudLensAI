@@ -37,3 +37,46 @@ Primary SDK design sources inspected (implementation must match installed code):
 [HTTPX2 migration](https://github.com/openai/openai-python/blob/main/httpx2.md),
 [strict structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs),
 [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+
+## T031/T032 completed offline, 2026-11-15 Europe/Belgrade
+
+Supersedes the interrupted-install status above. Baseline fece114 already tracked
+openai >=3.51.0 and generated uv.lock. The user installed the locked SDK manually
+with exit 0 before this continuation; no installer was repeated. Actual imports
+and MockTransport tests use OpenAI **3.51.0**, httpx2/httpcore2 **2.16.0**.
+
+Executed RED: 16 SDK tests against an importable NotImplementedError adapter.
+GREEN: 16 PASS. Subsequent malformed-envelope checks observed two real REDs:
+non-dict message part caused AttributeError; non-string model passed through.
+Both now produce typed provider_incomplete; SDK module **18 PASS**. Probe command
+RED: 2 missing-command failures plus one passing authored HTTP exchange; GREEN:
+initial **3 PASS**. Additional CLI RED: capability failure was hidden behind a
+generic message. It now emits a safe typed JSON code/outcome_unknown; probe module
+**4 PASS**. Combined with existing provider/workflow modules: 50 checks; all
+are included in the final 629 PASS backend regression. Ruff PASS.
+
+Official AsyncOpenAI, Responses API, explicit model ID, max_retries=0, parallel
+tools=false, store=false, strict closed tools/report shape. Schema compiler
+inlines reachable local definitions and explicitly leaves conditional outcome
+rules to the unchanged local schema/semantic validator; it does not weaken local
+acceptance. Required reasoning/function-call output items and call IDs are
+replayed privately, never exposed as evidence or report prose.
+
+All-turn allowlist runs before every dispatch. Entire payload (prompt/tools/schema/
+private continuation) checked, and transport checks actual encoded request bytes
+<=48,000 before network I/O. Output <=4096 tokens; <=30s request under shared <=120s
+workflow deadline. Bounded response byte stream <=2 MiB applies to success AND
+SDK error responses without Content-Length. Compression is refused; identity
+encoding requested, avoiding unbounded decompression. Error messages never include
+provider body/key. Access/refusal/incomplete/capability are explicit; at most one
+workflow transient retry and one local-validator repair, with prior request budget
+reservation. Usage/request/model come from actual response or remain unknown;
+no price/spend inference. Clients close in finally. No environment proxy/redirect
+fallback or model substitution.
+
+`probe-provider --synthetic-only` uses only authored CASE-000 data, forces one
+tool then a limitations-only strict report, max two SDK requests with all configured
+smaller limits honored. Command requires explicit flag and key/model configuration;
+tests use MockTransport and dummy keys only. **T033 pending**, see
+[provider access](feature-003-provider-access.md). No provider capability/access,
+live report or model-quality claim follows from mocked GREEN.

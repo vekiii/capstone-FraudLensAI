@@ -1,4 +1,5 @@
 """Replaceable provider boundary; no client/network work during import."""
+import asyncio
 import copy
 import json
 import math
@@ -7,10 +8,205 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
 
-from fraudlens.investigation.models import canonical, validate
+from fraudlens.investigation.models import SCHEMA, canonical, validate
 
 ROOT = Path(__file__).resolve().parents[4]
 PRIVATE = re.compile(r'label|laundering|isfraud|reference.answer|source.path|source.row|reviewer', re.I)
+
+
+def compile_report_schema():
+    """Inline reachable definitions; conditional business rules stay in validation.py.
+
+    The provider enforces the closed shape. The original allOf/if/then outcome
+    conditions are explicitly enforced again by the unchanged local validator.
+    """
+    def compile_node(node):
+        if isinstance(node, list):
+            return [compile_node(item) for item in node]
+        if not isinstance(node, dict):
+            return node
+        if '$ref' in node:
+            prefix = '#/$defs/'
+            if not node['$ref'].startswith(prefix):
+                raise ProviderError('unsupported_capability')
+            return compile_node(SCHEMA['$defs'][node['$ref'][len(prefix):]])
+        return {key: compile_node(value) for key, value in node.items() if key != 'allOf'}
+    return compile_node(SCHEMA['$defs']['ReportDraft'])
+
+
+def _bounded_transport(inner):
+    import httpx2
+    class Transport(httpx2.AsyncBaseTransport):
+        limit = 2097152
+        exceeded = False
+        input_limit = 48000
+        input_exceeded = False
+
+        async def handle_async_request(self, request):
+            if len(request.content) > self.input_limit:
+                self.input_exceeded = True
+                raise ProviderError('budget_exhausted')
+            response = await inner.handle_async_request(request)
+            parent = self
+            class Stream(httpx2.AsyncByteStream):
+                async def __aiter__(self):
+                    total = 0
+                    async for chunk in response.stream:
+                        total += len(chunk)
+                        if total > parent.limit:
+                            parent.exceeded = True
+                            raise ProviderError('provider_incomplete')
+                        yield chunk
+
+                async def aclose(self):
+                    await response.aclose()
+            if response.headers.get('content-encoding', 'identity') != 'identity':
+                await response.aclose()
+                self.exceeded = True
+                raise ProviderError('provider_incomplete')
+            return httpx2.Response(response.status_code, headers=response.headers,
+                stream=Stream(), request=request, extensions=response.extensions)
+
+        async def aclose(self):
+            await inner.aclose()
+    return Transport()
+
+
+class OpenAIProvider:
+    def __init__(self, api_key, model, prompt='', transport=None):
+        import httpx2
+        from openai import AsyncOpenAI
+        if not isinstance(model, str) or not model.strip() or len(model) > 200:
+            raise ProviderError('unsupported_capability')
+        if not api_key:
+            raise ProviderError('provider_access')
+        self.model, self.prompt = model, prompt
+        self.transport = _bounded_transport(transport or httpx2.AsyncHTTPTransport())
+        self.client = AsyncOpenAI(
+            api_key=api_key, max_retries=0, timeout=30,
+            base_url='https://api.openai.com/v1',
+            default_headers={'Accept-Encoding': 'identity'},
+            http_client=httpx2.AsyncClient(transport=self.transport, trust_env=False,
+                                          follow_redirects=False, timeout=30))
+        self.history, self.seen = [], 0
+
+    async def next_turn(self, conversation, tools, report_schema, remaining_limits):
+        from openai import APIConnectionError, APIStatusError, APITimeoutError
+
+        from fraudlens.investigation.tools import definitions
+        messages = project_conversation(conversation)
+        if tools != definitions() or len(messages) < self.seen:
+            raise ProviderError('provider_input_invalid')
+        pending = copy.deepcopy(self.history)
+        for item in messages[self.seen:]:
+            if item['type'] == 'context':
+                pending.append(dict(role='user', content=canonical(item['data']).decode()))
+            elif item['type'] == 'tool_result':
+                pending.append(dict(type='function_call_output', call_id=item['call_id'],
+                                    output=canonical(item['result']).decode()))
+            elif item['type'] == 'repair':
+                pending.append(dict(role='user', content='Repair the draft: output_invalid. Use only supplied evidence.'))
+        payload = dict(model=self.model, instructions=self.prompt, input=pending,
+            tools=tools, parallel_tool_calls=False, store=False,
+            include=['reasoning.encrypted_content'],
+            max_output_tokens=remaining_limits['max_output_tokens'],
+            text=dict(format=dict(type='json_schema', name='investigation_report',
+                                  strict=True, schema=compile_report_schema())))
+        if 'tool_choice' in remaining_limits:
+            payload['tool_choice'] = remaining_limits['tool_choice']
+        timeout = min(30, remaining_limits['request_timeout'])
+        if (timeout <= 0 or not 1 <= payload['max_output_tokens'] <= 4096
+                or len(canonical(payload)) > min(48000, remaining_limits['max_input_bytes'])):
+            raise ProviderError('budget_exhausted')
+        self.transport.limit = min(2097152, remaining_limits['max_response_bytes'])
+        self.transport.exceeded = False
+        self.transport.input_limit = min(48000, remaining_limits['max_input_bytes'])
+        self.transport.input_exceeded = False
+        try:
+            async with asyncio.timeout(timeout):
+                async with self.client.responses.with_streaming_response.create(**payload, timeout=timeout) as raw:
+                    body = bytearray()
+                    async for chunk in raw.iter_bytes():
+                        body.extend(chunk)
+                        if len(body) > self.transport.limit:
+                            raise ProviderError('provider_incomplete')
+                    response = json.loads(body)
+                    request_id = raw.headers.get('x-request-id')
+        except ProviderError:
+            raise
+        except APIStatusError as exc:
+            if self.transport.exceeded:
+                raise ProviderError('provider_incomplete') from None
+            code = ('provider_access' if exc.status_code in (401, 403) else
+                    'unsupported_capability' if exc.status_code in (400, 404, 422) else 'provider_failure')
+            retryable = exc.status_code == 429 or exc.status_code >= 500
+            try:
+                delay = float(exc.response.headers.get('retry-after', '0'))
+            except ValueError:
+                delay = 3  # Fail rather than ignore an unbounded/unparseable delay.
+            raise ProviderError(code, retryable=retryable, retry_after=delay) from None
+        except (APIConnectionError, APITimeoutError):
+            if self.transport.input_exceeded:
+                raise ProviderError('budget_exhausted') from None
+            if self.transport.exceeded:
+                raise ProviderError('provider_incomplete') from None
+            raise ProviderError('provider_failure', retryable=True, outcome_unknown=True) from None
+        except TimeoutError:
+            raise ProviderError('budget_exhausted', outcome_unknown=True) from None
+        except (ValueError, TypeError):
+            raise ProviderError('provider_incomplete') from None
+        if not isinstance(response, dict) or not isinstance(response.get('output'), list):
+            raise ProviderError('provider_incomplete')
+        returned_model = response.get('model')
+        if returned_model is not None and (not isinstance(returned_model, str) or not 1 <= len(returned_model) <= 200):
+            raise ProviderError('provider_incomplete')
+        if response.get('usage') is not None and not isinstance(response['usage'], dict):
+            raise ProviderError('provider_incomplete')
+        output = response['output']
+        for item in output:
+            if not isinstance(item, dict) or item.get('type') not in ('reasoning', 'message', 'function_call'):
+                raise ProviderError('unsupported_capability')
+            if item['type'] == 'message' and item.get('role') != 'assistant':
+                raise ProviderError('unsupported_capability')
+            if item['type'] == 'message':
+                content = item.get('content')
+                if not isinstance(content, list) or any(not isinstance(part, dict) for part in content):
+                    raise ProviderError('provider_incomplete')
+                if any(part.get('type') == 'output_text' and not isinstance(part.get('text'), str) for part in content):
+                    raise ProviderError('provider_incomplete')
+        self.history, self.seen = pending + copy.deepcopy(output), len(messages)
+        meta = dict(private_items=tuple(output), returned_model=response.get('model'),
+                    request_id=request_id or response.get('id'), usage=response.get('usage'))
+        if response.get('status') == 'incomplete':
+            return Turn('incomplete', **meta)
+        if response.get('status') != 'completed':
+            raise ProviderError('provider_failure')
+        calls, texts = [], []
+        for item in output:
+            if item['type'] == 'function_call':
+                try:
+                    arguments = json.loads(item['arguments'])
+                    if not isinstance(arguments, dict):
+                        raise ValueError()
+                    calls.append(dict(call_id=item['call_id'], name=item['name'], arguments=arguments))
+                except (ValueError, KeyError, TypeError):
+                    raise ProviderError('output_invalid') from None
+            elif item['type'] == 'message':
+                for content in item.get('content', []):
+                    if content.get('type') == 'refusal':
+                        return Turn('refusal', **meta)
+                    if content.get('type') == 'output_text':
+                        texts.append(content['text'])
+        if calls:
+            return Turn('tools', calls=tuple(calls), **meta)
+        try:
+            draft = json.loads(''.join(texts))
+        except (ValueError, TypeError):
+            draft = {}  # Local validator rejects; one application-owned repair may follow.
+        return Turn('draft', draft=draft, **meta)
+
+    async def aclose(self):
+        await self.client.close()
 
 
 class Provider(Protocol):
@@ -180,5 +376,51 @@ class ScriptedProvider:
             if len(canonical(draft)) > remaining_limits['max_response_bytes']:
                 raise ProviderError('provider_incomplete')
             return Turn('draft', draft=draft, **meta)
+        except ProviderError:
+            raise
         except (ValueError, KeyError, OSError, IndexError, TypeError):
             raise ProviderError('provider_failure') from None
+
+
+async def probe_provider(settings, transport=None):
+    """Opt-in synthetic capability check; never opens case/context/evaluation files."""
+    if settings.max_provider_requests < 2:
+        raise ProviderError('budget_exhausted')
+    provider = OpenAIProvider(settings.api_key.get_secret_value(), settings.model.get_secret_value(),
+        prompt='Synthetic capability probe only. Call get_case_facts, then return a needs_information report with no claims and a limitation. No real case exists.',
+        transport=transport)
+    sample = dict(source_mode='fixture', notice='Synthetic diagnostic; no case data.',
+        context_revision='0' * 64, case_id='CASE-000',
+        transaction=dict(transaction_id='TX-000',occurred_at='2026-01-01T00:00:00Z',
+                         amount='0.00',currency='EUR',sender_alias='account_'+'0'*24,
+                         receiver_alias='account_'+'1'*24),
+        assessment=dict(score=0,source='fixture',scorer_version='synthetic-probe',
+                        scored_at='2026-01-01T00:00:00Z',explanation='No actual assessment.'))
+    from fraudlens.investigation.tools import definitions
+    conversation = [dict(type='context',data=sample)]
+    limits = dict(request_timeout=min(30,settings.request_timeout_seconds),max_input_bytes=settings.max_input_bytes,
+                  max_output_tokens=settings.max_output_tokens,max_response_bytes=settings.max_response_bytes)
+    try:
+        async with asyncio.timeout(min(120,settings.total_timeout_seconds)):
+            first = await provider.next_turn(conversation,definitions(),{},
+                {**limits,'tool_choice':{'type':'function','name':'get_case_facts'}})
+            if (first.kind != 'tools' or len(first.calls) != 1
+                    or first.calls[0]['name'] != 'get_case_facts' or first.calls[0]['arguments'] != {}):
+                raise ProviderError('unsupported_capability')
+            call = first.calls[0]
+            conversation.extend([dict(type='tool_call',**call),dict(type='tool_result',
+                call_id=call['call_id'],result=dict(status='completed',evidence=[],
+                returned_count=0,eligible_count=0,truncated=False))])
+            second = await provider.next_turn(conversation,definitions(),{}, {**limits,'tool_choice':'none'})
+            if second.kind != 'draft':
+                raise ProviderError('unsupported_capability')
+            draft = validate('ReportDraft', second.draft)
+            if draft['outcome'] != 'needs_information' or draft['observed_facts'] or draft['citations']:
+                raise ProviderError('unsupported_capability')
+            return dict(status='capability_probe_passed',requested_model=settings.model.get_secret_value(),
+                requests=[dict(request_id=t.request_id,returned_model=t.returned_model,usage=t.usage)
+                          for t in (first,second)])
+    except TimeoutError:
+        raise ProviderError('budget_exhausted',outcome_unknown=True) from None
+    finally:
+        await provider.aclose()
