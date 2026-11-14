@@ -275,7 +275,8 @@ def _explanation_v2(value: object, digest: str) -> ExplanationV2:
     allowed = {'status', 'method', 'explained_scale', 'feature_snapshot_digest',
                'partial', 'base_value', 'remainder', 'items'}
     if set(value) != allowed or value['method'] not in {
-            'rules', 'linear_log_odds', 'tree_path'}:
+            'rules', 'linear_log_odds', 'tree_path',
+            'boosted_sequential_probability'}:
         raise ValueError('invalid available explanation schema')
     if value['explained_scale'] not in {
             'risk_score', 'log_odds', 'positive_class_estimate'}:
@@ -439,7 +440,8 @@ def _public_semantics(name: str, value: dict):
         explanation = assessment['explanation']
         if explanation['status'] == 'available':
             scale = {'rules': 'risk_score', 'linear_log_odds': 'log_odds',
-                     'tree_path': 'positive_class_estimate'}
+                     'tree_path': 'positive_class_estimate',
+                     'boosted_sequential_probability': 'positive_class_estimate'}
             if (explanation['explained_scale'] != scale[explanation['method']]
                     or (assessment['score_source'] == 'rules') != (
                         explanation['method'] == 'rules')):

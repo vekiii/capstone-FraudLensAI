@@ -161,7 +161,7 @@
       ],
       "properties": {
         "status": {"const": "available"},
-        "method": {"enum": ["rules", "linear_log_odds", "tree_path"]},
+        "method": {"enum": ["rules", "linear_log_odds", "tree_path", "boosted_sequential_probability"]},
         "explained_scale": {
           "enum": ["risk_score", "log_odds", "positive_class_estimate"]
         },

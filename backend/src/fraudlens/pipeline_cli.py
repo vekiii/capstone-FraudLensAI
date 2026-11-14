@@ -10,6 +10,7 @@ import sys
 from dataclasses import asdict
 from datetime import datetime
 from decimal import Decimal
+from itertools import islice
 from pathlib import Path
 
 from fraudlens.benchmark_phase8 import labels as benchmark_labels
@@ -20,7 +21,12 @@ from fraudlens.data_store import DatasetStore, RunStore
 from fraudlens.evaluation import consume_holdout, evaluate_frozen
 from fraudlens.evaluation_store import audit_sqlite_split
 from fraudlens.feature_history import HistoricalFeatureSnapshot
-from fraudlens.model_scoring import ModelScorer, load_trusted_artifact
+from fraudlens.model_scoring import (
+    BOOSTED_SCORER_VERSION,
+    SCORER_VERSION,
+    ModelScorer,
+    load_trusted_artifact,
+)
 from fraudlens.rule_scoring import RuleScorer
 
 _ROOT = Path(__file__).resolve().parents[3]
@@ -295,14 +301,18 @@ def _score_run(args):
         raise ValueError('source_missing_or_output_conflict')
     protocol_raw = args.protocol.read_bytes()
     protocol = json.loads(protocol_raw)
-    threshold = protocol[f'{args.scorer}_validation_threshold']['threshold']
+    candidate = (args.scorer == 'model'
+                 and args.scorer_version == BOOSTED_SCORER_VERSION)
+    threshold = (args.threshold if candidate else
+                 protocol[f'{args.scorer}_validation_threshold']['threshold'])
     if (protocol['dataset_version'] != args.dataset_version
             or protocol['feature_version'] != 'history-v1'
             or threshold != args.threshold):
         raise ValueError('frozen_publication_mismatch')
     artifact_sha = None
     if args.scorer == 'rules':
-        if args.artifact_dir is not None or args.manifest_sha is not None:
+        if (args.artifact_dir is not None or args.manifest_sha is not None
+                or args.scorer_version != SCORER_VERSION):
             raise ValueError('rules require no artifact')
         scorer = RuleScorer()
         scorer_version = 'rules-v1'
@@ -313,9 +323,14 @@ def _score_run(args):
             args.artifact_dir, expected_manifest_sha256=args.manifest_sha,
             expected_dataset_version=args.dataset_version,
             expected_protocol_sha256=protocol.get(
-                'protocol_sha256', hashlib.sha256(protocol_raw).hexdigest()))
+                'protocol_sha256', hashlib.sha256(protocol_raw).hexdigest()),
+            expected_scorer_version=args.scorer_version)
+        if (candidate and Decimal(str(
+                artifact.manifest['validation_threshold']['threshold']))
+                != Decimal(str(threshold))):
+            raise ValueError('candidate threshold mismatch')
         scorer = ModelScorer(artifact)
-        scorer_version = 'model-history-v1'
+        scorer_version = args.scorer_version
         artifact_sha = artifact.manifest_sha256
     source = sqlite3.connect(f'{args.source_store.resolve().as_uri()}?mode=ro', uri=True)
     source.execute('PRAGMA query_only=ON')
@@ -344,15 +359,32 @@ def _score_run(args):
                 WHERE s.version=? AND s.feature_version='history-v1'
                   AND s.scoreable=1 ORDER BY s.event_time,s.transaction_id''',
                 (args.dataset_version,))
-            for row in cursor:
-                event, snapshot = _source_row(row, args.dataset_version)
-                request = ScoreRequestV2(event, snapshot, args.dataset_version,
-                                         args.run_id, scorer_version, 'history-v1',
-                                         event.event_time_utc)
-                assessment = (score_v2(request, scorer) if args.scorer == 'rules'
-                              else scorer.assess(request))
-                runs.append(args.run_id, event.case_id, _public_transaction(event),
-                            _public_assessment(assessment))
+            if candidate:
+                while batch := list(islice(cursor, 128)):
+                    events_and_requests = []
+                    for row in batch:
+                        event, snapshot = _source_row(row, args.dataset_version)
+                        request = ScoreRequestV2(
+                            event, snapshot, args.dataset_version, args.run_id,
+                            scorer_version, 'history-v1', event.event_time_utc)
+                        events_and_requests.append((event, request))
+                    assessments = scorer.assess_batch(
+                        [request for _, request in events_and_requests])
+                    runs.append_many(args.run_id, [
+                        (event.case_id, _public_transaction(event),
+                         _public_assessment(assessment))
+                        for (event, _), assessment in zip(
+                            events_and_requests, assessments, strict=True)])
+            else:
+                for row in cursor:
+                    event, snapshot = _source_row(row, args.dataset_version)
+                    request = ScoreRequestV2(event, snapshot, args.dataset_version,
+                                             args.run_id, scorer_version, 'history-v1',
+                                             event.event_time_utc)
+                    assessment = (score_v2(request, scorer) if args.scorer == 'rules'
+                                  else scorer.assess(request))
+                    runs.append(args.run_id, event.case_id, _public_transaction(event),
+                                _public_assessment(assessment))
             runs.complete(args.run_id)
             return {'status': 'completed', 'run_id': args.run_id, 'scored_count': count,
                     'score_source': args.scorer, 'threshold': threshold}
@@ -525,6 +557,9 @@ def main(argv=None):
     score_run.add_argument('--protocol', type=Path, required=True)
     score_run.add_argument('--run-id', required=True)
     score_run.add_argument('--scorer', choices=('rules', 'model'), required=True)
+    score_run.add_argument('--scorer-version', choices=(SCORER_VERSION,
+                                                       BOOSTED_SCORER_VERSION),
+                           default=SCORER_VERSION)
     score_run.add_argument('--threshold', required=True)
     score_run.add_argument('--artifact-dir', type=Path)
     score_run.add_argument('--manifest-sha')

@@ -115,7 +115,8 @@ truthful for the selected artifact; a rule score cannot be called a
 probability. scored_at is actual execution time, not a copy of event time.
 
 ExplanationV2 is either available or unavailable. Available explanations
-carry method (rules, linear_log_odds or tree_path), explained_scale,
+carry method (rules, linear_log_odds, tree_path or the separate exploratory
+boosted_sequential_probability candidate), explained_scale,
 feature_snapshot_digest, partial, base_value/remainder if an additive
 reconstruction is claimed, and up to three items with actual feature
 key, observed value/unit, direction, numeric contribution, and optional

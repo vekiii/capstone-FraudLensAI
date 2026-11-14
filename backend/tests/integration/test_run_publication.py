@@ -91,6 +91,22 @@ def test_model_activation_requires_exact_artifact_digest(tmp_path):
     store.close()
 
 
+def test_boosted_candidate_is_distinct_immutable_run(tmp_path):
+    from fraudlens.data_store import RunStore
+
+    store = RunStore(tmp_path / 'candidate.sqlite')
+    sha = 'a' * 64
+    store.begin_run('run_boosted', VERSION, 'model',
+                    'model-history-v1-boosted-candidate', sha,
+                    '0.9936687168275105', 0)
+    store.complete('run_boosted')
+    with pytest.raises(ValueError):
+        store.activate('run_boosted', 'model', 'b' * 64)
+    store.activate('run_boosted', 'model', sha)
+    assert store.list_active('model')['scorer_version'] == 'model-history-v1-boosted-candidate'
+    store.close()
+
+
 def test_activation_sql_failure_rolls_back_pointer(tmp_path):
     import sqlite3
 
@@ -126,6 +142,41 @@ def test_label_like_extra_or_wrong_identity_never_stage(tmp_path):
                      assessment | {'run_id': 'run_other'})
     with pytest.raises(ValueError):
         store.complete('run_test_1')
+    store.close()
+
+
+def test_batch_append_is_atomic_and_preserves_counts(tmp_path):
+    from fraudlens.data_store import RunStore
+
+    store = RunStore(tmp_path / 'runs.sqlite')
+    begin(store, expected=2)
+    valid = entry(1)
+    duplicate = entry(1)
+    with pytest.raises(ValueError, match='duplicate'):
+        store.append_many('run_test_1', [valid, duplicate])
+    assert store.connection.execute(
+        'SELECT scored_count,total_alerts FROM scored_runs WHERE run_id=?',
+        ('run_test_1',)).fetchone() == (0, 0)
+    store.append_many('run_test_1', [entry(1), entry(2)])
+    store.complete('run_test_1')
+    assert store.connection.execute(
+        'SELECT scored_count,total_alerts,status FROM scored_runs WHERE run_id=?',
+        ('run_test_1',)).fetchone() == (2, 2, 'completed')
+    store.close()
+
+
+def test_alert_list_uses_bounded_ordered_index(tmp_path):
+    from fraudlens.data_store import RunStore
+
+    store = RunStore(tmp_path / 'runs.sqlite')
+    plan = store.connection.execute('''
+        EXPLAIN QUERY PLAN SELECT case_id,transaction_id,event_time,score
+        FROM scored_assessments WHERE run_id=? AND alert=1
+        ORDER BY event_time DESC,transaction_id ASC LIMIT 100''',
+                                    ('run_test_1',)).fetchall()
+    details = ' '.join(row[3] for row in plan)
+    assert 'alert_listing' in details
+    assert 'USE TEMP B-TREE' not in details
     store.close()
 
 

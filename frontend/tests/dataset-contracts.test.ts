@@ -7,6 +7,26 @@ it('decodes closed v2 list and detail by response discriminator', () => {
   expect(decodeCaseDetailResponse(DETAIL_V2)).toEqual(DETAIL_V2);
 });
 
+it('decodes boosted probability explanation without changing snapshot identity', () => {
+  const assessment = DETAIL_V2.risk_assessment;
+  const explanation = assessment.explanation;
+  if (explanation.status !== 'available') throw new Error('fixture explanation unavailable');
+  const boosted = {
+    ...DETAIL_V2,
+    risk_assessment: {
+      ...assessment,
+      score_source: 'model', score_kind: 'uncalibrated_probability_estimate',
+      scorer_version: 'model-history-v1-boosted-candidate',
+      explanation: { ...explanation, method: 'boosted_sequential_probability',
+        explained_scale: 'positive_class_estimate', base_value: assessment.score,
+        remainder: 0, items: [] },
+    },
+  };
+  expect(decodeCaseDetailResponse(boosted)).toMatchObject({ risk_assessment: {
+    explanation: { status: 'available', method: 'boosted_sequential_probability' },
+  } });
+});
+
 it.each([
   { ...LIST_V2, extra: 1 },
   { ...LIST_V2, displayed_count: 2 },

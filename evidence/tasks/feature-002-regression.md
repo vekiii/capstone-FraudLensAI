@@ -1,5 +1,9 @@
 # Phase 8 T060–T061 regression — 2026-11-14
 
+## Separate boosted candidate regression — 2026-11-14
+
+The research candidate addendum is detailed in [boosted validation and integration](feature-002-boosted-validation.md#trusted-candidate-artifact-and-isolated-integration--2026-11-14). After adding the distinct trusted scorer and explanation method, the final locked non-pretrained backend run exited 0 with **687 passed** and 2 existing warnings; `backend/tests/contracts` exited 0 with **158 passed**; `npm test -- --run` exited 0 with **169 passed**; `npm run typecheck` and `npm run build` exited 0; Ruff and `git diff --check` exited 0. A focused candidate/publication/API/contract batch exited 0 with **57 passed**. A prior focused run exposed one mocked-scorer version regression, corrected before the final run. Initial new-test RED and other first-attempt command failures are listed in the linked evidence. The separate pretrained proposal suites were not rerun: their last recorded result remains 66 known RED failures/4 passes. This addendum does not reclassify that known proposal as GREEN or assert independent candidate performance.
+
 Original request: [Phase 8 prompt](../../prompts/development/002-phase-8-t060-t067-2026-11-14.md). Shared branch `model-implementations`, HEAD `fb32b8c8467bb5cffe6b4cbc57730b484af1b1db`; pre-existing Phase 5–7 uncommitted work was preserved. The quickstart and root/frontend/data READMEs now describe the actual fixture and dataset modes, eight CLI commands, frozen local hashes, private labels, staging/activation, recreation and exploratory reproduction. No source CSV, IBM SQLite or model artifact was changed.
 
 ## Locked environment and checks

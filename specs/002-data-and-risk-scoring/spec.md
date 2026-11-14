@@ -721,6 +721,15 @@ together; weakening closed-object, identity or score checks is not a migration.
   Any necessary dependency/runtime incompatibility is reported and resolved explicitly,
   without silently changing the team's runtime agreement.
 
+### Separate exploratory boosted candidate
+- A separately versioned HistGradientBoosting research candidate may be checked
+  with the existing history-v1 inputs in an isolated run. Its development
+  validation has already been inspected and does not replace the frozen T029
+  tree, threshold, benchmark, or shared active run. A future untouched,
+  preselected 24-hour UTC period must meet the user-approved floor of at least
+  five positives among at most 20 alerts before considering activation. The
+  period and compatible source must be fixed before any new labels are read.
+
 ### Explicit exclusions
 - No LLM decision-making or generated investigation narratives, RAG ingestion/retrieval,
   analyst case-disposition workflow, regulatory filing, account blocking, learning-to-defer,

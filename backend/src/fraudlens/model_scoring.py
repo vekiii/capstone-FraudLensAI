@@ -14,9 +14,14 @@ import numpy
 import sklearn
 
 from fraudlens.data_contracts import _request_v2, score_v2
-from fraudlens.explanations import model_explanation
+from fraudlens.explanations import (
+    boosted_counterfactual_rows,
+    boosted_explanation,
+    model_explanation,
+)
 
 SCORER_VERSION = 'model-history-v1'
+BOOSTED_SCORER_VERSION = 'model-history-v1-boosted-candidate'
 TRANSFORM_VERSION = 'sklearn-column-transformer-v1'
 LOCAL_ROOT = Path(__file__).resolve().parents[3] / 'artifacts'
 
@@ -65,6 +70,9 @@ def create_manifest(artifact_dir: Path, protocol_path: Path, *,
             or _sha(_local_file(directory, 'model.joblib', Path(trusted_root)))
             != metadata.get('model_sha256')):
         raise ValueError('local training provenance or hash mismatch')
+    scorer_version = metadata.get('scorer_version', SCORER_VERSION)
+    if scorer_version not in {SCORER_VERSION, BOOSTED_SCORER_VERSION}:
+        raise ValueError('unsupported local scorer version')
     manifest = {
         'manifest_version': 1, 'origin': 'reviewed_local_training',
         'model_file': 'model.joblib', 'model_sha256': metadata['model_sha256'],
@@ -72,7 +80,7 @@ def create_manifest(artifact_dir: Path, protocol_path: Path, *,
         'protocol_sha256': metadata['protocol_sha256'],
         'dataset_version': metadata['dataset_version'],
         'feature_version': metadata['feature_version'],
-        'scorer_version': SCORER_VERSION, 'transform_version': TRANSFORM_VERSION,
+        'scorer_version': scorer_version, 'transform_version': TRANSFORM_VERSION,
         'dependencies': metadata['dependencies'],
         'ordered_features': metadata['ordered_features'],
         'numeric_features': metadata['numeric_features'],
@@ -137,6 +145,7 @@ def load_trusted_artifact(artifact_dir: Path, *, trusted_root: Path = LOCAL_ROOT
             or metadata.get('dataset_version') != expected_dataset_version
             or metadata.get('dependencies') != _dependencies()
             or metadata.get('feature_version') != expected_feature_version
+            or metadata.get('scorer_version', SCORER_VERSION) != expected_scorer_version
             or metadata.get('model_validation_threshold') != manifest.get('validation_threshold')
             or metadata.get('winner_index') != manifest.get('winner_index')
             or metadata.get('ordered_features') != manifest.get('ordered_features')
@@ -167,7 +176,8 @@ class ModelScorer:
             raise TypeError('verified local artifact required')
         manifest = artifact.manifest
         pipeline = artifact.pipeline
-        if (manifest.get('scorer_version') != SCORER_VERSION
+        version = manifest.get('scorer_version')
+        if (version not in {SCORER_VERSION, BOOSTED_SCORER_VERSION}
                 or manifest.get('feature_version') != 'history-v1'
                 or manifest.get('calibration') != 'none'
                 or not hasattr(pipeline, 'named_steps')
@@ -176,11 +186,19 @@ class ModelScorer:
                 != len(manifest['ordered_features'])
                 or list(pipeline.named_steps['model'].classes_) != [0, 1]):
             raise ValueError('fitted model schema incompatible')
+        from sklearn.ensemble import HistGradientBoostingClassifier
+        from sklearn.tree import DecisionTreeClassifier
+
+        expected_type = (HistGradientBoostingClassifier if version == BOOSTED_SCORER_VERSION
+                         else DecisionTreeClassifier)
+        if not isinstance(pipeline.named_steps['model'], expected_type):
+            raise ValueError('model class incompatible with scorer version')
         self.artifact = artifact
+        self.scorer_version = version
         self.artifact_reference = {
             'sha256': artifact.manifest_sha256,
-            'scorer_version': SCORER_VERSION,
-            'artifact_version': SCORER_VERSION,
+            'scorer_version': version,
+            'artifact_version': version,
             'calibrated': False,
         }
 
@@ -188,7 +206,7 @@ class ModelScorer:
         """Apply frozen input order; all learned transforms remain in the pipeline."""
         _request_v2(request)
         if (request.dataset_version != self.artifact.manifest['dataset_version']
-                or request.scorer_version != SCORER_VERSION):
+                or request.scorer_version != self.scorer_version):
             raise ValueError('model request version mismatch')
         manifest = self.artifact.manifest
         values = request.feature_snapshot.feature_values
@@ -206,24 +224,30 @@ class ModelScorer:
 
     def score(self, request):
         row = self.input_row(request)
-        predictions = self.artifact.pipeline.predict_proba(row)
-        if getattr(predictions, 'shape', None) != (1, 2):
-            raise ValueError('model probability shape mismatch')
-        probability = float(predictions[0, 1])
-        if not math.isfinite(probability) or not 0 <= probability <= 1:
-            raise ValueError('model probability invalid')
-        score = Decimal(str(probability))
-        explanation = model_explanation(
-            request, self.artifact.pipeline, row, score,
-            self.artifact.manifest['ordered_features'])
+        key = (request.run_id, request.canonical_transaction.transaction_id,
+               request.feature_snapshot.feature_input_digest)
+        prepared = getattr(self, '_prepared_batch', None)
+        if prepared is not None:
+            score, explanation = prepared[key]
+        else:
+            predictions = self.artifact.pipeline.predict_proba(row)
+            if getattr(predictions, 'shape', None) != (1, 2):
+                raise ValueError('model probability shape mismatch')
+            probability = float(predictions[0, 1])
+            if not math.isfinite(probability) or not 0 <= probability <= 1:
+                raise ValueError('model probability invalid')
+            score = Decimal(str(probability))
+            explanation = model_explanation(
+                request, self.artifact.pipeline, row, score,
+                self.artifact.manifest['ordered_features'])
         snapshot = request.feature_snapshot
         return {
             'transaction_id': request.canonical_transaction.transaction_id,
             'dataset_version': request.dataset_version, 'run_id': request.run_id,
             'score': score, 'score_kind': 'uncalibrated_probability_estimate',
-            'score_source': 'model', 'scorer_version': SCORER_VERSION,
+            'score_source': 'model', 'scorer_version': self.scorer_version,
             'feature_version': request.feature_version,
-            'artifact_version': SCORER_VERSION,
+            'artifact_version': self.scorer_version,
             'event_time_utc': request.canonical_transaction.event_time_utc,
             'history_cutoff_exclusive_at': request.history_cutoff_exclusive_at,
             'scored_at': datetime.now(UTC),
@@ -234,3 +258,38 @@ class ModelScorer:
 
     def assess(self, request):
         return score_v2(request, self, artifact=self.artifact_reference)
+
+    def assess_batch(self, requests):
+        """Score bounded boosted rows together; validate each published response."""
+        if self.scorer_version != BOOSTED_SCORER_VERSION or self.__dict__.get('_prepared_batch'):
+            raise ValueError('boosted batch unavailable')
+        requests = tuple(requests)
+        if not requests or len(requests) > 128:
+            raise ValueError('boosted batch size invalid')
+        rows = numpy.concatenate([self.input_row(request) for request in requests])
+        features = self.artifact.manifest['ordered_features']
+        counterfactuals = boosted_counterfactual_rows(
+            self.artifact.pipeline, rows, features)
+        predictions = self.artifact.pipeline.predict_proba(counterfactuals)
+        width = len(features) + 1
+        if (getattr(predictions, 'shape', None) != (len(requests) * width, 2)
+                or not numpy.isfinite(predictions).all()
+                or numpy.any((predictions < 0) | (predictions > 1))):
+            raise ValueError('boosted batch probability invalid')
+        prepared = {}
+        for index, request in enumerate(requests):
+            positives = predictions[index * width:(index + 1) * width, 1]
+            score = Decimal(str(float(positives[-1])))
+            explanation = boosted_explanation(
+                request, self.artifact.pipeline, rows[index:index + 1], score,
+                features, positive_probabilities=positives)
+            key = (request.run_id, request.canonical_transaction.transaction_id,
+                   request.feature_snapshot.feature_input_digest)
+            if key in prepared:
+                raise ValueError('duplicate boosted batch identity')
+            prepared[key] = score, explanation
+        self._prepared_batch = prepared
+        try:
+            return [self.assess(request) for request in requests]
+        finally:
+            del self._prepared_batch

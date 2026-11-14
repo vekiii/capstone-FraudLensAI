@@ -156,6 +156,69 @@ process. Stop the old foreground servers with Ctrl+C before switching modes.
 
 ## Obtain the local model before scoring
 
+### Separate boosted research candidate (local, pending independent acceptance)
+
+The boosted pipeline and train-fitted preparation are in ignored
+`artifacts/feature-002-boosted-validation-20261114/` on the contributor's
+machine only. Its manifest SHA-256 is
+`013c7ebe5ab5a5270a7b66af200060d3499c31eb2598c06a038ca887fd9320a6`,
+model SHA-256 `fce2a4057e46e02f0974bfcfdcae983e0952d6a3b98efea714e44746f08866c8`.
+The exact inclusive validation threshold is `0.9936687168275105`.
+With the authorized same-hash CSV, complete history-v1 work store, frozen
+protocol and reviewed local tree artifact present, regenerate the candidate in
+a **new** ignored directory:
+
+```sh
+OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 PYTHONPATH=backend/src .venv/bin/python -m fraudlens.compare_boosted_phase5 --store data/processed/feature-002-ibm-v8-rules-work.sqlite --protocol evals/protocols/feature_002_v1.json --artifact-dir artifacts/feature-002-boosted-validation-peer > evals/results/boosted-validation-peer.json
+```
+
+The output contains the new manifest hash. Refit bytes may differ; verify
+manifest, ordered features, dependency versions, full threshold and saved
+validation-score parity before use. The contributor's local artifact can also
+be transferred by an approved private channel and checked against the hashes
+above. Neither path has yet been independently completed by a teammate.
+
+To check a **controlled validation subset** through the real scorer, isolated
+run store and API, use the local manifest hash in the command below. It reads
+the source database read-only, never opens labels and creates only the ignored
+run store named on the command line. Do not use a shared run-store path here.
+
+```sh
+OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 PYTHONPATH=backend/src .venv/bin/python -m fraudlens.verify_boosted_candidate --source data/processed/feature-002-ibm-v8-rules-work.sqlite --protocol evals/protocols/feature_002_v1.json --artifact-dir artifacts/feature-002-boosted-validation-20261114 --manifest-sha 013c7ebe5ab5a5270a7b66af200060d3499c31eb2598c06a038ca887fd9320a6 --run-store evals/results/boosted-candidate-smoke-new.sqlite
+```
+
+For a complete **technical** source run, choose a new run ID and ignored
+isolated store on each attempt. This command reads the source SQLite with
+`mode=ro` and `query_only=ON`; it does not use private labels:
+
+```sh
+OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 PYTHONPATH=backend/src .venv/bin/python -m fraudlens.pipeline_cli score-run --source-store data/processed/feature-002-ibm-v8-rules-work.sqlite --run-store evals/results/boosted-full-peer-1.sqlite --dataset-version dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802 --protocol evals/protocols/feature_002_v1.json --run-id run_boosted_full_peer_1 --scorer model --scorer-version model-history-v1-boosted-candidate --threshold 0.9936687168275105 --artifact-dir artifacts/feature-002-boosted-validation-20261114 --manifest-sha 013c7ebe5ab5a5270a7b66af200060d3499c31eb2598c06a038ca887fd9320a6
+sqlite3 -readonly evals/results/boosted-full-peer-1.sqlite 'SELECT status,expected_count,scored_count,total_alerts FROM scored_runs WHERE run_id="run_boosted_full_peer_1";'
+```
+
+The CLI prints only on completion. While it runs, inspect the `staging` count
+with the read-only query above and the single process with `ps`; never launch a
+second worker against the same run store. After the CLI exits 0 and the row
+reports `completed` with matching expected/scored counts, activate **only this
+isolated store** and inspect its API list/detail snapshot:
+
+```sh
+PYTHONPATH=backend/src .venv/bin/python -m fraudlens.pipeline_cli activate-run --run-store evals/results/boosted-full-peer-1.sqlite --run-id run_boosted_full_peer_1 --scorer model --manifest-sha 013c7ebe5ab5a5270a7b66af200060d3499c31eb2598c06a038ca887fd9320a6
+APP_MODE=dataset APP_SCORER=model APP_RUN_STORE=$PWD/evals/results/boosted-full-peer-1.sqlite PYTHONPATH=backend/src .venv/bin/uvicorn fraudlens.main:app --host 127.0.0.1 --port 8000
+```
+
+The contributor's completed v3 reference returned `completed|3963424|3963424|166`
+after approximately 47 minutes; 1,114,921 other source snapshots had incomplete
+warm-up history. A peer should record actual timing and differences. The bounded
+case API shows 166 total alerts and 100 displayed cases. At the frozen threshold,
+September 2 and 9 have 24 and 23 alerts, respectively; this exceeds a strict
+daily capacity of 20 and needs a separately approved policy before shared use.
+
+The existing IBM source is already inspected, so this full run tests the
+technical path only. Shared activation requires a compatible untouched 24-hour
+UTC source and the approved independent floor of at least five positives among
+at most 20 alerts, plus the remaining human and reproduction gates.
+
 The trusted `artifacts/feature-002-history-v1-20261114/` directory is ignored
 and **is not present in a clean checkout**. Its selected model, train-fitted
 preparation, metadata and manifest must be obtained through an authorized

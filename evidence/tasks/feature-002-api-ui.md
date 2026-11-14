@@ -1,5 +1,9 @@
 # Phase 7 v2 API and UI T049–T059 — 2026-11-14
 
+## Separate boosted candidate browser smoke — 2026-11-14
+
+The [candidate integration evidence](feature-002-boosted-validation.md#trusted-candidate-artifact-and-isolated-integration--2026-11-14) records a new isolated 20-row validation run (score-only selection, no labels). Its API returned 20 total/20 displayed and 20 matching details. A live local Uvicorn/Vite proxy browser visit displayed the 20 cases; one opened detail showed the candidate scorer version, uncalibrated score kind, actual scored time, history coverage and `boosted_sequential_probability` with base/remainder and three feature contributions. This is a direct Phase 8 browser check for the separate candidate, unlike the earlier Phase 8 quickstart smoke that used live API/proxy without browser control. It is not a full-database published run or independent accuracy result; the shared active run was not changed.
+
 Original request: [verbatim prompt](../../prompts/development/002-phase-7-t043-t059-2026-11-14.md). All Phase 5/6 modifications, IBM SQLite and ignored local artifact were preserved. No retraining, test-label query, commit or push.
 
 ## RED → GREEN

@@ -164,6 +164,24 @@ does not claim calibration. Optional future calibration requires a
 new frozen artifact/protocol with separate fit/check roles and a
 calibrated_probability score_kind only after independent evidence.
 
+### Exploratory boosted candidate extension — pending independent acceptance
+
+The separately trained `model-history-v1-boosted-candidate` may be staged in an
+isolated local run with `score_source=model` and
+`uncalibrated_probability_estimate`. Its `HistGradientBoostingClassifier` is
+bound to the same 11 ordered `history-v1` inputs and a distinct trusted
+manifest. A deterministic `boosted_sequential_probability` explanation uses
+the train-fitted numeric medians and an unknown-category baseline, replaces
+raw features in frozen order, and records each change in predicted positive
+probability. Base, shown contributions and remainder must reconstruct the
+returned score within the frozen 1e-8 tolerance. These are model-conditional
+local contributions, not causal effects or SHAP values. A supported explanation
+can report up to three largest absolute contributions with observed values and
+units. The candidate remains research-only; the shared active run cannot be
+replaced until an untouched compatible 24-hour period meets the team's
+predeclared at-least-5-positive-among-at-most-20-alerts criterion and the
+artifact/explanation/publication/API/UI gates are reviewed.
+
 ## Feature replay contract
 
 ### Frozen `history-v1` catalog

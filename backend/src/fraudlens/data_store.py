@@ -708,7 +708,8 @@ def _public_detail(run_id, dataset_version, case_id, transaction, assessment):
     explanation = assessment['explanation']
     if explanation['status'] == 'available':
         scale = {'rules': 'risk_score', 'linear_log_odds': 'log_odds',
-                 'tree_path': 'positive_class_estimate'}
+                 'tree_path': 'positive_class_estimate',
+                 'boosted_sequential_probability': 'positive_class_estimate'}
         if explanation['explained_scale'] != scale[explanation['method']]:
             raise ValueError('published explanation scale mismatch')
         if (assessment['score_source'] == 'rules') != (
@@ -786,6 +787,9 @@ class RunStore:
                 alert INTEGER NOT NULL,
                 transaction_json TEXT NOT NULL, assessment_json TEXT NOT NULL,
                 PRIMARY KEY(run_id,transaction_id), UNIQUE(run_id,case_id));
+            CREATE INDEX IF NOT EXISTS alert_listing
+                ON scored_assessments(run_id,event_time DESC,transaction_id ASC)
+                WHERE alert=1;
             CREATE TABLE IF NOT EXISTS active_run (
                 singleton INTEGER PRIMARY KEY CHECK(singleton=1),
                 run_id TEXT NOT NULL REFERENCES scored_runs(run_id));
@@ -816,8 +820,9 @@ class RunStore:
                 or not isinstance(dataset_version, str)
                 or _VERSION_ID.fullmatch(dataset_version) is None
                 or score_source not in {'rules', 'model'}
-                or scorer_version != ('rules-v1' if score_source == 'rules'
-                                      else 'model-history-v1')
+                or (score_source == 'rules' and scorer_version != 'rules-v1')
+                or (score_source == 'model' and scorer_version not in {
+                    'model-history-v1', 'model-history-v1-boosted-candidate'})
                 or type(expected_count) is not int or expected_count < 0
                 or (score_source == 'rules' and artifact_sha256 is not None)
                 or (score_source == 'model' and (not isinstance(artifact_sha256, str)
@@ -840,6 +845,23 @@ class RunStore:
         self.connection.execute('BEGIN IMMEDIATE')
         try:
             self._append_in_transaction(run_id, case_id, transaction, assessment, Decimal)
+            self.connection.execute('COMMIT')
+        except Exception:
+            self.connection.execute('ROLLBACK')
+            raise
+
+    def append_many(self, run_id, rows):
+        """Atomically append one bounded publication batch."""
+        from decimal import Decimal
+
+        rows = tuple(rows)
+        if not rows or len(rows) > 128:
+            raise ValueError('publication batch size invalid')
+        self.connection.execute('BEGIN IMMEDIATE')
+        try:
+            for case_id, transaction, assessment in rows:
+                self._append_in_transaction(
+                    run_id, case_id, transaction, assessment, Decimal)
             self.connection.execute('COMMIT')
         except Exception:
             self.connection.execute('ROLLBACK')

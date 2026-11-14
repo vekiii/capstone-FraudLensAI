@@ -227,7 +227,7 @@ export interface ExplanationItemV2 {
 export type ExplanationV2 =
   | { status: 'unavailable'; reason_code: 'missing_context' | 'unsupported_method'
       | 'missing_artifact'; feature_snapshot_digest: string }
-  | { status: 'available'; method: 'rules' | 'linear_log_odds' | 'tree_path';
+  | { status: 'available'; method: 'rules' | 'linear_log_odds' | 'tree_path' | 'boosted_sequential_probability';
       explained_scale: 'risk_score' | 'log_odds' | 'positive_class_estimate';
       feature_snapshot_digest: string; partial: boolean; base_value: number | null;
       remainder: number | null; items: ExplanationItemV2[] };
@@ -323,9 +323,11 @@ function v2Explanation(value: unknown, sourceValue: V2Source, scoreValue: number
     'feature_snapshot_digest', 'partial', 'base_value', 'remainder', 'items']);
   if (object.status !== 'available') return invalid();
   const method = object.method;
-  if (method !== 'rules' && method !== 'linear_log_odds' && method !== 'tree_path') return invalid();
+  if (method !== 'rules' && method !== 'linear_log_odds' && method !== 'tree_path'
+      && method !== 'boosted_sequential_probability') return invalid();
   const scale = { rules: 'risk_score', linear_log_odds: 'log_odds',
-    tree_path: 'positive_class_estimate' } as const;
+    tree_path: 'positive_class_estimate',
+    boosted_sequential_probability: 'positive_class_estimate' } as const;
   if (object.explained_scale !== scale[method] || (sourceValue === 'rules') !== (method === 'rules')
       || typeof object.partial !== 'boolean' || !Array.isArray(object.items)
       || object.items.length > 3) return invalid();

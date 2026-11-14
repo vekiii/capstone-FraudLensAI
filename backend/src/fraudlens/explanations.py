@@ -3,6 +3,8 @@
 import math
 from decimal import Decimal
 
+import numpy
+
 from fraudlens.data_contracts import _finite_decimal, _request_v2
 from fraudlens.feature_history import feature_catalog
 
@@ -35,7 +37,8 @@ def additive_explanation(request, contributions, *, base, scale, method,
     """Keep all omitted local terms in remainder and verify declared scale."""
     _request_v2(request)
     valid = {'rules': 'risk_score', 'linear_log_odds': 'log_odds',
-             'tree_path': 'positive_class_estimate'}
+             'tree_path': 'positive_class_estimate',
+             'boosted_sequential_probability': 'positive_class_estimate'}
     if method not in valid or valid[method] != scale:
         raise ValueError('explanation method/scale mismatch')
     baseline = _finite_decimal(base)
@@ -123,8 +126,12 @@ def model_explanation(request, pipeline, row, score, ordered_features,
                       *, tolerance=Decimal('1e-8')):
     """Explain the fitted tree path or linear log odds, with no refit."""
     _request_v2(request)
-    if request.scorer_version != 'model-history-v1':
+    if request.scorer_version not in {
+            'model-history-v1', 'model-history-v1-boosted-candidate'}:
         raise ValueError('explanation scorer mismatch')
+    if request.scorer_version == 'model-history-v1-boosted-candidate':
+        return boosted_explanation(request, pipeline, row, score, ordered_features,
+                                   tolerance=tolerance)
     keys = _transformed_keys(pipeline, ordered_features)
     transformed = pipeline.named_steps['prepare'].transform(row)
     if hasattr(transformed, 'toarray'):
@@ -175,3 +182,57 @@ def model_explanation(request, pipeline, row, score, ordered_features,
                                     scale='log_odds', method='linear_log_odds',
                                     expected=score, tolerance=tolerance)
     raise ValueError('unsupported local explanation method')
+
+
+def boosted_explanation(request, pipeline, row, score, ordered_features,
+                        *, tolerance=Decimal('1e-8'), positive_probabilities=None):
+    """Telescoping model probabilities as raw features enter in frozen order."""
+    if request.scorer_version != 'model-history-v1-boosted-candidate':
+        raise ValueError('boosted explanation scorer mismatch')
+    if row.shape != (1, len(ordered_features)):
+        raise ValueError('boosted feature order mismatch')
+    if positive_probabilities is None:
+        result = pipeline.predict_proba(
+            boosted_counterfactual_rows(pipeline, row, ordered_features))
+        if getattr(result, 'shape', None) != (len(ordered_features) + 1, 2):
+            raise ValueError('boosted probability shape mismatch')
+        positive_probabilities = result[:, 1]
+    if len(positive_probabilities) != len(ordered_features) + 1:
+        raise ValueError('boosted probability shape mismatch')
+    probabilities = [Decimal(str(float(value))) for value in positive_probabilities]
+    if any(not math.isfinite(float(value)) or not 0 <= value <= 1
+           for value in probabilities):
+        raise ValueError('boosted probability invalid')
+    base = probabilities[0]
+    contributions = [(key, probabilities[index + 1] - probabilities[index])
+                     for index, key in enumerate(ordered_features)]
+    return additive_explanation(
+        request, contributions, base=base, scale='positive_class_estimate',
+        method='boosted_sequential_probability', expected=score,
+        tolerance=tolerance)
+
+
+def boosted_counterfactual_rows(pipeline, rows, ordered_features):
+    """Build a bounded matrix of sequential raw-input counterfactuals."""
+    if rows.ndim != 2 or rows.shape[1] != len(ordered_features) or not len(rows):
+        raise ValueError('boosted feature order mismatch')
+    prepare = pipeline.named_steps['prepare']
+    numeric = prepare.named_transformers_['numeric']
+    statistics = numeric.named_steps['imputer'].statistics_
+    numeric_columns = list(prepare.transformers_[0][2])
+    if len(statistics) != len(numeric_columns):
+        raise ValueError('boosted median shape mismatch')
+    baseline = rows.copy()
+    for position, column in enumerate(numeric_columns):
+        baseline[:, column] = float(statistics[position])
+    for column in prepare.transformers_[1][2]:
+        baseline[:, column] = '__missing__'
+
+    # Each row adds one more observed feature. A single fitted-pipeline call
+    # preserves the declared sequence while avoiding repeated model setup.
+    width = len(ordered_features) + 1
+    counterfactuals = numpy.repeat(baseline, width, axis=0)
+    cube = counterfactuals.reshape(len(rows), width, len(ordered_features))
+    for column in range(len(ordered_features)):
+        cube[:, column + 1:, column] = rows[:, column, None]
+    return counterfactuals

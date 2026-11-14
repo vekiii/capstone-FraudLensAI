@@ -2,6 +2,8 @@
 
 Generated 2026-11-13 (Europe/Belgrade). Current status: **T001–T064 implemented and evidenced; T065–T067 open for teammate reproduction, explanation review and final human convergence.** [Feature 002 regression](../../evidence/tasks/feature-002-regression.md) and [frozen benchmark](../../evidence/tasks/feature-002-benchmark.md) record the technical work. The earlier 60/20/20 experiment exposed the current test period, so the benchmark is exploratory. The separate validation ranking and ratio experiments are [diagnostics](../../evidence/tasks/feature-002-model-metrics.md), not changes to the selected model or `no_alert` policy. Phase 2 compliance remains unavailable.
 
+2026-11-14 update: the separate boosted candidate's [full technical run](../../evidence/tasks/feature-002-boosted-validation.md#completed-v3-result-and-isolated-application-check) completed in an isolated store (3,963,424 scored, 166 alerts), with [five T065 examples](../../evidence/tasks/feature-002-explanation-review.md#boosted-full-run-sample--2026-11-14) and [T066 reproduction steps](../../evidence/tasks/feature-002-peer-reproduction.md#boosted-full-run-reproduction--pending-teammate-run) prepared. T065–T067 remain unchecked: another teammate has not reviewed/reproduced, two full UTC days exceed 20 alerts under the frozen threshold, an untouched compatible 24-hour utility check is absent, and human convergence/Phase 2 evidence remain open. Shared activation was not changed.
+
 Historical proposal-stage T006–T008 continuation (superseded by technical resolution): [independent source investigation](../../evidence/tasks/feature-002-source-investigation.md) and [concrete mapping/v2 review packet](proposals/README.md) prepared. Public v8/license metadata and account direction now have primary evidence; local release binding, clock/label policy and actual owner decisions remain pending. No gate is closed by proposal validation; authoritative contracts and application code remain unchanged.
 
 Historical technical resolution before final approval: [verified v8 reference, applied amendments and actual checks](../../evidence/tasks/feature-002-technical-resolution.md). T006 is complete. The later [joint team decision relayed by the user](../../evidence/tasks/feature-002-t007-t008-team-review-2026-11-13.md) adopts the technical direction, but final changed bytes and component review have not been confirmed by the producing/affected consumers. At that earlier stage T007/T008 remained unchecked; the collective approval linked in the current status above has since closed them. Import and v2 application integration remain disabled/unimplemented.
@@ -204,6 +206,20 @@ Goal: actual runnable instructions, regressions, substantive IBM comparison, num
 - [x] T063 RED — Write reproduce-command RED tests in `backend/tests/integration/test_reproduction.py` for missing source/hash/version, altered predictions/metrics, tolerance violations, semantic comparison excluding run ID/time, and consumed-holdout exploratory status. Assert intended missing reproduction behavior without treating environment/import errors as RED (FR-015, FR-018, FR-026, SC-004, SC-009). (Depends: T062.)
 
 - [x] T064 GREEN — Wire reproduce in `backend/src/fraudlens/pipeline_cli.py`; run reproduction tests GREEN, then repeat the frozen benchmark predictions/metrics using identical source/mapping/protocol/seed/artifacts and the predeclared tolerances. Log actual numeric differences and unresolved divergence in `evidence/tasks/feature-002-benchmark.md`; holdout reuse stays exploratory and the author's repeat is not teammate reproduction (FR-015, FR-018, FR-026, SC-004). (Depends: T063.)
+
+**Separate research candidate (2026-11-14; original T029–T064 markers unchanged).**
+The already inspected validation comparison, new trusted local boosted artifact,
+exact reload, and isolated label-free run/API/UI checks are recorded in
+[boosted evidence](../../evidence/tasks/feature-002-boosted-validation.md).
+The candidate uses scorer version `model-history-v1-boosted-candidate` and
+`boosted_sequential_probability` on the returned score scale. The user fixed
+the future acceptance floor at **5 positives among at most 20 alerts** in one
+preselected, untouched 24-hour UTC period before any new labels are read.
+No compatible untouched source is local; independent acceptance and shared-run
+activation remain open. The candidate's full technical score-run is complete
+in an isolated store as recorded above. The frozen tree,
+`no_alert` and T062 benchmark retain their identity and results. T065–T067
+remain human/peer review gates.
 
 - [ ] T065 REVIEW — Have another teammate inspect at least five explanations against actual facts/method/identity/scale and T029 tolerance using the predeclared label-free sampling rule; if fewer alerts, add scored transactions without manufacturing alerts. Record actual reviewer/date/sample provenance/findings in `evidence/tasks/feature-002-explanation-review.md`; remain `pending_human_review` until performed (FR-019–020, FR-026, SC-006). (Depends: T059, T062.)
 
