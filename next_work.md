@@ -1,5 +1,13 @@
 # Next work - FraudLens AI
 
+## IBM tree notebook reproduction committed - 2026-11-14
+
+On `model-implementations`, `cab42fd` preserves the user-supplied reference notebook and original reproduction request. `6f7bcb7` adds the isolated `ibm_aml_trees` offline experiment, its focused tests, CLI/scoring instructions, and a Git ignore rule for generated artifacts. The [execution evidence](evidence/tasks/feature-002-ibm-tree-notebook-reproduction-2026-11-14.md) records the exact commands, source hash, split counts, results, and limitations. This handoff and evidence update are committed separately.
+
+The full local IBM HI-Small run completed on 5,078,345 rows with a whole-timestamp 60/20/20 temporal split. Three-seed mean test F1 was 0.2389 for basic features and 0.6519 with the notebook's 20 history features; optional delayed-alert F1 was 0.7182 and is not real-time inference. At implementation time, 9 focused tests and 608 backend regressions passed, and Ruff passed. These checks were not rerun for the commit-only handoff. The source CSV and generated model/manifest files remain ignored and local; no push was requested or made. The earlier untracked `evals/protocols/feature_002_v1.json` and two protocol helper scripts remain outside these commits.
+
+This experiment does **not** satisfy the approved FraudLens `history-v1` application contract: the notebook uses account strings without bank qualification and includes earlier rows within the same timestamp in history. It is not integrated into the app; original T029-T036 and the separate pretrained-candidate gate remain open. One concrete next step: review the experiment's identity and timestamp semantics against `history-v1`, then record a team decision before proposing any application integration or contract change.
+
 ## Compatible artifact freeze gate - 2026-11-13
 
 The [artifact-freeze prerequisite check](evidence/tasks/feature-002-inference-only-scope.md#artifact-freeze-prerequisite-check--2026-11-13) stopped before manifest creation. Kluey, Daemons-Q and FraudSentinel remain blocked on `history-v1` feature/preprocessing or time/identity semantics; the inference-only checklist has no recorded accepted deviations or specific approved candidate. Previously verified candidate weight hashes do not make any model compatible. No new binary was downloaded, no joblib was loaded, and no manifest, fit, inference or evaluation was produced. Original T029–T036 remain open; existing untracked protocol drafts remain untouched.
