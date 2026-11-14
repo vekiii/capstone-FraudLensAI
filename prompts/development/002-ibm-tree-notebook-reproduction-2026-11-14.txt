@@ -1,0 +1,34 @@
+TASK
+Implement a clean, tested, reproducible version of the reference notebook
+`reference/ibm-aml-with-trees.ipynb` (HistGradientBoosting + 20 point-in-time history features on IBM AML HI-Small). Read the notebook fully first. Inspect the repo structure and follow existing conventions (package layout, config, tests, lint). Do not modify existing files except to add new ones. Do not touch evals/protocols/feature_002_v1.json. The CSV is Git-ignored and must stay so; never commit data or model binaries.
+
+DATA
+Local file HI-Small_Trans.csv, ~5.08M rows, header has duplicate "Account" names, so read with header=0 and explicit names:
+ts, from_bank, from_acct, to_bank, to_acct, amt_recv, cur_recv, amt_paid, cur_paid, fmt, label
+Sample rows:
+2022/09/01 00:20,010,8000EBD30,010,8000EBD30,3697.34,US Dollar,3697.34,US Dollar,Reinvestment,0
+2022/09/01 00:20,03208,8000F4580,001,8000F5340,0.01,US Dollar,0.01,US Dollar,Cheque,0
+2022/09/01 00:00,03209,8000F4670,03209,8000F4670,14675.57,US Dollar,14675.57,US Dollar,Reinvestment,0
+Notes: the raw file is NOT sorted by timestamp (see the 00:20 rows before 00:00). Bank IDs have leading zeros, so read banks and accounts as strings. Timestamp format is %Y/%m/%d %H:%M. Self-transfers (from_acct == to_acct) are common.
+
+REQUIREMENTS
+1. Loading: parse and stable-sort by ts, preserving raw file order for ties. Save the original row index so ties are reproducible. Memory-safe for 5M rows (use pyarrow or the notebook's "lean" approach if needed; target <16 GB RAM).
+2. Features (exactly the notebook's 29):
+   - 9 basic: hour, dow, log_amt_paid, cur_recv, cur_paid, fmt, cross_cur, cross_bank, self_xfer
+   - 20 history: pair (sender->receiver) prev count, is_first_pair, age days, hours since last; sender prev count, age, hours since last tx, prev distinct partners; receiver prev count, age; sender_tx / sender_new_ben / recv_tx over 1h, 24h, 7d windows; new_ben_share_24h.
+   Strictly causal: only rows earlier in sorted order; labels never used in features. Port the notebook's vectorized searchsorted window-count logic; do not use slow row loops.
+3. 3. Split and sampling (replaces the earlier split requirement)
+   a. Always compute features on the FULL sorted dataset first. Never subsample rows before feature building.
+   b. Default split: temporal 60/20/20. Log rows, positives and positive rate per split. Do not try to equalise class ratios across splits; just report them.
+   c. Optional flag --train-frac F (default 1.0): after splitting, subsample ONLY the train split, stratified by label, with the same fraction F for both classes (use a seeded RNG, floor each class at >= 500 positives or keep all positives if fewer). Validation and test are never subsampled. Log the resulting train class ratio and confirm it matches the full train ratio within 5% relative.
+   d. Optional flag --split stratified (dev only): stratified random split 60/20/20 by label, grouped by from_acct (StratifiedGroupKFold). Print a warning that this mode leaks time and results are NOT comparable to the temporal protocol. The manifest must record split_mode and train_frac, and reports must show them in the header.
+   e. Add tests: (i) train class ratio is preserved after --train-frac; (ii) val/test untouched by sampling; (iii) features of sampled rows equal the same rows' features from the full run.
+4. Model: sklearn HistGradientBoostingClassifier(max_iter=300, class_weight="balanced", categorical_features for cur_recv/cur_paid/fmt, early_stopping=True, validation_fraction=0.1). Seeds 0-2. Threshold = max-F1 on the validation split only.
+5. Evaluation on test: F1, precision, recall, PR-AUC, confusion counts, per-seed and mean. Add a bootstrap 95% CI (>=1000 resamples) for F1 and PR-AUC, since the test set has few positives. Also report the basic-columns-only ablation.
+6. Retroactive flagging (notebook section 4): implement as a separate, optional function, clearly labelled "delayed alerts, not real-time". Report its numbers separately from the model-alone numbers.
+7. Artifacts per run under artifacts/<run_id>/ (Git-ignored): model.joblib, manifest.json containing feature list in order, categorical mapping, threshold, split boundaries, seeds, sklearn/numpy/pandas versions, SHA256 of the input CSV, metrics, and a scoring function `score(df_history, df_new) -> probabilities`.
+8. Tests (pytest): (a) causality: features of kept rows are unchanged after deleting all later rows; (b) feature values on a tiny hand-built frame match hand-computed numbers, including ties and self-transfers; (c) no label column reaches the feature matrix; (d) split has no time overlap; (e) manifest round-trips and reloaded model reproduces scores.
+9. CLI: `python -m <pkg>.train --data <csv> --out artifacts/` and `... .evaluate --run <run_id>`. Log wall time per stage.
+
+OUTPUT
+Implement, run tests, and run a full train on the local CSV if feasible. Report the results table (model alone vs ablation vs retro), and list any place where you deviated from the notebook and why. Do not claim a metric you did not compute.
