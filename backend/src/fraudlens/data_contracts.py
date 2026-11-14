@@ -4,7 +4,12 @@ import re
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal, InvalidOperation
+from functools import lru_cache
+from pathlib import Path
 from typing import Literal, Protocol
+
+from jsonschema import Draft202012Validator, FormatChecker
+from pydantic import BaseModel, ConfigDict, model_validator
 
 DatasetStatus = Literal['staged', 'complete', 'failed']
 LabelStatus = Literal['eligible_positive', 'eligible_negative', 'missing', 'invalid',
@@ -363,3 +368,137 @@ def score_v2(request: ScoreRequestV2, scorer: ScorerV2, *, artifact: object = No
             raise ValueError('rule explanation source, scale or reconstruction mismatch')
     return RiskAssessmentV2(**{**result, 'score': score, 'explanation': explanation,
                                'history_coverage': copy.deepcopy(coverage)})
+
+
+@lru_cache(maxsize=4)
+def _public_schema_validator(name: str):
+    import json
+
+    root = Path(__file__).resolve().parents[3]
+    schema = json.loads((root / 'specs/002-data-and-risk-scoring/contracts/schemas.json')
+                        .read_text())
+    return Draft202012Validator(
+        {'$schema': schema['$schema'], '$defs': schema['$defs'],
+         '$ref': f'#/$defs/{name}'}, format_checker=FormatChecker())
+
+
+def _finite_public(value):
+    import math
+
+    if isinstance(value, float) and not math.isfinite(value):
+        raise ValueError('nonfinite public value')
+    if isinstance(value, dict):
+        for item in value.values():
+            _finite_public(item)
+    elif isinstance(value, list):
+        for item in value:
+            _finite_public(item)
+
+
+def _public_semantics(name: str, value: dict):
+    from decimal import Decimal
+    from math import exp
+
+    _finite_public(value)
+    if not _public_schema_validator(name).is_valid(value):
+        raise ValueError('v2 public schema mismatch')
+    if name == 'HealthV2':
+        if (value['status'] == 'ok') != (value['dataset_version'] is not None
+                                        and value['active_run_id'] is not None):
+            raise ValueError('v2 health state mismatch')
+    if name == 'CaseListV2':
+        items = value['items']
+        count = value['displayed_count']
+        if (count != len(items) or value['total_alerts'] < count
+                or value['truncated'] != (value['total_alerts'] > count)
+                or len({item['case_id'] for item in items}) != count
+                or len({item['transaction_id'] for item in items}) != count
+                or items != sorted(items, key=lambda item: (
+                    item['event_time'], item['transaction_id']))
+                or value['selected_time_range'] != {
+                    'from': items[0]['event_time'] if items else None,
+                    'to': items[-1]['event_time'] if items else None}):
+            raise ValueError('v2 list count/order/range mismatch')
+        for item in items:
+            if (item['score_source'] != value['score_source']
+                    or (item['score_source'] == 'rules') != (
+                        item['score_kind'] == 'ordinal_rule_score')):
+                raise ValueError('v2 list scorer mismatch')
+    if name == 'CaseDetailV2':
+        transaction = value['transaction']
+        assessment = value['risk_assessment']
+        if (transaction['transaction_id'] != assessment['transaction_id']
+                or transaction['event_time_utc'] != assessment['event_time_utc']
+                or assessment['history_cutoff_exclusive_at']
+                != transaction['event_time_utc']
+                or assessment['run_id'] != value['snapshot_ref']
+                or assessment['dataset_version'] != value['dataset_version']
+                or (assessment['score_source'] == 'rules') != (
+                    assessment['score_kind'] == 'ordinal_rule_score')):
+            raise ValueError('v2 detail identity/source mismatch')
+        explanation = assessment['explanation']
+        if explanation['status'] == 'available':
+            scale = {'rules': 'risk_score', 'linear_log_odds': 'log_odds',
+                     'tree_path': 'positive_class_estimate'}
+            if (explanation['explained_scale'] != scale[explanation['method']]
+                    or (assessment['score_source'] == 'rules') != (
+                        explanation['method'] == 'rules')):
+                raise ValueError('v2 explanation scale/source mismatch')
+            base, remainder = explanation['base_value'], explanation['remainder']
+            if (base is None) != (remainder is None):
+                raise ValueError('v2 partial additive terms')
+            if base is not None:
+                reconstructed = Decimal(str(base)) + Decimal(str(remainder))
+                reconstructed += sum((Decimal(str(item['contribution']))
+                                      for item in explanation['items']), Decimal(0))
+                if explanation['method'] == 'linear_log_odds':
+                    reconstructed = Decimal(str(
+                        1 / (1 + exp(-float(reconstructed)))))
+                if abs(reconstructed - Decimal(str(assessment['score']))) > Decimal('1e-8'):
+                    raise ValueError('v2 explanation reconstruction mismatch')
+
+
+class _PublicV2(BaseModel):
+    model_config = ConfigDict(extra='forbid', strict=True)
+
+    @model_validator(mode='after')
+    def validate_public(self):
+        _public_semantics(type(self).__name__, self.model_dump(mode='json'))
+        return self
+
+
+class HealthV2(_PublicV2):
+    contract_version: Literal[2]
+    status: Literal['ok', 'unavailable']
+    mode: Literal['dataset']
+    data_source: Literal['ibm_aml_hi_small']
+    score_source: Literal['rules', 'model']
+    dataset_version: str | None
+    active_run_id: str | None
+
+
+class CaseListV2(_PublicV2):
+    contract_version: Literal[2]
+    snapshot_ref: str
+    dataset_version: str
+    data_source: Literal['ibm_aml_hi_small']
+    score_source: Literal['rules', 'model']
+    scorer_version: str
+    total_alerts: int
+    displayed_count: int
+    truncated: bool
+    selected_time_range: dict
+    items: list[dict]
+
+
+class CaseDetailV2(_PublicV2):
+    contract_version: Literal[2]
+    snapshot_ref: str
+    dataset_version: str
+    case_id: str
+    transaction: dict
+    risk_assessment: dict
+
+
+class ErrorEnvelopeV2(_PublicV2):
+    error: dict

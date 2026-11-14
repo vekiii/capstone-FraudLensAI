@@ -1,19 +1,24 @@
 import {
-  ContractValidationError, decodeCaseDetail, decodeCaseList, decodeErrorEnvelope,
+  ContractValidationError, decodeCaseDetailResponse, decodeCaseListResponse,
+  decodeErrorEnvelope, decodeErrorEnvelopeV2,
 } from './contracts';
-import type { CaseDetail, CaseList, ServerErrorCode } from './contracts';
+import type { CaseDetailResponse, CaseListResponse, V2ErrorCode } from './contracts';
 
-export type ApiErrorCode = ServerErrorCode
+export type ApiErrorCode = V2ErrorCode
   | 'invalid_response' | 'network_error' | 'timeout' | 'cancelled';
 
 export interface RequestOptions {
   signal?: AbortSignal;
+  snapshot?: string;
+  dataset?: boolean;
 }
 
 const messages: Record<ApiErrorCode, string> = {
   invalid_request: 'Neispravan zahtev.',
   case_not_found: 'Slučaj nije pronađen.',
   internal_error: 'Usluga trenutno nije dostupna.',
+  stale_snapshot: 'Izabrani pregled više nije aktivan. Osvježite listu.',
+  run_unavailable: 'Trenutno nema dostupnog kompletnog pregleda.',
   invalid_response: 'Server je vratio neispravan odgovor.',
   network_error: 'Povezivanje sa serverom nije uspelo.',
   timeout: 'Vreme čekanja na odgovor je isteklo.',
@@ -32,17 +37,19 @@ export class ApiError extends Error {
   }
 }
 
-function expectedErrorCode(status: number): ServerErrorCode | undefined {
+function expectedErrorCode(status: number, dataset: boolean): V2ErrorCode | undefined {
   switch (status) {
     case 404: return 'case_not_found';
     case 422: return 'invalid_request';
     case 500: return 'internal_error';
+    case 409: return dataset ? 'stale_snapshot' : undefined;
+    case 503: return dataset ? 'run_unavailable' : undefined;
     default: return undefined;
   }
 }
 
 async function request<T>(
-  url: string, decode: (value: unknown) => T, { signal }: RequestOptions,
+  url: string, decode: (value: unknown) => T, { signal, dataset = false }: RequestOptions,
 ): Promise<T> {
   if (signal?.aborted) throw new ApiError('cancelled');
 
@@ -84,8 +91,8 @@ async function request<T>(
     if (interruption) throw interruption;
     try {
       if (response.status === 200) return decode(payload);
-      const envelope = decodeErrorEnvelope(payload);
-      if (envelope.error.code !== expectedErrorCode(response.status)) {
+      const envelope = dataset ? decodeErrorEnvelopeV2(payload) : decodeErrorEnvelope(payload);
+      if (envelope.error.code !== expectedErrorCode(response.status, dataset)) {
         throw new ApiError('invalid_response', response.status);
       }
       // Decode but never forward arbitrary server-provided messages to views.
@@ -108,14 +115,26 @@ async function request<T>(
   }
 }
 
-export function getCases(options: RequestOptions = {}): Promise<CaseList> {
-  return request('/api/cases', decodeCaseList, options);
+export function getCases(options: RequestOptions = {}): Promise<CaseListResponse> {
+  return request('/api/cases', value => {
+    const result = decodeCaseListResponse(value);
+    if (options.dataset && !('contract_version' in result)) throw new ContractValidationError();
+    return result;
+  }, options);
 }
 
-export function getCase(caseId: string, options: RequestOptions = {}): Promise<CaseDetail> {
-  return request(`/api/cases/${encodeURIComponent(caseId)}`, value => {
-    const detail = decodeCaseDetail(value);
+export function getCase(caseId: string, options: RequestOptions = {}): Promise<CaseDetailResponse> {
+  const snapshot = options.snapshot;
+  const url = `/api/cases/${encodeURIComponent(caseId)}`
+    + (snapshot === undefined ? '' : `?snapshot=${encodeURIComponent(snapshot)}`);
+  return request(url, value => {
+    const detail = decodeCaseDetailResponse(value);
     if (detail.case_id !== caseId) throw new ContractValidationError();
+    if (snapshot !== undefined) {
+      if (!('contract_version' in detail) || detail.snapshot_ref !== snapshot) {
+        throw new ContractValidationError();
+      }
+    } else if ('contract_version' in detail) throw new ContractValidationError();
     return detail;
-  }, options);
+  }, { ...options, dataset: snapshot !== undefined });
 }

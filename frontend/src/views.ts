@@ -1,19 +1,22 @@
 import type { ApiError } from './api';
-import type { CaseDetail, CaseSummary, ScoreSource } from './contracts';
+import type { CaseDetail, CaseDetailResponse, CaseDetailV2, CaseListResponse,
+  ScoreSource } from './contracts';
 
 export type UiState =
   | { kind: 'list-loading' }
   | { kind: 'list' }
   | { kind: 'list-error'; error: ApiError }
   | { kind: 'detail-loading'; caseId: string }
-  | { kind: 'detail'; detail: CaseDetail }
+  | { kind: 'detail'; detail: CaseDetailResponse }
   | { kind: 'detail-error'; caseId: string; error: ApiError }
+  | { kind: 'stale'; caseId: string; error: ApiError }
   | { kind: 'not-found'; caseId: string };
 
 interface Actions {
   select(caseId: string): void;
   back(): void;
   retry(): void;
+  refreshList(): void;
 }
 
 function element<K extends keyof HTMLElementTagNameMap>(tag: K, text?: string, className?: string) {
@@ -72,6 +75,62 @@ function detailContent(detail: CaseDetail) {
   return [transaction, assessment];
 }
 
+function datasetDetailContent(detail: CaseDetailV2) {
+  const fact = detail.transaction;
+  const risk = detail.risk_assessment;
+  const transaction = element('section', undefined, 'detail-section');
+  transaction.append(element('h3', 'Transakcija iz sintetičkog IBM skupa'), fields([
+    ['ID transakcije', fact.transaction_id],
+    ['Vrijeme događaja (UTC)', fact.event_time_utc],
+    ['Izvorno vrijeme', fact.event_time_raw],
+    ['Osnova vremena', fact.time_basis],
+    ['Pošiljalac', `${fact.sender.bank} · ${fact.sender.account}`],
+    ['Primalac', `${fact.receiver.bank} · ${fact.receiver.account}`],
+    ['Plaćeno', `${fact.paid.amount} ${fact.paid.currency}`],
+    ['Primljeno', `${fact.received.amount} ${fact.received.currency}`],
+    ['Format plaćanja', fact.payment_format ?? 'Nije zabilježeno'],
+  ]));
+  const assessment = element('section', undefined, 'detail-section');
+  assessment.append(element('h3', 'Procjena rizika'),
+    element('p', `${risk.score} / 1`, 'risk-score'),
+    element('p', risk.score_source === 'model'
+      ? 'Procjena modela nije kalibrisana vjerovatnoća niti dokaz krivice.'
+      : 'Ordinalni skor pravila nije vjerovatnoća niti dokaz krivice.', 'muted'),
+    fields([
+      ['Izvor skora', risk.score_source], ['Vrsta skora', risk.score_kind],
+      ['Scorer', risk.scorer_version], ['Verzija karakteristika', risk.feature_version],
+      ['Dataset', detail.dataset_version], ['Run', risk.run_id],
+      ['Vrijeme događaja (UTC)', risk.event_time_utc],
+      ['Historija do (isključivo)', risk.history_cutoff_exclusive_at],
+      ['Stvarno vrijeme bodovanja (UTC)', risk.scored_at],
+      ['Pokrivenost historije', `${risk.history_coverage.state} · `
+        + `${risk.history_coverage.start ?? 'nepoznat početak'}`],
+    ]), element('h4', 'Objašnjenje'));
+  const explanation = risk.explanation;
+  if (explanation.status === 'unavailable') {
+    assessment.append(element('p', `Objašnjenje nedostupno: ${explanation.reason_code}.`,
+      'explanation'));
+  } else {
+    assessment.append(fields([
+      ['Metoda', explanation.method], ['Skala', explanation.explained_scale],
+      ['Snapshot digest', explanation.feature_snapshot_digest],
+      ['Djelimičan prikaz', explanation.partial ? 'Da' : 'Ne'],
+      ['Osnova', explanation.base_value === null ? 'Nije dostupna'
+        : String(explanation.base_value)],
+      ['Ostatak', explanation.remainder === null ? 'Nije dostupan'
+        : String(explanation.remainder)],
+    ]));
+    const list = element('ul', undefined, 'explanation-items');
+    for (const item of explanation.items) {
+      list.append(element('li', `${item.feature_key}: ${item.observed_value} ${item.unit}; `
+        + `${item.direction} ${item.contribution}`
+        + (item.rule_condition ? `; ${item.rule_condition}` : '')));
+    }
+    assessment.append(list);
+  }
+  return [transaction, assessment];
+}
+
 export function createCaseView(root: HTMLElement, actions: Actions) {
   const header = element('header', undefined, 'app-header');
   header.append(element('p', 'LOKALNA DEMONSTRACIJA', 'eyebrow'), element('h1', 'FraudLens AI'),
@@ -89,7 +148,21 @@ export function createCaseView(root: HTMLElement, actions: Actions) {
   root.replaceChildren(header, notice, layout);
 
   return {
-    render(state: UiState, items: readonly CaseSummary[], focus?: string) {
+    render(state: UiState, listing?: CaseListResponse, focus?: string) {
+      const dataset = (listing && 'contract_version' in listing)
+        || (state.kind === 'detail' && 'contract_version' in state.detail)
+        || import.meta.env.VITE_APP_MODE === 'dataset';
+      const items = listing?.items ?? [];
+      if (dataset) {
+        notice.replaceChildren(element('strong', 'Sintetički IBM podaci — pregled procjena'),
+          element('p', 'Vrijeme izvora je pretpostavljeno UTC; skor nije dokaz krivice.'));
+        navigation.setAttribute('aria-label', 'Upozorenja');
+      } else {
+        notice.replaceChildren(
+          element('strong', 'Demonstracioni podaci — sintetički skor, bez ML predikcije'),
+          element('p', 'Podaci su izmišljeni. Rezultati služe isključivo za ilustraciju.'));
+        navigation.setAttribute('aria-label', 'Sintetički slučajevi');
+      }
       const panelHadFocus = panel.contains(document.activeElement);
       const selected = state.kind === 'detail' ? state.detail.case_id
         : 'caseId' in state ? state.caseId : undefined;
@@ -123,8 +196,16 @@ export function createCaseView(root: HTMLElement, actions: Actions) {
           panel.append(status('Učitavanje slučajeva…'));
           break;
         case 'list':
-          panel.append(status(items.length ? `Dostupno slučajeva: ${items.length}.`
-            : 'Nema dostupnih slučajeva. Lista je prazna.'));
+          if (listing && 'contract_version' in listing) {
+            panel.append(status(`Ukupno upozorenja: ${listing.total_alerts}; `
+              + `prikazano: ${listing.displayed_count}.`));
+            if (listing.truncated) panel.append(element('p',
+              'Prikazano je najnovijih 100 upozorenja.', 'muted'));
+            if (!items.length) panel.append(element('p', 'Nema upozorenja u aktivnom runu.'));
+          } else {
+            panel.append(status(items.length ? `Dostupno slučajeva: ${items.length}.`
+              : 'Nema dostupnih slučajeva. Lista je prazna.'));
+          }
           panel.append(element('p', items.length ? 'Izaberite slučaj za pregled transakcije i skora.'
             : 'Nijedan slučaj nije vraćen. Možete ponovo proveriti dostupnost.', 'muted'));
           if (!items.length) panel.append(button('Pokušaj ponovo', actions.retry));
@@ -133,7 +214,12 @@ export function createCaseView(root: HTMLElement, actions: Actions) {
           panel.append(status('Učitavanje detalja slučaja…'));
           break;
         case 'detail':
-          panel.append(...detailContent(state.detail));
+          panel.append(...('contract_version' in state.detail
+            ? datasetDetailContent(state.detail) : detailContent(state.detail)));
+          break;
+        case 'stale':
+          panel.append(status(state.error.message, true),
+            button('Osvježi listu', actions.refreshList));
           break;
         case 'not-found':
           panel.append(status(`Slučaj ${state.caseId} nije pronađen.`, true));

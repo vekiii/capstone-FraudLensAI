@@ -1,7 +1,8 @@
 # Frontend development environment
 
-Vanilla TypeScript/Vite frontend with T017's typed API boundary and T018's complete
-synthetic case inspection UI. No framework or runtime dependency is required.
+Vanilla TypeScript/Vite frontend with strict fixture v1 and dataset v2 decoders,
+snapshot-pinned detail requests and the case inspection UI. No framework or
+runtime dependency is required.
 
 Required runtime: Node 24.x. Phase 6 verified runtime (2026-11-12): Node v24.20.0, npm 11.19.0.
 The user approved this change from Node 22 on 2026-11-11. Global runtime
@@ -27,8 +28,9 @@ Vite binds to 127.0.0.1:5173 with strictPort and proxies /api to
 http://127.0.0.1:8000. Vitest uses jsdom. Backend absence does not block setup.
 T017 makes all 82 original API tests GREEN and adds 46 lifecycle/contract checks.
 T018 makes all 19 original DOM tests GREEN and adds four UI lifecycle checks.
-The full suite has 151 passed, 0 failed; typecheck/build pass.
-See ../evidence/tasks/T018.md and T017.md for actual results and limitations.
+The earlier Foundation suite had 151 passes; current run results are recorded in
+`../evidence/tasks/feature-002-regression.md`. See `T018.md` and `T017.md` for
+Foundation behavior and limits.
 No passWithNoTests option is set. Generated dist/ stays out of Git.
 
 ## Case UI
@@ -39,13 +41,22 @@ nodes and styles.css provides responsive desktop/mobile layout. The case selecto
 remains available during detail loading/error. Back restores its selected button's
 focus. Each navigation/retry invalidates and aborts earlier requests; only the
 current generation can render, including when a client ignores cancellation.
-The synthetic notice is persistent. Scores appear as raw 0–1 illustrative values,
+The appropriate fixture or synthetic IBM notice is persistent. Scores appear as raw 0–1 values,
 with source/version/time/explanation. Loading, empty, error and not-found states
 are accessible; recoverable errors offer explicit retry. No raw exceptions or
 invented case data are displayed. T019 confirms real backend/proxy HTTP and reruns
 all checks; its final continuation records successful headless Chrome, console,
 Enter and 390px viewport checks. Manual review and peer reproduction are pending.
-Phase 6 reran suites, not browser verification. See ../evidence/tasks/T019.md.
+Phase 7 browser verification exercised rules/model/empty/unavailable/stale v2
+states and the v1 journey, including operation while the model file was absent.
+See `../evidence/tasks/feature-002-api-ui.md`.
+
+For v1 use `VITE_APP_MODE=fixture`; for v2 use `VITE_APP_MODE=dataset` with a
+matching backend `APP_MODE=dataset APP_SCORER=rules|model` and an activated run.
+Vite proxies relative `/api` requests to 127.0.0.1:8000. The v2 list preserves
+server latest-100 ordering, carries its `snapshot_ref` to detail and exposes an
+explicit refresh after 409. Exact paid/received amount and currency, source,
+coverage time and explanation or unavailable state are shown without labels.
 
 ## API boundary
 
@@ -58,7 +69,8 @@ that ignore abort. Timers and caller listeners are removed when requests settle.
 
 Errors are `ApiError` instances with a typed `code` and optional HTTP `status`:
 case_not_found, invalid_request, internal_error, invalid_response, network_error,
-timeout or cancelled. Messages are controlled Serbian text; server/transport
+timeout or cancelled; v2 also handles `stale_snapshot` and `run_unavailable`.
+Messages are controlled Serbian text; server/transport
 messages are never forwarded. Views can ignore cancelled requests and expose
 explicit retry for failures. There are no automatic retries or fabricated data.
 

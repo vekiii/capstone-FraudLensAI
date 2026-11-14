@@ -169,7 +169,7 @@ def test_rules_adapter_uses_v2_boundary_without_model_artifact():
     assert assessment.explanation.method == 'rules'
     assert assessment.explanation.feature_snapshot_digest == snapshot.feature_input_digest
     assert [item['contribution'] for item in assessment.explanation.items] == [
-        Decimal('0.35'), Decimal('0.30'), Decimal('0.35')]
+        Decimal('0.35'), Decimal('0.35'), Decimal('0.30')]
 
 
 def test_rules_repeat_has_same_semantics_across_run_and_wall_clock():

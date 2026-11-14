@@ -1,5 +1,7 @@
 """Local fixture API with service-backed cases and closed public errors."""
 import logging
+import re
+import sqlite3
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, Request
@@ -8,11 +10,33 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 
 from fraudlens.cases import CaseNotFoundError, CaseScoringError, CaseService, FixtureLoadError
-from fraudlens.contracts import CaseDetail, CaseId, CaseList, Error, ErrorBody, Health
+from fraudlens.contracts import CaseDetail, CaseList, Error, ErrorBody, Health
+from fraudlens.data_contracts import CaseDetailV2, CaseListV2, HealthV2
+from fraudlens.data_store import PublishedCaseNotFound, RunStore, RunUnavailable, StaleSnapshot
 from fraudlens.scoring import FixtureScorer, Scorer
 from fraudlens.settings import Settings, load_settings
 
 logger = logging.getLogger(__name__)
+
+_DATASET_ERRORS = {
+    404: ('case_not_found', 'Case not found.'),
+    409: ('stale_snapshot', 'Selected snapshot is no longer active.'),
+    422: ('invalid_request', 'Invalid request.'),
+    503: ('run_unavailable', 'Selected run is unavailable.'),
+    500: ('internal_error', 'Internal server error.'),
+}
+
+
+def _dataset_error(status: int) -> JSONResponse:
+    code, message = _DATASET_ERRORS[status]
+    return JSONResponse(status_code=status,
+                        content={'error': {'code': code, 'message': message}})
+
+
+def _dataset_store(config: Settings) -> RunStore:
+    if not config.run_store_path.is_file():
+        raise RunUnavailable('no run store')
+    return RunStore(config.run_store_path, read_only=True)
 
 
 def _error_response(status_code: int, headers: dict[str, str] | None = None) -> JSONResponse:
@@ -81,19 +105,74 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -
         logger.error('Unhandled application failure (%s)', type(exc).__name__)
         return _error_response(500)
 
-    @app.get('/api/health', response_model=Health, responses={500: {'model': Error}})
-    def health(config: Annotated[Settings, Depends(get_settings)]) -> Health:
-        return Health(status='ok', mode=config.mode)
+    @app.get('/api/health', response_model=Health | HealthV2,
+             responses={500: {'model': Error}})
+    def health(config: Annotated[Settings, Depends(get_settings)]):
+        if config.mode == 'fixture':
+            return Health(status='ok', mode='fixture')
+        try:
+            store = _dataset_store(config)
+            try:
+                active = store.active_metadata(config.scorer)
+            finally:
+                store.close()
+        except RunUnavailable:
+            active = None
+        except sqlite3.Error:
+            return _dataset_error(500)
+        return HealthV2.model_validate({
+            'contract_version': 2, 'status': 'ok' if active else 'unavailable',
+            'mode': 'dataset', 'data_source': 'ibm_aml_hi_small',
+            'score_source': config.scorer,
+            'dataset_version': active['dataset_version'] if active else None,
+            'active_run_id': active['run_id'] if active else None})
 
-    @app.get('/api/cases', response_model=CaseList, responses={500: {'model': Error}})
-    def case_list(service: Annotated[CaseService, Depends(get_case_service)]) -> CaseList:
-        return service.list_cases()
+    @app.get('/api/cases', response_model=CaseList | CaseListV2,
+             responses={500: {'model': Error}})
+    def case_list(config: Annotated[Settings, Depends(get_settings)],
+                  service: Annotated[CaseService, Depends(get_case_service)]):
+        if config.mode == 'fixture':
+            return service.list_cases()
+        try:
+            store = _dataset_store(config)
+            try:
+                return CaseListV2.model_validate(store.list_active(config.scorer))
+            finally:
+                store.close()
+        except RunUnavailable:
+            return _dataset_error(503)
+        except sqlite3.Error:
+            return _dataset_error(500)
 
-    @app.get('/api/cases/{case_id}', response_model=CaseDetail,
+    @app.get('/api/cases/{case_id}', response_model=CaseDetail | CaseDetailV2,
              responses={404: {'model': Error}, 422: {'model': Error}, 500: {'model': Error}})
-    def case_detail(case_id: CaseId,
-                    service: Annotated[CaseService, Depends(get_case_service)]) -> CaseDetail:
-        return service.get_case(case_id)
+    def case_detail(case_id: str,
+                    config: Annotated[Settings, Depends(get_settings)],
+                    service: Annotated[CaseService, Depends(get_case_service)],
+                    snapshot: str | None = None):
+        if config.mode == 'fixture':
+            if re.fullmatch(r'CASE-[0-9]{3}', case_id) is None:
+                return _error_response(422)
+            return service.get_case(case_id)
+        if (re.fullmatch(r'C[0-9a-f]{32}', case_id) is None
+                or snapshot is None
+                or re.fullmatch(r'run_[A-Za-z0-9_-]{1,64}', snapshot) is None):
+            return _dataset_error(422)
+        try:
+            store = _dataset_store(config)
+            try:
+                return CaseDetailV2.model_validate(
+                    store.detail_active(config.scorer, snapshot, case_id))
+            finally:
+                store.close()
+        except RunUnavailable:
+            return _dataset_error(503)
+        except StaleSnapshot:
+            return _dataset_error(409)
+        except PublishedCaseNotFound:
+            return _dataset_error(404)
+        except sqlite3.Error:
+            return _dataset_error(500)
 
     return app
 

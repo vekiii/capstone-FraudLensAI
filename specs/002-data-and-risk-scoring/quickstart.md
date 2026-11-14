@@ -1,9 +1,9 @@
 # Feature 002 validation quickstart
 
-Phase 3 local import is available for the exact team-approved IBM v8 source and
-mapping. [T016 evidence](../../evidence/tasks/feature-002-import-identity.md#t016-declared-ibm-v8-import-and-exact-replay--2026-11-13)
-records the first import and immutable replay. Run these commands from the
-repository root. The CSV and generated SQLite database stay local and ignored.
+Feature 002 has a working local IBM import, history-v1 features, frozen model,
+offline evaluation and read-only v2 UI. [T016 evidence](../../evidence/tasks/feature-002-import-identity.md#t016-declared-ibm-v8-import-and-exact-replay--2026-11-13)
+records the first import and immutable replay. Run commands from the repository
+root. The CSV, SQLite, model and large evaluation outputs stay local and ignored.
 
 On macOS, prepare the locked environment and local output directory:
 
@@ -51,8 +51,13 @@ frozen `history-v1` catalog. The following command was executed on the IBM v8
 working copy in [Phase 4 evidence](../../evidence/tasks/feature-002-feature-rules.md#t025-actual-source-replay-and-repeatability):
 
 ```sh
+cp data/processed/feature-002-ibm-v8.sqlite data/processed/feature-002-ibm-v8-rules-work.sqlite
 PYTHONPATH=backend/src .venv/bin/python -m fraudlens.pipeline_cli build-features --store data/processed/feature-002-ibm-v8-rules-work.sqlite --dataset-version dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802 --feature-version history-v1
 ```
+
+Make the working copy once after the import completes; this needs roughly
+another 7.56 GB before feature-build growth. Do not copy over an existing
+work store or modify the archived import. On PowerShell, use `Copy-Item`.
 
 The first successful build returns JSON with `status=complete`,
 `feature_version=history-v1`, `snapshot_count=5078345` and `repeated=false`.
@@ -69,12 +74,11 @@ $env:PYTHONPATH = 'backend/src'
 .\.venv\Scripts\python.exe -m fraudlens.pipeline_cli inspect --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json
 ```
 
-The inspect command still exits 2 with `pending_team_review`, complete
-observations and `import_allowed=false` from the historical mapping flags.
-Generic inspection without the bound mapping still rejects duplicate headers.
-Evaluation, scored-run publication, typed v2 delivery/decoding and consumer
-integration remain planned. Use [plan.md](plan.md), [data-model.md](data-model.md)
-and [contracts](contracts/api.md) for their expected behavior.
+The historical pre-approval inspect run exited 2 with `pending_team_review`.
+The approved mapping and source binding now allow import of the exact reviewed
+release. Generic inspection without the bound mapping still rejects duplicate
+headers. See [plan.md](plan.md), [data-model.md](data-model.md) and
+[contracts](contracts/api.md) for the current behavior.
 
 The initial 2026-11-13 [source audit](../../evidence/tasks/feature-002-source-audit.md)
 contains the exact executable inspection command and results for the authorized
@@ -90,7 +94,7 @@ read-only scan predates the approved source binding; no source data is tracked.
        $env:SPECIFY_FEATURE_DIRECTORY = 'specs/002-data-and-risk-scoring'
 
 2. Use Python 3.14.x and Node 24 for the existing locked environment. The
-   later Feature 002 ML stack is not installed or validated by this import.
+   locked Feature 002 ML stack is installed with the command above.
 3. Acquire the authorized IBM AML HI-Small release locally under ignored
    data/raw/ through the team's permitted process. Record source/release,
    license reference and SHA-256. Do not commit the file or credentials.
@@ -100,127 +104,166 @@ read-only scan predates the approved source binding; no source data is tracked.
    Before generating local files, verify the existing ignore rules for
    data/raw/, data/processed/, data/artifacts/ and evals/results/.
 4. The source mapping and v2 contracts have collective final-byte approval.
-   The feature catalog and rule policy are frozen; the evaluation protocol is a
-   later gate. If the
+   The feature catalog, rule policy and evaluation protocol are frozen. If the
    authoritative Phase 2 assignment becomes available, trace it before
    claiming compliance.
 
-## Foundation regression available now
+## Locked regression
 
 From the repository root, the existing fixture path can be checked
 without IBM data. Record each new run's actual result separately.
 
-    uv sync --locked --group dev
-    uv run --locked pytest backend/tests
-    uv run --locked ruff check backend
+    UV_CACHE_DIR="$PWD/.cache/uv" uv sync --locked --group dev
+    UV_CACHE_DIR="$PWD/.cache/uv" PYTHONPATH=.:backend/src uv run --locked pytest backend/tests --ignore=backend/tests/unit/test_pretrained_loader.py --ignore=backend/tests/unit/test_pretrained_ibm_inference.py
+    UV_CACHE_DIR="$PWD/.cache/uv" uv run --locked ruff check backend
     cd frontend
     npm ci
     npm test -- --run
     npm run typecheck
     npm run build
 
-Expected: current three fixture cases, strict v1 contracts, fixture health,
-scorer replacement tests and frontend loading/error/empty/retry behavior
-remain valid. Record actual counts, exits, runtime and any failures in
-evidence/tasks/; do not copy historical counts as fresh results.
+The excluded pretrained suites are a separate known RED proposal for an
+incompatible external model; run and report them separately. Backend tests cover
+the unchanged v1 schema and reviewed v2 schema parity. Record actual results in
+`evidence/tasks/feature-002-regression.md`.
 
-## Planned later local pipeline commands
+## Current fixture and dataset servers
 
-The following interface is specified in
-[data-and-scoring.md](contracts/data-and-scoring.md). `inspect`, `import` and
-`build-features` exist now; the remaining subcommands are planned. From the repository root,
-make backend/src importable:
+Fixture v1 needs no IBM database or model file. Run these in separate terminals:
 
-    $env:PYTHONPATH = 'backend/src'
-    $env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'
+```sh
+APP_MODE=fixture PYTHONPATH=backend/src .venv/bin/uvicorn fraudlens.main:app --host 127.0.0.1 --port 8000
+VITE_APP_MODE=fixture npm --prefix frontend run dev -- --host 127.0.0.1
+```
 
-The exact source path, release ID, license reference, mapping and protocol
-must come from the actual reviewed source audit. Examples use placeholders:
+Open `http://127.0.0.1:5173/`; the fixture list has `CASE-001`–`CASE-003`.
+For v2, score and activate a completed run first, then restart the servers with
+`APP_MODE=dataset APP_SCORER=rules` or `APP_SCORER=model`,
+`APP_RUN_STORE=data/artifacts/feature-002-runs.sqlite`, and
+`VITE_APP_MODE=dataset`. Dataset `GET /api/cases` is 200 with 0/0 counts when
+the frozen `no_alert` run is active, 503 when no matching completed run exists.
+Copy the list's `snapshot_ref` into `GET /api/cases/{case_id}?snapshot=...`;
+an old reference returns 409 `stale_snapshot`. HTTP never scores or activates.
 
-    uv run --locked python -m fraudlens.pipeline_cli freeze-protocol --dataset-version <completed-version> --feature-version history-v1 --config <reviewed-protocol-file>
-    uv run --locked python -m fraudlens.pipeline_cli evaluate --protocol-id <frozen-protocol>
-    uv run --locked python -m fraudlens.pipeline_cli score-run --dataset-version <completed-version> --scorer-version rules-v1 --protocol-id <frozen-protocol>
-    uv run --locked python -m fraudlens.pipeline_cli activate-run --run-id <completed-run>
-    uv run --locked python -m fraudlens.pipeline_cli reproduce --report-id <evaluation-report>
+```sh
+APP_MODE=dataset APP_SCORER=rules APP_RUN_STORE=data/artifacts/feature-002-runs.sqlite PYTHONPATH=backend/src .venv/bin/uvicorn fraudlens.main:app --host 127.0.0.1 --port 8000
+VITE_APP_MODE=dataset npm --prefix frontend run dev -- --host 127.0.0.1
+```
 
-Expected checkpoints:
+PowerShell uses `$env:APP_MODE`, `$env:APP_SCORER`, `$env:APP_RUN_STORE`,
+`$env:VITE_APP_MODE` and `$env:PYTHONPATH='backend/src'` before starting each
+process. Stop the old foreground servers with Ctrl+C before switching modes.
 
-- Inspect reports observed schema, time span/granularity, amount/currency
-  forms, label values/counts, source hash and ambiguities. It does not
-  invent a mapping or activate data.
-- Import accounts for every CSV record, separates event validity from
-  label eligibility, preserves exact values and stable identities, and
-  leaves no partial active version on failure/retry. Reimport of the
-  same source/mapping has zero duplicate events.
-- Features use only earlier event facts in [t−24h,t), with timestamp
-  ties grouped and context-only warm-up counted. Label perturbations
-  cannot change features or rule scores.
-- Protocol prints exact split membership/counts and eligibility. If
-  classes/positive counts fail, evaluate must not emit a substantive
-  success report.
-- Evaluate records frozen candidate selection, two-scorer metrics on
-  identical eligible IDs, scorer-specific validation thresholds,
-  test-holdout consumption and limitations. It does not assert ML
-  improvement unless measured.
-- Score-run produces an immutable label-free completed run. Activate-run
-  changes one active pointer only after full validation. A failed new
-  run leaves the old completed snapshot active.
-- Reproduce compares source/mapping/artifact/protocol hashes and
-  predictions/metrics under the frozen numeric tolerance; a mismatch
-  is a failure to investigate, not a passing check.
+## Obtain the local model before scoring
 
-## Planned analyst API check
+The trusted `artifacts/feature-002-history-v1-20261114/` directory is ignored
+and **is not present in a clean checkout**. Its selected model, train-fitted
+preparation, metadata and manifest must be obtained through an authorized
+team-local transfer. Verify the transferred files against the frozen hashes
+below, then use only that directory for exact T062 reproduction. The ignored
+`evals/results/phase8/test_predictions.json`, `test_report.json` and
+`holdout_ledger.json` are also required by `reproduce`; transfer these through
+an approved private channel or make an independent first benchmark with the
+same frozen artifact. Keep private labels and record-level results out of Git.
 
-After a completed rules or model run is selected, start the existing
-FastAPI app in dataset mode with an explicit scorer. The settings/route
-work is planned, not currently available:
+For an independent *new* local fit from the authorized CSV and complete feature
+work store, first run `freeze-protocol` below, then use a fresh ignored output
+directory under the repository's `artifacts/` root:
 
-    $env:APP_MODE = 'dataset'
-    $env:APP_SCORER = 'rules'
-    uv run --locked uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
+```sh
+PYTHONPATH=backend/src .venv/bin/python -m fraudlens.train_phase5 --store data/processed/feature-002-ibm-v8-rules-work.sqlite --protocol evals/protocols/feature_002_v1.json --out artifacts/feature-002-history-v1-peer
+PYTHONPATH=backend/src .venv/bin/python -c 'from pathlib import Path; from fraudlens.model_scoring import create_manifest; print(create_manifest(Path("artifacts/feature-002-history-v1-peer"), Path("evals/protocols/feature_002_v1.json")))'
+```
 
-In another PowerShell session, GET /api/health and /api/cases. A dataset
-response has contract_version 2, source/scorer/run metadata, total and
-displayed alert counts and a snapshot_ref. GET a case detail using that
-exact snapshot query. Confirm matching transaction/run/feature identities,
-directional amounts, truthful score/explanation wording and no target
-labels. A switch to another active run makes an old snapshot query return
-409 stale_snapshot rather than a mixed detail. No active complete run
-returns 503 run_unavailable for cases; zero alerts returns a valid empty
-list with total_alerts=0 and displayed_count=0.
+The fit uses only frozen train/validation membership and saves the chosen
+pipeline, input preparation, ordered features, thresholds and reload probe.
+Record the returned manifest hash and the metadata/model hashes. A new fit may
+produce different bytes or a different manifest hash; it does **not** silently
+replace the frozen selected artifact or its reference predictions. Verify its
+provenance and predictions explicitly before using it for a separate comparison.
+The full clean-checkout path and an independent fit have not been run on a
+second machine; T066 remains open for Isidora's actual reproduction record.
 
-Then reset APP_MODE to fixture and remove APP_SCORER from the environment.
-The three-case v1 fixture journey must still work without any dataset
-or model artifact. A dataset/model request with missing artifacts must
-fail explicitly instead of switching to fixtures.
+## Frozen local inputs and eight CLI commands
 
-## Negative and scientific validation
+The authorized CSV must be acquired separately. If it is absent, leave the
+source-dependent steps pending. For the transferred frozen artifact, before any
+model deserialization, confirm
+SHA-256 of the source `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`,
+mapping `a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57`,
+protocol `01fff67d44895b5a1aa6de6dfbb6c6c107f01c041ba7c972bf42210e2b316068`,
+manifest `2732691cb08daafba9d303ef6f3c8f616e03b3dc51505d3abb9772ceadd3919e`,
+and model `fd2332d543941886eb7d0092d7a606b683d1d7c198e3763865ebc7b6a2df0838`.
+The trusted loader independently verifies origin, root containment, versions and
+hashes before joblib; uploads are rejected. Use `shasum -a 256` on macOS or
+`Get-FileHash -Algorithm SHA256` on PowerShell. Check local ignore rules with
+`git check-ignore` for `data/raw/`, `data/processed/`, `data/artifacts/`,
+`artifacts/` and `evals/results/` before adding files.
 
-The later tasks must include hand-checkable source-shaped fixtures for:
-duplicate/missing/unknown headers, malformed/empty/invalid-encoding files,
-partial import and retry, equal-valued distinct rows, rejected-row
-identity stability, bank direction, decimal overflow/precision/currency,
-label-ineligible valid facts, shuffled/tied/future timestamps, exact
-lookback cutoff, warm-up/cold start, identifier/target proxies,
-train-only transforms, unseen categories, missing classes/positives,
-hand-computed AP/K/threshold metrics, K-boundary ties, zero alerts,
-calibration status, explanation reconstruction/scale and artifact hash
-mismatch. Publication tests must inject a mid-run failure and restart.
+The eight `fraudlens.pipeline_cli` subcommands are `inspect`, `import`,
+`build-features`, `freeze-protocol`, `evaluate`, `score-run`, `activate-run`, and
+`reproduce`. Define the shell function below before the examples. On Windows,
+invoke each subcommand after `.\.venv\Scripts\python.exe -m
+fraudlens.pipeline_cli` with `$env:PYTHONPATH='backend/src'`.
 
-Source-shaped tests prove contract behavior, not IBM data quality or
-model performance. The substantive run must use the declared acquired
-source and exact frozen protocol. At least five explanations receive
-independent factual/method review under SC-006; if fewer than five
-alerts exist, select additional scored events by the predeclared
-label-free sampling rule rather than manufacturing alerts.
+```sh
+fl() { PYTHONPATH=backend/src .venv/bin/python -m fraudlens.pipeline_cli "$@"; }
 
-## Evidence and acceptance
+# 1. Inspect is read-only; historical pending flags can return exit 2.
+fl inspect --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json
 
-For every implementation unit, record task/FR/SC links, original prompt,
-working revision, runtime/lock/data/artifact versions, RED failure
-reason, GREEN/regression commands and actual exits, limitations and
-human-review state in evidence/tasks/. The feature is not complete
-until actual Foundation regressions, scientific checks, dataset
-evaluation, human contract review and a second teammate's independent
-reproduction are recorded. The author repeating a command does not
-count as second-person reproduction.
+# 2. Import into a NEW local store; same-source replay returns repeated=true.
+fl import --source data/raw/HI-Small_Trans.csv --mapping data/mappings/ibm_hi_small_v1.json --namespace kaggle:ealtman2019/ibm-transactions-for-anti-money-laundering-aml:v8 --expected-sha256 b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040 --store data/processed/feature-002-ibm-v8.sqlite
+
+# 3. Build features on a completed working store, never on the archived import.
+fl build-features --store data/processed/feature-002-ibm-v8-rules-work.sqlite --dataset-version dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802 --feature-version history-v1
+
+# 4. Audit the frozen source/split read-only.
+fl freeze-protocol --store data/processed/feature-002-ibm-v8-rules-work.sqlite --dataset-version dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802 --config evals/protocols/feature_002_v1.json
+
+# 5. Join private labels only after frozen test predictions exist.
+fl evaluate --protocol evals/protocols/feature_002_v1.json --predictions evals/results/phase8/test_predictions.json --labels evals/results/phase8/test_labels.json --ledger evals/results/phase8/holdout_ledger.json --report evals/results/phase8/test_report.json
+
+# 6. Score into a separate local store with a fresh run ID; this does not activate.
+fl score-run --source-store data/processed/feature-002-ibm-v8-rules-work.sqlite --run-store data/artifacts/feature-002-runs.sqlite --dataset-version dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802 --protocol artifacts/feature-002-history-v1-20261114/metadata.json --run-id run_rules_001 --scorer rules --threshold no_alert
+
+# 7. Activate only the completed matching run.
+fl activate-run --run-store data/artifacts/feature-002-runs.sqlite --run-id run_rules_001 --scorer rules
+
+# 8. Repeat frozen predictions/metrics after the first report exists.
+fl reproduce --source-store data/processed/feature-002-ibm-v8-rules-work.sqlite --protocol evals/protocols/feature_002_v1.json --artifact-dir artifacts/feature-002-history-v1-20261114 --manifest-sha 2732691cb08daafba9d303ef6f3c8f616e03b3dc51505d3abb9772ceadd3919e --predictions evals/results/phase8/test_predictions.json --report evals/results/phase8/test_report.json --ledger evals/results/phase8/holdout_ledger.json --out-dir evals/results/phase8/reproduce
+```
+
+For a model `score-run`, use `--scorer model`, `--run-id run_model_001`, and add
+`--artifact-dir artifacts/feature-002-history-v1-20261114 --manifest-sha 2732691cb08daafba9d303ef6f3c8f616e03b3dc51505d3abb9772ceadd3919e`.
+Use the same manifest SHA with model `activate-run`. The score-run protocol
+argument is the frozen development `metadata.json` containing both validation
+thresholds and the protocol hash. Both selected thresholds are `no_alert`; a
+failed/incomplete staging run leaves the old active snapshot available. Use a
+new run ID for a retry; completed rows are immutable.
+
+For the first offline benchmark, save predictions before opening labels:
+
+```sh
+mkdir -p evals/results/phase8
+PYTHONPATH=backend/src .venv/bin/python -m fraudlens.benchmark_phase8 predict --source data/processed/feature-002-ibm-v8-rules-work.sqlite --protocol evals/protocols/feature_002_v1.json --artifact-dir artifacts/feature-002-history-v1-20261114 --manifest-sha 2732691cb08daafba9d303ef6f3c8f616e03b3dc51505d3abb9772ceadd3919e --output evals/results/phase8/test_predictions.json
+PYTHONPATH=backend/src .venv/bin/python -m fraudlens.benchmark_phase8 labels --source data/processed/feature-002-ibm-v8-rules-work.sqlite --protocol evals/protocols/feature_002_v1.json --predictions evals/results/phase8/test_predictions.json --output evals/results/phase8/test_labels.json
+```
+
+The model was already fit on train and selected on validation in Phase 5; do
+not retrain merely to score the test. Top-20 ranking is separate from the
+published `no_alert` list. The old 60/20/20 notebook exposed every new test
+row, so this benchmark and all repeats are exploratory. Large output remains
+ignored under `evals/results/`; only sanitized summaries enter evidence.
+
+For a teammate, reproduce the import, feature build and selected-scorer loading
+from an authorized same-hash CSV in their own checkout. Record machine, versions,
+source/mapping/protocol/artifact hashes, actual commands/exits/timing and numeric
+differences. The author's own `reproduce` run is not second-person verification.
+The frozen IBM benchmark found model AP `0.0307344403263558` versus R1–R3 AP
+`0.0018670818306353214`; both had zero positives in top 20 and zero published
+alerts under `no_alert`. Validation ranking and the exploratory amount-ratio
+tie experiment are documented separately in
+[`feature-002-model-metrics.md`](../../evidence/tasks/feature-002-model-metrics.md).
+The direct browser journey was checked in Phase 7; Phase 8 added live API/Vite
+proxy checks, without a fresh direct browser pass.

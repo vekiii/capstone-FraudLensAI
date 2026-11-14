@@ -6,9 +6,13 @@ chosen from observable history-v1 snapshots before private labels are joined.
 
 import hashlib
 import json
+import math
+import os
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from itertools import groupby
+from numbers import Integral
+from pathlib import Path
 from types import MappingProxyType
 from typing import Mapping
 
@@ -356,3 +360,237 @@ def build_split_manifest(*, dataset_version: DatasetVersion,
         membership_hash, protocol_hash,
         not reasons, tuple(reasons),
     )
+
+
+def _validate_binary(labels):
+    values = tuple(labels)
+    if any(not isinstance(value, Integral) or value not in (0, 1)
+           for value in values):
+        raise ValueError('binary labels required')
+    return tuple(int(value) for value in values)
+
+
+def precision_at_k(scores, labels, ids, k=20):
+    """Stable-ID score ties; the capacity boundary uses exactly min(K,n) rows."""
+    if not (len(scores) == len(labels) == len(ids)) or len(set(ids)) != len(ids):
+        raise ValueError('ranking identities mismatch')
+    if not all(math.isfinite(float(score)) for score in scores):
+        raise ValueError('nonfinite score')
+    truth = _validate_binary(labels)
+    ordered = sorted(range(len(scores)), key=lambda i: (-float(scores[i]), ids[i]))
+    top = ordered[:min(k, len(ordered))]
+    return sum(truth[i] for i in top) / len(top) if top else None
+
+
+def select_candidate(results, *, ap_tolerance=1e-6):
+    """AP, then P@K, then prospective grid order for residual ties."""
+    if not results or len(results) > 6:
+        raise ValueError('candidate count outside frozen grid')
+    viable = [(i, row) for i, row in enumerate(results)
+              if row.get('status', 'complete') == 'complete']
+    if not viable:
+        raise ValueError('no completed candidate')
+    for _, row in viable:
+        if not all(math.isfinite(float(row[key])) for key in ('ap', 'precision_at_k')):
+            raise ValueError('nonfinite candidate metric')
+    best_ap = max(row['ap'] for _, row in viable)
+    tied = [i for i, row in viable
+            if best_ap - row['ap'] <= ap_tolerance]
+    best_p = max(results[i]['precision_at_k'] for i in tied)
+    return next(i for i in tied if results[i]['precision_at_k'] == best_p)
+
+
+def select_threshold(scores, labels, *, max_alerts=20):
+    """Inclusive distinct-score F0.5 policy with symbolic no-alert."""
+    if len(scores) != len(labels) or max_alerts < 1:
+        raise ValueError('threshold inputs mismatch')
+    truth = _validate_binary(labels)
+    if not all(math.isfinite(float(score)) for score in scores):
+        raise ValueError('nonfinite score')
+    positives = sum(truth)
+    best = {'threshold': 'no_alert', 'alerts': 0, 'f0_5': 0.0}
+    ordered = sorted(range(len(scores)), key=lambda i: -float(scores[i]))
+    alerts = tp = 0
+    for threshold, group in groupby(ordered, key=lambda i: float(scores[i])):
+        indices = tuple(group)
+        alerts += len(indices)
+        if alerts > max_alerts:
+            break
+        tp += sum(truth[i] for i in indices)
+        fp = alerts - tp
+        fn = positives - tp
+        metric = 1.25 * tp / (1.25 * tp + 0.25 * fn + fp) if tp else 0.0
+        if (metric > best['f0_5']
+                or metric == best['f0_5'] and alerts < best['alerts']):
+            best = {'threshold': threshold, 'alerts': alerts, 'f0_5': metric}
+    return best
+
+
+def fit_candidate_grid(train_x, train_y, validation_x, validation_y,
+                       validation_ids, *, numeric_columns, categorical_columns,
+                       candidates):
+    """Fit each declared candidate and all learned transforms on train only."""
+    import numpy as np
+    from sklearn.compose import ColumnTransformer
+    from sklearn.impute import SimpleImputer
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import average_precision_score
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import OneHotEncoder, StandardScaler
+    from sklearn.tree import DecisionTreeClassifier
+
+    if not candidates or len(candidates) > 6:
+        raise ValueError('candidate count outside frozen grid')
+    train_y = np.asarray(_validate_binary(train_y))
+    validation_y = np.asarray(_validate_binary(validation_y))
+    if (len(train_x) != len(train_y) or len(validation_x) != len(validation_y)
+            or len(set(train_y)) < 2 or len(set(validation_y)) < 2):
+        raise ValueError('ineligible fit population')
+    results = []
+    for kind, *parameters in candidates:
+        numeric = Pipeline([('imputer', SimpleImputer(strategy='median')),
+                            ('scale', StandardScaler())])
+        prepare = ColumnTransformer([
+            ('numeric', numeric, list(numeric_columns)),
+            ('category', OneHotEncoder(handle_unknown='ignore'),
+             list(categorical_columns)),
+        ])
+        if kind == 'logistic_l2' and len(parameters) == 1:
+            model = LogisticRegression(C=parameters[0], class_weight='balanced',
+                                       max_iter=200, random_state=42, solver='liblinear')
+        elif kind == 'decision_tree' and len(parameters) == 2:
+            model = DecisionTreeClassifier(max_depth=parameters[0],
+                                           min_samples_leaf=parameters[1],
+                                           class_weight='balanced', random_state=42)
+        else:
+            raise ValueError('candidate outside frozen grid')
+        pipeline = Pipeline([('prepare', prepare), ('model', model)])
+        try:
+            pipeline.fit(train_x, train_y)
+            scores = pipeline.predict_proba(validation_x)[:, 1]
+            ap = float(average_precision_score(validation_y, scores))
+            at_k = precision_at_k(scores, validation_y, validation_ids)
+        except (ValueError, RuntimeError, MemoryError) as exc:
+            results.append({'kind': kind, 'parameters': parameters, 'status': 'failed',
+                            'failure_type': type(exc).__name__})
+            continue
+        results.append({'kind': kind, 'parameters': parameters, 'status': 'complete',
+                        'pipeline': pipeline, 'validation_scores': scores, 'ap': ap,
+                        'precision_at_k': at_k})
+    return results
+
+
+def calculate_metrics(ids, scores, labels, *, threshold, k=20, probability):
+    """Non-interpolated AP and exact capacity/threshold metrics for label 1."""
+    from sklearn.metrics import average_precision_score
+
+    if (not ids or len(ids) != len(scores) or len(ids) != len(labels)
+            or len(set(ids)) != len(ids) or k < 1):
+        raise ValueError('ineligible metric population')
+    truth = _validate_binary(labels)
+    if len(set(truth)) < 2:
+        raise ValueError('both classes required')
+    if not all(math.isfinite(float(score)) and 0 <= float(score) <= 1
+               for score in scores):
+        raise ValueError('scores must be finite in [0,1]')
+    if threshold != 'no_alert' and (not isinstance(threshold, (int, float))
+                                    or not math.isfinite(threshold)
+                                    or not 0 <= threshold <= 1):
+        raise ValueError('invalid frozen threshold')
+    order = sorted(range(len(ids)), key=lambda i: (-float(scores[i]), ids[i]))
+    capacity = min(k, len(ids))
+    selected = order[:capacity]
+    positive_total = sum(truth)
+    top_true = sum(truth[i] for i in selected)
+    alerted = [i for i, score in enumerate(scores)
+               if threshold != 'no_alert' and float(score) >= threshold]
+    tp = sum(truth[i] for i in alerted)
+    fp = len(alerted) - tp
+    fn = positive_total - tp
+    tn = len(ids) - positive_total - fp
+    brier = (sum((float(score) - label) ** 2
+                 for score, label in zip(scores, truth, strict=True)) / len(ids)
+             if probability else None)
+    reliability = None
+    reliability_status = 'not_applicable_ordinal_rules' if not probability else \
+        'not_estimable_insufficient_population'
+    if probability and len(ids) >= 100 and positive_total >= 20:
+        bins = []
+        for index in range(10):
+            rows = [(float(score), label) for score, label in
+                    zip(scores, truth, strict=True)
+                    if min(int(float(score) * 10), 9) == index]
+            if rows:
+                bins.append({'lower': index / 10, 'upper': (index + 1) / 10,
+                             'count': len(rows), 'mean_probability':
+                             sum(score for score, _ in rows) / len(rows),
+                             'observed_rate': sum(label for _, label in rows) / len(rows)})
+        reliability = bins
+        reliability_status = 'descriptive_uncalibrated'
+    return {'row_count': len(ids), 'positives': positive_total,
+            'negatives': len(ids) - positive_total,
+            'prevalence': positive_total / len(ids),
+            'average_precision': float(average_precision_score(truth, scores)),
+            'k': capacity, 'precision_at_k': top_true / capacity,
+            'recall_at_k': top_true / positive_total,
+            'k_crosses_score_tie': (capacity < len(ids) and
+                                    scores[order[capacity - 1]] == scores[order[capacity]]),
+            'confusion': {'tp': tp, 'fp': fp, 'tn': tn, 'fn': fn},
+            'threshold_precision': tp / len(alerted) if alerted else None,
+            'threshold_recall': tp / positive_total,
+            'alert_rate': len(alerted) / len(ids),
+            'threshold': threshold, 'brier': brier,
+            'reliability': reliability, 'reliability_status': reliability_status,
+            'uncertainty_status': 'not_quantified',
+            'uncertainty_reason': 'No interval method was predeclared for this benchmark.'}
+
+
+def evaluate_frozen(predictions, labels, thresholds, *, account_seen=None):
+    """Require identical row IDs before an offline private-label metric join."""
+    if set(predictions) != {'model', 'rules'} or set(thresholds) != {'model', 'rules'}:
+        raise ValueError('both scorers required')
+    rows = {}
+    for scorer, pairs in predictions.items():
+        if len({event_id for event_id, _ in pairs}) != len(pairs):
+            raise ValueError('duplicate prediction identity')
+        rows[scorer] = dict(pairs)
+    ids = sorted(rows['model'])
+    if not ids or set(ids) != set(rows['rules']) or set(ids) != set(labels):
+        raise ValueError('scorer or label identities mismatch')
+    truth = [labels[event_id] for event_id in ids]
+    metrics = {scorer: calculate_metrics(
+        ids, [rows[scorer][event_id] for event_id in ids], truth,
+        threshold=thresholds[scorer], probability=scorer == 'model')
+        for scorer in ('model', 'rules')}
+    if account_seen is None:
+        coverage = {'status': 'not_supplied'}
+    else:
+        if set(account_seen) != set(ids) or any(type(value) is not bool
+                                                for value in account_seen.values()):
+            raise ValueError('account coverage identities mismatch')
+        seen = sum(account_seen.values())
+        coverage = {'status': 'measured', 'seen': seen, 'unseen': len(ids) - seen,
+                    'seen_rate': seen / len(ids)}
+    for result in metrics.values():
+        result['account_coverage'] = coverage
+    return metrics
+
+
+def consume_holdout(path: Path, protocol_hash: str, predictions_hash: str):
+    """Atomically record first label disclosure; repeats are exploratory."""
+    path = Path(path)
+    if not protocol_hash or not predictions_hash:
+        raise ValueError('frozen hashes required')
+    payload = {'protocol_hash': protocol_hash, 'predictions_hash': predictions_hash}
+    try:
+        descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+    except FileExistsError:
+        existing = json.loads(path.read_text())
+        if existing != payload:
+            raise ValueError('consumed holdout cannot make fresh confirmatory claim')
+        return 'exploratory_reuse'
+    with os.fdopen(descriptor, 'w') as stream:
+        json.dump(payload, stream, sort_keys=True)
+        stream.flush()
+        os.fsync(stream.fileno())
+    return 'first_disclosure'

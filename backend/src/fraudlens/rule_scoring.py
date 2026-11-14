@@ -89,20 +89,10 @@ class RuleScorer:
     requires_artifact = False
 
     def score(self, request: ScoreRequestV2) -> dict:
+        from fraudlens.explanations import rule_explanation
+
         result = evaluate_rules(request)
         snapshot = request.feature_snapshot
-        items = [
-            {'feature_key': ('sender_out_count_24h' if reason.rule_id == 'R1'
-                             else 'receiver_in_count_24h' if reason.rule_id == 'R2'
-                             else 'current_paid_amount'),
-             'observed_value': (str(reason.observed_amount) if reason.rule_id == 'R3'
-                                else str(reason.observed_count)),
-             'unit': reason.currency if reason.rule_id == 'R3' else 'events',
-             'direction': 'increases' if reason.state == 'fired' else 'neutral',
-             'contribution': reason.contribution,
-             'rule_condition': f'{reason.state}: {reason.comparison}'}
-            for reason in result.reasons
-        ]
         return {
             'transaction_id': request.canonical_transaction.transaction_id,
             'dataset_version': request.dataset_version, 'run_id': request.run_id,
@@ -114,11 +104,5 @@ class RuleScorer:
             'scored_at': datetime.now(UTC),
             'history_coverage': {'state': snapshot.coverage_state,
                                  'start': snapshot.coverage_start},
-            'explanation': {
-                'status': 'available', 'method': 'rules',
-                'explained_scale': 'risk_score',
-                'feature_snapshot_digest': snapshot.feature_input_digest,
-                'partial': False, 'base_value': Decimal(0),
-                'remainder': Decimal(0), 'items': items,
-            },
+            'explanation': rule_explanation(request, result),
         }

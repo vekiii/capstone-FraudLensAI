@@ -651,3 +651,315 @@ class DatasetStore:
                 coverage_state=state, scoreable=bool(scoreable),
                 feature_values=values, feature_input_digest=digest,
                 created_at=datetime.fromisoformat(created_at))
+
+
+class RunUnavailable(ValueError):
+    """No compatible completed run is active."""
+
+
+class StaleSnapshot(ValueError):
+    """The requested list snapshot has since been superseded."""
+
+
+class PublishedCaseNotFound(ValueError):
+    """No selected alert has this case ID in the captured run."""
+
+
+def _publication_threshold(value):
+    from decimal import Decimal, InvalidOperation
+
+    if value == 'no_alert':
+        return None
+    try:
+        number = Decimal(value)
+    except (InvalidOperation, TypeError) as exc:
+        raise ValueError('invalid publication threshold') from exc
+    if not number.is_finite() or not 0 <= number <= 1:
+        raise ValueError('invalid publication threshold')
+    return number
+
+
+def _public_detail(run_id, dataset_version, case_id, transaction, assessment):
+    from decimal import Decimal
+    from math import exp
+
+    from jsonschema import Draft202012Validator, FormatChecker
+
+    schema_path = (Path(__file__).resolve().parents[3]
+                   / 'specs/002-data-and-risk-scoring/contracts/schemas.json')
+    schema = json.loads(schema_path.read_text())
+    validator = Draft202012Validator(
+        {'$schema': schema['$schema'], '$defs': schema['$defs'],
+         '$ref': '#/$defs/CaseDetailV2'}, format_checker=FormatChecker())
+    detail = {'contract_version': 2, 'snapshot_ref': run_id,
+              'dataset_version': dataset_version, 'case_id': case_id,
+              'transaction': transaction, 'risk_assessment': assessment}
+    if not validator.is_valid(detail):
+        raise ValueError('published detail violates v2 schema')
+    if (transaction['transaction_id'] != assessment['transaction_id']
+            or transaction['event_time_utc'] != assessment['event_time_utc']
+            or assessment['history_cutoff_exclusive_at'] != transaction['event_time_utc']
+            or assessment['run_id'] != run_id
+            or assessment['dataset_version'] != dataset_version):
+        raise ValueError('published assessment identity mismatch')
+    if (assessment['score_source'] == 'rules') != (
+            assessment['score_kind'] == 'ordinal_rule_score'):
+        raise ValueError('published scorer kind mismatch')
+    explanation = assessment['explanation']
+    if explanation['status'] == 'available':
+        scale = {'rules': 'risk_score', 'linear_log_odds': 'log_odds',
+                 'tree_path': 'positive_class_estimate'}
+        if explanation['explained_scale'] != scale[explanation['method']]:
+            raise ValueError('published explanation scale mismatch')
+        if (assessment['score_source'] == 'rules') != (
+                explanation['method'] == 'rules'):
+            raise ValueError('published explanation source mismatch')
+        base, remainder = explanation['base_value'], explanation['remainder']
+        if (base is None) != (remainder is None):
+            raise ValueError('incomplete additive explanation')
+        if base is not None:
+            value = Decimal(str(base)) + Decimal(str(remainder))
+            for item in explanation['items']:
+                value += Decimal(str(item['contribution']))
+            if explanation['method'] == 'linear_log_odds':
+                value = Decimal(str(1 / (1 + exp(-float(value)))))
+            if abs(value - Decimal(str(assessment['score']))) > Decimal('1e-8'):
+                raise ValueError('published explanation reconstruction mismatch')
+    return detail
+
+
+def review_snapshot(rows, *, threshold):
+    """Select latest 100 alerts; return ascending display without ID truncation."""
+    from decimal import Decimal
+
+    boundary = _publication_threshold(threshold)
+    alerts = []
+    seen = set()
+    for case_id, transaction, assessment in rows:
+        transaction_id = transaction['transaction_id']
+        if transaction_id in seen:
+            raise ValueError('duplicate scored transaction')
+        seen.add(transaction_id)
+        if boundary is not None and Decimal(str(assessment['score'])) >= boundary:
+            alerts.append({'case_id': case_id, 'transaction_id': transaction_id,
+                           'event_time': transaction['event_time_utc'],
+                           'score': assessment['score'],
+                           'score_kind': assessment['score_kind'],
+                           'score_source': assessment['score_source']})
+    # Two stable sorts implement descending event time, ascending ID for ties.
+    alerts.sort(key=lambda item: item['transaction_id'])
+    alerts.sort(key=lambda item: item['event_time'], reverse=True)
+    chosen = sorted(alerts[:100], key=lambda item: (item['event_time'],
+                                                    item['transaction_id']))
+    return {'total_alerts': len(alerts), 'displayed_count': len(chosen),
+            'truncated': len(alerts) > len(chosen),
+            'selected_time_range': {'from': chosen[0]['event_time'] if chosen else None,
+                                    'to': chosen[-1]['event_time'] if chosen else None},
+            'items': chosen}
+
+
+class RunStore:
+    """Separate writable scored-run store; source IBM SQLite stays read-only."""
+
+    def __init__(self, path: str | Path, *, read_only: bool = False):
+        self.path = Path(path)
+        self.connection = sqlite3.connect(
+            f'{self.path.resolve().as_uri()}?mode=ro' if read_only else self.path,
+            timeout=30, isolation_level=None, uri=read_only)
+        self.connection.execute('PRAGMA foreign_keys=ON')
+        if read_only:
+            self.connection.execute('PRAGMA query_only=ON')
+            return
+        self.connection.executescript('''
+            CREATE TABLE IF NOT EXISTS scored_runs (
+                run_id TEXT PRIMARY KEY, dataset_version TEXT NOT NULL,
+                score_source TEXT NOT NULL, scorer_version TEXT NOT NULL,
+                artifact_sha256 TEXT, threshold TEXT NOT NULL,
+                expected_count INTEGER NOT NULL, status TEXT NOT NULL,
+                scored_count INTEGER NOT NULL DEFAULT 0,
+                total_alerts INTEGER NOT NULL DEFAULT 0);
+            CREATE TABLE IF NOT EXISTS scored_assessments (
+                run_id TEXT NOT NULL REFERENCES scored_runs(run_id),
+                transaction_id TEXT NOT NULL, case_id TEXT NOT NULL,
+                event_time TEXT NOT NULL, score REAL NOT NULL,
+                score_kind TEXT NOT NULL, score_source TEXT NOT NULL,
+                alert INTEGER NOT NULL,
+                transaction_json TEXT NOT NULL, assessment_json TEXT NOT NULL,
+                PRIMARY KEY(run_id,transaction_id), UNIQUE(run_id,case_id));
+            CREATE TABLE IF NOT EXISTS active_run (
+                singleton INTEGER PRIMARY KEY CHECK(singleton=1),
+                run_id TEXT NOT NULL REFERENCES scored_runs(run_id));
+            CREATE TRIGGER IF NOT EXISTS immutable_scored_update
+            BEFORE UPDATE ON scored_assessments
+            WHEN (SELECT status FROM scored_runs WHERE run_id=OLD.run_id)='completed'
+            BEGIN SELECT RAISE(ABORT,'completed run immutable'); END;
+            CREATE TRIGGER IF NOT EXISTS immutable_scored_insert
+            BEFORE INSERT ON scored_assessments
+            WHEN (SELECT status FROM scored_runs WHERE run_id=NEW.run_id)='completed'
+            BEGIN SELECT RAISE(ABORT,'completed run immutable'); END;
+            CREATE TRIGGER IF NOT EXISTS immutable_scored_delete
+            BEFORE DELETE ON scored_assessments
+            WHEN (SELECT status FROM scored_runs WHERE run_id=OLD.run_id)='completed'
+            BEGIN SELECT RAISE(ABORT,'completed run immutable'); END;
+            CREATE TRIGGER IF NOT EXISTS immutable_run_update
+            BEFORE UPDATE ON scored_runs WHEN OLD.status='completed'
+            BEGIN SELECT RAISE(ABORT,'completed run immutable'); END;
+        ''')
+
+    def close(self):
+        self.connection.close()
+
+    def begin_run(self, run_id, dataset_version, score_source, scorer_version,
+                  artifact_sha256, threshold, expected_count):
+        if (not isinstance(run_id, str)
+                or re.fullmatch(r'run_[A-Za-z0-9_-]{1,64}', run_id) is None
+                or not isinstance(dataset_version, str)
+                or _VERSION_ID.fullmatch(dataset_version) is None
+                or score_source not in {'rules', 'model'}
+                or scorer_version != ('rules-v1' if score_source == 'rules'
+                                      else 'model-history-v1')
+                or type(expected_count) is not int or expected_count < 0
+                or (score_source == 'rules' and artifact_sha256 is not None)
+                or (score_source == 'model' and (not isinstance(artifact_sha256, str)
+                    or re.fullmatch(r'[0-9a-f]{64}', artifact_sha256) is None))):
+            raise ValueError('invalid run identity or artifact')
+        _publication_threshold(threshold)
+        try:
+            self.connection.execute('''
+                INSERT INTO scored_runs(run_id,dataset_version,score_source,scorer_version,
+                                        artifact_sha256,threshold,expected_count,status)
+                VALUES(?,?,?,?,?,?,?,'staging')''',
+                                    (run_id, dataset_version, score_source, scorer_version,
+                                     artifact_sha256, str(threshold), expected_count))
+        except sqlite3.IntegrityError as exc:
+            raise ValueError('run already exists') from exc
+
+    def append(self, run_id, case_id, transaction, assessment):
+        from decimal import Decimal
+
+        self.connection.execute('BEGIN IMMEDIATE')
+        try:
+            self._append_in_transaction(run_id, case_id, transaction, assessment, Decimal)
+            self.connection.execute('COMMIT')
+        except Exception:
+            self.connection.execute('ROLLBACK')
+            raise
+
+    def _append_in_transaction(self, run_id, case_id, transaction, assessment, decimal_type):
+        run = self.connection.execute('''
+            SELECT dataset_version,score_source,scorer_version,threshold,status
+            FROM scored_runs WHERE run_id=?''', (run_id,)).fetchone()
+        if run is None or run[4] != 'staging':
+            raise ValueError('run is not staging')
+        version, source, scorer_version, threshold, _ = run
+        detail = _public_detail(run_id, version, case_id, transaction, assessment)
+        if (assessment['score_source'] != source
+                or assessment['scorer_version'] != scorer_version):
+            raise ValueError('scorer mismatch')
+        boundary = _publication_threshold(threshold)
+        alert = int(boundary is not None
+                    and decimal_type(str(assessment['score'])) >= boundary)
+        try:
+            self.connection.execute('''
+                INSERT INTO scored_assessments(run_id,transaction_id,case_id,event_time,
+                    score,score_kind,score_source,alert,transaction_json,assessment_json)
+                VALUES(?,?,?,?,?,?,?,?,?,?)''',
+                (run_id, transaction['transaction_id'], case_id,
+                 transaction['event_time_utc'], assessment['score'],
+                 assessment['score_kind'], source, alert,
+                 json.dumps(detail['transaction'], sort_keys=True),
+                 json.dumps(detail['risk_assessment'], sort_keys=True)))
+        except sqlite3.IntegrityError as exc:
+            raise ValueError('duplicate scored identity') from exc
+        self.connection.execute('''
+            UPDATE scored_runs SET scored_count=scored_count+1,
+                total_alerts=total_alerts+? WHERE run_id=?''', (alert, run_id))
+
+    def complete(self, run_id):
+        try:
+            self.connection.execute('BEGIN IMMEDIATE')
+            run = self.connection.execute('''
+                SELECT expected_count,scored_count,total_alerts,status
+                FROM scored_runs WHERE run_id=?''', (run_id,)).fetchone()
+            if (run is None or run[3] != 'staging' or run[0] != run[1]
+                    or run[1] != self.connection.execute(
+                        'SELECT COUNT(*) FROM scored_assessments WHERE run_id=?',
+                        (run_id,)).fetchone()[0]
+                    or run[2] != self.connection.execute(
+                        'SELECT COUNT(*) FROM scored_assessments WHERE run_id=? AND alert=1',
+                        (run_id,)).fetchone()[0]):
+                raise ValueError('incomplete or inconsistent scored run')
+            self.connection.execute(
+                "UPDATE scored_runs SET status='completed' WHERE run_id=?", (run_id,))
+            self.connection.execute('COMMIT')
+        except Exception:
+            self.connection.execute('ROLLBACK')
+            raise
+
+    def activate(self, run_id, score_source, artifact_sha256=None):
+        try:
+            self.connection.execute('BEGIN IMMEDIATE')
+            run = self.connection.execute('''
+                SELECT score_source,artifact_sha256,status FROM scored_runs WHERE run_id=?''',
+                                          (run_id,)).fetchone()
+            if (run is None or run[2] != 'completed' or run[0] != score_source
+                    or artifact_sha256 != run[1]):
+                raise ValueError('run unavailable or scorer/artifact mismatch')
+            self.connection.execute('''
+                INSERT INTO active_run(singleton,run_id) VALUES(1,?)
+                ON CONFLICT(singleton) DO UPDATE SET run_id=excluded.run_id''',
+                                    (run_id,))
+            self.connection.execute('COMMIT')
+        except Exception:
+            self.connection.execute('ROLLBACK')
+            raise
+
+    def _active(self, score_source):
+        run = self.connection.execute('''
+            SELECT r.run_id,r.dataset_version,r.scorer_version,r.total_alerts
+            FROM active_run AS a JOIN scored_runs AS r ON r.run_id=a.run_id
+            WHERE a.singleton=1 AND r.status='completed' AND r.score_source=?''',
+                                      (score_source,)).fetchone()
+        if run is None:
+            raise RunUnavailable('no compatible completed run')
+        return run
+
+    def active_metadata(self, score_source):
+        run_id, version, scorer, alerts = self._active(score_source)
+        return {'run_id': run_id, 'dataset_version': version,
+                'scorer_version': scorer, 'total_alerts': alerts}
+
+    def list_active(self, score_source):
+        run_id, version, scorer, total = self._active(score_source)
+        rows = self.connection.execute('''
+            SELECT case_id,transaction_id,event_time,score,score_kind,score_source
+            FROM scored_assessments WHERE run_id=? AND alert=1
+            ORDER BY event_time DESC,transaction_id ASC LIMIT 100''',
+                                       (run_id,)).fetchall()
+        items = [{'case_id': case, 'transaction_id': transaction,
+                  'event_time': at, 'score': score, 'score_kind': kind,
+                  'score_source': source}
+                 for case, transaction, at, score, kind, source in rows]
+        items.sort(key=lambda item: (item['event_time'], item['transaction_id']))
+        return {'contract_version': 2, 'snapshot_ref': run_id,
+                'dataset_version': version, 'data_source': 'ibm_aml_hi_small',
+                'score_source': score_source, 'scorer_version': scorer,
+                'total_alerts': total, 'displayed_count': len(items),
+                'truncated': total > len(items),
+                'selected_time_range': {
+                    'from': items[0]['event_time'] if items else None,
+                    'to': items[-1]['event_time'] if items else None},
+                'items': items}
+
+    def detail_active(self, score_source, snapshot_ref, case_id):
+        run_id, version, _, _ = self._active(score_source)
+        if snapshot_ref != run_id:
+            raise StaleSnapshot('selected run superseded')
+        row = self.connection.execute('''
+            SELECT transaction_json,assessment_json FROM scored_assessments
+            WHERE run_id=? AND case_id=? AND alert=1''',
+                                      (run_id, case_id)).fetchone()
+        if row is None:
+            raise PublishedCaseNotFound('case not in active alert snapshot')
+        return _public_detail(run_id, version, case_id,
+                              json.loads(row[0]), json.loads(row[1]))

@@ -1,13 +1,16 @@
 # FraudLens AI
 
-## Feature 002 local dataset import
+## Feature 002 local dataset and model
 
 The [Feature 002 quickstart](specs/002-data-and-risk-scoring/quickstart.md)
-has the executable IBM v8 import command for macOS and PowerShell. A teammate
-with the same authorized CSV can create their own local SQLite database. The
-CSV and database stay ignored and local. Import uses separate team approval
-bound to the exact mapping, source hash and namespace; read-only `inspect`
-retains its existing behavior. Later scoring and v2 UI integration are planned.
+has tested commands for locked setup, authorized IBM v8 import, history-v1
+feature build, frozen protocol, offline benchmark and reproduction, separate
+score-run/activate-run, and fixture v1 or dataset v2 UI. The CSV, SQLite,
+model binary and large predictions stay ignored and local. The trusted model
+loader verifies hash, provenance and compatibility before deserialization.
+The selected threshold is `no_alert`; a real model run can correctly display
+zero alerts. The earlier notebook exposed the current test period, so the
+IBM benchmark is exploratory rather than an independent performance claim.
 
 Educational AML prototype. Foundation phases 1-5 are implemented: local synthetic
 cases, strict contracts, replaceable scoring and list/detail UI. Phase 6 verifies
@@ -65,8 +68,11 @@ Invoke-RestMethod -Uri 'http://127.0.0.1:5173/api/cases/CASE-001'
 ```
 Unknown CASE-999 returns 404; malformed CASE-1 returns 422. Errors use the closed
 `{"error":{"code":"...","message":"..."}}` envelope. See T016 evidence for actual bodies.
-APP_MODE defaults to fixture and is the only supported value. If APP_MODE is set
-otherwise, startup fails validation; remove it or explicitly set it to fixture.
+APP_MODE defaults to fixture. For a completed published v2 run set
+`APP_MODE=dataset`, `APP_SCORER=rules` or `model`, and `APP_RUN_STORE` to the
+separate local run SQLite. Start Vite with `VITE_APP_MODE=dataset`. Dataset
+reads can return 200 empty, 503 unavailable, or 409 for a stale detail token;
+no HTTP path scores a request. See the Feature 002 quickstart for exact commands.
 Settings resolve data/fixtures/cases.json relative to the repository, but startup
 and health do not open it. T014's three synthetic cases are stored there without scores.
 

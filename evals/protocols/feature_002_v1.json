@@ -1,0 +1,187 @@
+{
+  "version": "feature-002-benchmark-v1",
+  "dataset_version": "dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802",
+  "source_sha256": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040",
+  "mapping_sha256": "a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57",
+  "time_policy_sha256": "67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781",
+  "feature_version": "history-v1",
+  "feature_policy_hash": "683e5d767d3d130a523c3a657063b493ff1821818e601888e1c83a8ca91ed1f4",
+  "source_start": "2022-09-01T00:00:00+00:00",
+  "warmup_cutoff": "2022-09-02T00:00:00+00:00",
+  "split": {
+    "method": "nearest_cumulative_scoreable_count_whole_timestamp_earlier_tie",
+    "ratios": [
+      70,
+      15,
+      15
+    ],
+    "train_end_inclusive": "2022-09-08T07:21:00+00:00",
+    "validation_end_inclusive": "2022-09-09T09:31:00+00:00",
+    "partitions": {
+      "train": {
+        "count": 2774357,
+        "positives": 2822,
+        "negatives": 2771535,
+        "prevalence": 0.0010171726277476186,
+        "first": "2022-09-02T00:00:00+00:00",
+        "last": "2022-09-08T07:21:00+00:00",
+        "ids_sha256": "e3682ddb990e5ba1c36c65a1b88e9e9ac6796253e612eb818869cd170febef7a",
+        "old_60_20_20_overlap": {
+          "old_train": 1931940,
+          "old_validation": 842417,
+          "old_test": 0
+        }
+      },
+      "validation": {
+        "count": 594715,
+        "positives": 588,
+        "negatives": 594127,
+        "prevalence": 0.0009887088773614253,
+        "first": "2022-09-08T07:22:00+00:00",
+        "last": "2022-09-09T09:31:00+00:00",
+        "ids_sha256": "e0f845095364e061ea505678530713a13c474a3f49fb1a981e53b6ad74e2be8c",
+        "old_60_20_20_overlap": {
+          "old_train": 0,
+          "old_validation": 173503,
+          "old_test": 421212
+        }
+      },
+      "test": {
+        "count": 594352,
+        "positives": 1445,
+        "negatives": 592907,
+        "prevalence": 0.00243121921016502,
+        "first": "2022-09-09T09:32:00+00:00",
+        "last": "2022-09-18T16:18:00+00:00",
+        "ids_sha256": "e0187baa4749c5cf11b19533bd5df8ac9a092466de718b703f5b48b5436c7575",
+        "old_60_20_20_overlap": {
+          "old_train": 0,
+          "old_validation": 0,
+          "old_test": 594352
+        }
+      }
+    },
+    "warmup_excluded_count": 1114921,
+    "coverage_excluded_count": 0,
+    "scoreable_count": 3963424
+  },
+  "eligibility": {
+    "eligible": true,
+    "reasons": [],
+    "minimum_validation_test_positives": 20,
+    "both_classes_each_partition": true
+  },
+  "roles": {
+    "train": "fit_all_transforms_and_candidates",
+    "validation": "candidate_and_threshold_selection_only",
+    "test": "metrics_only_after_frozen_predictions"
+  },
+  "feature_inputs": [
+    "sender_out_count_24h",
+    "sender_distinct_receivers_24h",
+    "sender_paid_count_same_currency_24h",
+    "sender_paid_sum_same_currency_24h",
+    "receiver_in_count_24h",
+    "receiver_distinct_senders_24h",
+    "receiver_received_count_same_currency_24h",
+    "receiver_received_sum_same_currency_24h",
+    "current_paid_amount",
+    "current_paid_currency",
+    "current_payment_format"
+  ],
+  "seed": 42,
+  "k": 20,
+  "ap_tie_tolerance": 1e-06,
+  "candidates": [
+    {
+      "kind": "logistic_l2",
+      "C": 0.1
+    },
+    {
+      "kind": "logistic_l2",
+      "C": 1.0
+    },
+    {
+      "kind": "decision_tree",
+      "max_depth": 3,
+      "min_samples_leaf": 100
+    },
+    {
+      "kind": "decision_tree",
+      "max_depth": 3,
+      "min_samples_leaf": 500
+    },
+    {
+      "kind": "decision_tree",
+      "max_depth": 5,
+      "min_samples_leaf": 100
+    },
+    {
+      "kind": "decision_tree",
+      "max_depth": 5,
+      "min_samples_leaf": 500
+    }
+  ],
+  "selection": {
+    "primary": "validation_average_precision",
+    "secondary_on_ap_tie": "validation_precision_at_20",
+    "residual_tie": "candidate_grid_order"
+  },
+  "threshold": {
+    "scope": "per_scorer_validation_only",
+    "inclusive_distinct_scores": true,
+    "max_alerts": 20,
+    "preserve_score_ties": true,
+    "objective": "max_F0.5",
+    "ties": [
+      "fewer_alerts",
+      "higher_threshold"
+    ],
+    "allow_symbolic_no_alert": true
+  },
+  "fit_budget": {
+    "max_fits": 6,
+    "max_fit_seconds_each": 1800,
+    "max_total_fit_seconds": 10800,
+    "max_process_peak_bytes": 3221225472,
+    "max_scratch_bytes": 4294967296,
+    "one_fit_at_a_time": true,
+    "train_reduction": "sha256_id_mod_4_equals_0",
+    "train_reduction_policy": {
+      "selection": "first_8_bytes_SHA256(transaction_id)_big_endian_mod_4_equals_0",
+      "selection_uses_labels": false,
+      "history": "all_original_rows",
+      "validation": "full_unchanged",
+      "test": "full_unchanged",
+      "trigger": "first full-train candidate exceeded frozen resource ceiling before validation metrics; no candidate selected"
+    }
+  },
+  "calibration": "none",
+  "automl": false,
+  "reproduction_tolerances": {
+    "probability_absolute": 1e-08,
+    "metric_absolute": 1e-08,
+    "explanation_reconstruction_absolute": 1e-08
+  },
+  "review_sample": {
+    "method": "five_lowest_SHA256_transaction_IDs_among_frozen_test_alerts_then_scored_rows",
+    "labels_used": false
+  },
+  "holdout": {
+    "first_scientific_disclosure": "T062_after_artifact_and_explanation_checks",
+    "old_tree_60_20_20_test_exposure": true,
+    "independent_confirmatory_claim_allowed": false,
+    "old_split_train_end": "2022-09-06T13:35:00+00:00",
+    "old_split_validation_end": "2022-09-08T16:12:00+00:00",
+    "reason": "Existing notebook reproduction reported test metrics over the overlapping IBM rows."
+  },
+  "preprocessing": {
+    "numeric": "train_median_impute_then_standard_scale",
+    "categorical": "train_one_hot_unknown_ignore",
+    "fit_scope": "train_only",
+    "class_weight": "balanced",
+    "logistic_solver": "liblinear",
+    "logistic_max_iter": 200
+  },
+  "amendment": 1
+}
