@@ -1,5 +1,14 @@
 # Frontend development environment
 
+Feature 003 Phase 3 update (2026-11-14): source-search navigation is implemented
+and verified against all six reviewed documents. Search/no-match, exact historical
+passage/provenance, missing-store Retry and the original three-case journey pass
+actual API/proxy/Chrome checks; full frontend 156 tests and typecheck/build PASS.
+See [knowledge setup](../specs/003-ai-investigation/quickstart.md) and
+[actual-source evidence](../evidence/tasks/feature-003-phase-03-completion.md).
+No .env/provider key is required; backend settings use process environment.
+The foundation details/results below are historical to their cited delivery.
+
 Vanilla TypeScript/Vite frontend with T017's typed API boundary and T018's complete
 synthetic case inspection UI. No framework or runtime dependency is required.
 

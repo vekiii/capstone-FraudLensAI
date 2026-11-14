@@ -1,4 +1,29 @@
-# Current handoff - feature 003 human corpus review, 2026-11-14
+# Current handoff - feature 003 Phase 3 complete, 2026-11-14
+Branch feature03; baseline/current HEAD 27ecc38. T013-T022 complete. Milan Gavrić's
+six-document source/reuse/applicability review preserved. Published the exact
+reviewed corpus (6 docs/6 passages) to ignored data/processed/investigations.sqlite;
+source/review/config hashes and lockfiles unchanged. No producer/ML store touched.
+Real-source API/proxy/Chrome smoke 10 observations PASS; retained authored TEST
+mode 9 PASS. Browser runs required Codex sandbox escalation after Chrome GPU
+Access denied; final owned-process cleanup and port check PASS.
+Prepared demo store exposed a test isolation defect: fixed the missing-corpus
+fixture to use tmp_path, keeping all assertions and three T035 REDs intact.
+Final backend 517 PASS / 3 deliberate T035 RED; Ruff PASS. Frontend 156 PASS;
+typecheck/build PASS. Complete backend is NOT GREEN. No quality/LLM evaluation,
+provider SDK/key/probe, report/tools/worker or T023+ implementation performed.
+Python 3.14.7, uv 0.10.9 via `py -3.14 -m uv`, Node 24.20.0/npm 11.19.0.
+No .env needed or loaded; settings use explicit process environment. Local archive
+is generated/ignored and must be prepared per checkout using the quickstart.
+Evidence, commands, failures and limits:
+[Phase 3 completion](evidence/tasks/feature-003-phase-03-completion.md),
+[reviewed browser results](evidence/tasks/feature-003-reviewed-knowledge-smoke-results.json),
+[original continuation prompt](prompts/development/003-investigation-phase-03-completion.md).
+No commit/push/merge/deploy. Historical handoffs below are superseded where different.
+**Next step:** separately agree Phase 4 T023-T038, starting with T023 controlled-tool
+RED tests. Keep future provider/producer/evaluation gates pending; do not resolve
+T035 early or call the whole feature complete.
+
+# Previous handoff - feature 003 human corpus review, 2026-11-14
 Branch feature03; inspected HEAD 47c1a96. Human source/reuse/applicability review
 complete: Milan Gavrić explicitly approved all six texts without changes (6/6).
 All reviewed_by/at recorded; no other teammate review asserted. Manifest status

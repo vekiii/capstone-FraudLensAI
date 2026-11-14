@@ -2,12 +2,14 @@
 Current Phase 3 update (2026-11-14): Milan Gavrić approved all six source texts
 and documented reuse/applicability without changes. Manifest status is reviewed;
 all reviewer/date fields and source hashes pass production stage validation.
-T013 complete; corpus publication and actual-source runtime recheck remain pending.
-See ../../evidence/tasks/feature-003-corpus-review.md. The setup-only description
+T013-T022 complete: reviewed corpus published to the separate local store;
+actual-source API/proxy/automated browser recheck passed. See
+../../evidence/tasks/feature-003-phase-03-completion.md and the approval record
+../../evidence/tasks/feature-003-corpus-review.md. The setup-only description
 below records earlier delivery; its source/privacy rules remain applicable.
 
 Only deliberately ingested, human-reviewed corpus content may be searched.
-T013 supplies reviewed fraudlens-aml-knowledge-v1; T015 publication remains pending.
+T013 supplies reviewed fraudlens-aml-knowledge-v1; T015 publishes its exact archive.
 Required metadata includes provenance, source
 URL/identity, included sections, publication/version date (or explicit unknown),
 retrieval date, jurisdiction/historical context, reuse terms and content hash.
@@ -15,8 +17,8 @@ Do not copy official documents without actual provenance and allowed reuse.
 Simulated procedures must remain clearly simulated, not real bank policy.
 Foreign guidance is not Serbian law. No runtime open-web investigation.
 
-This directory currently contains policy only: no reviewed corpus, manifest,
-index, ingestion or retrieval implementation is delivered by setup. Generated
+This directory contains the reviewed manifest, source texts and retrieval config.
+Loader/search/API/UI are implemented; provider/report work remains future. Generated
 SQLite/index material belongs under ignored data/processed/, not reviewed sources.
 The investigation database is data/processed/investigations.sqlite, separate
 from producer storage; do not configure INVESTIGATION_STORE to the producer store.

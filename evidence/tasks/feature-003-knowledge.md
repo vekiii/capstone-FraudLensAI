@@ -111,3 +111,15 @@ reads. This focused result does not replace or conceal the three full-suite REDs
 Final `git diff --check` exit 0; 28 new UTF-8 files checked for trailing whitespace
 and evidence-local link targets. Existing source schemas, fixtures, lockfiles,
 feature 002 and shared .agents/.specify instructions remain unchanged.
+
+## Reviewed-corpus completion - 2026-11-14
+
+T015/T017/T022 complete after actual reviewed six-document publication and 10
+passing API/proxy/Chrome observations. Full backend 517 PASS / 3 retained T035
+RED, frontend 156 PASS, Ruff/typecheck/build PASS. Exact corpus/retrieval IDs,
+commands, test-isolation RED/GREEN, sandbox failures and final cleanup are in
+[completion evidence](feature-003-phase-03-completion.md). Both smoke modes pass;
+[reviewed results](feature-003-reviewed-knowledge-smoke-results.json) use actual
+approved sources, with replacement TEST corpus only in an isolated cache store.
+No source/config/lockfile changes or live LLM/quality evaluation. Earlier pending
+source-review/publish statements describe historical delivery and are superseded.

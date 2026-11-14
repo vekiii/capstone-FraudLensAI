@@ -1,42 +1,62 @@
-﻿// Reproducible headless smoke: owned hidden processes, authored TEST corpus only.
+// Reproducible headless smoke: isolated archive, optional --reviewed source corpus.
 import { spawn, execFileSync } from 'node:child_process';
 import { mkdir, readFile, writeFile, rename, access } from 'node:fs/promises';
 import { createServer } from 'node:net';
-import { resolve, join } from 'node:path';
+import { resolve, join, relative, isAbsolute } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import assert from 'node:assert/strict';
 const root = process.cwd(); const work = join(root, '.cache', '003-smoke-' + randomUUID());
-const report = { mode: 'automated headless Chrome; authored TEST corpus, not reviewed real corpus', checks: [], errors: [] };
+const reviewed = process.argv.includes('--reviewed');
+assert(process.argv.slice(2).every(arg => arg === '--reviewed'));
+const report = { mode: reviewed ? 'automated headless Chrome; six human-reviewed source texts; isolated TEST replacement only for historical-version check' : 'automated headless Chrome; authored TEST corpus, not reviewed real corpus', work, checks: [], errors: [] };
 const owned = []; const pause = ms => new Promise(r => setTimeout(r, ms));
 let browser, tab, setup, renamed = false;
 const env = { ...process.env, PYTHONPATH: join(root, 'backend/src'), INVESTIGATION_ENABLED: 'true', INVESTIGATION_PROVIDER: 'test', APP_MODE: 'fixture' };
 delete env.OPENAI_API_KEY; delete env.OPENAI_MODEL;
 function note(name, detail = '') { report.checks.push({ name, detail, status: 'PASS' }); }
-function start(program, args) { const child = spawn(program, args, { cwd: root, env, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] }); owned.push(child); child.stdout.on('data', () => {}); child.stderr.on('data', () => {}); return child; }
-function stop(child) { if (child && child.exitCode === null) execFileSync('taskkill.exe', ['/PID', String(child.pid), '/T', '/F'], { windowsHide: true, stdio: 'ignore' }); }
+function start(program, args) { const child = spawn(program, args, { cwd: root, env, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] }); owned.push(child); child.stdout.on('data', () => {}); child.stderr.on('data', data => { if (program.endsWith('chrome.exe')) report.chrome_stderr = ((report.chrome_stderr ?? '') + data).slice(-8000); }); return child; }
+function stop(child) {
+  if (!child || child.exitCode !== null) return;
+  try { process.kill(child.pid, 0); } catch (error) { if (error.code === 'ESRCH') return; throw error; }
+  try { execFileSync('taskkill.exe', ['/PID', String(child.pid), '/T', '/F'], { windowsHide: true, stdio: 'ignore' }); }
+  catch (error) { try { process.kill(child.pid, 0); } catch (gone) { if (gone.code === 'ESRCH') return; } throw error; }
+}
+function startBackend() { return start(join(root, '.venv/Scripts/python.exe'), ['-m', 'uvicorn', 'fraudlens.main:app', '--app-dir', 'backend/src', '--host', '127.0.0.1', '--port', '8000']); }
 async function free(port) { await new Promise((ok, no) => { const s = createServer(); s.once('error', no); s.listen(port, '127.0.0.1', () => s.close(ok)); }); }
 async function ready(url) { for (let i = 0; i < 80; i++) { try { const r = await fetch(url); if (r.ok) return; } catch {} await pause(100); } throw Error('Service unavailable: ' + url); }
 async function connect(url) {
   const ws = new WebSocket(url); let seq = 0; const pending = new Map(); const listeners = new Map();
-  await new Promise((ok, no) => { ws.onopen = ok; ws.onerror = no; });
+  await new Promise((ok, no) => { ws.onopen = ok; ws.onerror = event => no(event.error ?? Error('WebSocket connection failed: ' + url)); });
   ws.onmessage = ({ data }) => { const message = JSON.parse(data); if (message.id) { const p = pending.get(message.id); if (p) { clearTimeout(p.timer); pending.delete(message.id); message.error ? p.reject(Error(JSON.stringify(message.error))) : p.resolve(message.result); } } else for (const fn of listeners.get(message.method) ?? []) fn(message.params); };
   return { ws, on(name, fn) { listeners.set(name, [...(listeners.get(name) ?? []), fn]); }, send(method, params = {}) { return new Promise((resolve, reject) => { const id = ++seq; const timer = setTimeout(() => { pending.delete(id); reject(Error('CDP timeout: ' + method)); }, 10000); pending.set(id, { resolve, reject, timer }); ws.send(JSON.stringify({ id, method, params })); }); } };
 }
 try {
   for (const port of [8000, 5173, 9228]) await free(port);
   await mkdir(work, { recursive: true });
-  execFileSync(join(root, '.venv/Scripts/python.exe'), ['evidence/tasks/feature-003-knowledge-smoke-prepare.py', work], { env, windowsHide: true });
+  execFileSync(join(root, '.venv/Scripts/python.exe'), ['evidence/tasks/feature-003-knowledge-smoke-prepare.py', work, ...(reviewed ? ['--reviewed'] : [])], { env, windowsHide: true });
   setup = JSON.parse(await readFile(join(work, 'setup.json'), 'utf8')); env.INVESTIGATION_STORE = setup.store;
-  let backend = start('uv', ['run', '--locked', 'uvicorn', 'fraudlens.main:app', '--app-dir', 'backend/src', '--host', '127.0.0.1', '--port', '8000']);
+  const storeRelative = relative(work, resolve(setup.store));
+  assert(storeRelative && !storeRelative.startsWith('..') && !isAbsolute(storeRelative));
+  report.corpus_version = setup.old; report.retrieval_version = setup.retrieval;
+  let backend = startBackend();
   start('cmd.exe', ['/c', 'npm.cmd --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort']);
   await ready('http://127.0.0.1:8000/api/health'); await ready('http://127.0.0.1:5173/');
   for (const base of ['http://127.0.0.1:8000', 'http://127.0.0.1:5173']) {
-    const response = await fetch(base + '/api/knowledge/search?q=money'); assert.equal(response.status, 200);
+    const response = await fetch(base + '/api/knowledge/search?q=' + encodeURIComponent(setup.query)); assert.equal(response.status, 200);
     const result = await response.json(); assert.equal(result.corpus_version, setup.old); assert(result.hits.length > 0);
+    if (reviewed) {
+      assert.equal(result.hits[0].passage.document.doc_id, 'us-records');
+      const documents = await (await fetch(base + '/api/knowledge/documents')).json();
+      assert.equal(documents.documents.length, 6);
+      assert(documents.documents.every(doc => doc.reviewed_by === 'Milan Gavrić'));
+      assert.equal((await (await fetch(base + '/api/knowledge/search?q=nomatchxyz')).json()).status, 'no_match');
+      assert.equal((await fetch(base + '/api/knowledge/search?q=')).status, 422);
+      assert.equal((await fetch(base + '/api/knowledge/passages/' + '0'.repeat(64))).status, 404);
+    }
     assert.equal((await fetch(base + '/api/cases/CASE-999')).status, 404); assert.equal((await fetch(base + '/api/cases/CASE-1')).status, 422);
     note('Real API/proxy search, 404/422', base);
   }
-  start('C:/Program Files/Google/Chrome/Application/chrome.exe', ['--headless=new', '--remote-debugging-address=127.0.0.1', '--remote-debugging-port=9228', '--user-data-dir=' + join(work, 'chrome-profile'), '--no-first-run', '--no-default-browser-check', 'about:blank']);
+  start('C:/Program Files/Google/Chrome/Application/chrome.exe', ['--headless=new', '--disable-gpu', '--disable-extensions', '--disable-background-networking', '--remote-debugging-address=127.0.0.1', '--remote-debugging-port=9228', '--user-data-dir=' + join(work, 'chrome-profile'), '--no-first-run', '--no-default-browser-check', 'about:blank']);
   await ready('http://127.0.0.1:9228/json/version');
   const version = await (await fetch('http://127.0.0.1:9228/json/version')).json(); report.browser = version.Browser;
   browser = await connect(version.webSocketDebuggerUrl);
@@ -55,14 +75,23 @@ try {
   }
   note('Original three-case list/detail/back');
   await nav(1); await wait("document.body.innerText.includes('Unesite upit')");
+  if (reviewed) {
+    await query('missing occupation'); await wait("!!document.querySelector('[data-passage]')");
+    await evaluate("document.querySelector('[data-passage]').click()"); await wait("!!document.querySelector('pre')");
+    assert((await evaluate("document.querySelector('pre').textContent")).includes('Missing occupation'));
+    assert((await evaluate('document.body.innerText')).includes('SIMULATED'));
+    note('Reviewed simulated missing-facts procedure and simulation provenance');
+  }
   // Publish the changed authored TEST version only after UI has pinned the old one.
   execFileSync(join(root, '.venv/Scripts/python.exe'), ['-c', 'from fraudlens.investigation.knowledge import KnowledgeStore; import sys; print(KnowledgeStore(sys.argv[1]).publish(sys.argv[2]))', setup.store, setup.manifest], { env, windowsHide: true });
   const latest = await (await fetch('http://127.0.0.1:8000/api/knowledge/documents')).json(); assert.notEqual(latest.corpus_version, setup.old);
-  await query('money'); await wait("!!document.querySelector('[data-passage]')");
-  const oldHits = await (await fetch(`http://127.0.0.1:8000/api/knowledge/search?q=money&corpus=${setup.old}&retrieval=${setup.retrieval}`)).json();
+  await query(setup.query); await wait("!!document.querySelector('[data-passage]')");
+  const oldHits = await (await fetch(`http://127.0.0.1:8000/api/knowledge/search?q=${encodeURIComponent(setup.query)}&corpus=${setup.old}&retrieval=${setup.retrieval}`)).json();
   await evaluate("document.querySelector('[data-passage]').click()"); await wait("!!document.querySelector('pre')");
   assert.equal(await evaluate("document.querySelector('pre').textContent"), oldHits.hits[0].passage.text);
-  assert((await evaluate('document.body.innerText')).includes('SIMULATED'));
+  const sourceText = await evaluate('document.body.innerText');
+  assert(sourceText.includes(reviewed ? 'United States - historical 2007 guidance, not Serbian law' : 'SIMULATED'));
+  if (reviewed) assert(sourceText.includes('https://www.fincen.gov/resources/statutes-regulations/guidance/suspicious-activity-report-supporting-documentation'));
   note('Exact historical source/provenance inspected after controlled corpus replacement', setup.old);
   await query('nomatchxyz'); await wait("document.body.innerText.includes('Nema dovoljno')"); note('No-match UI');
   await nav(0); await rename(setup.store, setup.store + '.offline'); renamed = true;
@@ -73,7 +102,7 @@ try {
   assert((await evaluate("document.querySelector('pre').textContent")).includes('NEW')); note('Missing-store Retry recovery to new corpus');
   await nav(0); await wait("document.querySelectorAll('.case-choice').length===3");
   stop(backend); await pause(300); await evaluate("document.querySelector('.case-choice').click()"); await wait("!!document.querySelector('[role=alert]')");
-  backend = start('uv', ['run', '--locked', 'uvicorn', 'fraudlens.main:app', '--app-dir', 'backend/src', '--host', '127.0.0.1', '--port', '8000']);
+  backend = startBackend();
   await ready('http://127.0.0.1:8000/api/health');
   await evaluate("Array.from(document.querySelectorAll('button')).find(b=>b.textContent.includes('Pokušaj')).click()"); await wait("!!document.querySelector('.risk-score')"); note('Real backend shutdown/restart original Retry');
   assert.equal(report.errors.length, 0); note('No uncaught browser exceptions'); report.status = 'PASS';
@@ -82,5 +111,8 @@ finally {
   if (renamed && setup) { try { await rename(setup.store + '.offline', setup.store); } catch {} }
   try { await browser?.send('Browser.close'); } catch {} tab?.ws.close(); browser?.ws.close();
   for (const child of owned.reverse()) { try { stop(child); } catch (error) { report.cleanup_error = String(error); } }
-  await writeFile('evidence/tasks/feature-003-knowledge-smoke-results.json', JSON.stringify(report, null, 2) + '\n'); console.log(JSON.stringify(report, null, 2));
+  if (report.cleanup_error) { report.status = 'FAIL'; process.exitCode = 1; }
+  const resultPath = reviewed ? 'evidence/tasks/feature-003-reviewed-knowledge-smoke-results.json' : 'evidence/tasks/feature-003-knowledge-smoke-results.json';
+  await writeFile(resultPath, JSON.stringify(report, null, 2) + '\n'); console.log(JSON.stringify(report, null, 2));
+  process.exit(process.exitCode ?? 0);
 }

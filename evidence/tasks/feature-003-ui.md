@@ -31,3 +31,14 @@ Actual automated headless Chrome/proxy/UI observations are in
 [knowledge evidence](feature-003-knowledge.md) and the linked smoke JSON.
 T020 complete by test-task type; T021 code independently verified but delivery
 remains partial because actual reviewed source corpus is unavailable.
+
+## Actual-source dependency closed - 2026-11-14
+
+T021 complete: reviewed sources published, UI exercised through actual API/proxy
+and Chrome. Exact historical FinCEN passage/jurisdiction/URL, simulated missing
+facts, no-match, missing-store Retry and original three-case/restart journeys
+PASS. Frontend 156 tests PASS, typecheck/build PASS; no product UI code change.
+See [completion evidence](feature-003-phase-03-completion.md) and
+[reviewed results](feature-003-reviewed-knowledge-smoke-results.json). This is
+automated browser verification, not human clicking, peer reproduction or live
+report-quality evaluation. Earlier pending dependency statements are historical.

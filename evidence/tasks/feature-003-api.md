@@ -85,3 +85,14 @@ Full command, absolute temp/cache and warning are recorded in knowledge evidence
 Ruff PASS. Actual API/proxy/browser smoke PASS against authored TEST archive.
 Closed SearchResult remains unchanged: X-Results-Truncated true/false carries
 additional truncation information without adding JSON properties or limit override.
+
+## Actual-source dependency closed - 2026-11-14
+
+T019 complete: reviewed corpus published and direct HTTP/Vite proxy knowledge
+search/document/passage/no-match/404/422 behavior verified with actual sources.
+The existing product routes needed no changes. Prepared default archive exposed
+missing-corpus test dependence on operator state; autouse fixture now points to
+a fresh nonexistent tmp_path store, preserving assertions. Final full backend
+517 PASS / 3 existing T035 RED, Ruff PASS. See
+[completion evidence](feature-003-phase-03-completion.md) for actual commands,
+RED/GREEN and browser/proxy results. No future route placeholders or skip/xfail.

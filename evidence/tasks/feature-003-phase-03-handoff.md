@@ -1,5 +1,12 @@
 # Feature 003 Phase 3 handoff - 2026-11-14 Europe/Belgrade
 
+Current continuation: T013-T022 now complete on baseline 27ecc38 after actual
+reviewed-corpus publication and API/proxy/Chrome verification. Final backend
+517 PASS / 3 retained T035 RED; frontend 156 PASS, Ruff/typecheck/build PASS.
+See [completion handoff](feature-003-phase-03-completion.md) for commands,
+observations, test-isolation correction and sandbox limits. T023+ untouched.
+The source-review and initial implementation updates below are historical.
+
 Later source-review update (2026-11-14): Milan Gavrić explicitly approved all six
 texts and documented reuse/applicability without changes. T013 is now complete;
 manifest status reviewed and production stage validation PASS. No actual corpus

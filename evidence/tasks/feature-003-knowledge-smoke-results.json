@@ -1,5 +1,6 @@
 {
   "mode": "automated headless Chrome; authored TEST corpus, not reviewed real corpus",
+  "work": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-smoke-a18590c2-3abf-408d-ab70-06e185240d48",
   "checks": [
     {
       "name": "Real API/proxy search, 404/422",
@@ -48,6 +49,9 @@
     }
   ],
   "errors": [],
+  "corpus_version": "corpus_3652a2c324cfe84ba65563816d7b73843291af784e7ec1fe009862492f0a6e1c",
+  "retrieval_version": "071f1a593fa17471295860bb5abc3a0064261a7e159bdf3d530494881001bccb",
+  "chrome_stderr": "\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/b00a3084-e08e-46c3-abbd-6470af313e51\r\n",
   "browser": "Chrome/157.0.8103.52",
   "status": "PASS"
 }

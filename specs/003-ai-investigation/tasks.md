@@ -36,27 +36,26 @@ Goal: validated immutable contexts, typed reports and minimal durable repository
 
 ## Phase 3: US1 - Knowledge search and sources (T013-T022, P1)
 
-Status (2026-11-14): partial. T014/T016/T018/T020 complete by test-task type.
-T013 complete: Milan Gavrić approved all six source texts/reuse/applicability
-without changes; manifest reviewed, production stage validation PASS (6 documents,
-6 passages). See ../../evidence/tasks/feature-003-corpus-review.md.
-T015/T017/T019/T021/T022 independently implemented/verified with authored TEST
-corpus but remain partial until actual reviewed corpus publish/recheck. No real
-corpus published. Historical full backend 517 passed / 3 intended future T035
-failures; frontend 156 passed. See ../../evidence/tasks/feature-003-phase-03-handoff.md.
+Status (2026-11-14): complete, T013-T022. All six texts approved by Milan
+Gavrić; reviewed corpus published to the separate local store and actual-source
+API/proxy/Chrome verification PASS. All delivery dependencies met. See
+../../evidence/tasks/feature-003-phase-03-completion.md. Final backend 517 passed /
+3 deliberate future T035 failures; frontend 156 passed, Ruff/typecheck/build PASS.
+This is Phase 3 completion, not full Feature 003 acceptance or quality evaluation.
+T023+ remains unstarted.
 
 Goal: useful search/source screen without a provider. Independent test: six reviewed documents, expected passage/no-match, historical citation text and original fixture browsing. No held-out tuning in this phase.
 
 - [x] T013 [US1] Prepare six source documents and provenance manifest at `data/knowledge/fraudlens-aml-knowledge-v1/manifest.json` and `documents/`: three simulated procedures, IBM limitations guide and >=2 official sections; actual human source review, reuse terms, section/date/jurisdiction/context/hash metadata in `evidence/tasks/feature-003-corpus-review.md`. Do not invent reviewer/date/permission; pending source review remains pending. (Depends: T011; FR-005-007, SC-001.)
 - [x] T014 [P] [US1] Write knowledge RED tests in `backend/tests/unit/test_investigation_knowledge.py`: hash/date/review metadata checks, normalized LF without trimming, BOM/bare-CR rejection, 'passages <=2400 characters', <=200 initial passages, no cross-section chunks, stable subpassage identities, archived old versions and runtime exclusion of eval/reference/development-prompt paths. Use authored test sources independent of official downloads. (Depends: T006; FR-004-007, FR-025.)
-- [ ] T015 [US1] Implement `backend/src/fraudlens/investigation/knowledge.py` and `prepare-knowledge` in `backend/src/fraudlens/investigation/cli.py`; stage/publish validated complete corpus to the separate store, reject changed reviewed hashes, persist exact historical passages/provenance and safe local paths. Record GREEN and actual six-document ingest only when T013 review exists in `evidence/tasks/feature-003-knowledge.md`. (Depends: T010, T013, T014; FR-005-007, SC-001.)
+- [x] T015 [US1] Implement `backend/src/fraudlens/investigation/knowledge.py` and `prepare-knowledge` in `backend/src/fraudlens/investigation/cli.py`; stage/publish validated complete corpus to the separate store, reject changed reviewed hashes, persist exact historical passages/provenance and safe local paths. Record GREEN and actual six-document ingest only when T013 review exists in `evidence/tasks/feature-003-knowledge.md`. (Depends: T010, T013, T014; FR-005-007, SC-001.)
 - [x] T016 [P] [US1] Write deterministic BM25/search RED tests in `backend/tests/unit/test_investigation_retrieval.py`: fixed k1=1.2/b=0.75, NFKC/casefold tokens, <=5 ranked passages, stable passage-ID tie order, development-config cutoff, no adequate match, trimmed 1-500 queries, unsupported inputs and archived corpus identity. (Depends: T006, T011; FR-007-008.)
-- [ ] T017 [US1] Implement baseline `backend/src/fraudlens/investigation/retrieval.py` with frozen version hashes and explicit no-match/truncation; no embeddings/network or relevance-probability claims. Use initial configuration only; tune no thresholds until the reviewed evaluation pack is frozen. Record GREEN in `evidence/tasks/feature-003-knowledge.md`. (Depends: T015, T016; FR-007-008.)
+- [x] T017 [US1] Implement baseline `backend/src/fraudlens/investigation/retrieval.py` with frozen version hashes and explicit no-match/truncation; no embeddings/network or relevance-probability claims. Use initial configuration only; tune no thresholds until the reviewed evaluation pack is frozen. Record GREEN in `evidence/tasks/feature-003-knowledge.md`. (Depends: T015, T016; FR-007-008.)
 - [x] T018 [P] [US1] Write knowledge API RED tests in `backend/tests/integration/test_investigation_knowledge_api.py` for document/search/passage endpoints, closed schemas, 404/422/503 safe errors, corpus pinning, no path traversal or runtime scraping and no provider call. (Depends: T006, T012; FR-005-008, FR-024.)
-- [ ] T019 [US1] Implement knowledge routes in `backend/src/fraudlens/investigation/api.py` and minimal feature composition in `backend/src/fraudlens/main.py`; preserve old handlers/payloads and isolate new errors. Resolve knowledge/disabled cases of T012, leaving unrelated future cases honestly RED. Record targeted GREEN in `evidence/tasks/feature-003-api.md`. (Depends: T017, T018; FR-003, FR-005-008, FR-021.)
+- [x] T019 [US1] Implement knowledge routes in `backend/src/fraudlens/investigation/api.py` and minimal feature composition in `backend/src/fraudlens/main.py`; preserve old handlers/payloads and isolate new errors. Resolve knowledge/disabled cases of T012, leaving unrelated future cases honestly RED. Record targeted GREEN in `evidence/tasks/feature-003-api.md`. (Depends: T017, T018; FR-003, FR-005-008, FR-021.)
 - [x] T020 [P] [US1] Write frontend knowledge RED tests in `frontend/tests/investigation-knowledge.test.ts`: strict response decoder, relative encoded queries, source version/jurisdiction/simulation display, no-match/error/retry, safe literal text, keyboard focus, cancellation and stale-selection response suppression. (Depends: T006; FR-006-008, FR-012, FR-021.)
-- [ ] T021 [US1] Add strict knowledge types/client/views in `frontend/src/investigation/contracts.ts`, `api.ts`, `views.ts`, `controller.ts` and integrate knowledge navigation minimally in `frontend/src/main.ts`; do not migrate feature 002 case decoding. Record GREEN/typecheck/build in `evidence/tasks/feature-003-ui.md`. (Depends: T019, T020; FR-006-008, FR-012, FR-021.)
-- [ ] T022 [US1] Exercise search and exact historical source inspection through actual API/proxy/UI, include no-match and missing corpus, and recheck original three-case journey; record browser observations and limitations in `evidence/tasks/feature-003-knowledge.md`. No fixture search success is a live LLM evaluation. (Depends: T021; FR-005-008, FR-021, SC-001.)
+- [x] T021 [US1] Add strict knowledge types/client/views in `frontend/src/investigation/contracts.ts`, `api.ts`, `views.ts`, `controller.ts` and integrate knowledge navigation minimally in `frontend/src/main.ts`; do not migrate feature 002 case decoding. Record GREEN/typecheck/build in `evidence/tasks/feature-003-ui.md`. (Depends: T019, T020; FR-006-008, FR-012, FR-021.)
+- [x] T022 [US1] Exercise search and exact historical source inspection through actual API/proxy/UI, include no-match and missing corpus, and recheck original three-case journey; record browser observations and limitations in `evidence/tasks/feature-003-knowledge.md`. No fixture search success is a live LLM evaluation. (Depends: T021; FR-005-008, FR-021, SC-001.)
 
 ## Phase 4: US2 - Grounded report and controlled tools (T023-T038, P1)
 

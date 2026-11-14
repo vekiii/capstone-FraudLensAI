@@ -1,10 +1,10 @@
 # Feature 003 validation quickstart
 
-Status: Phase 3 knowledge loader/search/API/UI are implemented and verified on
-authored test sources. Milan Gavrić approved all six real corpus texts and their
-documented reuse/applicability; manifest status reviewed, stage validation PASS.
-Actual corpus publication/runtime recheck remains pending. Investigation/provider/worker/report commands below
-remain future implementation targets; only prepare-knowledge exists currently.
+Status: Phase 3 T013-T022 complete. Milan Gavrić approved all six source texts and
+documented reuse/applicability. Exact reviewed corpus published locally;
+actual-source API/proxy/automated Chrome verification PASS. See
+../../evidence/tasks/feature-003-phase-03-completion.md. Provider/worker/report
+commands below remain future targets; only prepare-knowledge exists currently.
 Run from repository root on `feature03` (or a reviewed descendant), preserving
 the existing feature 002/ML branches. No automatic commit, push or merge.
 
@@ -12,9 +12,15 @@ the existing feature 002/ML branches. No automatic commit, push or merge.
 
 ```powershell
 $env:SPECIFY_FEATURE_DIRECTORY = 'specs/003-ai-investigation'
-uv sync --locked --group dev
+$env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'
+py -3.14 -m uv sync --locked --group dev
 npm.cmd --prefix frontend ci
 ```
+
+Windows commands use `py -3.14 -m uv`: uv is installed under Python 3.14 even
+when bare uv is absent from PATH. If bare uv works, it is equivalent for commands
+below; Unix contributors use their available uv launcher. No .env is required:
+settings read process environment only and do not automatically load .env.
 
 Use existing Python 3.14 / Node 24 pins. A task adding the SDK resolves and commits
 the generated lockfile once; subsequent contributors use locked installs. Unix
@@ -24,11 +30,10 @@ PowerShell with `-NoProfile -ExecutionPolicy Bypass -File`; do not change machin
 
 ## Offline first increment
 
-Prepare the reviewed six-document corpus at the paths in plan.md. Every manifest
-entry needs actual provenance/reuse/human-review metadata; the official-source
-documents are not supplied by this plan. Corpus preparation must not scrape at
-runtime or import evaluation reference files. Authored contexts/history/provider
-scripts are synthetic and clearly labeled. Then:
+The six-document corpus now includes actual provenance/reuse/human-review
+metadata. Each checkout must prepare its own ignored local archive. Corpus
+preparation never scrapes at runtime or imports evaluation reference files.
+Use the reviewed committed manifest and these implemented commands:
 
 ```powershell
 $env:INVESTIGATION_ENABLED = 'true'
@@ -37,12 +42,30 @@ $env:INVESTIGATION_SOURCE = 'fixture'
 $env:INVESTIGATION_STORE = 'data/processed/investigations.sqlite'
 $env:INVESTIGATION_ANALYST = 'local-demo-analyst'
 $env:PYTHONPATH = Join-Path $PWD 'backend/src'
-uv run --locked python -m fraudlens.investigation.cli prepare-knowledge --manifest data/knowledge/fraudlens-aml-knowledge-v1/manifest.json --store data/processed/investigations.sqlite
-uv run --locked python -m uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
+py -3.14 -m uv run --locked python -m fraudlens.investigation.cli prepare-knowledge --manifest data/knowledge/fraudlens-aml-knowledge-v1/manifest.json --store data/processed/investigations.sqlite
+py -3.14 -m uv run --locked python -m uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
 ```
 
-In another terminal run `npm.cmd --prefix frontend run dev`. Search knowledge,
-inspect exact provenance and open CASE-001. Start investigation: creation must
+In another terminal run `npm.cmd --prefix frontend run dev`. Search knowledge
+with `missing occupation` or `supporting documentation`, inspect exact provenance,
+and open CASE-001. `nomatchxyz` exercises no-match. The 0.5 cutoff remains an
+untuned demo heuristic; Serbian-English glossary support is future T054 work.
+
+Reproducible automated browser check (requires free 8000/5173/9228, installed
+Chrome and prepared locked .venv; execute from an ordinary local PowerShell, or
+with process escalation if the Codex sandbox blocks Chrome GPU subprocesses):
+
+```powershell
+node evidence/tasks/feature-003-knowledge-smoke.mjs --reviewed
+```
+
+It uses an isolated .cache store/profile, leaves the default archive intact,
+checks actual-source historical text and original cases, and stops owned services.
+
+## Planned investigation increment (T023+, not implemented)
+
+Commands/journeys from here through evaluation are future validation targets.
+Start investigation: creation must
 return a queued attempt without a provider call. In a separate root terminal
 with the same feature settings run:
 

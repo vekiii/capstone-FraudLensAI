@@ -1,4 +1,4 @@
-"""Composition RED: future routes deliberately absent until T019/T035."""
+"""Composition checks; three intended T035 RED cases remain for future routes."""
 import socket
 
 import httpx
@@ -12,9 +12,11 @@ from fraudlens.settings import Settings
 
 
 @pytest.fixture(autouse=True)
-def environment(monkeypatch):
+def environment(monkeypatch, tmp_path):
     for key in ['OPENAI_API_KEY', 'OPENAI_MODEL', 'APP_MODE', 'INVESTIGATION_ENABLED']:
         monkeypatch.delenv(key, raising=False)
+    # Missing-corpus cases must not depend on the operator's prepared demo store.
+    monkeypatch.setenv('INVESTIGATION_STORE', str(tmp_path / 'missing.sqlite'))
 
 
 def test_disabled_foundation_is_unchanged():

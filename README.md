@@ -1,5 +1,13 @@
 # FraudLens AI
 
+Feature 003 update (2026-11-14): T013-T022 knowledge search/source browsing is
+complete with six human-reviewed documents and actual API/proxy/Chrome checks.
+See [executable knowledge quickstart](specs/003-ai-investigation/quickstart.md)
+and [completion evidence](evidence/tasks/feature-003-phase-03-completion.md).
+No .env or provider key is needed for this increment. Windows can invoke uv as
+`py -3.14 -m uv` when bare uv is absent from PATH. Provider/report work is next.
+The foundation description and historical results below retain their original scope.
+
 Educational AML prototype. Foundation phases 1-5 are implemented: local synthetic
 cases, strict contracts, replaceable scoring and list/detail UI. Phase 6 verifies
 coverage and delivery; independent peer reproduction and human review are pending.

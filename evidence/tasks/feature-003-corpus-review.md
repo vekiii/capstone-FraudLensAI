@@ -1,5 +1,10 @@
 # Current human source review - 2026-11-14
 
+Later implementation update: actual corpus publication and runtime recheck now
+PASS; see [Phase 3 completion](feature-003-phase-03-completion.md).
+The review-time no-publication statements below remain historical; reviewer
+identities, decisions, timestamps and approved source hashes are unchanged.
+
 Branch: feature03. All six texts approved without changes by Milan Gavrić.
 T013 complete. Manifest status reviewed; no actual corpus publish/ingest performed.
 
