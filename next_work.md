@@ -1,4 +1,14 @@
-# Current handoff - feature 003 Phase 3 complete, 2026-11-14
+# Current handoff - feature 003 Phase 4 in progress, 2026-11-14
+Branch feature03; baseline 1a99c34. User authorized Phase 4 continuation.
+T023/T024 tools complete: executed 23 RED, then tools+store 31 PASS, Ruff PASS.
+Evidence: [tools](evidence/tasks/feature-003-tools.md),
+[prompt](prompts/development/003-investigation-phase-04.md).
+T025/T026 complete: report validation 27 RED -> 27 PASS, Ruff PASS.
+Evidence: evidence/tasks/feature-003-reports.md. Next: T027 provider RED, then T028. T033 live provider probe remains
+separately gated; no credentials read or provider call. No commit/push.
+Earlier handoffs below are historical where superseded.
+
+# Previous handoff - feature 003 Phase 3 complete, 2026-11-14
 Branch feature03; baseline/current HEAD 27ecc38. T013-T022 complete. Milan Gavrić's
 six-document source/reuse/applicability review preserved. Published the exact
 reviewed corpus (6 docs/6 passages) to ignored data/processed/investigations.sqlite;

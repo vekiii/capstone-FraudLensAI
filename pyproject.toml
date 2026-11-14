@@ -5,6 +5,7 @@ description = "FraudLens AI educational AML prototype"
 requires-python = ">=3.14,<3.15"
 dependencies = [
     "fastapi>=0.115,<1",
+    "openai>=3.51.0",
     "pydantic>=2,<3",
     "uvicorn>=0.30,<1",
 ]

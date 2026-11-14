@@ -81,7 +81,7 @@ class InvestigationRepository:
                 raise ValueError('Investigation not found')
             return dict(row)
 
-    def create(self, context, actor, operation, request_key, payload):
+    def create(self, context, actor, operation, request_key, payload, binding=None):
         UUID(request_key)
         if not isinstance(actor, str) or not 1 <= len(actor.strip()) <= 80:
             raise ValueError('Invalid actor')
@@ -106,6 +106,9 @@ class InvestigationRepository:
                 db.execute('INSERT INTO investigation_runs VALUES (?,?)', (run_id, revision))
                 db.execute('INSERT INTO attempts VALUES (?,?,?,?,?,?,?)',
                            (attempt_id, run_id, revision, 'created', 1, 0, time.time()))
+                if binding is not None:
+                    db.execute('INSERT INTO audit_events(attempt_id,content) VALUES (?,?)',
+                               (attempt_id, canonical({'operation': 'binding', **binding}).decode()))
                 cursor = db.execute('SELECT * FROM attempts WHERE attempt_id=?', (attempt_id,))
                 response = dict(zip([field[0] for field in cursor.description], cursor.fetchone()))
                 db.execute('INSERT INTO request_keys VALUES (?,?,?,?,?,?)',
@@ -195,7 +198,7 @@ class InvestigationRepository:
             db.execute('INSERT INTO reviews VALUES (?,?,?,?)', (review_id, attempt_id, report_id, content))
             db.execute('INSERT INTO audit_events(attempt_id,content) VALUES (?,?)', (attempt_id, content))
 
-    def reserve_tool(self, attempt_id, owner, name, arguments):
+    def reserve_tool(self, attempt_id, owner, name, arguments, call_id=None):
         definitions = {'get_case_facts': 'CaseFactsArguments',
                        'get_account_history': 'HistoryArguments',
                        'search_procedures': 'SearchArguments'}
@@ -207,10 +210,51 @@ class InvestigationRepository:
             row = db.execute('SELECT state FROM attempts WHERE attempt_id=?', (attempt_id,)).fetchone()
             if lease[:2] != (attempt_id, owner) or lease[2] < time.time() or row is None or row[0] != 'gathering_evidence':
                 raise ValueError('Invalid worker scope')
+            if call_id is not None and db.execute(
+                "SELECT 1 FROM tool_steps WHERE attempt_id=? AND json_extract(content,'$.call_id')=?",
+                (attempt_id, call_id),
+            ).fetchone():
+                raise ValueError('duplicate_tool_call')
             sequence = db.execute('SELECT count(*) FROM tool_steps WHERE attempt_id=?', (attempt_id,)).fetchone()[0] + 1
             if sequence > 12:
                 raise ValueError('tool_budget_exhausted')
             db.execute('INSERT INTO tool_steps VALUES (?,?,?)',
                        (attempt_id, sequence, canonical({'name': name, 'arguments': arguments,
-                                                        'status': 'reserved'}).decode()))
+                                                        'status': 'reserved',
+                                                        'call_id': call_id}).decode()))
         return sequence
+
+    def reject_tool(self, attempt_id, name, code):
+        """Audit rejections without retaining possibly secret arguments."""
+        self.get(attempt_id)
+        safe_name = name if name in {
+            'get_case_facts', 'get_account_history', 'search_procedures'} else 'unknown'
+        with self.transaction() as db:
+            db.execute('INSERT INTO audit_events(attempt_id,content) VALUES (?,?)',
+                       (attempt_id, canonical(dict(operation='tool', name=safe_name,
+                                                   status='rejected', code=code)).decode()))
+
+    def finish_tool(self, attempt_id, owner, sequence, evidence, status, elapsed_ms, code=None):
+        """Commit evidence and outcome together, refusing expired/late workers."""
+        items = [validate('Evidence', item) for item in evidence]
+        with self.transaction() as db:
+            lease = db.execute('SELECT attempt_id,owner,expires FROM worker_lease WHERE singleton=1').fetchone()
+            attempt = db.execute('SELECT context_revision,state FROM attempts WHERE attempt_id=?',
+                                 (attempt_id,)).fetchone()
+            step = db.execute('SELECT content FROM tool_steps WHERE attempt_id=? AND sequence=?',
+                              (attempt_id, sequence)).fetchone()
+            if (lease[:2] != (attempt_id, owner) or lease[2] < time.time()
+                    or attempt is None or attempt[1] != 'gathering_evidence' or step is None):
+                raise ValueError('Invalid worker scope')
+            record = json.loads(step[0])
+            if record['status'] != 'reserved' or status not in ('completed', 'failed'):
+                raise ValueError('Invalid tool outcome')
+            for item in items:
+                if item['attempt_id'] != attempt_id or item['context_revision'] != attempt[0]:
+                    raise ValueError('Evidence scope mismatch')
+                db.execute('INSERT INTO evidence_items VALUES (?,?,?)',
+                           (item['evidence_id'], attempt_id, canonical(item).decode()))
+            record.update(status=status, elapsed_ms=elapsed_ms, code=code,
+                          evidence_refs=[item['evidence_id'] for item in items])
+            db.execute('UPDATE tool_steps SET content=? WHERE attempt_id=? AND sequence=?',
+                       (canonical(record).decode(), attempt_id, sequence))

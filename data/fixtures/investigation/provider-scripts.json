@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "notice": "Authored TEST provider sequences, not live AI or model-quality evidence.",
+  "scenarios": {
+    "grounded": [
+      {"tool": "get_case_facts", "arguments": {}},
+      {"tool": "get_account_history", "arguments": {"account_side": "sender"}},
+      {"tool": "search_procedures", "arguments": {"query": "missing evidence"}},
+      {"draft": "grounded"}
+    ],
+    "needs_information": [
+      {"tool": "get_case_facts", "arguments": {}},
+      {"tool": "get_account_history", "arguments": {"account_side": "sender"}},
+      {"tool": "search_procedures", "arguments": {"query": "nomatchxyz"}},
+      {"draft": "needs_information"}
+    ],
+    "invalid_citation": [
+      {"tool": "get_case_facts", "arguments": {}},
+      {"tool": "get_account_history", "arguments": {"account_side": "sender"}},
+      {"tool": "search_procedures", "arguments": {"query": "missing evidence"}},
+      {"draft": "invalid_citation"}
+    ],
+    "refusal": [{"outcome": "refusal"}],
+    "incomplete": [{"outcome": "incomplete"}]
+  }
+}
