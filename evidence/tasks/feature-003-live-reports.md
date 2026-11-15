@@ -1,3 +1,10 @@
+# Current T058 status - 2026-11-15
+T033 capability gate is now verified; original blocked_by_T033 record below is
+historical. T058 still unexecuted: current live runner/materialized adapter/freeze
+readiness and separately authorized provider-call budget required. T033 used all
+4/4 newly authorized attempts; that budget does not authorize case generation.
+See [T033 closure](feature-003-t033-closure.md). No human report ratings exist yet.
+
 # T058 blocked_by_T033 - 2026-11-15
 
 No probe, real worker, OpenAI evaluation call or other provider request executed.

@@ -8,6 +8,10 @@
   "original_sealed_inventory_sha256": "85e602d1fd69ee10d19b0e751943cd2d2ebde42afbe73f6cb0cc3b72fa448d37",
   "original_approval_and_inputs_unchanged": true,
   "implementation_changes": {
+    "backend/src/fraudlens/investigation/provider.py": {
+      "t052_sha256": "92cba9ab5e4d788e9f22765c06a401a4be5fb8879cbb3b5c3ea7b8dbe27f1944",
+      "current_sha256": "a6e99864a1406f1847dacfa3ca31749f699eae9574151caa2901dfbad82aef9c"
+    },
     "backend/src/fraudlens/investigation/retrieval.py": {
       "t052_sha256": "cac72d2c97477a631ba7a48dd2a6f2c03c5da3dea69350c590bd13097903004c",
       "current_sha256": "126be07da52662beea6c3d7d0b773a962fef0372dda8b5125a3245d873f923ef"
@@ -38,5 +42,6 @@
   "glossary_review": "reviewed",
   "t055": "retrieval_frozen",
   "t056": "executed_below_quality_targets",
-  "live_provider": "not_called"
+  "live_provider": "T033_synthetic_probe_only",
+  "provider_capability": "verified_T033"
 }

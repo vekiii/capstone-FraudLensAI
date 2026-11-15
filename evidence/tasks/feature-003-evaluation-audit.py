@@ -25,7 +25,17 @@ def main():
     assert digest(content)==protocol['bundle_sha256']
     changes={name:dict(t052_sha256=old,current_sha256=file_hash(ROOT/name))
              for name,old in approved.items() if file_hash(ROOT/name)!=old}
-    assert set(changes) <= {'backend/src/fraudlens/investigation/retrieval.py'}, 'Unexpected sealed input/source change'
+    allowed={'backend/src/fraudlens/investigation/retrieval.py'}
+    compatibility_path=ROOT/'evidence/tasks/feature-003-t033-compatibility.json'
+    compatibility=json.loads(compatibility_path.read_text(encoding='utf-8')) if compatibility_path.exists() else None
+    if compatibility:
+        probe_path=ROOT/'evidence/tasks/feature-003-t033-resume-results.json'
+        probe=json.loads(probe_path.read_text(encoding='utf-8'))
+        assert probe['runs'][-1]['result']['status']=='capability_probe_passed'
+        assert hashlib.sha256(probe_path.read_bytes()).hexdigest()==compatibility['probe_record_sha256']
+        assert file_hash(ROOT/'backend/src/fraudlens/investigation/provider.py')==compatibility['provider_source_sha256']
+        allowed.add('backend/src/fraudlens/investigation/provider.py')
+    assert set(changes) <= allowed, 'Unexpected sealed input/source change'
     runtime=[]
     for path in (ROOT/'backend/src/fraudlens/investigation').glob('*.py'):
         if path.name in ('evaluation.py','cli.py'):
@@ -59,7 +69,9 @@ def main():
         held_out_exposure='No retrieval/investigation held-out questions or references printed/read into model context. Safety stimuli inspected; H08 input/reference not opened.',
         glossary_review=json.loads((ROOT/'data/knowledge/fraudlens-aml-knowledge-v1/glossary.json').read_text(encoding='utf-8'))['status'],
         t055='retrieval_frozen' if extension else 'not_frozen',
-        t056='executed_below_quality_targets' if (ROOT/'evidence/tasks/feature-003-retrieval-results.json').exists() else 'not_run',live_provider='not_called')
+        t056='executed_below_quality_targets' if (ROOT/'evidence/tasks/feature-003-retrieval-results.json').exists() else 'not_run',
+        live_provider='T033_synthetic_probe_only' if compatibility else 'not_called',
+        provider_capability='verified_T033' if compatibility else 'pending')
     target=ROOT/('evidence/tasks/feature-003-evaluation-audit-results.json' if extension else 'evals/investigation/implementation-lineage-v2.json')
     target.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(dict(status='PASS',files_hashed=len(approved),t052_bundle_sha256=protocol['bundle_sha256'],lineage_sha256=digest(result))))

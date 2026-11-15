@@ -17,8 +17,8 @@ PRIVATE = re.compile(r'label|laundering|isfraud|reference.answer|source.path|sou
 def compile_report_schema():
     """Inline reachable definitions; conditional business rules stay in validation.py.
 
-    The provider enforces the closed shape. The original allOf/if/then outcome
-    conditions are explicitly enforced again by the unchanged local validator.
+    The provider enforces the closed shape. Original allOf/if/then conditions and
+    uniqueItems constraints are enforced again by the unchanged local validator.
     """
     def compile_node(node):
         if isinstance(node, list):
@@ -30,7 +30,14 @@ def compile_report_schema():
             if not node['$ref'].startswith(prefix):
                 raise ProviderError('unsupported_capability')
             return compile_node(SCHEMA['$defs'][node['$ref'][len(prefix):]])
-        return {key: compile_node(value) for key, value in node.items() if key != 'allOf'}
+        compiled={key: compile_node(value) for key, value in node.items()
+                  if key not in ('allOf','uniqueItems')}
+        # Provider regex engines reject lookarounds. Keep exact-end validation
+        # in the original local schema; outbound JSON uses a portable anchor.
+        pattern=compiled.get('pattern')
+        if isinstance(pattern,str) and pattern.endswith(r'(?![\s\S])'):
+            compiled['pattern']=pattern[:-len(r'(?![\s\S])')]+'$'
+        return compiled
     return compile_node(SCHEMA['$defs']['ReportDraft'])
 
 

@@ -90,3 +90,40 @@ required capability gate did not pass. Offline T034-T038 remain complete. Next
 concrete step: separately authorize diagnosis of this HTTP 400 using the recorded
 request ID; any new provider request needs a new explicit budget. Phase 5 remains
 unstarted. No commit/push.
+
+
+## T033 resume - 2026-11-15, local preparation pending private key
+
+Baseline cf218b0359cededfb2e201fd251b5361cb4c5d03, initially clean. User explicitly
+requests T033 completion and approves at most FOUR new transport attempts,
+including connection failures. Previous two-attempt evidence remains unchanged.
+New opt-in instrument feature-003-t033-resume.py persists attempt count before I/O,
+caps four across invocations, retains only allowlisted error metadata and SHA of
+error text, no raw request/response/auth headers. Probe/model unchanged so far.
+Actual first invocation exited 1 BEFORE transport: no model/key configuration.
+Safe presence checks: root D:/AIBootcamp/capstone, .env absent, neither process
+override present. User reports D:/AIBootcamp/capsone and missing .env; actual tool
+filesystem capstone exists, capsone does not. Created ignored local .env template
+in current project with EMPTY key and historical requested gpt-6-luna model.
+No secret value shown/committed. User must fill private key locally; do not ask
+for key in chat. Live attempts used in NEW budget: 0/4; no provider requests yet.
+
+Local authored diagnostics/cap tests plus probe/SDK mocks: 25 PASS, exit 0; Ruff
+backend PASS. No production provider changes or speculative schema fixes. Current
+compiled tools/report schema has no allOf/oneOf/if/then/else keyword candidates;
+this structural check does not diagnose the old HTTP 400 or prove capability.
+Official schema documentation consulted:
+https://developers.openai.com/api/docs/guides/structured-outputs .
+Original schema/runtime/frozen T055 configuration/held-out results unchanged.
+T033 remains unchecked. No T058, SDK upgrades, model switch or Git publication.
+
+
+## T033 verified - 2026-11-15
+
+New explicitly authorized four-attempt ledger: 400, 400, 200, 200. Provider-only
+schema compatibility fixed with two executed RED/GREEN checks; original local
+schema/uniqueness/exact-end validation preserved. gpt-6-luna returned tool call
+and valid needs_information draft; capability_probe_passed. T033 now complete.
+Full backend 755 PASS, Ruff PASS. No T058 or further calls (4/4 budget exhausted).
+See [actual T033 closure](feature-003-t033-closure.md) and safe metadata result.
+Earlier pending T033 entries above are historical and superseded.

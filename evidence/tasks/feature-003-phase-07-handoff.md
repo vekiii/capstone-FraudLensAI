@@ -105,3 +105,14 @@ executed tools/actions zero. No live provider/real .env, no human quality rating
 no runtime/frozen configuration change or T056 rerun. T033 and T058-T061 gates remain.
 See [complete closure](feature-003-t057-closure.md) and [hash manifest](feature-003-t057-results.json).
 Earlier partial records below are historical.
+
+
+## T033 verified - 2026-11-15
+
+New explicitly authorized four-attempt ledger: 400, 400, 200, 200. Provider-only
+schema compatibility fixed with two executed RED/GREEN checks; original local
+schema/uniqueness/exact-end validation preserved. gpt-6-luna returned tool call
+and valid needs_information draft; capability_probe_passed. T033 now complete.
+Full backend 755 PASS, Ruff PASS. No T058 or further calls (4/4 budget exhausted).
+See [actual T033 closure](feature-003-t033-closure.md) and safe metadata result.
+Earlier pending T033 entries above are historical and superseded.

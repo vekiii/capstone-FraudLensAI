@@ -56,6 +56,42 @@ def test_strict_request_model_budget_and_no_hidden_retry():
     assert len(seen) == 1 and 'PRIVATE-CANARY' not in str(error.value)
 
 
+def test_provider_projection_omits_unique_items_without_relaxing_local_schema():
+    from jsonschema import Draft202012Validator, ValidationError
+
+    from fraudlens.investigation.models import validate
+    compiled=compile_report_schema()
+    def check(node):
+        if isinstance(node,dict):
+            assert 'uniqueItems' not in node
+            for value in node.values():
+                check(value)
+        elif isinstance(node,list):
+            for value in node:
+                check(value)
+    check(compiled)
+    local=SCHEMA['$defs']['ReportDraft']['properties']['citations']
+    assert local['uniqueItems'] is True
+    # Use the actual compiled item shape; local uniqueness remains mandatory.
+    citation_schema={**compiled['properties']['citations'],'uniqueItems':local['uniqueItems']}
+    with pytest.raises(ValidationError):
+        Draft202012Validator(citation_schema).validate(['ev_'+'a'*32]*2)
+    draft=dict(outcome='needs_information',summary=[],observed_facts=[],risk_indicators=[],
+               alternative_explanations=[],missing_information=['Synthetic'],
+               recommended_checks=[],limitations=['Synthetic probe'],citations=[])
+    validate('ReportDraft',draft)
+
+
+def test_provider_pattern_uses_supported_anchor_and_local_rejects_terminal_newline():
+    from fraudlens.investigation.models import validate
+    projected=compile_report_schema()['properties']['citations']['items']['pattern']
+    assert '(?!' not in projected
+    assert projected=='^ev_[0-9a-f]{32}$'
+    validate('EvidenceId','ev_'+'a'*32)
+    with pytest.raises(ValueError):
+        validate('EvidenceId','ev_'+'a'*32+'\n')
+
+
 @pytest.mark.parametrize('status,code', [(401,'provider_access'),(403,'provider_access'),
     (400,'unsupported_capability'),(404,'unsupported_capability'),(500,'provider_failure')])
 def test_safe_access_capability_and_transient_errors(status, code):

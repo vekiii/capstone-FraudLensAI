@@ -1,3 +1,31 @@
+# Current handoff - T033 complete, 2026-11-15
+Feature03 baseline cf218b0. New approved 4-attempt budget used exactly 4/4:
+400 schema/citations, 400 pattern, then 200 tool + 200 structured draft.
+Requested/returned gpt-6-luna; capability_probe_passed. Provider projection now
+omits uniqueItems and maps exact-end lookahead to portable outbound anchor;
+original local schemas/strict validation remain unchanged. Two actual RED/GREEN
+regressions; final backend 755 PASS, Ruff PASS. Real key privately loaded from
+ignored .env; shareable-file scan found no key. Old 2-attempt evidence preserved.
+No runtime retrieval/frozen cutoff/glossary/T056 changes or quality rerun.
+Evidence: [T033 closure](evidence/tasks/feature-003-t033-closure.md).
+T058/T059 still unexecuted; T060/T061 incomplete. No further calls, model change,
+Git publication or T058 authorization inferred from exhausted T033 budget.
+Next: separately scope T058 materialized/live runner readiness and its explicit
+new provider-call budget before actual case generation. Earlier handoffs historical.
+
+# Current T033 resume - 2026-11-15
+User approves new max FOUR transport attempts for existing-model synthetic probe.
+New live attempts used 0/4: invocation stopped before transport because .env/key
+were absent. Current tool project D:/AIBootcamp/capstone exists; user-reported
+capsone does not exist in tool filesystem. Prepared ignored .env template with
+empty key and historical requested gpt-6-luna; no secret printed or committed.
+25 local probe/SDK/diagnostic tests PASS, Ruff PASS. T033 unchecked; no live call,
+model switch, runtime/frozen configuration change, T058 or Git publication.
+Evidence: evidence/tasks/feature-003-provider-access.md (resume amendment).
+Next: user fills OPENAI_API_KEY privately in project .env and confirms readiness;
+then use opt-in bounded resume instrument within remaining four attempts.
+Earlier handoffs below historical.
+
 # Current handoff - T057 complete, 2026-11-15
 Feature03 baseline 1c76674. All 12 frozen safety categories now covered by 52
 backend safety subcases; final full backend 750 PASS, frontend 186 PASS, Ruff/diff
