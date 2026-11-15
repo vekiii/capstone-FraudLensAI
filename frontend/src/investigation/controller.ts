@@ -14,16 +14,22 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
   let saved: Run[] = [];
   let totalCount = 0;
   let createKey: string | undefined;
+  const actionKeys = new Map<string, string>();
+  const history = new Map<string, Run>();
+  let blocked = false;
   const interval = Math.min(5000, Math.max(10, options.pollInterval ?? 1000));
   const maximum = Math.min(120, Math.max(1, options.maxPolls ?? 120));
   const current = (token: number) => !disposed && generation === token;
   function begin() { generation++; clearTimeout(timer); pending.abort(); evidencePending?.abort(); pending = new AbortController(); return generation; }
-  const view = createReportView(root, { start: () => { void create(); }, refresh: () => { void initialize(); }, select: id => { const run = saved.find(item => item.attempt_id === id); if (run) { const token = begin(); polls = 0; show(run, token); } }, evidence: id => { void evidence(id); } });
+  const view = createReportView(root, { start: () => { void create(); }, refresh: () => { void initialize(); }, select: id => { const run = saved.find(item => item.attempt_id === id) ?? history.get(id); if (run) { const token = begin(); polls = 0; show(run, token); } }, evidence: id => { void evidence(id); }, retry: reuse => { void mutate('retry', reuse); }, cancel: () => { void mutate('cancel', false); }, parent: () => { void parent(); } });
   function checked(value: unknown, expected?: string) { const run = decodeRun(value); if (run.case_id !== caseId || run.context_revision !== revision || run.snapshot_ref !== snapshot || (expected && run.attempt_id !== expected)) throw new Error(); return run; }
   function show(run: Run, token: number) {
     saved = saved.map(item => item.attempt_id === run.attempt_id ? run : item);
     view.saved(saved, totalCount, totalCount > 20);
-    selected = run; view.run(run);
+    selected = run; view.run(run, run.context_revision !== revision || !saved.some(item => item.attempt_id === run.attempt_id));
+    if (run.report) history.set(run.attempt_id, run);
+    view.historical([...history.values()].filter(item => item.context_revision !== revision));
+    if (blocked) view.recoveryError('stale_snapshot', true);
     if (['created', 'gathering_evidence', 'drafting'].includes(run.state)) {
       if (polls >= maximum) view.paused();
       else timer = setTimeout(() => { void poll(run.attempt_id, token); }, interval);
@@ -40,13 +46,15 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
       const value = await client.list(caseId, pending.signal); if (!current(token)) return;
       const { snapshot_ref, context_revision, ...body } = value;
       const result = decodeRuns(body); const binding = decodeContextBinding(snapshot_ref, context_revision);
-      snapshot = binding.snapshot_ref; revision = binding.context_revision;
+      if (revision !== binding.context_revision) { createKey = undefined; actionKeys.clear(); }
+      snapshot = binding.snapshot_ref; revision = binding.context_revision; blocked = false;
       saved = result.items.map(run => checked(run)); totalCount = result.total_count; view.saved(saved, totalCount, result.truncated);
+      view.historical([...history.values()].filter(item => item.context_revision !== revision));
       if (saved.length) show(saved[0], token); else { selected = undefined; view.empty(); }
     } catch (error) { if (current(token)) view.error(error instanceof KnowledgeError ? error.code : 'invalid_response'); }
   }
   async function create() {
-    if (!snapshot || disposed) return;
+    if (!snapshot || disposed || blocked) return;
     const token = begin(); view.loading(); polls = 0;
     createKey ??= crypto.randomUUID();
     try {
@@ -56,7 +64,40 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
       if (!saved.some(item => item.attempt_id === run.attempt_id)) totalCount++;
       saved = [run, ...saved.filter(item => item.attempt_id !== run.attempt_id)].slice(0, 20);
       show(run, token);
-    } catch (error) { if (current(token)) view.error(error instanceof KnowledgeError ? error.code : 'invalid_response'); }
+    } catch (error) { if (current(token)) { const code = error instanceof KnowledgeError ? error.code : 'invalid_response'; blocked = ['stale_snapshot', 'revision_conflict', 'request_conflict'].includes(code); view.error(code); } }
+  }
+  async function mutate(operation: 'retry' | 'cancel', reuse: boolean) {
+    const run = selected;
+    if (!run || disposed || blocked || run.context_revision !== revision) return;
+    const token = begin(); view.loading(); polls = 0;
+    // The action key survives uncertain transport, including an aborted browser request.
+    const identity = `${run.attempt_id}:${run.revision}:${operation}:${reuse}`;
+    let key = actionKeys.get(identity); if (!key) { key = crypto.randomUUID(); actionKeys.set(identity, key); }
+    try {
+      const value = operation === 'retry' ? await client.retry(run, reuse, key, pending.signal) : await client.cancel(run, key, pending.signal);
+      if (!current(token)) return;
+      const next = checked(value, operation === 'cancel' ? run.attempt_id : undefined);
+      if (next.run_id !== run.run_id || (operation === 'retry' && (next.parent_attempt_id !== run.attempt_id || next.attempt_id === run.attempt_id))) throw new Error();
+      actionKeys.delete(identity);
+      if (operation === 'retry') saved = [next, ...saved.filter(item => item.run_id !== next.run_id)].slice(0, 20);
+      show(next, token);
+    } catch (error) {
+      if (!current(token)) return;
+      const code = error instanceof KnowledgeError ? error.code : 'invalid_response';
+      blocked = ['stale_snapshot', 'revision_conflict', 'request_conflict', 'invalid_transition'].includes(code);
+      show(run, token); clearTimeout(timer); view.recoveryError(code, blocked);
+    }
+  }
+  async function parent() {
+    const run = selected; if (!run?.parent_attempt_id) return;
+    const token = begin(); view.loading();
+    try {
+      const value = await client.attempt(run.parent_attempt_id, caseId, run.context_revision, pending.signal);
+      if (!current(token)) return;
+      const previous = decodeRun(value);
+      if (previous.attempt_id !== run.parent_attempt_id || previous.run_id !== run.run_id || previous.case_id !== caseId || previous.context_revision !== run.context_revision || previous.snapshot_ref !== run.snapshot_ref) throw new Error();
+      show(previous, token);
+    } catch { if (current(token)) view.error('invalid_response'); }
   }
   async function evidence(id: string) {
     const run = selected, token = generation; if (!run?.report?.draft.citations.includes(id)) return;

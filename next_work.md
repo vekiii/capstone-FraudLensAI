@@ -1,3 +1,40 @@
+# Current handoff - feature 003 Phase 5 complete offline, 2026-11-15
+Branch feature03; baseline/current HEAD 093739f. Initial worktree clean.
+T039-T044 implemented and verified; stop at T044. Explicit retry/cancel with
+If-Match/key, durable original response replay, linked child attempts/fresh
+limits, revalidated child-bound evidence, interrupted/unknown outcome handling,
+late-result refusal and source/revision conflict UI with explicit refresh.
+Parent state/report/counters preserved; retry reserves its revision atomically.
+Run list projects latest attempt per run; previous attempts remain readable.
+Atomic claim/deadline/start audit and consistent SQLite read snapshots added.
+
+Executed intended RED: recovery 8; API 5; UI 5; reuse/replay 2; backoff 1;
+latest-run list 1; parent navigation 1. Fixture URL setup failure was not RED.
+Final backend **653 PASS**, frontend **172 PASS**, Ruff/typecheck/build PASS.
+Actual process/connection checks **6 PASS**: four killed CLI boundaries,
+two-connection same-key retries, distinct-key CAS and late cancelled CLI reply.
+Actual Chrome/API/proxy checks **8 PASS**: queued/failed/retried navigation,
+delayed HTTP reply, previous attempt, controlled source switch, saved historical
+report/citation and original fixture behavior. Final owned cleanup/ports PASS.
+Chrome needed sandbox escalation; earlier failed harness runs are documented.
+No installations, lockfile/producer/ML changes or human/LLM quality claim.
+Harnesses force fixture/test mode and absent ENV_FILE before settings load;
+actual .env was not read, OpenAI/T033 were not invoked. T033 stays explicitly
+unchecked after the earlier HTTP 400; capability/access is still unverified.
+In-memory UI historical list lasts for its mount; persisted attempt API and
+parent access remain. One local worker/finite lease, no exactly-once billing claim.
+Human review and independent reproduction pending. No Phase 6+, commit or push.
+
+Evidence: [Phase 5 recovery](evidence/tasks/feature-003-recovery.md),
+[state](evidence/tasks/feature-003-state.md),
+[process results](evidence/tasks/feature-003-recovery-process-results.json),
+[browser results](evidence/tasks/feature-003-recovery-browser-results.json),
+[original prompt](prompts/development/003-investigation-phase-05.md).
+**One concrete next step:** Milan reviews the uncommitted T039-T044 diff/evidence;
+separately authorize Phase 6 T045-T051 if desired. Do not continue automatically
+or rerun T033 under its exhausted prior budget.
+Earlier handoffs below are historical and superseded where different.
+
 # Current handoff - feature 003 T033 attempted, capability pending, 2026-11-15
 Branch feature03, unchanged HEAD 8334b89. User authorized only T033 and private
 root .env loading, at most two API calls. Investigation settings now load root

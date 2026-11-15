@@ -1,5 +1,6 @@
 ﻿"""Read-only knowledge API, separate from foundation error handlers."""
 import json
+import re
 import sqlite3
 from urllib.parse import urlsplit
 from uuid import UUID
@@ -27,6 +28,8 @@ def error(status, code):
                 'investigation_not_found': 'Investigation not found.',
                 'stale_snapshot': 'The source snapshot has changed. Refresh the case.',
                 'request_conflict': 'Request identity already used for different input.',
+                'revision_conflict': 'Saved revision changed. Refresh before another action.',
+                'invalid_transition': 'Action is not allowed for this attempt state.',
                 'context_unavailable': 'Selected source context unavailable.',
                 'provider_unavailable': 'Provider configuration unavailable.',
                 'store_busy': 'Investigation store is busy.'}
@@ -139,7 +142,7 @@ def feature_exception(exc):
         return error(503, 'store_busy')
     if isinstance(exc, ValueError):
         code = str(exc)
-        if code in ('stale_snapshot', 'request_conflict'):
+        if code in ('stale_snapshot', 'request_conflict', 'revision_conflict', 'invalid_transition'):
             return error(409, code)
         if code == 'provider_unavailable':
             return error(503, code)
@@ -199,8 +202,11 @@ def list_runs(request: Request):
         if revision is not None and revision != context['context_revision']:
             raise RouteFailure(409, 'stale_snapshot')
         with service.repo.connection() as db:
-            count = db.execute('SELECT count(*) FROM attempts WHERE context_revision=?', (context['context_revision'],)).fetchone()[0]
-            rows = db.execute('SELECT attempt_id FROM attempts WHERE context_revision=? ORDER BY created_at DESC,run_id LIMIT 20',
+            count = db.execute('SELECT count(*) FROM investigation_runs WHERE context_revision=?', (context['context_revision'],)).fetchone()[0]
+            rows = db.execute('''SELECT attempt_id FROM attempts a WHERE context_revision=?
+                              AND NOT EXISTS (SELECT 1 FROM attempts newer WHERE newer.run_id=a.run_id
+                                AND (newer.created_at>a.created_at OR (newer.created_at=a.created_at AND newer.rowid>a.rowid)))
+                              ORDER BY created_at DESC,run_id LIMIT 20''',
                               (context['context_revision'],)).fetchall()
         result = validate('RunList', dict(contract_version=1, total_count=count,
             truncated=count > 20, items=[service.read(row[0]) for row in rows]))
@@ -243,6 +249,50 @@ def read_evidence(request: Request, attempt_id: str, evidence_id: str):
         return JSONResponse(item)
     except (RouteFailure, ValueError, KeyError, OSError, sqlite3.Error, KnowledgeUnavailable) as exc:
         return feature_exception(exc)
+
+
+async def recovery_action(request, attempt_id, operation):
+    try:
+        local_guard(request, mutation=True)
+        query_keys(request, ())
+        try:
+            validate('AttemptId', attempt_id)
+            key = request.headers.get('idempotency-key', '')
+            UUID(key)
+            revision = request.headers.get('if-match', '')
+            if not re.fullmatch(r'[1-9][0-9]{0,15}', revision):
+                raise ValueError('Invalid revision')
+            body = bytearray()
+            async for chunk in request.stream():
+                body.extend(chunk)
+                if len(body) > 4096:
+                    raise ValueError('Oversized request')
+            payload = json.loads(body)
+            if operation == 'retry':
+                payload = validate('RetryRequest', payload)
+            elif payload != {}:
+                raise ValueError('Invalid cancel body')
+        except (ValueError, TypeError):
+            raise RouteFailure(422, 'invalid_request') from None
+        service = get_investigation_service(request, True)
+        if operation == 'retry':
+            result = service.retry(attempt_id, int(revision), payload['reuse_evidence'], service.settings.analyst, key)
+        else:
+            result = service.cancel(attempt_id, int(revision), service.settings.analyst, key)
+        return JSONResponse(result, status_code=202 if operation == 'retry' else 200,
+                            headers={'ETag': str(result['revision'])})
+    except (RouteFailure, ValueError, KeyError, OSError, sqlite3.Error, KnowledgeUnavailable, CaseNotFoundError) as exc:
+        return feature_exception(exc)
+
+
+@investigation_router.post('/attempts/{attempt_id}/retry')
+async def retry_attempt(request: Request, attempt_id: str):
+    return await recovery_action(request, attempt_id, 'retry')
+
+
+@investigation_router.post('/attempts/{attempt_id}/cancel')
+async def cancel_attempt(request: Request, attempt_id: str):
+    return await recovery_action(request, attempt_id, 'cancel')
 
 
 @investigation_router.api_route('/{unknown:path}', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])

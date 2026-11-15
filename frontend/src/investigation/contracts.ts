@@ -98,7 +98,7 @@ export function decodeRun(value: unknown) {
     report: nullable(v.report, decodeReport), review: nullable(v.review, decodeReview), failure: nullable(v.failure, decodeFailure) };
   if (result.report && (result.report.attempt_id !== result.attempt_id || result.report.context_revision !== result.context_revision)) return fail();
   const complete = ['ready_for_review', 'needs_information', 'reviewed'].includes(result.state);
-  if (complete !== (result.report !== null) || (result.state === 'failed') !== (result.failure !== null)) return fail();
+  if (complete !== (result.report !== null) || (result.state === 'failed' && !result.failure) || (result.failure && !['failed', 'cancelled'].includes(result.state))) return fail();
   if (result.report && result.state !== 'reviewed' && result.report.draft.outcome !== result.state) return fail();
   if ((result.state === 'reviewed') !== (result.review !== null) || (result.review && result.review.report_id !== result.report?.report_id)) return fail();
   return result;

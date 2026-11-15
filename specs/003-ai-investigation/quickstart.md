@@ -94,12 +94,42 @@ authored needs_information/invalid_citation/refusal/incomplete scenarios are pin
 when a new attempt is created. They are diagnostics, not model quality evidence.
 Report list returns at most 20 saved runs. UI polls at most 120 times, then offers
 read-only refresh. Navigate away to stop browser polling; this does not cancel the
-durable worker attempt. Retry/cancel/review controls belong to later phases.
+durable worker attempt. Phase 5 now provides explicit retry/cancel controls;
+review controls remain a later phase.
 
 Reproduce the complete isolated offline journey with free 8000/5173/9228 and Chrome:
 `node evidence/tasks/feature-003-fixture-journey.mjs --reviewed`.
 
-## Planned recovery and review journeys (Phase 5+, not implemented)
+## Implemented offline recovery (Phase 5)
+
+The report panel offers Otkaži pokušaj for created/gathering/drafting and
+Pokreni novi pokušaj for failed/cancelled/needs_information. Retry may spend
+again; prior unknown outcome is disclosed. A checkbox chooses compatible
+revalidated evidence reuse. Retry creates a linked child; old counters/report
+are preserved. The previous-attempt button reads saved history, with no dispatch.
+Conflicts require Osveži sačuvano stanje; no automatic retry. A refreshed source
+context is used only for new work; already opened historical reports and exact
+citations remain inspectable in the panel. Historical attempt API access persists
+across reload; the panel's in-memory historical list lasts for its mount.
+
+Reproduce actual killed CLI processes, independent connections and released late
+cancelled response, then real Chrome/API/proxy navigation and snapshot switching:
+
+```powershell
+$env:PYTHONPATH = Join-Path $PWD 'backend/src'
+.venv/Scripts/python.exe evidence/tasks/feature-003-recovery-process.py
+node evidence/tasks/feature-003-recovery-browser.mjs
+```
+
+Both harnesses use isolated ignored stores/authored corpus and replace ENV_FILE
+with an absent path before settings load. They never load the real .env or call
+OpenAI. Browser needs free 8000/5173/9228 and installed Chrome; sandbox GPU denial
+may require running from an ordinary local terminal. Results/limits are recorded
+in `evidence/tasks/feature-003-recovery.md`. Test provider results are workflow
+evidence, not model-quality or billing evaluation. No hidden automatic recovery
+of an interrupted dispatch occurs.
+
+## Recovery checks and planned review journey
 
 1. Force a controlled provider timeout in a test script. Confirm failed state,
    exact counters, saved evidence and controlled error, not a completed report.
@@ -109,7 +139,7 @@ Reproduce the complete isolated offline journey with free 8000/5173/9228 and Chr
 3. Cancel while waiting; late result cannot change the cancelled attempt. Reuse
    the same request key; no duplicate attempt. Reuse it with a different body;
    request_conflict. Revisions reject stale cancel/review writes.
-4. Open citations and record rationale/disposition. Reopen and verify actor/time,
+4. **Planned Phase 6, not implemented:** open citations and record rationale/disposition. Reopen and verify actor/time,
    original draft, separate correction and immutable audit trail. Needs-information
    allows only request_more_information on a saved limitations draft.
 5. Switch selected case while an old response is in flight. No mixed report.

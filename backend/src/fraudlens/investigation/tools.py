@@ -1,5 +1,6 @@
 """Three bounded server-bound read tools; returned text is untrusted data."""
 import copy
+import json
 import re
 import time
 from datetime import UTC, datetime
@@ -166,6 +167,14 @@ class ToolExecutor:
                 items, result = self._history(arguments['account_side'])
             else:
                 items, result = self._search(arguments['query'])
+            # A linked retry may use only exact content revalidated for this attempt.
+            # The tool still reserves its own sequence/budget and returns child IDs.
+            with self.repo.connection() as db:
+                saved = [validate('Evidence', json.loads(row[0])) for row in db.execute(
+                    'SELECT content FROM evidence_items WHERE attempt_id=? ORDER BY rowid', (self.attempt_id,))]
+            items = [next((old for old in saved if old['kind'] == item['kind']
+                           and old['content_sha256'] == content_digest(item)), item) for item in items]
+            result['evidence'] = [provider_evidence(item) for item in items]
             if len(canonical(result)) > MAX_BYTES:
                 raise ValueError('tool_result_too_large')
         except (ValueError, OSError, KeyError) as exc:

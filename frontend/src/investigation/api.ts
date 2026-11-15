@@ -1,6 +1,7 @@
 import { decodeDocuments, decodeKnowledgeError, decodePassage, decodeSearch } from './contracts';
 
 import { decodeRun, decodeRuns, decodeEvidence, decodeInvestigationError, investigationStatuses, decodeContextBinding } from './contracts';
+import type { Run } from './contracts';
 
 export class KnowledgeError extends Error {
   constructor(readonly code: string) { super('Pretraga nije spremna ili zahtev nije uspeo.'); }
@@ -77,4 +78,14 @@ export function getEvidence(attempt: string, id: string, revision: string, signa
     return result;
   }, signal, undefined, 200, true);
 }
-export const reportClient = { list: listInvestigations, create: createInvestigation, attempt: getInvestigation, evidence: getEvidence };
+function recoveryAction(parent: Run, operation: 'retry' | 'cancel', key: string, reuse: boolean, signal?: AbortSignal) {
+  return request(`/api/investigation/attempts/${encodeURIComponent(parent.attempt_id)}/${operation}`, value => {
+    const run = decodeRun(value);
+    if (run.case_id !== parent.case_id || run.context_revision !== parent.context_revision || run.snapshot_ref !== parent.snapshot_ref || run.run_id !== parent.run_id ||
+      (operation === 'retry' ? run.parent_attempt_id !== parent.attempt_id || run.attempt_id === parent.attempt_id || run.state !== 'created' : run.attempt_id !== parent.attempt_id || run.state !== 'cancelled')) throw new KnowledgeError('invalid_response');
+    return run;
+  }, signal, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key, 'If-Match': String(parent.revision) }, body: JSON.stringify(operation === 'retry' ? { reuse_evidence: reuse } : {}) }, operation === 'retry' ? 202 : 200, true);
+}
+export function retryInvestigation(parent: Run, reuse: boolean, key: string, signal?: AbortSignal) { return recoveryAction(parent, 'retry', key, reuse, signal); }
+export function cancelInvestigation(parent: Run, key: string, signal?: AbortSignal) { return recoveryAction(parent, 'cancel', key, false, signal); }
+export const reportClient = { list: listInvestigations, create: createInvestigation, attempt: getInvestigation, evidence: getEvidence, retry: retryInvestigation, cancel: cancelInvestigation };

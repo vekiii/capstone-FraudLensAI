@@ -1,4 +1,23 @@
 # T009/T010 storage invariants
+
+## Phase 5 update — T039-T044, 2026-11-15
+
+Durable recovery and explicit retry/cancel now implemented. Actual RED/GREEN,
+atomic claim/read-snapshot refactor, request replay/CAS, copied evidence,
+deadline/backoff, process and browser results and limits are recorded in
+[Phase 5 recovery evidence](feature-003-recovery.md). Final backend **653 PASS**;
+frontend **172 PASS**; Ruff/typecheck/build PASS. The original primitive-store
+evidence below is historical. T033 capability gate remains open; no live call.
+
+Parent retry reserves its revision but preserves terminal state/report/counters.
+Fresh child counters/deadline and new evidence IDs are linked through audit.
+Pending interrupted/cancelled dispatch is unknown; completed outcomes remain
+known. GET reconciles dead/expired ownership without dispatch or replay.
+Only compatible revalidated evidence can be copied; child tools return those
+child-bound IDs. Actual four killed CLI boundaries, independent-connection
+races and a released late response after cancellation all PASS.
+
+## Historical T009/T010 evidence
 Date 2026-11-14 Europe/Belgrade; started 2026-11-13. Branch feature03; baseline 6db94af3471a9007a8a0d88cba8c7ece32886483; initial tree clean.
 Prompt: ../../prompts/development/003-investigation-phase-02.md. Human review pending.
 

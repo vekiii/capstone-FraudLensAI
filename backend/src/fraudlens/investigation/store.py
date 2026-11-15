@@ -1,8 +1,9 @@
-"""Minimal dedicated SQLite primitives; no workflow, provider or route execution."""
+"""Dedicated SQLite primitives; short atomic writes and immutable history."""
 import json
 import sqlite3
 import time
 from contextlib import contextmanager
+from datetime import UTC, datetime
 from pathlib import Path
 from uuid import UUID, uuid4
 
@@ -135,16 +136,43 @@ class InvestigationRepository:
             db.execute('UPDATE worker_lease SET attempt_id=NULL,owner=NULL,expires=NULL WHERE attempt_id=?', (attempt_id,))
         db.execute('UPDATE attempts SET state=?,revision=revision+1 WHERE attempt_id=? AND revision=?',
                    (state, attempt_id, expected_revision))
+        db.execute('INSERT INTO audit_events(attempt_id,content) VALUES (?,?)',
+                   (attempt_id, canonical(dict(operation='transition', state=state,
+                                               revision=expected_revision + 1)).decode()))
 
-    def claim(self, attempt_id, owner):
+    @staticmethod
+    def replay(db, actor, operation, key, payload):
+        UUID(key)
+        old = db.execute('SELECT payload_digest,response FROM request_keys WHERE actor=? AND operation=? AND request_key=?',
+                         (actor, operation, key)).fetchone()
+        if old:
+            if old[0] != digest(payload):
+                raise ValueError('request_conflict')
+            return json.loads(old[1])
+
+    @staticmethod
+    def remember(db, actor, operation, key, payload, response):
+        db.execute('INSERT INTO request_keys VALUES (?,?,?,?,?,?)',
+                   (actor, operation, key, digest(payload), canonical(response).decode(), response['attempt_id']))
+
+    def claim(self, attempt_id, owner, seconds=120):
+        if not 0 < seconds <= 120:
+            raise ValueError('Invalid worker deadline')
         with self.transaction() as db:
             lease = db.execute('SELECT attempt_id FROM worker_lease WHERE singleton=1').fetchone()
             row = db.execute('SELECT state,revision FROM attempts WHERE attempt_id=?', (attempt_id,)).fetchone()
             if lease[0] is not None or row is None or row[0] != 'created':
                 raise ValueError('worker_claim_conflict')
             self._transition(db, attempt_id, row[1], 'gathering_evidence')
+            started = time.time()
+            deadline = started + seconds
             db.execute('UPDATE worker_lease SET attempt_id=?,owner=?,expires=? WHERE singleton=1',
-                       (attempt_id, owner, time.time() + 120))
+                       (attempt_id, owner, deadline))
+            db.execute('INSERT INTO audit_events(attempt_id,content) VALUES (?,?)',
+                       (attempt_id, canonical(dict(operation='worker_started',
+                        timestamp=datetime.fromtimestamp(started, UTC).isoformat().replace('+00:00', 'Z'),
+                        deadline=datetime.fromtimestamp(deadline, UTC).isoformat().replace('+00:00', 'Z'))).decode()))
+        return deadline
 
     def reserve_dispatch(self, attempt_id, owner):
         with self.transaction() as db:
@@ -252,8 +280,14 @@ class InvestigationRepository:
             for item in items:
                 if item['attempt_id'] != attempt_id or item['context_revision'] != attempt[0]:
                     raise ValueError('Evidence scope mismatch')
-                db.execute('INSERT INTO evidence_items VALUES (?,?,?)',
-                           (item['evidence_id'], attempt_id, canonical(item).decode()))
+                saved = db.execute('SELECT content FROM evidence_items WHERE evidence_id=? AND attempt_id=?',
+                                   (item['evidence_id'], attempt_id)).fetchone()
+                if saved:
+                    if saved[0] != canonical(item).decode():
+                        raise ValueError('Immutable evidence conflict')
+                else:
+                    db.execute('INSERT INTO evidence_items VALUES (?,?,?)',
+                               (item['evidence_id'], attempt_id, canonical(item).decode()))
             record.update(status=status, elapsed_ms=elapsed_ms, code=code,
                           evidence_refs=[item['evidence_id'] for item in items])
             db.execute('UPDATE tool_steps SET content=? WHERE attempt_id=? AND sequence=?',

@@ -96,14 +96,22 @@ Goal: first end-to-end fixture investigation and separate opt-in real provider p
 
 ## Phase 5: US3 - Durable recovery (T039-T044, P1)
 
+Status (2026-11-15): T039-T044 complete in fixture/test-provider scope.
+Executed RED/GREEN and atomic claim/read-view refactor; final backend 653 PASS,
+frontend 172 PASS, Ruff/typecheck/build PASS. Actual killed CLI/two-connection
+checks 6 PASS; Chrome/API/proxy/navigation/snapshot checks 8 PASS, cleanup PASS.
+Evidence: [recovery](../../evidence/tasks/feature-003-recovery.md).
+T033 remains unchecked with its unresolved capability gate; no actual .env read,
+OpenAI call, Phase 6+ work, commit or push in this scope.
+
 Goal: explicit recovery without silent spend or mixed versions. Independent test: process interruption and two connections, duplicate requests, stale snapshot/revision and late replies.
 
-- [ ] T039 [P] [US3] Extend `backend/tests/integration/test_investigation_recovery.py` with RED fault-injection cases before/after dispatch intent/result, unknown spend, expired lease/deadline, one active worker, no network on reopen, duplicate same/different payload, late cancelled replies, explicit child retry/revalidated evidence and changed source/corpus. Cover persistence of all state transitions and timeout accounting across retries. (Depends: T035; FR-018-020.)
-- [ ] T040 [US3] Harden `backend/src/fraudlens/investigation/store.py` and `workflow.py` for recovery: interrupted pending dispatch -> failed/outcome_unknown; no automatic replay; fresh child attempt limits with disclosed prior spend, preserved evidence/audit and compatible-version reuse only; CAS protects late results. API reads reconcile expiry without dispatch. Record GREEN in `evidence/tasks/feature-003-state.md`. (Depends: T039; FR-018-020.)
-- [ ] T041 [P] [US3] Write recovery client/API RED tests in `frontend/tests/investigation-recovery.test.ts` and `backend/tests/integration/test_investigation_recovery_api.py`: retry/cancel If-Match and Idempotency-Key, stale source/revision, explicit refresh, same-case-new-context identity and zero GET spend. (Depends: T037; FR-019-021.)
-- [ ] T042 [US3] Implement retry/cancel routes in `backend/src/fraudlens/investigation/api.py` and UI actions in `frontend/src/investigation/api.ts`/`controller.ts`/`views.ts`, preserving ended attempts and safe errors; record GREEN in `evidence/tasks/feature-003-state.md`. (Depends: T040, T041; FR-019-021.)
-- [ ] T043 [US3] Exercise real process restart and two-connection CAS/idempotency/cancellation cases using `backend/src/fraudlens/investigation/cli.py`; record actual counters, unknown outcome, old/new attempt IDs and evidence binding in `evidence/tasks/feature-003-recovery.md`. This is workflow evidence, not live provider billing proof. (Depends: T042; FR-018-020, SC-005.)
-- [ ] T044 [US3] Exercise UI navigation with queued/failed/retried runs and a controlled source-snapshot switch; verify saved historical report access, stale new reads and original fixture behavior, recording browser evidence in `evidence/tasks/feature-003-recovery.md`. (Depends: T043; FR-002-003, FR-020-021, SC-005, SC-007.)
+- [x] T039 [P] [US3] Extend `backend/tests/integration/test_investigation_recovery.py` with RED fault-injection cases before/after dispatch intent/result, unknown spend, expired lease/deadline, one active worker, no network on reopen, duplicate same/different payload, late cancelled replies, explicit child retry/revalidated evidence and changed source/corpus. Cover persistence of all state transitions and timeout accounting across retries. (Depends: T035; FR-018-020.)
+- [x] T040 [US3] Harden `backend/src/fraudlens/investigation/store.py` and `workflow.py` for recovery: interrupted pending dispatch -> failed/outcome_unknown; no automatic replay; fresh child attempt limits with disclosed prior spend, preserved evidence/audit and compatible-version reuse only; CAS protects late results. API reads reconcile expiry without dispatch. Record GREEN in `evidence/tasks/feature-003-state.md`. (Depends: T039; FR-018-020.)
+- [x] T041 [P] [US3] Write recovery client/API RED tests in `frontend/tests/investigation-recovery.test.ts` and `backend/tests/integration/test_investigation_recovery_api.py`: retry/cancel If-Match and Idempotency-Key, stale source/revision, explicit refresh, same-case-new-context identity and zero GET spend. (Depends: T037; FR-019-021.)
+- [x] T042 [US3] Implement retry/cancel routes in `backend/src/fraudlens/investigation/api.py` and UI actions in `frontend/src/investigation/api.ts`/`controller.ts`/`views.ts`, preserving ended attempts and safe errors; record GREEN in `evidence/tasks/feature-003-state.md`. (Depends: T040, T041; FR-019-021.)
+- [x] T043 [US3] Exercise real process restart and two-connection CAS/idempotency/cancellation cases using `backend/src/fraudlens/investigation/cli.py`; record actual counters, unknown outcome, old/new attempt IDs and evidence binding in `evidence/tasks/feature-003-recovery.md`. This is workflow evidence, not live provider billing proof. (Depends: T042; FR-018-020, SC-005.)
+- [x] T044 [US3] Exercise UI navigation with queued/failed/retried runs and a controlled source-snapshot switch; verify saved historical report access, stale new reads and original fixture behavior, recording browser evidence in `evidence/tasks/feature-003-recovery.md`. (Depends: T043; FR-002-003, FR-020-021, SC-005, SC-007.)
 
 ## Phase 6: US4 - Analyst review (T045-T051, P1)
 

@@ -1,6 +1,6 @@
 # Investigation and knowledge API v1 (planned)
 
-Status (2026-11-15): knowledge and Phase 4 create/list/attempt/evidence routes implemented offline. Retry/cancel/review endpoints below remain planned later phases. Local same-origin FastAPI routes under `/api/investigation` and `/api/knowledge`; existing feature 001/002 endpoints and errors unchanged. [schemas.json](schemas.json) defines closed request/response bodies. GETs never cause provider requests. All responses are JSON with explicit `contract_version=1`; no raw exception/provider body or path is returned.
+Status (2026-11-15): knowledge, create/list/attempt/evidence and Phase 5 retry/cancel routes implemented offline. Review endpoints remain planned Phase 6. Local same-origin FastAPI routes under `/api/investigation` and `/api/knowledge`; existing feature 001/002 endpoints and errors unchanged. [schemas.json](schemas.json) defines closed request/response bodies. GETs never cause provider requests. All responses are JSON with explicit `contract_version=1`; no raw exception/provider body or path is returned.
 
 ## Request identity and local access
 
@@ -36,7 +36,18 @@ the unchanged closed RunList body. Supplying `context_revision` pins subsequent
 reads; a current-source mismatch returns 409 stale_snapshot. The browser uses the
 resolved snapshot in CreateRequest, never a fabricated placeholder or source path.
 Historical attempts remain accessible by their immutable attempt ID. No dataset
-producer approval is implied. Retry/cancel/review endpoints remain later phases.
+producer approval is implied. Review endpoints remain a later phase.
+
+Phase 5 clarification: a run list returns the latest attempt of each run, with
+total_count counting runs, not parent/child attempts. Retry reserves/increments
+the parent's revision in the same transaction as child creation, without changing
+the parent's terminal state, report or counters. Distinct keys using that old
+revision cannot create two children; same-key replay returns the original child
+response. Retry/cancel responses are persisted atomically with their mutations.
+Cancel may retain Failure with outcome_unknown when a dispatched request could
+already have executed. Its state remains cancelled. Reuse requires compatible
+context/corpus/retrieval and revalidated exact content; reuse=false may select
+the latest corpus/retrieval while retaining the pinned prompt/provider/limits.
 
 `InvestigationContext` is an internal immutable boundary defined by schemas + [data model](../data-model.md), not a new publicly writable context endpoint. Client create payload cannot send source_payload, actor, corpus filesystem paths, permissions or arbitrary model ID. Server selects context/provider/retrieval configurations.
 

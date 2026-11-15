@@ -29,13 +29,14 @@ export function createKnowledgeView(root: HTMLElement, actions: { search(query: 
   };
 }
 
-export function createReportView(root: HTMLElement, actions: { start(): void; refresh(): void; select(id: string): void; evidence(id: string): void }) {
+export function createReportView(root: HTMLElement, actions: { start(): void; refresh(): void; select(id: string): void; evidence(id: string): void; retry(reuse: boolean): void; cancel(): void; parent(): void }) {
   const heading = node('h2', 'AI istraga'); heading.tabIndex = -1;
   const list = node('div'); const panel = node('section'); panel.setAttribute('aria-live', 'polite');
   const source = node('section'); source.setAttribute('aria-live', 'polite');
+  const history = node('div');
   const start = node('button', 'Pokreni novu istragu'); start.type = 'button'; start.dataset.start = ''; start.addEventListener('click', actions.start); start.disabled = true;
   const refresh = node('button', 'Osveži sačuvano stanje'); refresh.type = 'button'; refresh.dataset.refresh = ''; refresh.addEventListener('click', actions.refresh);
-  root.replaceChildren(heading, node('p', 'Sintetički fixture podaci, bez ML predikcije. Skor nije verovatnoća prevare. AI nacrt podržava ljudsku odluku.'), start, refresh, list, panel, source);
+  root.replaceChildren(heading, node('p', 'Sintetički fixture podaci, bez ML predikcije. Skor nije verovatnoća prevare. AI nacrt podržava ljudsku odluku.'), start, refresh, list, history, panel, source);
   const section = (title: string) => { panel.append(node('h3', title)); };
   return {
     loading() { start.disabled = true; panel.replaceChildren(node('p', 'Učitavanje sačuvane istrage…')); source.replaceChildren(); },
@@ -44,9 +45,19 @@ export function createReportView(root: HTMLElement, actions: { start(): void; re
       for (const run of runs) { const select = node('button', `${run.created_at} | ${run.state}`); select.type = 'button'; select.dataset.attempt = run.attempt_id; select.addEventListener('click', () => actions.select(run.attempt_id)); list.append(select); }
     },
     empty() { panel.replaceChildren(node('p', 'Nema sačuvane istrage. Pokretanje je izričita radnja.')); },
-    run(run: Run) {
+    historical(runs: Run[]) { history.replaceChildren(); for (const run of runs) { const button = node('button', `Istorijski izveštaj | ${run.created_at}`); button.dataset.history = run.attempt_id; button.addEventListener('click', () => actions.select(run.attempt_id)); history.append(button); } },
+    recoveryError(code: string, blocked = false) { const alert = node('p', `${code}. ${blocked ? 'Osvežite sačuvano stanje pre nove radnje.' : 'Ishod radnje nije potvrđen; ponovite istu radnju ili osvežite stanje.'}`); alert.setAttribute('role', 'alert'); panel.append(alert); if (blocked) { start.disabled = true; panel.querySelectorAll<HTMLButtonElement>('button[data-retry],button[data-cancel]').forEach(button => { button.disabled = true; }); } },
+    run(run: Run, historical = false) {
       panel.replaceChildren(); source.replaceChildren(); start.disabled = ['created', 'gathering_evidence', 'drafting'].includes(run.state);
       const status = node('p', run.state === 'created' ? 'Posao je sačuvan i čeka worker.' : `Stanje: ${run.state}`); status.dataset.runState = run.state; panel.append(status);
+      if (historical) panel.append(node('p', 'Istorijski izveštaj — vezan za prethodni kontekst izvora.'));
+      if (run.parent_attempt_id) { panel.append(node('p', `Ponovljeni pokušaj; prethodni: ${run.parent_attempt_id}. Prethodni zahtevi mogu imati nepoznat ishod i potrošnju.`)); const parent = node('button', 'Prikaži prethodni pokušaj'); parent.dataset.parent = ''; parent.addEventListener('click', actions.parent); panel.append(parent); }
+      if (!historical && ['created', 'gathering_evidence', 'drafting'].includes(run.state)) { const cancel = node('button', 'Otkaži pokušaj'); cancel.dataset.cancel = ''; cancel.addEventListener('click', actions.cancel); panel.append(cancel); }
+      if (!historical && ['failed', 'cancelled', 'needs_information'].includes(run.state)) {
+        panel.append(node('p', 'Novi pokušaj može izazvati dodatnu potrošnju; prethodni zahtev nije nužno bio besplatan.'));
+        const label = node('label', 'Ponovo koristi proverene dokaze '); const reuse = node('input'); reuse.type = 'checkbox'; reuse.checked = true; reuse.dataset.reuse = ''; label.append(reuse);
+        const retry = node('button', 'Pokreni novi pokušaj'); retry.dataset.retry = ''; retry.addEventListener('click', () => actions.retry(reuse.checked)); panel.append(label, retry);
+      }
       panel.append(node('p', run.provider_mode === 'test' ? 'TEST provider — autorski odgovori; nije procena kvaliteta LLM-a.' : `Provider: ${run.returned_model ?? run.requested_model ?? 'nepoznat'}`),
         node('p', `Provider zahtevi: ${run.budget.provider_requests}/8; alati: ${run.budget.tool_calls}/12.`), node('p', `Kontekst: ${run.context_revision}; snapshot: ${run.snapshot_ref}; korpus: ${run.corpus_version}`));
       for (const step of run.trace) panel.append(node('p', `${step.sequence}. ${step.name}: ${step.status} (${step.elapsed_ms} ms)`));
