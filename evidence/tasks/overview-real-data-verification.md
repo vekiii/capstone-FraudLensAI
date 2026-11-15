@@ -1,8 +1,7 @@
 # Overview real-data verification
 
 Date: 2026-11-15
-Branch: `model-implementations`
-Starting commit: `a0b3a69` (the last of three local dashboard commits ahead of `origin/model-implementations`); no commit or push was made for this verification.
+Verification was run on `model-implementations` from starting commit `a0b3a69`. The scoped implementation and evidence were then published to `feature/005-real-time-fraud-detection-mlops-spec` as `55f02b0a33fb9df27b17868330f0333a940651ad` and `799ebe8c08b2119dbbde02b48544d6d5a1196bc5`; the handoff and contribution ledger are recorded in a subsequent commit.
 Original request: [overview-real-data-verification-2026-11-15.md](../../prompts/development/overview-real-data-verification-2026-11-15.md)
 
 ## Outcome
@@ -77,6 +76,6 @@ The full backend suite was not filtered. The same 71 failures and 4 errors occur
 - Existing T065 import evidence establishes the source file/version/hash and import row accounting, but its work database is not an active scored RunStore.
 - The installed experimental and separate AML-LGBM model files do not identify the authorized active application scorer and cannot supply its threshold or evaluation metrics.
 - Browser reload verifies stable error state only; no real active run existed for populated reload reconciliation.
-- No commit or push was made.
+- This report and its screenshots were committed on the requested Feature 005 branch. Publication status for the final ledger commit is recorded in `next_work.md` after push verification.
 
 Concrete next step: obtain the authorized completed `data/artifacts/feature-002-runs.sqlite` store and its exact trusted model manifest/artifact, then verify active-run SQL aggregates and API/browser values read-only.
