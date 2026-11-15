@@ -1,0 +1,516 @@
+{
+  "source_ref": "origin/model-implementations",
+  "source_commit": "d9bd8a2e3629a2d3939fc5507583f310428c53ac",
+  "scope": "Locally available remote-tracking snapshot; no fetch or runtime import",
+  "pinned_source_commit": "2dd815d85bfc9c2fc70a28baef9c142d551e57e0",
+  "pinned_schema_sha256_lf": "bf487d84ccac1e315d0e20fece0d2a7f45990bce954ba40bf97cd54e43929f88",
+  "current_schema_sha256_lf": "3bb54c0bcad5f4683db8ee6ef1e663749993a25ab144869190ce0182ac6f7ab2",
+  "schema_difference_paths": [
+    "/$defs/ExplanationAvailable/properties/method/enum"
+  ],
+  "explanation_methods": {
+    "pinned": [
+      "rules",
+      "linear_log_odds",
+      "tree_path"
+    ],
+    "current": [
+      "rules",
+      "linear_log_odds",
+      "tree_path",
+      "boosted_sequential_probability"
+    ]
+  },
+  "files": {
+    "backend/src/fraudlens/main.py": {
+      "sha256_lf": "f7df435a3140807506e20695a636dc2095e637f4c0862ccce6ee76aee8105f9e",
+      "functions": [
+        {
+          "name": "_dataset_error",
+          "line": 30,
+          "arguments": "status: int"
+        },
+        {
+          "name": "_dataset_store",
+          "line": 36,
+          "arguments": "config: Settings"
+        },
+        {
+          "name": "_error_response",
+          "line": 42,
+          "arguments": "status_code: int, headers: dict[str, str] | None=None"
+        },
+        {
+          "name": "get_settings",
+          "line": 53,
+          "arguments": "request: Request"
+        },
+        {
+          "name": "get_scorer",
+          "line": 58,
+          "arguments": "request: Request"
+        },
+        {
+          "name": "get_case_service",
+          "line": 62,
+          "arguments": "config: Annotated[Settings, Depends(get_settings)], scorer: Annotated[Scorer, Depends(get_scorer)]"
+        },
+        {
+          "name": "create_app",
+          "line": 67,
+          "arguments": "settings: Settings | None=None, scorer: Scorer | None=None"
+        },
+        {
+          "name": "case_not_found",
+          "line": 73,
+          "arguments": "_request: Request, _exc: CaseNotFoundError"
+        },
+        {
+          "name": "service_failure",
+          "line": 78,
+          "arguments": "_request: Request, exc: Exception"
+        },
+        {
+          "name": "invalid_request",
+          "line": 83,
+          "arguments": "_request: Request, _exc: RequestValidationError"
+        },
+        {
+          "name": "invalid_response",
+          "line": 87,
+          "arguments": "_request: Request, _exc: ResponseValidationError"
+        },
+        {
+          "name": "http_error",
+          "line": 92,
+          "arguments": "_request: Request, exc: HTTPException"
+        },
+        {
+          "name": "server_error",
+          "line": 102,
+          "arguments": "_request: Request, exc: Exception"
+        },
+        {
+          "name": "health",
+          "line": 110,
+          "arguments": "config: Annotated[Settings, Depends(get_settings)]"
+        },
+        {
+          "name": "case_list",
+          "line": 132,
+          "arguments": "config: Annotated[Settings, Depends(get_settings)], service: Annotated[CaseService, Depends(get_case_service)]"
+        },
+        {
+          "name": "case_detail",
+          "line": 149,
+          "arguments": "case_id: str, config: Annotated[Settings, Depends(get_settings)], service: Annotated[CaseService, Depends(get_case_service)], snapshot: str | None=None"
+        }
+      ]
+    },
+    "backend/src/fraudlens/data_store.py": {
+      "sha256_lf": "c0b0509e64fee620f3258dc9a77243574e730390bd6a3eb681b2e6f8cdd5a0d8",
+      "functions": [
+        {
+          "name": "_feature_build_lock",
+          "line": 36,
+          "arguments": "path: Path, version: str, feature_version: str"
+        },
+        {
+          "name": "_publication_threshold",
+          "line": 668,
+          "arguments": "value"
+        },
+        {
+          "name": "_public_detail",
+          "line": 682,
+          "arguments": "run_id, dataset_version, case_id, transaction, assessment"
+        },
+        {
+          "name": "review_snapshot",
+          "line": 735,
+          "arguments": "rows, *, threshold"
+        },
+        {
+          "name": "__init__",
+          "line": 70,
+          "arguments": "self, path: str | Path"
+        },
+        {
+          "name": "close",
+          "line": 117,
+          "arguments": "self"
+        },
+        {
+          "name": "_status",
+          "line": 120,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "version_status",
+          "line": 127,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "stage",
+          "line": 131,
+          "arguments": "self, version: str, *, source_records: int, source_sha256: str | None=None, mapping_sha256: str | None=None, time_policy_sha256: str | None=None"
+        },
+        {
+          "name": "_payload",
+          "line": 167,
+          "arguments": "event: CanonicalTransaction"
+        },
+        {
+          "name": "_insert_event",
+          "line": 189,
+          "arguments": "self, version: str, transaction_id: str, case_id: str, payload: str | None"
+        },
+        {
+          "name": "add_event",
+          "line": 217,
+          "arguments": "self, version: str, transaction_id: str | CanonicalTransaction, *, case_id: str | None=None"
+        },
+        {
+          "name": "add_rejection",
+          "line": 239,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "set_source_records",
+          "line": 247,
+          "arguments": "self, version: str, source_records: int"
+        },
+        {
+          "name": "add_private_label",
+          "line": 255,
+          "arguments": "self, version: str, transaction_id: str, *, value: int | None, status: str"
+        },
+        {
+          "name": "ingest",
+          "line": 270,
+          "arguments": "self, version: str, rows"
+        },
+        {
+          "name": "ingest_canonical_rows",
+          "line": 293,
+          "arguments": "self, version: str, rows"
+        },
+        {
+          "name": "_flush_canonical_batch",
+          "line": 326,
+          "arguments": "self, version, batch, has_prior_events"
+        },
+        {
+          "name": "_flush_batch",
+          "line": 350,
+          "arguments": "self, version, batch"
+        },
+        {
+          "name": "event_count",
+          "line": 354,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "case_count",
+          "line": 359,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "complete",
+          "line": 364,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "fail",
+          "line": 388,
+          "arguments": "self, version: str, *, reason: str"
+        },
+        {
+          "name": "activate",
+          "line": 400,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "active_version",
+          "line": 408,
+          "arguments": "self"
+        },
+        {
+          "name": "operational_events",
+          "line": 413,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "private_labels",
+          "line": 427,
+          "arguments": "self, version: str, *, role: str"
+        },
+        {
+          "name": "complete_report",
+          "line": 437,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "_ensure_feature_tables",
+          "line": 455,
+          "arguments": "self"
+        },
+        {
+          "name": "iter_canonical_events",
+          "line": 484,
+          "arguments": "self, version: str"
+        },
+        {
+          "name": "feature_snapshot_count",
+          "line": 515,
+          "arguments": "self, version: str, feature_version: str='history-v1'"
+        },
+        {
+          "name": "_feature_tables_exist",
+          "line": 525,
+          "arguments": "self"
+        },
+        {
+          "name": "build_features",
+          "line": 530,
+          "arguments": "self, version: str, *, feature_version: str='history-v1'"
+        },
+        {
+          "name": "_build_features_locked",
+          "line": 534,
+          "arguments": "self, version: str, *, feature_version: str"
+        },
+        {
+          "name": "_write_feature_batch",
+          "line": 614,
+          "arguments": "self, batch"
+        },
+        {
+          "name": "iter_feature_snapshots",
+          "line": 624,
+          "arguments": "self, version: str, feature_version: str='history-v1'"
+        },
+        {
+          "name": "__init__",
+          "line": 768,
+          "arguments": "self, path: str | Path, *, read_only: bool=False"
+        },
+        {
+          "name": "close",
+          "line": 816,
+          "arguments": "self"
+        },
+        {
+          "name": "begin_run",
+          "line": 819,
+          "arguments": "self, run_id, dataset_version, score_source, scorer_version, artifact_sha256, threshold, expected_count"
+        },
+        {
+          "name": "append",
+          "line": 845,
+          "arguments": "self, run_id, case_id, transaction, assessment"
+        },
+        {
+          "name": "append_many",
+          "line": 856,
+          "arguments": "self, run_id, rows"
+        },
+        {
+          "name": "_append_in_transaction",
+          "line": 873,
+          "arguments": "self, run_id, case_id, transaction, assessment, decimal_type"
+        },
+        {
+          "name": "complete",
+          "line": 903,
+          "arguments": "self, run_id"
+        },
+        {
+          "name": "activate",
+          "line": 924,
+          "arguments": "self, run_id, score_source, artifact_sha256=None"
+        },
+        {
+          "name": "_active",
+          "line": 942,
+          "arguments": "self, score_source"
+        },
+        {
+          "name": "active_metadata",
+          "line": 952,
+          "arguments": "self, score_source"
+        },
+        {
+          "name": "list_active",
+          "line": 957,
+          "arguments": "self, score_source"
+        },
+        {
+          "name": "detail_active",
+          "line": 979,
+          "arguments": "self, score_source, snapshot_ref, case_id"
+        }
+      ]
+    },
+    "backend/src/fraudlens/feature_history.py": {
+      "sha256_lf": "1f50afd1cd3ddb4cf385fb41d2887656daa415ea495177bca9453cfecafa0aaa",
+      "functions": [
+        {
+          "name": "feature_catalog",
+          "line": 90,
+          "arguments": ""
+        },
+        {
+          "name": "validate_feature_projection",
+          "line": 95,
+          "arguments": "request: dict"
+        },
+        {
+          "name": "_event_fact",
+          "line": 139,
+          "arguments": "event: CanonicalTransaction"
+        },
+        {
+          "name": "_digest",
+          "line": 157,
+          "arguments": "version: str, event: CanonicalTransaction, values: dict, coverage_start: datetime, coverage_state: str"
+        },
+        {
+          "name": "_coverage",
+          "line": 171,
+          "arguments": "at, start, missing_intervals, available"
+        },
+        {
+          "name": "iter_feature_snapshots",
+          "line": 182,
+          "arguments": "events: Iterable[CanonicalTransaction], *, dataset_version: str, coverage_start: datetime, purpose: str='scoring', missing_intervals=(), coverage_available: bool=True"
+        },
+        {
+          "name": "build_feature_snapshots",
+          "line": 278,
+          "arguments": "events: Iterable[CanonicalTransaction], *, dataset_version: str, coverage_start: datetime, purpose: str='scoring', missing_intervals=(), coverage_available: bool=True"
+        },
+        {
+          "name": "update",
+          "line": 206,
+          "arguments": "event, sign"
+        }
+      ]
+    },
+    "backend/src/fraudlens/data_contracts.py": {
+      "sha256_lf": "182ef7fe6e1224fffb0526f5028c3b7af2667725099c62ec6f8be4b57f8dc808",
+      "functions": [
+        {
+          "name": "_request_v2",
+          "line": 178,
+          "arguments": "request: ScoreRequestV2"
+        },
+        {
+          "name": "_finite_decimal",
+          "line": 242,
+          "arguments": "value: object"
+        },
+        {
+          "name": "_decimal_score",
+          "line": 254,
+          "arguments": "value: object"
+        },
+        {
+          "name": "_explanation_v2",
+          "line": 261,
+          "arguments": "value: object, digest: str"
+        },
+        {
+          "name": "score_v2",
+          "line": 307,
+          "arguments": "request: ScoreRequestV2, scorer: ScorerV2, *, artifact: object=None"
+        },
+        {
+          "name": "_public_schema_validator",
+          "line": 375,
+          "arguments": "name: str"
+        },
+        {
+          "name": "_finite_public",
+          "line": 386,
+          "arguments": "value"
+        },
+        {
+          "name": "_public_semantics",
+          "line": 399,
+          "arguments": "name: str, value: dict"
+        },
+        {
+          "name": "predictor_fields",
+          "line": 52,
+          "arguments": "self"
+        },
+        {
+          "name": "reconciled",
+          "line": 86,
+          "arguments": "self"
+        },
+        {
+          "name": "score",
+          "line": 140,
+          "arguments": "self, request: ScoreRequestV2"
+        },
+        {
+          "name": "validate_public",
+          "line": 467,
+          "arguments": "self"
+        }
+      ],
+      "method_scale_mappings": [
+        {
+          "rules": "risk_score",
+          "linear_log_odds": "log_odds",
+          "tree_path": "positive_class_estimate",
+          "boosted_sequential_probability": "positive_class_estimate"
+        }
+      ]
+    },
+    "backend/src/fraudlens/contracts.py": {
+      "sha256_lf": "17bd5aa9a1cbf30c911131867a6524fa2407be388c12a9bc365d01ef9ce4f1dd",
+      "functions": [
+        {
+          "name": "utc_timestamp",
+          "line": 9,
+          "arguments": "value: str"
+        },
+        {
+          "name": "amount_string",
+          "line": 15,
+          "arguments": "value: str"
+        },
+        {
+          "name": "tx_id",
+          "line": 21,
+          "arguments": "value: str"
+        },
+        {
+          "name": "case_id",
+          "line": 27,
+          "arguments": "value: str"
+        }
+      ]
+    },
+    "backend/src/fraudlens/settings.py": {
+      "sha256_lf": "6581780b74d4c2d55e372fb2f48fd08d3e2578f00af18e260266756a894b1ab5",
+      "functions": [
+        {
+          "name": "load_settings",
+          "line": 27,
+          "arguments": ""
+        },
+        {
+          "name": "require_dataset_scorer",
+          "line": 21,
+          "arguments": "self"
+        }
+      ]
+    }
+  },
+  "human_review": "pending",
+  "real_producer_execution": false
+}

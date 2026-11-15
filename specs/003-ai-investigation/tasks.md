@@ -182,10 +182,23 @@ Vedran/Milan ratings; T060/T061 remain partial. See ../../evidence/tasks/feature
 
 Goal: connect the real producer only when available, preserve original app, document actual reproduction and remaining gates. Dataset work may proceed alongside US5; it must not force ML completion just to deliver truthful fixture functionality.
 
+Phase 8 execution (2026-11-15): T062 source reconciliation prepared at local
+producer d9bd8a2; changed explanation enum and unreviewed bounded history port
+recorded. Actual producing/consuming review pending. T063 partial: 17 authored
+contract safeguards PASS, not reviewed/live adapter RED. T064 actual adapter and
+IBM rules/model smoke remain unstarted pending that gate; explicit unavailable
+behavior retained. T065 complete for available fixture/authored-contract scope:
+776 backend/186 frontend, Ruff/typecheck/build PASS; 29 automated browser and
+6 process checks PASS, actual dataset coverage pending and distinguished.
+T066 documentation/reproduction packet complete; actual teammate reproduction,
+human code/contracts/evidence review and full T061 pending. T067 not run.
+See ../../evidence/tasks/feature-003-phase-08-handoff.md. Phase 7 reports, frozen
+configuration and failed quality/time findings preserved; no new provider calls.
+
 - [ ] T062 Reconcile current feature 002 API/history with `specs/003-ai-investigation/contracts/producer-v2.snapshot.json` and context schemas, record actual producing/affected-consuming review and source SHA/semantic differences in `evidence/tasks/feature-003-context-review.md`. Preserve old snapshot/history evidence; any approved update needs a new explicit version. No approval inferred from user role or test pass. (Depends: T008, T024; actual producer availability for real integration; FR-001-003, SC-007.)
 - [ ] T063 Write dataset adapter RED tests in `backend/tests/integration/test_investigation_dataset_context.py` against pinned examples and reviewed current producer: case/run/dataset/transaction equality, unchanged exact paid/received currencies/time assumptions, truthful score/explanation scale, missing history vs empty, bank+account strict cutoff, source switch and no private labels. Authored contract examples are not real IBM results. (Depends: T062; FR-001-004, FR-011, FR-014, SC-007.)
 - [ ] T064 Implement dataset CaseContextReader/HistoryReader adapter in `backend/src/fraudlens/investigation/context.py` only against the reviewed available producer, without changing scorer/database/contracts or silently querying private labels. Run contract GREEN and actual label-free rules/model-context smoke when available, recording `evidence/tasks/feature-003-context.md`; missing interface remains unavailable and real integration task pending. (Depends: T063; external producer interface; FR-001-004, FR-011, SC-007.)
-- [ ] T065 Run complete backend/Ruff, frontend tests/typecheck/build, schema/model parity and real API/proxy/browser journeys with feature enabled/disabled, no corpus/key/model, errors/stale recovery/review and original fixture 404/422; record actual results in `evidence/tasks/feature-003-regression.md`. Dataset tests must be distinguished from pending live producer checks. (Depends: T051, T057; T064 for actual dataset coverage; FR-003, FR-021, SC-004-007.)
+- [x] T065 Run complete backend/Ruff, frontend tests/typecheck/build, schema/model parity and real API/proxy/browser journeys with feature enabled/disabled, no corpus/key/model, errors/stale recovery/review and original fixture 404/422; record actual results in `evidence/tasks/feature-003-regression.md`. Dataset tests must be distinguished from pending live producer checks. (Depends: T051, T057; T064 for actual dataset coverage; FR-003, FR-021, SC-004-007.)
 - [ ] T066 Replace planned placeholders in `specs/003-ai-investigation/quickstart.md`, `README.md`, `frontend/README.md`, `data/knowledge/README.md` with actual executable configuration/commands and pending gates; obtain another teammate's real deterministic retrieval/fixture reproduction and human code/contracts/evidence review in `evidence/tasks/feature-003-reproduction.md`. Do not call your own setup second-person reproduction. (Depends: T061, T065; FR-028, SC-008.)
 - [ ] T067 Run actual Spec-kit Converge against feature 003 code/spec/plan/tasks, record incomplete/new work in `evidence/tasks/feature-003-convergence.md` and `specs/003-ai-investigation/tasks.md`, update `next_work.md` with one concrete next step. Final acceptance requires actual quality/human/producer evidence; pending access/producer/targets must remain unchecked and explicit. No automatic commit, push or scope expansion. (Depends: T066; T064 for full dataset integration acceptance; FR-001, FR-028, SC-001-008.)
 

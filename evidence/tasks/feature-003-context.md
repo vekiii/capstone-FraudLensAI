@@ -31,3 +31,30 @@ Exit 0.
 ........                                                                 [100%]
 8 passed in 0.35s
 ```
+
+## Phase 8 T062–T064 reconciliation — 2026-11-15
+
+Current checkout feature03 at 0829296; no producer modules imported/merged.
+[Producer review packet](feature-003-context-review.md) compares pinned 2dd815d
+against locally available d9bd8a2: new boosted_sequential_probability enum value,
+but no reviewed bounded seven-day account-history interface. Existing label-free
+whole-dataset iteration and 24h feature calculation do not establish that port.
+Actual producer/affected-consumer review remains pending; no approval inferred.
+
+New `backend/tests/integration/test_investigation_dataset_context.py` separately
+executes **17 authored safeguards, PASS/exit 0**, against existing boundaries.
+Well-shaped ID divergence, exact directional amount/currency/time, rules scale,
+cutoff, new unreviewed method, labels, source switch, missing/empty history and
+strict bank/account/window/focal filtering covered. Already-correct behavior
+verified without artificial RED. Initial invocation produced 17 environment
+setup errors from missing basetemp parent; corrected command created parent and
+passed. Actual reviewed-adapter RED is not executed, so T063 remains partial.
+
+T064 real adapter remains unstarted/unchecked: implementing against an unreviewed
+new method/history boundary would violate its explicit condition. Foundation
+context reader still fails dataset mode explicitly, without fixture fallback.
+Existing authored materialized workflow tests remain valid synthetic evidence,
+not actual IBM rules/model-context smoke. No production context/scorer/DB/schema
+change, private-label query or trained-model claim. Actual port review is the
+next condition before real adapter implementation. See
+[regression](feature-003-regression.md) and [handoff](feature-003-phase-08-handoff.md).

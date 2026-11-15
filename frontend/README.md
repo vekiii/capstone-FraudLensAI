@@ -1,13 +1,24 @@
 # Frontend development environment
 
-Feature 003 Phase 3 update (2026-11-14): source-search navigation is implemented
-and verified against all six reviewed documents. Search/no-match, exact historical
-passage/provenance, missing-store Retry and the original three-case journey pass
-actual API/proxy/Chrome checks; full frontend 156 tests and typecheck/build PASS.
-See [knowledge setup](../specs/003-ai-investigation/quickstart.md) and
-[actual-source evidence](../evidence/tasks/feature-003-phase-03-completion.md).
-No .env/provider key is required; backend settings use process environment.
-The foundation details/results below are historical to their cited delivery.
+Feature 003 update (2026-11-15): knowledge navigation, exact archived sources,
+case-bound investigation/report/evidence, cancellation/retry, stale-state recovery
+and explicit review/correction are implemented. Phase 8 reran **186 frontend
+tests**, typecheck/build and **29 automated Chrome journeys** across reviewed
+knowledge, review/recovery and the original case browser. These are test-provider
+workflow checks, not live model-quality or human review results. See
+[setup and worker commands](../specs/003-ai-investigation/quickstart.md) and
+[regression evidence](../evidence/tasks/feature-003-regression.md).
+
+Vite requires only Node 24 and a local backend on 8000; it proxies /api. No frontend
+provider SDK/key or VITE_* credential is used. Backend investigation settings may
+read private root .env; explicit process settings override it. Deterministic
+reproduction forces provider=test, source=fixture and empty process key/model.
+The worker is a separate backend terminal; a queued attempt does not run until
+the worker claims it. No browser action implicitly authorizes analyst review.
+Actual dataset adapter/producer review and Phase 7 human quality ratings remain
+pending. [Reproduction packet](../evidence/tasks/feature-003-reproduction.md)
+does not claim a second teammate already ran it. Historical foundation details
+and counts below refer only to their cited delivery.
 
 Vanilla TypeScript/Vite frontend with T017's typed API boundary and T018's complete
 synthetic case inspection UI. No framework or runtime dependency is required.
@@ -53,7 +64,8 @@ with source/version/time/explanation. Loading, empty, error and not-found states
 are accessible; recoverable errors offer explicit retry. No raw exceptions or
 invented case data are displayed. T019 confirms real backend/proxy HTTP and reruns
 all checks; its final continuation records successful headless Chrome, console,
-Enter and 390px viewport checks. Manual review and peer reproduction are pending.
+Enter and 390px viewport checks. Historical foundation manual review and joint
+peer reproduction were later confirmed; Feature 003 reproduction is separate.
 Phase 6 reran suites, not browser verification. See ../evidence/tasks/T019.md.
 
 ## API boundary

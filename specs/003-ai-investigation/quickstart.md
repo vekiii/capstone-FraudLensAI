@@ -1,14 +1,16 @@
 # Feature 003 validation quickstart
 
-Status (2026-11-15): Phase 4 offline T023-T032/T034-T038 complete; Phase 3 reviewed
-corpus preserved. Provider SDK adapter, worker, run API and report UI implemented;
-actual fixture browser/API/proxy/worker journey PASS. T033 was attempted separately:
-ConnectError then HTTP 400 / unsupported_capability; two-attempt budget exhausted.
-Capability gate remains pending. Phase 5 recovery and Phase 6 review are now
-implemented offline; T051 actual human confirmation remains pending. See
-../../evidence/tasks/feature-003-review.md,
-../../evidence/tasks/feature-003-provider-access.md and
-../../evidence/tasks/feature-003-fixture-journey.md.
+Status (2026-11-15): reviewed six-document search, fixture investigation, durable
+worker/recovery and analyst review are implemented; T051 human confirmation and
+T033 synthetic provider capability check are complete. T054–T058 were executed,
+including the saved live batch. T059 human quality ratings remain pending;
+T060/T061 are partial. Retrieval/live quality and timing targets were not met.
+User defers those reviews/findings; Phase 8 does not erase or rerun them.
+T062 producer reconciliation is prepared; actual producer/consumer approval and
+real dataset adapter/history are pending. See
+[current handoff](../../evidence/tasks/feature-003-phase-08-handoff.md),
+[T033 closure](../../evidence/tasks/feature-003-t033-closure.md) and
+[live results](../../evidence/tasks/feature-003-t058-t061-handoff.md).
 Run from repository root on `feature03` (or a reviewed descendant), preserving
 the existing feature 002/ML branches. No automatic commit, push or merge.
 
@@ -34,13 +36,12 @@ precedence, including empty values. Single-line KEY=value literals support optio
 export, quotes and comments, with no interpolation/escape/shell expansion. Invalid
 or unreadable files fail safely. Foundation APP_MODE still reads process environment.
 
-Use existing Python 3.14 / Node 24 pins. A task adding the SDK resolves and commits
-the generated lockfile once; subsequent contributors use locked installs. Unix
+Use existing Python 3.14 / Node 24 pins and committed generated lockfiles. Unix
 contributors use npm instead of npm.cmd. Record actual versions and exits, not
 historical counts. If execution policy blocks repository scripts, invoke a child
 PowerShell with `-NoProfile -ExecutionPolicy Bypass -File`; do not change machine policy.
 
-## Offline first increment
+## Deterministic local setup (no provider calls)
 
 The six-document corpus now includes actual provenance/reuse/human-review
 metadata. Each checkout must prepare its own ignored local archive. Corpus
@@ -53,26 +54,44 @@ $env:INVESTIGATION_PROVIDER = 'test'
 $env:INVESTIGATION_SOURCE = 'fixture'
 $env:INVESTIGATION_STORE = 'data/processed/investigations.sqlite'
 $env:INVESTIGATION_ANALYST = 'local-demo-analyst'
+$env:OPENAI_API_KEY = ''
+$env:OPENAI_MODEL = ''
 $env:PYTHONPATH = Join-Path $PWD 'backend/src'
 .venv/Scripts/python.exe -m fraudlens.investigation.cli prepare-knowledge --manifest data/knowledge/fraudlens-aml-knowledge-v1/manifest.json --store data/processed/investigations.sqlite
 .venv/Scripts/python.exe -m uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
 ```
 
-In another terminal run `npm.cmd --prefix frontend run dev`. Search knowledge
+These explicit empty process values override any private .env credentials. The
+test provider creates authored diagnostic reports without OpenAI calls. In each
+worker terminal repeat the same environment block before executing a worker.
+Use your own chosen INVESTIGATION_ANALYST only for actions you actually perform.
+
+In another terminal run `npm.cmd --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort`.
+Open http://127.0.0.1:5173. Search knowledge
 with `missing occupation` or `supporting documentation`, inspect exact provenance,
-and open CASE-001. `nomatchxyz` exercises no-match. The 0.5 cutoff remains an
-untuned demo heuristic; Serbian-English glossary support is future T054 work.
+and open CASE-001. `nomatchxyz` exercises no-match. Default preparation uses the
+committed 0.5 demo heuristic, distinct from evaluated frozen configurations.
+Title/glossary retrieval is implemented, reviewed and evaluated separately;
+it is not silently enabled by this demo command. Frozen deployment selection
+was baseline, cutoff 6.773881319338023, from development only; its held-out
+Recall/MRR 0.50 remain below target. See
+[T054–T056 evidence](../../evidence/tasks/feature-003-t054-t056.md).
 
 Reproducible automated browser check (requires free 8000/5173/9228, installed
 Chrome and prepared locked .venv; execute from an ordinary local PowerShell, or
 with process escalation if the Codex sandbox blocks Chrome GPU subprocesses):
 
 ```powershell
-node evidence/tasks/feature-003-knowledge-smoke.mjs --reviewed
+$env:PYTHONPATH = Join-Path $PWD 'backend/src'
+.venv/Scripts/python.exe -X utf8 evidence/tasks/feature-003-phase08-browser.py
 ```
 
-It uses an isolated .cache store/profile, leaves the default archive intact,
-checks actual-source historical text and original cases, and stops owned services.
+It uses isolated .cache stores/profiles and an absent ENV_FILE, checks reviewed
+source historical text, review/recovery, missing key/model and original cases,
+then stops only owned services. Results go to separate Phase 8 evidence files;
+prior reports and verifier results are preserved. All actions are automated test
+operator actions, not human review. Do not run it while your own services occupy
+8000/5173/9228; stop only your own foreground demo first.
 
 ## Implemented offline investigation (Phase 4)
 
@@ -99,8 +118,8 @@ read-only refresh. Navigate away to stop browser polling; this does not cancel t
 durable worker attempt. Phase 5 now provides explicit retry/cancel controls;
 Phase 6 also provides explicit review and linked correction forms.
 
-Reproduce the complete isolated offline journey with free 8000/5173/9228 and Chrome:
-`node evidence/tasks/feature-003-fixture-journey.mjs --reviewed`.
+Reproduce the isolated journeys with the Phase 8 verifier above; it retains prior
+phase-specific results and isolates contributor .env settings.
 
 ## Implemented offline recovery (Phase 5)
 
@@ -119,11 +138,11 @@ cancelled response, then real Chrome/API/proxy navigation and snapshot switching
 
 ```powershell
 $env:PYTHONPATH = Join-Path $PWD 'backend/src'
-.venv/Scripts/python.exe evidence/tasks/feature-003-recovery-process.py
-node evidence/tasks/feature-003-recovery-browser.mjs
+.venv/Scripts/python.exe -X utf8 evidence/tasks/feature-003-phase08-browser.py
 ```
 
-Both harnesses use isolated ignored stores/authored corpus and replace ENV_FILE
+The verifier includes both browser and process checks, uses isolated ignored
+stores/authored corpus and replaces ENV_FILE
 with an absent path before settings load. They never load the real .env or call
 OpenAI. Browser needs free 8000/5173/9228 and installed Chrome; sandbox GPU denial
 may require running from an ordinary local terminal. Results/limits are recorded
@@ -131,7 +150,7 @@ in `evidence/tasks/feature-003-recovery.md`. Test provider results are workflow
 evidence, not model-quality or billing evaluation. No hidden automatic recovery
 of an interrupted dispatch occurs.
 
-## Implemented review journey (Phase 6; human confirmation pending)
+## Implemented review journey (Phase 6; T051 confirmed)
 
 With a fixture/test run ready for review, inspect its citations and choose an
 explicit decision; no decision is preselected. Enter 1–2000 characters of trimmed
@@ -156,15 +175,16 @@ Reproduce the automated two-context Chrome/API/proxy/CLI check:
 
 ```powershell
 $env:PYTHONPATH = Join-Path $PWD 'backend/src'
-node evidence/tasks/feature-003-review-browser.mjs
+.venv/Scripts/python.exe -X utf8 evidence/tasks/feature-003-phase08-browser.py
 ```
 
 This harness always forces fixture/test mode, an absent ENV_FILE and the actor
 AUTOMATED TEST OPERATOR (not human approval). It creates an isolated ignored
 archive, never reads the real .env, calls OpenAI or runs T033. Ports 8000/5173/9228
 must be free; Chrome sandbox restrictions may require an ordinary local terminal.
-See evidence/tasks/feature-003-review.md for executed results and the open T051
-human confirmation checklist. This command cannot complete that human gate.
+See evidence/tasks/feature-003-review.md for actual human findings, the corrected
+error label and T051 closure. Automated actions cannot stand in for T059 quality
+ratings or T066 another teammate's reproduction/code review.
 
 ## Recovery and review checks
 
@@ -183,46 +203,35 @@ human confirmation checklist. This command cannot complete that human gate.
    Fixture responses remain unchanged; saved old dataset reports remain historical,
    while new reads/retries against changed active snapshots reject stale_snapshot.
 
-## Explicit live provider gate
+## Live provider history and explicit execution boundary
 
-Configure OPENAI_API_KEY privately in root .env or the backend process without
-printing or committing it. Set OPENAI_MODEL to the explicitly intended ID; the
-configured `gpt-6-luna` was attempted on 2026-11-15 but its required capabilities
-remain unverified after HTTP 400. Process values override .env. Set
-INVESTIGATION_PROVIDER=openai for a real worker; the opt-in probe uses the real
-adapter independently of the ordinary test-provider/feature-enabled defaults.
-
-```powershell
-.venv/Scripts/python.exe -m fraudlens.investigation.cli probe-provider --synthetic-only
-```
-
-The current two-attempt authorization is exhausted; do not rerun under that budget.
-Run only with a new explicit authorization for this small live check. Capture
-safe availability/tool/schema capability outcome, actual returned model/request
-ID and usage or unknown. No key or model access was verified in planning. Failure
-is explicit pending access/capability; no fallback. A successful probe is not
-report-quality evaluation. Any later real investigation/worker/report evaluation
-requires its separately agreed scope; T033 alone does not authorize it.
+Private root .env supports OPENAI_API_KEY and OPENAI_MODEL; process values win.
+Never print or commit credentials. The gpt-6-luna T033 tool/structured-output
+probe completed under its separate four-attempt authorization. The subsequent
+T058 batch completed 13 saved executions with 86/104 actual transport attempts.
+Its unused budget is not a reason to rerun cases or improve outputs. Do not
+invoke probe-provider, the live runner, an openai worker or UI creation with
+live-provider settings as part of deterministic reproduction. Any new live run
+requires a separately scoped request/budget; no fallback model is selected.
 
 ## Frozen evaluation
 
-Follow [evaluation.md](evaluation.md). Freeze inputs, independent references,
-reviewers, corpus, prompt, config and dev-selected cutoffs before held-out use.
+Follow [evaluation.md](evaluation.md). Both frozen retrieval configurations have
+already run on all 20 held-out questions. Do not rerun freeze/tuning or rewrite
+their exclusive outputs. Historical exact executable commands, including required
+--split/--store/--freeze/--output arguments, are in
+[T054–T056 evidence](../../evidence/tasks/feature-003-t054-t056.md). They are
+execution history, not routine setup commands. Runtime retrieval never opens
+references. Saved live reports/failures are under ignored
+evals/results/feature-003/live-v1; they are local evidence, not Git-delivered data.
 
-```powershell
-uv run --locked python -m fraudlens.investigation.cli evaluate-retrieval --protocol evals/investigation/protocol.json --configuration baseline
-uv run --locked python -m fraudlens.investigation.cli evaluate-retrieval --protocol evals/investigation/protocol.json --configuration improved
-uv run --locked python -m fraudlens.investigation.cli evaluate-reports --protocol evals/investigation/protocol.json --provider openai
-uv run --locked python -m fraudlens.investigation.cli summarize-reviews --protocol evals/investigation/protocol.json --reviews evals/results/feature-003/reviews.json
-```
-
-Execution commands select split via the frozen protocol, never silently default
-to held-out during development. Generation gets inputs only; offline metric
-joining loads private references after frozen predictions/reports. Record both
-retrieval configurations, all eight reports/failures, secondary review of at
-least four, >=12 safety scenarios, 20 search latencies and five live demo runs.
-Below-target results are scientifically valid but not a feature-quality pass.
-No actual IBM model metrics or synthetic checks mislabeled as LLM evaluation.
+Vedran rates all eight primary cases and Milan independently rates the preselected
+H02/H03/H04/H06/H08 subset using existing
+[review cards](../../evals/results/feature-003/live-v1/review-cards/README.md).
+Do not invent ratings/signatures or regenerate failed cases. Human import needs
+the actual reviews plus sealed outcomes; `summarize-reviews --help` lists its
+required --protocol/--reviews/--outcomes/--output arguments. This remains a later
+review step, not a runnable placeholder claiming those files already exist.
 
 ## Dataset integration and regressions
 
@@ -232,8 +241,10 @@ against the pinned snapshot. Missing real producer/history remains unavailable,
 not fake empty. Do not merge model branches just to make adapter tests import.
 
 ```powershell
-uv run --locked pytest backend/tests -q
-uv run --locked ruff check backend
+$testRoot = Join-Path $PWD ('.cache/regression-' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $testRoot | Out-Null
+.venv/Scripts/python.exe -m pytest backend/tests --basetemp "$testRoot/temp" -o "cache_dir=$testRoot/cache" -q
+.venv/Scripts/python.exe -m ruff check backend
 npm.cmd --prefix frontend run test -- --run
 npm.cmd --prefix frontend run typecheck
 npm.cmd --prefix frontend run build
@@ -243,7 +254,14 @@ For Windows temp/cache failures, choose unique absolute paths under existing
 root .cache using --basetemp and -o cache_dir; distinguish setup errors from
 business RED. With feature disabled, no credentials/corpus/model installed,
 exercise the original three-case list/detail/retry/404/422 journey unchanged.
-Record actual API/proxy/browser observations for new and old routes, no copied
-historical counts. A teammate reproduces independently; human reviews are not
-inferred from a passing test. Save evidence and update next_work.md after each
-implementation unit. Run Converge against actual code only after implementation.
+Fresh Phase 8 results and their scope are in
+[regression evidence](../../evidence/tasks/feature-003-regression.md). Source SHA,
+schema change and bounded history review packet are in
+[context review](../../evidence/tasks/feature-003-context-review.md). There is no
+actual dataset adapter enabled in this checkout; dataset mode fails explicitly.
+
+Another teammate follows the concrete
+[reproduction protocol](../../evidence/tasks/feature-003-reproduction.md), records
+their own commands/observations and performs code/contracts/evidence review.
+T066 stays partial until actual evidence and T061 exist. T067 Converge is not
+part of this execution; it does not automatically accept pending quality gates.

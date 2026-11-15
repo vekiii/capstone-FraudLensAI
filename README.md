@@ -1,16 +1,28 @@
 # FraudLens AI
 
-Feature 003 update (2026-11-14): T013-T022 knowledge search/source browsing is
-complete with six human-reviewed documents and actual API/proxy/Chrome checks.
-See [executable knowledge quickstart](specs/003-ai-investigation/quickstart.md)
-and [completion evidence](evidence/tasks/feature-003-phase-03-completion.md).
-No .env or provider key is needed for this increment. Windows can invoke uv as
-`py -3.14 -m uv` when bare uv is absent from PATH. Provider/report work is next.
-The foundation description and historical results below retain their original scope.
+Feature 003 update (2026-11-15): reviewed-source search, test-provider investigation,
+evidence/report browsing, durable recovery and explicit analyst review are
+implemented. [Executable quickstart](specs/003-ai-investigation/quickstart.md)
+includes safe local configuration, backend/Vite/worker commands and regressions.
+Its test-provider mode needs no key and makes no OpenAI calls; optional private
+root .env values are overridden by process settings. Never commit credentials.
+
+Phase 8 fixture regression: **776 backend / 186 frontend tests**, Ruff/typecheck/
+build PASS; **29 automated browser + 6 process checks** PASS. See
+[actual results](evidence/tasks/feature-003-regression.md).
+T033 capability and T058 live execution are complete, but retrieval/live quality
+and time targets failed and T059 human ratings are pending. Producer reconciliation
+found a changed explanation enum and no reviewed bounded history interface;
+actual producer integration remains pending. Phase 8 is a partial delivery, not
+full feature acceptance. See [handoff](evidence/tasks/feature-003-phase-08-handoff.md)
+and [teammate reproduction steps](evidence/tasks/feature-003-reproduction.md).
+Original foundation commands/results below retain their historical scope.
 
 Educational AML prototype. Foundation phases 1-5 are implemented: local synthetic
 cases, strict contracts, replaceable scoring and list/detail UI. Phase 6 verifies
-coverage and delivery; independent peer reproduction and human review are pending.
+coverage and delivery. Foundation peer/human review was subsequently confirmed
+by the team; see [foundation review](evidence/tasks/human-review.md). Feature 003
+has separate pending evaluation/reproduction gates described above.
 T019's final continuation records 16 headless Chrome scenarios plus Enter and
 390px viewport checks. This is automated browser evidence, not human review.
 
@@ -19,7 +31,9 @@ Use Git, uv, Python 3.14.x, Node 24.x and npm in Windows PowerShell.
 Versions checked on 2026-11-12 in phase 6: Python 3.14.3, uv 0.10.9,
 Node v24.20.0 and npm 11.19.0. Run commands from the repository root.
 
-For an existing checkout, install the committed locked dependencies:
+For a fresh checkout without dependencies, install the committed locked dependencies.
+On the prepared laptop use the existing .venv directly as shown in the feature
+quickstart; previous agent-driven installation attempts coincided with crashes.
 ```powershell
 $env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'
 uv sync --locked --group dev
