@@ -11,7 +11,10 @@ Phase 8 fixture regression: **776 backend / 186 frontend tests**, Ruff/typecheck
 build PASS; **29 automated browser + 6 process checks** PASS. See
 [actual results](evidence/tasks/feature-003-regression.md).
 T033 capability and T058 live execution are complete, but retrieval/live quality
-and time targets failed and T059 human ratings are pending. Producer reconciliation
+and time targets failed. T059-T061 automated primary/secondary judging, aggregation and audit are now
+complete under the user-approved post-hoc v2 amendment: 3 judge calls, **0/8**
+quality pass. See [actual evaluation](evidence/tasks/feature-003-automated-evaluation.md).
+Both planned human scoring roles were replaced; no human validation is claimed. Producer reconciliation
 found a changed explanation enum and no reviewed bounded history interface;
 actual producer integration remains pending. Phase 8 is a partial delivery, not
 full feature acceptance. See [handoff](evidence/tasks/feature-003-phase-08-handoff.md)

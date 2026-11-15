@@ -15,8 +15,8 @@ read private root .env; explicit process settings override it. Deterministic
 reproduction forces provider=test, source=fixture and empty process key/model.
 The worker is a separate backend terminal; a queued attempt does not run until
 the worker claims it. No browser action implicitly authorizes analyst review.
-Actual dataset adapter/producer review and Phase 7 human quality ratings remain
-pending. [Reproduction packet](../evidence/tasks/feature-003-reproduction.md)
+Actual dataset adapter/producer review remains pending. Phase 7 automated report-judging-v2 is complete with failed
+quality targets; human code/producer review remains separate. [Reproduction packet](../evidence/tasks/feature-003-reproduction.md)
 does not claim a second teammate already ran it. Historical foundation details
 and counts below refer only to their cited delivery.
 

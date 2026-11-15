@@ -108,7 +108,7 @@ Freeze context API with producing/consuming teammates before real integration. D
 - US2: bounded tools, test provider, report validation, worker and report UI. Live provider adapter follows opt-in probe; credentials do not block offline slice.
 - US3: explicit restart/retry/cancel/stale-snapshot recovery and persistence evidence.
 - US4: human review and correction UI with optimistic revisions.
-- US5: frozen retrieval/report/safety packs, baseline/improved evaluation, actual-provider human scoring and measured demonstration.
+- US5: frozen retrieval/report/safety packs, baseline/improved evaluation, actual-provider automated primary/secondary scoring under the user-approved post-hoc report-judging-v2 amendment and measured demonstration. Human analyst dispositions/source/producer reviews remain separate.
 - Integration/convergence: dataset adapter review/live integration when producer exists; full foundation regressions, quickstart reproduction and actual acceptance. No automatic completion of ML gates.
 
 ## Complexity Tracking

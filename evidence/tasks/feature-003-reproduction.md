@@ -87,6 +87,10 @@ are unimplemented and removed non-executable evaluation command placeholders.
 
 Phase 8 agent results are in [regression evidence](feature-003-regression.md).
 T066 checkbox remains empty until actual teammate evidence plus T061 exist.
-T059 ratings (Vedran/Milan) and known failed quality/time targets are deferred
-by the user, preserved in [Phase 7 handoff](feature-003-t058-t061-handoff.md).
+T059 human rating assignments are superseded by the user-approved automated
+report-judging-v2 amendment; execution/aggregation/audit completed with failed
+quality, see [actual results](feature-003-automated-evaluation.md) and
+[judge decision](feature-003-judge-amendment.md). Original reports and failed
+quality/time targets remain preserved in the historical
+[Phase 7 handoff](feature-003-t058-t061-handoff.md).
 T067/Converge and full acceptance have not been run or inferred.

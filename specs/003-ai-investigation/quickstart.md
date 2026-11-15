@@ -3,8 +3,8 @@
 Status (2026-11-15): reviewed six-document search, fixture investigation, durable
 worker/recovery and analyst review are implemented; T051 human confirmation and
 T033 synthetic provider capability check are complete. T054–T058 were executed,
-including the saved live batch. T059 human quality ratings remain pending;
-T060/T061 are partial. Retrieval/live quality and timing targets were not met.
+including the saved live batch. T059-T061 automated report-judging-v2 execution, aggregation and audit are complete
+(3 judge transports, 0/8 quality pass); no human validation is claimed. Retrieval/live quality and timing targets were not met.
 User defers those reviews/findings; Phase 8 does not erase or rerun them.
 T062 producer reconciliation is prepared; actual producer/consumer approval and
 real dataset adapter/history are pending. See
@@ -225,13 +225,18 @@ execution history, not routine setup commands. Runtime retrieval never opens
 references. Saved live reports/failures are under ignored
 evals/results/feature-003/live-v1; they are local evidence, not Git-delivered data.
 
-Vedran rates all eight primary cases and Milan independently rates the preselected
-H02/H03/H04/H06/H08 subset using existing
-[review cards](../../evals/results/feature-003/live-v1/review-cards/README.md).
-Do not invent ratings/signatures or regenerate failed cases. Human import needs
-the actual reviews plus sealed outcomes; `summarize-reviews --help` lists its
-required --protocol/--reviews/--outcomes/--output arguments. This remains a later
-review step, not a runnable placeholder claiming those files already exist.
+The user replaced both planned human scoring roles with automated LLM-as-judge
+on 2026-11-15. Primary covers all eight outcomes; secondary uses an isolated
+context on unchanged H02/H03/H04/H06/H08. See the
+[successor protocol](../../evals/investigation/amendments/report-judging-v2.json)
+and [decision record](../../evidence/tasks/feature-003-judge-amendment.md).
+Original review cards/templates are historical source material, not current
+assignments to Vedran/Milan. Actual gpt-6-luna primary/secondary machine scores
+and audit now exist in separate judge-v2 outputs; see
+[actual closure](../../evidence/tasks/feature-003-automated-evaluation.md).
+Do not rerun the completed judge batch: 3/6 approved transports used, 0/8 pass.
+The old human importer must not disguise machine identities as human signatures.
+Preserve all failed cases, raw disagreements and existing outputs; no new generation.
 
 ## Dataset integration and regressions
 

@@ -1,3 +1,14 @@
+# Current T059-T061 closure - 2026-11-15
+
+User-approved automated report-judging-v2 replaces both historical human rating
+roles. Actual3/6 judge transports, 48 units, all8 primary/5 secondary outcomes
+accounted, 0/8 quality pass; original failed quality/performance findings retained.
+[Executed ratings/aggregate/audit](feature-003-automated-evaluation.md) and
+[machine results](feature-003-judge-results.json). T059/T060/T061 completed as
+post-hoc automated evaluation, not human validation or feature acceptance.
+Earlier human assignment/pending statements below are historical and superseded;
+no Vedran/Milan signatures are inferred. T062/T066 human gates unchanged.
+
 # T059 blocked by T058 and actual raters - 2026-11-15
 
 T052 pack approval is preserved; it is not evaluation of generated reports.

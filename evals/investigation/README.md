@@ -1,4 +1,14 @@
-# Current status - T052 reviewed and frozen, 2026-11-15
+# Current amendment - report judging v2, 2026-11-15
+
+Both T059 rating roles are automated by explicit user decision. Actual execution
+completed (three judge calls, 48 units, 0/8 pass); T060/T061 aggregate/audit
+complete with failed quality, see [closure](../../evidence/tasks/feature-003-automated-evaluation.md).
+The original decision-only protocol remains immutable; see [successor protocol](amendments/report-judging-v2.json) and
+[decision](../../evidence/tasks/feature-003-judge-amendment.md). Historical protocol,
+rubric, splits and results are preserved. This is post-hoc automated scoring,
+not human evaluation; source/producer review and teammate reproduction unchanged.
+
+# Historical status - T052 reviewed and frozen, 2026-11-15
 
 Vedran explicitly approved the remaining 12 scenario cards. Full bound approval
 and freeze are in reference/review-record.json and protocol.json. Structural

@@ -170,13 +170,30 @@ test provider only. See ../../evidence/tasks/feature-003-t057-closure.md.
 - [x] T057 [P] [US5] Execute >=12 security/recovery scenarios and verify all actual outbound turns/continuations for canary secrets/labels/reference leakage, tool boundaries, altered assertions, injection, deadline and stale updates; use `backend/tests/integration/test_investigation_safety.py` for missing RED/GREEN coverage and record complete outcomes in `evidence/tasks/feature-003-safety.md`. Do not delete failing requirements. (Depends: T042, T051, T054; FR-004, FR-010-012, FR-015, FR-018, FR-024, FR-027, SC-004.)
 T058 execution closed 2026-11-15: actual 8 primary + 5 demos, 86/104 transport
 attempts; primary 2/8 valid needs_information, 6 failures; demo 2/5 within 90s,
-7496.290s outlier retained, quality/performance targets FAILED. T059 awaits actual
-Vedran/Milan ratings; T060/T061 remain partial. See ../../evidence/tasks/feature-003-t058-t061-handoff.md.
+7496.290s outlier retained, quality/performance targets FAILED. Historical T059 human assignment superseded by user-approved report-judging-v2
+automated primary/secondary method; execution remains pending, T060/T061 partial. See ../../evidence/tasks/feature-003-t058-t061-handoff.md.
 
 - [x] T058 [US5] Generate the eight frozen held-out reports and five ordinary live demo cases with the actual verified model using `backend/src/fraudlens/investigation/cli.py`; save all attempts/errors/usage/durations/real tool traces under `evals/results/feature-003/`, safe summary in `evidence/tasks/feature-003-live-reports.md`. No reference access in generation or cherry-picking; missing access is explicitly pending, not fixture success. (Depends: T033, T038, T051, T055; FR-017, FR-027-028, SC-003, SC-006.)
-- [ ] T059 [US5] Obtain actual human ratings for all eight reports and independent second ratings of >=4 preselected reports at `evals/results/feature-003/reviews.json`; preserve original disagreements and explicit resolution, assess valid-ID unsupported interpretations, critical errors and essential-fact/missingness coverage. Record real reviewer identities/dates in `evidence/tasks/feature-003-human-evaluation.md`. No generated signatures or LLM-only replacement. (Depends: T058; FR-027, SC-003.)
-- [ ] T060 [US5] Summarize review metrics, support/coverage denominators, critical errors, recommendation applicability, failures/unknown usage and live deadline results via `backend/src/fraudlens/investigation/evaluation.py`; persist immutable result hashes and honest below-target status in `evidence/tasks/feature-003-evaluation.md`. (Depends: T056, T057, T059; FR-026-028, SC-002-004, SC-006, SC-008.)
-- [ ] T061 [US5] Review leakage/reproducibility evidence, corpus/question/report bindings and held-out exposure history in `evidence/tasks/feature-003-evaluation.md`; verify no runtime reference imports, no pricing/spend inventions, all quality target outcomes mapped to actual evidence and no workflow/ML evaluation conflation. (Depends: T060; FR-004, FR-025-028, SC-008.)
+T059-T061 closure (2026-11-15): user approved max6 judge transports; actual3
+gpt-6-luna jobs/48 units completed, isolated secondary context. All8 primary/5
+secondary outcomes covered, failures retained. Conservative aggregate0/8 pass,
+6 generation failures, 1 unresolved report-level disagreement retained; automated
+post-hoc quality FAILED. 31,082 judge tokens reported; spend unknown. Audit PASS,
+13 old outputs/freeze preserved, no generation rerun/tuning. 15 targeted/791 full
+backend PASS. Checkboxes mean executed evaluation/audit, not feature acceptance.
+See ../../evidence/tasks/feature-003-automated-evaluation.md.
+
+- [x] T059 [US5] Execute automated LLM-as-judge primary ratings for all eight original outcomes and a secondary isolated-context pass on unchanged H02/H03/H04/H06/H08 under evals/investigation/amendments/report-judging-v2.json. Preserve raw ratings, prompt/model/settings/input/output hashes, machine identities, dates, disagreements and evidence-based resolution; assess unsupported interpretation, critical errors and essential facts. Save separately under evals/results/feature-003/judge-v2/; label automated/post-hoc, never Vedran/Milan signatures or original human validation. Failures remain in denominator; unresolved uncertainty/disagreement cannot pass. Record evidence in evidence/tasks/feature-003-automated-evaluation.md. Executed under approved separate six-attempt budget: three actual gpt-6-luna calls, raw sets/disagreement preserved; quality failed. (Depends: T058; amended FR-027, SC-003.)
+- [x] T060 [US5] Summarize review metrics, support/coverage denominators, critical errors, recommendation applicability, failures/unknown usage and live deadline results via offline `backend/src/fraudlens/investigation/judging.py` using existing seal helpers in `evaluation.py` (frozen original source preserved); persist immutable result hashes and honest below-target status in `evidence/tasks/feature-003-evaluation.md`. (Depends: T056, T057, T059; FR-026-028, SC-002-004, SC-006, SC-008.)
+- [x] T061 [US5] Review leakage/reproducibility evidence, corpus/question/report bindings and held-out exposure history in `evidence/tasks/feature-003-evaluation.md`; verify no runtime reference imports, no pricing/spend inventions, all quality target outcomes mapped to actual evidence and no workflow/ML evaluation conflation. (Depends: T060; FR-004, FR-025-028, SC-008.)
+
+Report-review amendment (2026-11-15): both planned human scoring roles replaced
+by automated primary/isolated secondary judging, post-hoc and explicitly labeled.
+Original frozen artifacts and thresholds unchanged; judge execution now complete,
+as recorded in the closure above (original authorization preceded execution).
+T060/T061 must aggregate/audit v2 identity and amendment lineage, without inferring
+human validation. T062/T066 human requirements are unaffected. See
+../../evidence/tasks/feature-003-judge-amendment.md.
 
 ## Phase 8: Integration, regression and convergence (T062-T067)
 
