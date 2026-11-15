@@ -116,3 +116,16 @@ and valid needs_information draft; capability_probe_passed. T033 now complete.
 Full backend 755 PASS, Ruff PASS. No T058 or further calls (4/4 budget exhausted).
 See [actual T033 closure](feature-003-t033-closure.md) and safe metadata result.
 Earlier pending T033 entries above are historical and superseded.
+
+## T058 executed / T059 actual review pending - 2026-11-15
+
+All eight primary and five demo executions are sealed; 86/104 transport attempts,
+87 reserved dispatch slots. Primary two needs_information, six failures; demo two
+of five successful within 90s, one measured 7496.290s failure. Quality/performance
+targets failed; no replacement/cherry-picking/tuning. Known reported usage subset
+325196 tokens, five reserved dispatches without reported usage; spend unknown.
+Final backend 759 PASS, Ruff PASS. T059 actual judgments deliberately absent
+(user deferred until handoff); full T060/T061 remain pending. No T062+ or publication.
+See [current complete handoff](feature-003-t058-t061-handoff.md),
+[actual execution summary](feature-003-live-results.json),
+[available audit](feature-003-live-audit-results.json).

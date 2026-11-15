@@ -281,6 +281,10 @@ def project_conversation(conversation):
                 data = item['data']
                 keys = ('source_mode', 'notice', 'context_revision', 'case_id', 'transaction', 'assessment')
                 _keys(data, keys, keys)
+                if data['source_mode']=='dataset':
+                    from fraudlens.investigation.context import validate_outbound_dataset
+                    validate_outbound_dataset(data)
+                    continue
                 if data['source_mode'] != 'fixture':
                     raise ProviderError('context_unavailable')
                 validate('Digest', data['context_revision'])

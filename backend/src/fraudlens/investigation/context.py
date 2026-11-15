@@ -93,8 +93,16 @@ def outbound_context(context, run_id):
     """Explicit fixture projection; no private/source rows or arbitrary extra fields."""
     context = validate('InvestigationContext', context)
     validate('RunId', run_id)
-    if context['source_mode'] != 'fixture':
-        raise ValueError('Dataset projection unavailable')
+    if context['source_mode'] == 'dataset':
+        tx=copy.deepcopy(context['source_payload']['transaction'])
+        for side in ('sender','receiver'):
+            identity=tx.pop(side)
+            tx[side+'_alias']='account_'+digest([run_id,context['context_revision'],side,identity])[:24]
+        result=dict(source_mode='dataset',notice='Authored/synthetic benchmark context; not a legal finding.',
+            context_revision=context['context_revision'],case_id=context['case_id'],transaction=tx,
+            assessment=copy.deepcopy(context['source_payload']['risk_assessment']))
+        validate_outbound_dataset(result)
+        return result
     tx, risk = context['source_payload']['transaction'], context['source_payload']['risk_assessment']
     def alias(side):
         return 'account_' + digest([run_id, context['context_revision'], side, tx[side + '_account']])[:24]
@@ -105,3 +113,26 @@ def outbound_context(context, run_id):
                                  sender_alias=alias('sender'), receiver_alias=alias('receiver')),
                 assessment={key: risk[key] for key in
                             ('score', 'source', 'scorer_version', 'scored_at', 'explanation')})
+
+
+def validate_outbound_dataset(value):
+    """Closed aliased projection of the pinned producer schema, no producer DB access."""
+    from jsonschema import Draft202012Validator, FormatChecker
+
+    from fraudlens.investigation.models import PRODUCER
+    tx=copy.deepcopy(PRODUCER['$defs']['TransactionV2'])
+    for side in ('sender','receiver'):
+        del tx['properties'][side]
+        tx['required'].remove(side)
+        tx['properties'][side+'_alias']=dict(type='string',pattern='^account_[0-9a-f]{24}$')
+        tx['required'].append(side+'_alias')
+    schema=dict(type='object',additionalProperties=False,
+        required=['source_mode','notice','context_revision','case_id','transaction','assessment'],
+        properties=dict(source_mode=dict(const='dataset'),notice=dict(type='string'),
+            context_revision=dict(type='string',pattern='^[0-9a-f]{64}$'),
+            case_id=PRODUCER['$defs']['CaseId'],transaction=tx,
+            assessment={'$ref':'#/$defs/AssessmentV2'}),**{'$defs':PRODUCER['$defs']})
+    try:
+        Draft202012Validator(schema,format_checker=FormatChecker()).validate(value)
+    except Exception as exc:
+        raise ValueError('Invalid dataset provider projection') from exc

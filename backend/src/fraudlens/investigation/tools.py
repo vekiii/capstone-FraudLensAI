@@ -97,6 +97,10 @@ class ToolExecutor:
         body['limitations'] = ['Fixture score is not calibrated probability; not ML inference.',
                                'No independently verified fixture timezone/time-basis provenance.',
                                'Occupation, device and source of funds are unavailable.']
+        if self.context['source_mode']=='dataset':
+            body['limitations']=['Synthetic benchmark; preserve score kind/source and explanation status.',
+                                 'Preserve raw minute time and explicit assumed UTC time basis.',
+                                 'Occupation, device and source of funds are unavailable.']
         item = self._item('case_fact', canonical(body).decode(), facts(body))
         return [item], self._result([item], 1, 1, False)
 

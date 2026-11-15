@@ -1,3 +1,37 @@
+# Current handoff - T058 executed, human review pending, 2026-11-15
+User authorized through T061, cap104; Vedran primary/Milan independent secondary.
+All 8 primary + 5 demo outcomes saved, live batch finished; DO NOT launch again.
+86/104 actual transports; 87 reserved dispatches. Primary 2 needs_information,
+6 failures; demo 2/5 within90, 7496.290s outlier retained; quality/time targets FAIL.
+Known usage subset325196 tokens; 5 reserved dispatches unknown usage, spend unknown.
+Materialized authored dataset alias projection and exact history injection verified;
+no actual producer DB/ML integration or retrieval/prompt/cutoff retuning.
+Final backend 759 PASS, Ruff/diff PASS; live freeze/input/evidence audit PASS.
+T058 checked execution complete. T059 remains pending actual people; T060/T061
+partial. User defers review until handoff. No invented scores/signatures, T062+,
+extra provider calls or Git publication. No active verification child processes.
+Evidence: [handoff](evidence/tasks/feature-003-t058-t061-handoff.md).
+Next: Vedran reviews all 8 cards; Milan independently H02/H03/H04/H06/H08.
+Review index: evals/results/feature-003/live-v1/review-cards/README.md; 31 primary
+and 17 secondary planned units; failed-case confirmations also required. Actual
+ratings are zero. Afterwards import real ratings and finish T060/T061.
+Earlier handoffs below historical.
+
+# T058-T061 execution in progress - 2026-11-15
+User authorizes completion through T061 and new aggregate cap 104 provider
+transport attempts for eight primary + five preselected demo executions.
+Vedran assigned primary reviewer, Milan independent secondary; no ratings yet.
+Input-only materialized adapter implemented: exact authored dataset money/time/
+score meanings, aliases, closed pinned producer projection; fixture unchanged.
+Executed RED dataset projection -> targeted GREEN 24; full backend 756 PASS;
+additional authored end-to-end dataset test 2 PASS. No retrieval tuning.
+Live batch running under evidence/tasks/feature-003-live-run.py, durable ledger
+and sealed per-attempt outputs in ignored evals/results/feature-003/live-v1.
+Do not start duplicate batch or regenerate saved primary attempts. Runner resumes
+only unsaved identities under same code/config freeze; never reads references.
+No T059 scores/signatures fabricated. Next: finish batch, produce offline human
+review cards, obtain actual primary/secondary ratings before full T060/T061.
+
 # Current handoff - T033 complete, 2026-11-15
 Feature03 baseline cf218b0. New approved 4-attempt budget used exactly 4/4:
 400 schema/citations, 400 pattern, then 200 tool + 200 structured draft.

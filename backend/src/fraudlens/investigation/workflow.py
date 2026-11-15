@@ -59,11 +59,12 @@ def event(db, attempt, operation, **values):
 
 
 class InvestigationService:
-    def __init__(self, repository, knowledge, settings=None, provider_factory=None):
+    def __init__(self, repository, knowledge, settings=None, provider_factory=None, history_reader=None):
         self.repo, self.knowledge = repository, knowledge
         self.settings = settings or InvestigationSettings()
         self.provider_factory = provider_factory or self._provider
         self.context_reader = CaseContextReader()
+        self.history_reader = history_reader
 
     def _provider(self, binding):
         if binding['provider_mode'] == 'test':
@@ -339,7 +340,7 @@ class InvestigationService:
             self.context_reader.resolve(context['case_id'], context['source_mode'], context['snapshot_ref'])
             provider = self.provider_factory(binding)
             executor = ToolExecutor(self.repo, attempt_id, owner, context, self.knowledge,
-                                    binding['corpus_version'], binding['retrieval_version'])
+                                    binding['corpus_version'], binding['retrieval_version'],self.history_reader)
             while True:
                 view = self.read(attempt_id)
                 remaining = deadline - time.monotonic()
