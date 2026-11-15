@@ -1,5 +1,9 @@
 # Next work - FraudLens AI
 
+## Repository-wide model implementation guide - 2026-11-15
+
+Added [MODEL_IMPLEMENTATION_README.md](MODEL_IMPLEMENTATION_README.md) at the repository root. It traces the IBM synthetic source, history-v1 features and chronological split, frozen tree and separate boosted candidate parameters, recorded validation/test metrics, artifact checks, isolated full-run/API/UI integration, and the current acceptance limits. It distinguishes the 19/20 development-validation result from the 166 unlabeled full-run alerts and keeps T065/T066 blocked on missing or mismatched original evidence. All 22 local documentation links resolve and `git diff --check` passed. Documentation only; no model fit, source data access, application change, application test run, commit or push was part of this unit. One concrete next step: obtain and verify Elena's authorized same-hash database, artifact, explanation sample and protocol before completing T065/T066.
+
 ## Feature 002 Windows environment prepared - 2026-11-15
 
 The [environment setup record](evidence/tasks/feature-002-environment-setup.md) documents an ignored, isolated Python 3.14.10 environment created from the unchanged `uv.lock`, with optional pandas 3.1.1 and pip 26.3 installed without replacing the locked NumPy/scikit-learn/joblib versions. pandas and the actual `HistGradientBoostingClassifier` import, `pip check`, Python SQLite 3.53.1 in-memory create/insert/query, and process-scoped PowerShell activation passed. The external SQLite CLI is unnecessary for the documented Windows peer status check because the quickstart now gives a read-only Python equivalent. A Windows `resource` import failure in three offline ML modules was repaired with a peak-working-set measurement helper; model calculations were not changed.
