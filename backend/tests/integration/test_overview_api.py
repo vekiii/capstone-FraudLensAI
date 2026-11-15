@@ -1,7 +1,9 @@
 """Read-only overview aggregates expose predictions without ground-truth labels."""
 
+import sqlite3
 from datetime import UTC, datetime
 
+import pytest
 from backend.tests.phase7_samples import VERSION, entry
 from fastapi.testclient import TestClient
 
@@ -75,6 +77,85 @@ def test_overview_handles_empty_run_and_missing_timestamps(tmp_path):
     assert body['predictions']['not_flagged'] == 1
 
 
+@pytest.mark.parametrize('invalid_timestamp', [
+    '2022-09-10Tnot-a-timeZ',
+    '2022-02-30T12:00:00Z',
+    '2022-09-10T12:00:00+03:00',
+    '2022-09-10',
+])
+def test_overview_excludes_invalid_or_non_utc_timestamps(tmp_path, invalid_timestamp):
+    path = tmp_path / 'runs.sqlite'
+    _make_run(path, [(datetime(2022, 9, 10, tzinfo=UTC), 0.8)])
+    store = RunStore(path)
+    store.connection.execute('DROP TRIGGER immutable_scored_update')
+    store.connection.execute(
+        'UPDATE scored_assessments SET event_time=?', (invalid_timestamp,))
+    store.close()
+
+    with _client(path) as api:
+        body = api.get('/api/overview').json()
+
+    assert body['dataset']['scored_transactions'] == 1
+    assert body['dataset']['unknown_timestamp_transactions'] == 1
+    assert body['series'] == []
+    assert body['predictions']['flagged'] == 1
+
+
+def test_overview_accepts_canonical_zero_offset_timestamp(tmp_path):
+    path = tmp_path / 'runs.sqlite'
+    _make_run(path, [(datetime(2022, 9, 10, tzinfo=UTC), 0.2)])
+    store = RunStore(path)
+    store.connection.execute(
+        'DROP TRIGGER immutable_scored_update')
+    store.connection.execute(
+        "UPDATE scored_assessments SET event_time='2022-09-10T00:00:00+00:00'")
+    store.close()
+
+    with _client(path) as api:
+        body = api.get('/api/overview').json()
+
+    assert body['dataset']['unknown_timestamp_transactions'] == 0
+    assert body['series'] == [
+        {'period': '2022-09-10', 'transactions': 1, 'flagged': 0, 'not_flagged': 1},
+    ]
+
+
+def test_overview_does_not_publish_an_incomplete_run_from_corrupt_active_pointer(tmp_path):
+    path = tmp_path / 'runs.sqlite'
+    store = RunStore(path)
+    store.begin_run('run_unapproved', VERSION, 'rules', 'rules-v1', None, '0.5', 1)
+    store.connection.execute(
+        'INSERT INTO active_run(singleton,run_id) VALUES(1,?)', ('run_unapproved',))
+    store.close()
+
+    with _client(path) as api:
+        response = api.get('/api/overview')
+
+    assert response.status_code == 503
+    assert response.json()['error']['code'] == 'run_unavailable'
+
+
+@pytest.mark.parametrize(('field', 'value'), [
+    ('scored_count', 2),
+    ('total_alerts', 1),
+])
+def test_overview_fails_closed_when_completed_run_totals_are_inconsistent(
+        tmp_path, field, value):
+    path = tmp_path / 'runs.sqlite'
+    _make_run(path, [(datetime(2022, 9, 10, tzinfo=UTC), 0.2)])
+    store = RunStore(path)
+    store.connection.execute('DROP TRIGGER immutable_run_update')
+    store.connection.execute(f'UPDATE scored_runs SET {field}=?', (value,))
+    store.close()
+
+    with _client(path) as api:
+        response = api.get('/api/overview')
+
+    assert response.status_code == 500
+    assert response.json() == {'error': {
+        'code': 'internal_error', 'message': 'Internal server error.'}}
+
+
 def test_overview_empty_and_unavailable_active_run(tmp_path):
     path = tmp_path / 'runs.sqlite'
     _make_run(path, [])
@@ -101,6 +182,19 @@ def test_overview_returns_closed_error_for_unreadable_store(tmp_path):
     path.write_text('not sqlite', encoding='utf-8')
     with _client(path) as api:
         response = api.get('/api/overview')
+    assert response.status_code == 500
+    assert response.json() == {'error': {
+        'code': 'internal_error', 'message': 'Internal server error.'}}
+
+
+def test_overview_sanitizes_database_connection_failure(tmp_path, monkeypatch):
+    def fail_to_open(_settings):
+        raise sqlite3.OperationalError('disk I/O error')
+
+    monkeypatch.setattr('fraudlens.main._dataset_store', fail_to_open)
+    with _client(tmp_path / 'runs.sqlite') as api:
+        response = api.get('/api/overview')
+
     assert response.status_code == 500
     assert response.json() == {'error': {
         'code': 'internal_error', 'message': 'Internal server error.'}}

@@ -972,8 +972,13 @@ class RunStore:
             period_sql = "strftime('%Y-W%W',event_time)"
         else:
             period_sql = "substr(event_time,1,10)"
-        valid_day = "date(substr(event_time,1,10))=substr(event_time,1,10)"
-        period_sql = f'CASE WHEN {valid_day} THEN {period_sql} ELSE NULL END'
+        valid_timestamp = (
+            "substr(event_time,11,1)='T' AND "
+            "(substr(event_time,-1,1)='Z' OR substr(event_time,-6)='+00:00') "
+            "AND julianday(event_time) IS NOT NULL "
+            "AND date(substr(event_time,1,10))=substr(event_time,1,10)"
+        )
+        period_sql = f'CASE WHEN ({valid_timestamp}) THEN {period_sql} ELSE NULL END'
         rows = self.connection.execute(f'''
             SELECT {period_sql} AS period,COUNT(*),SUM(alert)
             FROM scored_assessments WHERE run_id=?
