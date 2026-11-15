@@ -81,6 +81,8 @@ async function mount() {
   const load = entryModules['../src/main.ts'];
   expect(load, 'Missing existing application entry point').toBeTypeOf('function');
   await load();
+  // The application now opens on Overview; these existing journey checks target Cases.
+  root.querySelector<HTMLButtonElement>('[data-page="cases"]')!.click();
 }
 
 function text(): string {

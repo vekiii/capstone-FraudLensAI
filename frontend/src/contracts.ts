@@ -250,6 +250,42 @@ export interface HealthV2 {
 export type CaseListResponse = CaseList | CaseListV2;
 export type CaseDetailResponse = CaseDetail | CaseDetailV2;
 
+export interface OverviewPoint {
+  period: string;
+  transactions: number;
+  flagged: number;
+  not_flagged: number;
+}
+export interface Overview {
+  contract_version: 1;
+  dataset: {
+    data_source: 'ibm_aml_hi_small';
+    dataset_version: string;
+    run_id: string;
+    scored_transactions: number;
+    unknown_timestamp_transactions: number;
+    confirmed_fraud: null;
+    legitimate: null;
+    fraud_rate: null;
+    label_unavailable_reason: string;
+  };
+  predictions: { flagged: number; not_flagged: number; flag_rate: number | null };
+  series: OverviewPoint[];
+  aggregation: 'day' | 'week';
+  model: {
+    name: string;
+    source: V2Source;
+    scorer_version: string;
+    threshold: string;
+    evaluation_dataset: null;
+    evaluation_split: null;
+    precision: null;
+    recall: null;
+    f1: null;
+    metric_source: string;
+  };
+}
+
 function v2Instant(value: unknown): string {
   const result = patternedText(value,
     /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,9})?Z(?![\s\S])/);
@@ -448,6 +484,65 @@ export function decodeHealthV2(value: unknown): HealthV2 {
     data_source: 'ibm_aml_hi_small', score_source: v2Source(object.score_source),
     dataset_version: version, active_run_id: active };
 }
+
+export function decodeOverview(value: unknown): Overview {
+  const object = closedObject(value, ['contract_version', 'dataset', 'predictions',
+    'series', 'aggregation', 'model']);
+  if (object.contract_version !== 1
+      || (object.aggregation !== 'day' && object.aggregation !== 'week')
+      || !Array.isArray(object.series)) return invalid();
+  const dataset = closedObject(object.dataset, ['data_source', 'dataset_version', 'run_id',
+    'scored_transactions', 'unknown_timestamp_transactions', 'confirmed_fraud',
+    'legitimate', 'fraud_rate', 'label_unavailable_reason']);
+  if (dataset.data_source !== 'ibm_aml_hi_small' || dataset.confirmed_fraud !== null
+      || dataset.legitimate !== null || dataset.fraud_rate !== null) return invalid();
+  const predictions = closedObject(object.predictions, ['flagged', 'not_flagged', 'flag_rate']);
+  const scored = nonnegativeInteger(dataset.scored_transactions);
+  const unknown = nonnegativeInteger(dataset.unknown_timestamp_transactions);
+  const flagged = nonnegativeInteger(predictions.flagged);
+  const notFlagged = nonnegativeInteger(predictions.not_flagged);
+  const flagRate = predictions.flag_rate === null ? null : finite(predictions.flag_rate);
+  if (flagged + notFlagged !== scored
+      || flagRate !== (scored ? flagged / scored : null)
+      || unknown > scored) return invalid();
+  const series: OverviewPoint[] = object.series.map(pointValue => {
+    const point = closedObject(pointValue, ['period', 'transactions', 'flagged', 'not_flagged']);
+    const transactions = nonnegativeInteger(point.transactions);
+    const pointFlagged = nonnegativeInteger(point.flagged);
+    const pointNotFlagged = nonnegativeInteger(point.not_flagged);
+    if (pointFlagged + pointNotFlagged !== transactions) return invalid();
+    const period = boundedText(point.period, 16);
+    if (object.aggregation === 'day' && !/^\d{4}-\d{2}-\d{2}$/.test(period)
+        || object.aggregation === 'week' && !/^\d{4}-W\d{2}$/.test(period)) return invalid();
+    return { period, transactions, flagged: pointFlagged, not_flagged: pointNotFlagged };
+  });
+  if (series.reduce((sum, point) => sum + point.transactions, 0) !== scored - unknown
+      || series.reduce((sum, point) => sum + point.flagged, 0) !== flagged) return invalid();
+  const model = closedObject(object.model, ['name', 'source', 'scorer_version', 'threshold',
+    'evaluation_dataset', 'evaluation_split', 'precision', 'recall', 'f1', 'metric_source']);
+  if (model.evaluation_dataset !== null || model.evaluation_split !== null
+      || model.precision !== null || model.recall !== null || model.f1 !== null) return invalid();
+  return {
+    contract_version: 1,
+    dataset: {
+      data_source: 'ibm_aml_hi_small', dataset_version: v2Version(dataset.dataset_version),
+      run_id: v2RunId(dataset.run_id), scored_transactions: scored,
+      unknown_timestamp_transactions: unknown, confirmed_fraud: null,
+      legitimate: null, fraud_rate: null,
+      label_unavailable_reason: boundedText(dataset.label_unavailable_reason, 300),
+    },
+    predictions: { flagged, not_flagged: notFlagged, flag_rate: flagRate },
+    series, aggregation: object.aggregation,
+    model: {
+      name: boundedText(model.name, 100), source: v2Source(model.source),
+      scorer_version: boundedText(model.scorer_version, 100),
+      threshold: boundedText(model.threshold, 100), evaluation_dataset: null,
+      evaluation_split: null, precision: null, recall: null, f1: null,
+      metric_source: boundedText(model.metric_source, 300),
+    },
+  };
+}
+
 export function decodeErrorEnvelopeV2(value: unknown): { error: { code: V2ErrorCode;
   message: string } } {
   const object = closedObject(value, ['error']);

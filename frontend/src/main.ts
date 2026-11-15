@@ -1,5 +1,8 @@
-import { ApiError, getCase, getCases } from './api';
+import { ApiError, getCase, getCases, getOverview } from './api';
 import type { CaseDetailResponse, CaseListResponse } from './contracts';
+import type { Overview } from './contracts';
+import { createOverviewView } from './overview-view';
+import type { OverviewState } from './overview-view';
 import { createCaseView } from './views';
 import type { UiState } from './views';
 import './styles.css';
@@ -8,6 +11,10 @@ export interface CaseClient {
   getCases(options: { signal: AbortSignal; dataset?: boolean }): Promise<CaseListResponse>;
   getCase(caseId: string, options: { signal: AbortSignal; snapshot?: string }):
     Promise<CaseDetailResponse>;
+}
+
+export interface OverviewClient {
+  getOverview(options: { signal: AbortSignal }): Promise<Overview>;
 }
 
 export function mountCaseApp(
@@ -121,8 +128,80 @@ export function mountCaseApp(
   };
 }
 
+export function mountFraudLensApp(
+  root: HTMLElement,
+  overviewClient: OverviewClient = { getOverview },
+  caseClient?: CaseClient,
+): () => void {
+  let activePage: 'overview' | 'cases' = 'overview';
+  let overviewState: OverviewState = { kind: 'loading' };
+  let controller: AbortController | undefined;
+  let caseDispose: (() => void) | undefined;
+  let generation = 0;
+  let disposed = false;
+
+  const header = document.createElement('header');
+  header.className = 'app-header';
+  const brand = document.createElement('p');
+  brand.className = 'eyebrow'; brand.textContent = 'FRAUDLENS AI';
+  const nav = document.createElement('nav');
+  nav.className = 'primary-navigation'; nav.setAttribute('aria-label', 'Primary navigation');
+  const overviewTab = document.createElement('button');
+  overviewTab.type = 'button'; overviewTab.textContent = 'Overview'; overviewTab.dataset.page = 'overview';
+  const casesTab = document.createElement('button');
+  casesTab.type = 'button'; casesTab.textContent = 'Cases'; casesTab.dataset.page = 'cases';
+  nav.append(overviewTab, casesTab);
+  header.append(brand, nav);
+  const pageRoot = document.createElement('div'); pageRoot.className = 'page-content';
+  root.replaceChildren(header, pageRoot);
+
+  const view = createOverviewView(pageRoot, () => { void loadOverview(); });
+  function cancelActive(): void {
+    generation += 1;
+    controller?.abort(); controller = undefined;
+    caseDispose?.(); caseDispose = undefined;
+  }
+  function current(token: number): boolean { return !disposed && token === generation; }
+  function selectTab(): void {
+    overviewTab.setAttribute('aria-current', String(activePage === 'overview' ? 'page' : 'false'));
+    casesTab.setAttribute('aria-current', String(activePage === 'cases' ? 'page' : 'false'));
+  }
+  async function loadOverview(): Promise<void> {
+    cancelActive();
+    activePage = 'overview'; selectTab();
+    const token = generation;
+    const requestController = new AbortController(); controller = requestController;
+    overviewState = { kind: 'loading' }; view.render(overviewState);
+    try {
+      const overview = await overviewClient.getOverview({ signal: requestController.signal });
+      if (!current(token)) return;
+      overviewState = { kind: 'loaded', overview }; view.render(overviewState);
+    } catch (error) {
+      if (!current(token)) return;
+      const failure = error instanceof ApiError ? error : new ApiError('internal_error');
+      overviewState = { kind: 'error', message: failure.code === 'run_unavailable'
+        ? 'No active dataset or model run is configured.' : failure.message };
+      view.render(overviewState);
+    } finally {
+      if (current(token)) controller = undefined;
+    }
+  }
+  function loadCases(): void {
+    cancelActive();
+    activePage = 'cases'; selectTab();
+    caseDispose = mountCaseApp(pageRoot, caseClient);
+  }
+  overviewTab.addEventListener('click', () => { void loadOverview(); });
+  casesTab.addEventListener('click', loadCases);
+  selectTab();
+  void loadOverview();
+  return () => {
+    disposed = true; cancelActive(); root.replaceChildren();
+  };
+}
+
 const root = document.querySelector<HTMLElement>('#app');
 if (root) {
-  const dispose = mountCaseApp(root);
+  const dispose = mountFraudLensApp(root);
   import.meta.hot?.dispose(dispose);
 }

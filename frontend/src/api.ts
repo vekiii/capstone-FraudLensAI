@@ -1,8 +1,8 @@
 import {
-  ContractValidationError, decodeCaseDetailResponse, decodeCaseListResponse,
+  ContractValidationError, decodeCaseDetailResponse, decodeCaseListResponse, decodeOverview,
   decodeErrorEnvelope, decodeErrorEnvelopeV2,
 } from './contracts';
-import type { CaseDetailResponse, CaseListResponse, V2ErrorCode } from './contracts';
+import type { CaseDetailResponse, CaseListResponse, Overview, V2ErrorCode } from './contracts';
 
 export type ApiErrorCode = V2ErrorCode
   | 'invalid_response' | 'network_error' | 'timeout' | 'cancelled';
@@ -121,6 +121,10 @@ export function getCases(options: RequestOptions = {}): Promise<CaseListResponse
     if (options.dataset && !('contract_version' in result)) throw new ContractValidationError();
     return result;
   }, options);
+}
+
+export function getOverview(options: RequestOptions = {}): Promise<Overview> {
+  return request('/api/overview', decodeOverview, { ...options, dataset: true });
 }
 
 export function getCase(caseId: string, options: RequestOptions = {}): Promise<CaseDetailResponse> {
