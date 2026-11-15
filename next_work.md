@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## Feature 002 Windows environment prepared - 2026-11-15
+
+The [environment setup record](evidence/tasks/feature-002-environment-setup.md) documents an ignored, isolated Python 3.14.10 environment created from the unchanged `uv.lock`, with optional pandas 3.1.1 and pip 26.3 installed without replacing the locked NumPy/scikit-learn/joblib versions. pandas and the actual `HistGradientBoostingClassifier` import, `pip check`, Python SQLite 3.53.1 in-memory create/insert/query, and process-scoped PowerShell activation passed. The external SQLite CLI is unnecessary for the documented Windows peer status check because the quickstart now gives a read-only Python equivalent. A Windows `resource` import failure in three offline ML modules was repaired with a peak-working-set measurement helper; model calculations were not changed.
+
+Data-free validation: 21 unit tests passed; a separate synthetic store/loader run had 11 passed and one existing symlink test failed with Windows `WinError 1314` (missing symlink privilege). An earlier broader attempt also included tests requiring the absent model artifact and failed; it is not a model-validation result. Ruff passed for the four touched Python files. Full regression and original-artifact reload were not run. T065/T066 remain BLOCKED by missing original database/model/explanation/prediction inputs and the pinned-protocol mismatch. One concrete next step: obtain Elena's authorized same-hash resource bundle and verify it before resuming T065 or T066.
+
 ## Feature 002 verification access agreement recorded - 2026-11-15
 
 The requester reports mutual agreement with Elena Kalajdžić to provide the original transaction/history database, boosted model/preprocessing artifact, manifest/metadata, explanation and prediction files, evaluation reports, and approved protocol/time-policy for T065, T066, and directly related verification. The [access approval record](evidence/tasks/feature-002-access-approval.md) captures the reported scope, handling restrictions, roles, and limits. The underlying discussion date was not supplied; the repository has no direct written confirmation from Elena, so the agreement is marked user-reported with documentary confirmation pending. This is evidence-access approval only, not permission to merge, deploy, or release the model.

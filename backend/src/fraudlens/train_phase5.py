@@ -3,7 +3,6 @@
 import argparse
 import hashlib
 import json
-import resource
 import sqlite3
 import time
 from decimal import Decimal
@@ -14,6 +13,7 @@ import numpy as np
 import sklearn
 
 from fraudlens.evaluation import fit_candidate_grid, select_candidate, select_threshold
+from fraudlens.process_metrics import peak_rss_bytes
 
 NUMERIC = (
     'sender_out_count_24h', 'sender_distinct_receivers_24h',
@@ -135,7 +135,7 @@ def train(store: Path, protocol_path: Path, output: Path):
         _load_development(store, protocol)
     print(json.dumps({'stage': 'development_loaded', 'train': len(train_y),
                       'validation': len(validation_y),
-                      'peak_rss_bytes': resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}),
+                      'peak_rss_bytes': peak_rss_bytes()}),
           flush=True)
     candidates = []
     outcomes = []
@@ -150,7 +150,7 @@ def train(store: Path, protocol_path: Path, output: Path):
             categorical_columns=tuple(range(len(NUMERIC), len(FEATURES))),
             candidates=spec)[0]
         elapsed = time.monotonic() - fit_start
-        rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        rss = peak_rss_bytes()
         print(json.dumps({'stage': 'fit_resource_measurement', 'index': index,
                           'elapsed_seconds': round(elapsed, 3),
                           'peak_rss_bytes': rss}), flush=True)
@@ -200,7 +200,7 @@ def train(store: Path, protocol_path: Path, output: Path):
         'test_labels': 'not_read', 'model_file': 'model.joblib',
         'model_sha256': _sha(model_path), 'reload_probe_count': probe_count,
         'reload_probe_predictions': repeated.tolist(),
-        'peak_rss_bytes': resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+        'peak_rss_bytes': peak_rss_bytes(),
         'total_seconds': round(time.monotonic() - start, 3),
     }
     (output / 'metadata.json').write_text(json.dumps(report, indent=2) + '\n')

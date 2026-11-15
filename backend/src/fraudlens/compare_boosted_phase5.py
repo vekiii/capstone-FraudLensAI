@@ -7,7 +7,6 @@ import argparse
 import hashlib
 import json
 import math
-import resource
 import sqlite3
 import time
 from pathlib import Path
@@ -25,6 +24,7 @@ from threadpoolctl import threadpool_limits
 from fraudlens.data_import import derive_dataset_version
 from fraudlens.evaluation import fit_candidate_grid, select_threshold
 from fraudlens.model_scoring import create_manifest, load_trusted_artifact
+from fraudlens.process_metrics import peak_rss_bytes
 from fraudlens.train_phase5 import FEATURES, NUMERIC, _load_development
 
 FROZEN_MANIFEST_SHA = '2732691cb08daafba9d303ef6f3c8f616e03b3dc51505d3abb9772ceadd3919e'
@@ -237,7 +237,7 @@ def run(store: Path, protocol_path: Path, artifact_dir: Path | None = None) -> d
             'artifact': artifact,
             'boost_fit_and_validation_seconds': time.monotonic() - boost_start,
             'elapsed_seconds': time.monotonic() - start,
-            'peak_rss_bytes': resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}
+            'peak_rss_bytes': peak_rss_bytes()}
 
 
 def main(argv=None):

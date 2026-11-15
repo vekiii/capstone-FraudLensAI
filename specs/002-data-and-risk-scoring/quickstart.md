@@ -196,6 +196,21 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 PYTHONPATH=backend/sr
 sqlite3 -readonly evals/results/boosted-full-peer-1.sqlite 'SELECT status,expected_count,scored_count,total_alerts FROM scored_runs WHERE run_id="run_boosted_full_peer_1";'
 ```
 
+On Windows, the external `sqlite3` executable is optional for this status
+query. Python's standard-library `sqlite3` opens the existing run store in
+read-only mode and prints the same four fields. Run this from the repository
+root after the peer store exists; use the Python executable from the active
+project environment:
+
+```powershell
+$peerStore = (Resolve-Path 'evals/results/boosted-full-peer-1.sqlite').Path
+$peerRunId = 'run_boosted_full_peer_1'
+.\.venv\Scripts\python.exe -c 'import pathlib, sqlite3, sys; p = pathlib.Path(sys.argv[1]).resolve(); c = sqlite3.connect(p.as_uri() + "?mode=ro", uri=True); c.execute("PRAGMA query_only=ON"); row = c.execute("SELECT status,expected_count,scored_count,total_alerts FROM scored_runs WHERE run_id=?", (sys.argv[2],)).fetchone(); print("|".join(map(str, row)) if row else "run not found"); c.close()' $peerStore $peerRunId
+```
+
+When using the isolated Feature 002 [Windows environment](../../evidence/tasks/feature-002-environment-setup.md), replace the executable path
+above with `.\.cache\feature-002-env\Scripts\python.exe`.
+
 The CLI prints only on completion. While it runs, inspect the `staging` count
 with the read-only query above and the single process with `ps`; never launch a
 second worker against the same run store. After the CLI exits 0 and the row

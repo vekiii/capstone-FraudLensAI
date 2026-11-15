@@ -3,7 +3,6 @@
 import argparse
 import hashlib
 import json
-import resource
 import sqlite3
 import time
 from pathlib import Path
@@ -11,6 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from fraudlens.model_scoring import load_trusted_artifact
+from fraudlens.process_metrics import peak_rss_bytes
 from fraudlens.train_phase5 import CATEGORICAL, FEATURES, NUMERIC, _rules
 
 
@@ -129,7 +129,7 @@ def predict(source: Path, protocol_path: Path, artifact_dir: Path,
         'predictions': {'model': model_rows, 'rules': rules_rows},
         'test_ids_sha256': digest.hexdigest(),
         'resource': {'elapsed_seconds': time.monotonic() - started,
-                     'peak_rss_bytes': resource.getrusage(resource.RUSAGE_SELF).ru_maxrss},
+                     'peak_rss_bytes': peak_rss_bytes()},
     }
     with output.open('x') as target:
         json.dump(bundle, target, separators=(',', ':'))
