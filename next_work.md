@@ -1,4 +1,50 @@
-# Current handoff - feature 003 T052 candidate prepared, independent review pending, 2026-11-15
+# Current handoff - T051 completed; recovery error labels corrected, 2026-11-15
+
+On feature03, preserved earlier uncommitted human-observation/evidence edits.
+Fixed controller.ts to retain/render the actual blocking code once and reset
+only after successful explicit refresh. Genuine stale_snapshot behavior remains;
+revision_conflict no longer adds a false stale_snapshot label. No layout/backend/
+producer/ML changes. Intended RED 8 failed/12 passed -> targeted GREEN 20 passed;
+final frontend 186 passed, typecheck/build and whitespace PASS. No fresh backend,
+browser or provider calls/installations/real .env access/database writes.
+
+T051 is checked using Vedran's actual manual observations and corroborated
+three reports/five human review events plus fresh regression coverage for the
+found UI issue. This is not a new post-fix human-browser run or independent
+LLM/code-review acceptance. See [review evidence and closure](evidence/tasks/feature-003-review.md#t051-error-label-correction-and-closure--2026-11-15)
+and [original fix request](prompts/development/003-t051-conflict-label-fix-2026-11-15.md).
+T033 provider capability and T052 independent expectation review/freeze remain
+open. No commit/push. All earlier open-T051 sections below are historical.
+
+**One concrete next step:** a real independent teammate reviews the prepared
+T052 pack using the checklist in evidence/tasks/feature-003-evaluation-protocol.md,
+records actual findings/decision against final bundle, then freezes it before
+T053+ evaluation development. Do not infer approval or inspect held-out answers
+for tuning. No automatic continuation beyond this T051 fix.
+
+# Previous handoff - T051 human observations recorded; UI error-label finding, 2026-11-15
+
+Vedran performed the manual citation/review/required-field/two-session/correction
+and needs-information checks and supplied UI text/screenshot. Read-only inspection
+of the ignored t051-manual-20261115.sqlite corroborates three reports, five human
+reviews/audit events, same-report correction chain and all three dispositions
+(escalation as a correction). Earlier statements that no human observations
+exist are superseded; human code review/independent evaluation are not inferred.
+See [actual observations, bound IDs and finding](evidence/tasks/feature-003-review.md#actual-human-observations--vedran-2026-11-15).
+
+Confirmed issue: controller.ts show() hardcodes stale_snapshot for every blocked
+action, so a revision_conflict can display both error labels. T051 remains
+unchecked pending this focused UI correction; concurrency protection itself
+has human evidence. Screenshot label/textarea wrapping is a separate visual
+observation, not repaired here. No product code, database or task markers changed.
+No tests/provider calls/installs/commit/push performed in this observation step.
+
+**One concrete next step:** add an intended RED for revision_conflict showing
+no false stale_snapshot label, preserve the actual blocking code, then verify
+genuine stale-snapshot and revision-conflict recovery. T033 and T052 remain open;
+do not start T053+ or treat these manual checks as actual LLM quality evaluation.
+
+# Previous handoff - feature 003 T052 candidate prepared, independent review pending, 2026-11-15
 Branch feature03; initial/current HEAD db02fa526c9ccf51db9aedd0c5eb9cf2bc3e47f2.
 Initial worktree clean. User authorized T052 preparation only despite open T051.
 Concrete evals/investigation pack: 30 bilingual retrieval questions (10 development,

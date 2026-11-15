@@ -17,7 +17,7 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
   let createKey: string | undefined;
   const actionKeys = new Map<string, string>();
   const history = new Map<string, Run>();
-  let blocked = false;
+  let blocked: string | undefined;
   const interval = Math.min(5000, Math.max(10, options.pollInterval ?? 1000));
   const maximum = Math.min(120, Math.max(1, options.maxPolls ?? 120));
   const current = (token: number) => !disposed && generation === token;
@@ -30,7 +30,7 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
     selected = run; view.run(run, run.context_revision !== revision || !saved.some(item => item.attempt_id === run.attempt_id));
     if (run.report) history.set(run.attempt_id, run);
     view.historical([...history.values()].filter(item => item.context_revision !== revision));
-    if (blocked) view.recoveryError('stale_snapshot', true);
+    if (blocked) view.recoveryError(blocked, true);
     if (['created', 'gathering_evidence', 'drafting'].includes(run.state)) {
       if (polls >= maximum) view.paused();
       else timer = setTimeout(() => { void poll(run.attempt_id, token); }, interval);
@@ -48,7 +48,7 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
       const { snapshot_ref, context_revision, ...body } = value;
       const result = decodeRuns(body); const binding = decodeContextBinding(snapshot_ref, context_revision);
       if (revision !== binding.context_revision) { createKey = undefined; actionKeys.clear(); }
-      snapshot = binding.snapshot_ref; revision = binding.context_revision; blocked = false;
+      snapshot = binding.snapshot_ref; revision = binding.context_revision; blocked = undefined;
       saved = result.items.map(run => checked(run)); totalCount = result.total_count; view.saved(saved, totalCount, result.truncated);
       view.historical([...history.values()].filter(item => item.context_revision !== revision));
       if (saved.length) show(saved[0], token); else { selected = undefined; view.empty(); }
@@ -65,7 +65,7 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
       if (!saved.some(item => item.attempt_id === run.attempt_id)) totalCount++;
       saved = [run, ...saved.filter(item => item.attempt_id !== run.attempt_id)].slice(0, 20);
       show(run, token);
-    } catch (error) { if (current(token)) { const code = error instanceof KnowledgeError ? error.code : 'invalid_response'; blocked = ['stale_snapshot', 'revision_conflict', 'request_conflict'].includes(code); view.error(code); } }
+    } catch (error) { if (current(token)) { const code = error instanceof KnowledgeError ? error.code : 'invalid_response'; blocked = ['stale_snapshot', 'revision_conflict', 'request_conflict'].includes(code) ? code : undefined; view.error(code); } }
   }
   async function mutate(operation: 'retry' | 'cancel', reuse: boolean) {
     const run = selected;
@@ -85,8 +85,9 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
     } catch (error) {
       if (!current(token)) return;
       const code = error instanceof KnowledgeError ? error.code : 'invalid_response';
-      blocked = ['stale_snapshot', 'revision_conflict', 'request_conflict', 'invalid_transition'].includes(code);
-      show(run, token); clearTimeout(timer); view.recoveryError(code, blocked);
+      blocked = ['stale_snapshot', 'revision_conflict', 'request_conflict', 'invalid_transition'].includes(code) ? code : undefined;
+      show(run, token); clearTimeout(timer);
+      if (!blocked) view.recoveryError(code, false);
     }
   }
   async function parent() {
@@ -115,8 +116,9 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
     } catch (error) {
       if (!current(token)) return;
       const code = error instanceof KnowledgeError ? error.code : 'invalid_response';
-      blocked = ['stale_snapshot', 'revision_conflict', 'request_conflict', 'invalid_transition'].includes(code);
-      show(run, token); view.restoreReview(body); view.recoveryError(code, blocked);
+      blocked = ['stale_snapshot', 'revision_conflict', 'request_conflict', 'invalid_transition'].includes(code) ? code : undefined;
+      show(run, token); view.restoreReview(body);
+      if (!blocked) view.recoveryError(code, false);
     }
   }
   async function evidence(id: string) {

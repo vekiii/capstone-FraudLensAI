@@ -38,11 +38,13 @@ it('requires explicit retry, discloses spend and keeps one action key after unce
   expect(c.create).not.toHaveBeenCalled();
 });
 
-it('stale revision requires explicit refresh, never auto retry', async () => {
-  const c = client(), el = root(); c.retry.mockRejectedValue(new KnowledgeError('revision_conflict'));
+it.each(['revision_conflict', 'stale_snapshot', 'request_conflict', 'invalid_transition'])('recovery reason %s requires explicit refresh, never auto retry', async code => {
+  const c = client(), el = root(); c.retry.mockRejectedValue(new KnowledgeError(code));
   dispose = mountReports(el, 'CASE-001', c); await tick();
   el.querySelector<HTMLButtonElement>('[data-retry]')!.click(); await tick();
   expect(c.list).toHaveBeenCalledTimes(1); expect(el.querySelector<HTMLButtonElement>('[data-retry]')?.disabled ?? true).toBe(true);
+  expect([...el.querySelectorAll('[role=alert]')].filter(node => node.textContent?.includes(code))).toHaveLength(1);
+  if (code !== 'stale_snapshot') expect(el.textContent).not.toContain('stale_snapshot');
   el.querySelector<HTMLButtonElement>('[data-refresh]')!.click(); await tick(); expect(c.list).toHaveBeenCalledTimes(2);
 });
 

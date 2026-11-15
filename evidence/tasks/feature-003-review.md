@@ -148,15 +148,134 @@ Existing store audit test was updated without weakening rollback assertions.
 The final browser rerun after the Unicode fix uses the same eight observations;
 its latest concrete IDs/timestamps are in the linked results JSON.
 
-## Required actual human confirmation — OPEN
+## Required actual human confirmation — recorded 2026-11-15
 
-- [ ] A real analyst inspects fixture citations, gaps and original draft; records
+- [x] A real analyst inspects fixture citations, gaps and original draft; records
   their chosen identity, actual review date and explicit decision/rationale.
-- [ ] That person verifies a linked correction and the two-session stale conflict,
+- [x] That person verifies a linked correction and the two-session stale conflict,
   then explicitly confirms or rejects the behavior. Record actual findings and
   bound attempt/report/review IDs here; do not substitute automated test events.
 - [ ] Human code/contracts/evidence review and independent teammate reproduction
   remain unclaimed. These checks are not actual-provider held-out evaluation.
 
-Stop at T051. The next concrete action is the actual human confirmation above.
-No Phase 7/evaluation-pack work is authorized by this handoff.
+The first two items are supported by Vedran's actual observations and linked
+records below, not the earlier automated operator. The third independent review/
+reproduction item remains unclaimed. Historical stopping instructions are
+superseded by the latest T051 correction/closure section below.
+
+## Actual human observations — Vedran, 2026-11-15
+
+This section supersedes the earlier claim that no human observations exist.
+Vedran supplied ten annotated observations and a screenshot during the manual
+T051 exercise. These are his real UI observations, not automated-operator events,
+independent report-quality evaluation, code-review approval or blanket acceptance.
+
+- Exact simulated Missingness passage opened with version, jurisdiction, corpus
+  and provenance. Fact evidence preserves 1250.00 EUR; unavailable history remains
+  explicitly unavailable. Test-provider/source/score limitations remain visible.
+- No selected disposition: browser reports `Please select an item in the list.`
+  Empty rationale: `Please fill out this field.` These are observed browser
+  validation results, not a new direct API-negative test.
+- Human actor Vedran saved close with rationale `Radi probe`, then reopened the
+  saved result. Later saved escalation correction and request_more_information.
+- Two-session exercise displayed both stale_snapshot and revision_conflict;
+  user explicitly refreshed and saved a linked correction.
+- Needs-information offers only request_more_information, including correction;
+  Vedran explicitly confirmed both restrictions.
+- Screenshot shows awkward label/textarea wrapping. This is a presentation
+  observation, not evidence of lost input or a newly implemented styling fix.
+
+### Read-only local record corroboration
+
+Opened `data/processed/t051-manual-20261115.sqlite` using SQLite URI `mode=ro`.
+Queried reports/reviews/attempts/audit_events; performed no mutations, provider
+calls, environment-file reads or automated browser actions. Found three reports,
+five reviews and five corresponding analyst_review events, all with actor Vedran.
+The database remains ignored local data; no copy is added to Git.
+
+| Attempt | Report | Reviews in order |
+|---|---|---|
+| att_3229eb6c4d28486c91c6412553695ac1 | e2716a6cf0908af8692cc198c34ceb7fadce60299acc352395024ec8db155274 | rev_9303dc2063f14a76a3671212884a21d9 (close, 11:13:44.463527Z); rev_2ea9a4e124584797b87b7bbdc2054ae4 (close correction, 11:18:06.290082Z); rev_e663891c8c064fc8ad239cff52b204db (escalate correction, 11:19:50.968802Z) |
+| att_79fd6d77ceb24d8bafc63bb743bcd19f | 66d5a8244f96e51c20ddfe20b1f5f5186172da547a0f5a9f9d0fb2d94e061888 | rev_c8562bb648584e858a1c5467114bf72a (request_more_information, 11:20:52.601466Z) |
+| att_6738a21d14a14e019ad89f158574efe8 | 973f475a6ced049c2c979fa6f69eda6aaa3242d9fc2a65114ad43205465f27f4 | rev_3b2711c078394a2f9d1dff32e7c221d1 (needs-information request_more_information, 11:22:58.376954Z) |
+
+All timestamps above are UTC on 2026-11-15. The first report's review audit
+revisions are 4->5->6->7, with both supersedes links intact and the same report ID.
+Thus the escalation superseding rev_2ea... rather than the originally shown
+rev_930... is explained by a real intermediate close correction, not a broken
+chain. The three attempts are reviewed at revisions 7, 5 and 5 respectively.
+The first report's stored citations match the user's initial/reopened transcript.
+No before/after byte snapshot was taken here; do not infer a new full immutability
+test solely from this database inspection. All three dispositions were observed,
+but escalation was a correction, not a fresh initial escalation in this manual run.
+
+### Confirmed UI finding; T051 remains open for resolution
+
+`frontend/src/investigation/controller.ts` show() unconditionally emits
+`view.recoveryError('stale_snapshot', true)` whenever `blocked` is true.
+The review error handler sets blocked for revision_conflict, calls show(), then
+emits the actual revision_conflict message. Therefore a revision conflict can
+produce both messages without any source snapshot actually changing. This is a
+code-supported explanation for the user's dual error message, not a claim that
+an HTTP stale_snapshot response was observed or the server changed source data.
+
+Concurrency protection and correction persistence have human evidence; the
+additional error label is incorrect. No product code was changed and T051 is
+still unchecked pending a focused RED/GREEN correction and repeat of that UI
+step. No need to repeat all previous manual checks merely to restate them.
+The screenshot layout may be handled separately; no CSS change is claimed.
+Next concrete step: preserve/render the actual blocking error code in show()
+and test revision_conflict without a false stale_snapshot warning, retaining
+the genuine source-snapshot recovery behavior. T033/T052 remain open; no new
+live calls, package installations, full suites, commit or push occurred here.
+
+## T051 error-label correction and closure — 2026-11-15
+
+User explicitly requested the fix: [original request](../../prompts/development/003-t051-conflict-label-fix-2026-11-15.md).
+Earlier open-finding text is historical. Product change is limited to
+`frontend/src/investigation/controller.ts`: retain the actual blocking error
+code instead of a boolean, render it once, preserve it on selection/re-render,
+and clear it only on successful explicit refresh. Review/retry/cancel state,
+server revisions, scope and mutation authorization remain unchanged. Uncertain
+transport outcomes still preserve form/key and show their nonblocking message.
+
+### Actual RED -> GREEN
+
+Extended review and recovery Vitest cases for revision_conflict, stale_snapshot,
+request_conflict and invalid_transition. Verify one correct alert, absence of a
+false stale_snapshot, disabled blocked actions, retained review input, no
+automatic refresh/retry, actual-code preservation after reselecting the attempt,
+and action availability after explicit refresh. Genuine stale_snapshot remains
+covered; timeout/input/key and late-response tests remain intact.
+
+```powershell
+npm.cmd --prefix frontend test -- --run tests/investigation-review.test.ts tests/investigation-recovery.test.ts
+# RED before product change: 8 failed / 12 passed (20 total), exit 1.
+# Intended failures: false stale_snapshot or duplicate stale_snapshot alert.
+# GREEN after product change: 20 passed, exit 0.
+npm.cmd --prefix frontend run typecheck
+# PASS, exit 0.
+npm.cmd --prefix frontend test -- --run
+# Final, including reselect assertions: 186 passed / 9 files, exit 0.
+npm.cmd --prefix frontend run build
+# Typecheck + production Vite build PASS, exit 0.
+git diff --check
+# PASS, exit 0.
+```
+
+Seven additional generated test cases relative to the previous 179-test suite;
+no skips/xfails or weakened requirements. No new backend tests/full backend run,
+provider request, package installation, real .env read, database write, automated
+browser run or post-fix human-browser observation is claimed. The manual evidence
+predates this small message correction; the correction has fresh DOM regression
+coverage. Original human findings and automated historical evidence remain
+distinct. Screenshot form wrapping is not changed by this fix.
+
+T051 is complete for its required fixture/test-provider review behavior, based
+on Vedran's real manual findings, corroborated IDs/audit and corrected UI recovery
+regressions. Escalation was exercised as a linked correction; initial automated
+coverage for all three dispositions remains historical and labeled as such.
+No broader independent code review, reproduction or live LLM quality approval
+is inferred. T033 and T052 remain unchecked. Next concrete step: independent
+human review/freeze of the prepared T052 evaluation pack. No T053+ implementation,
+commit or push performed.

@@ -65,6 +65,27 @@ it('retains input and key after uncertain transport; stale writes require explic
   el.querySelector<HTMLButtonElement>('[data-refresh]')!.click(); await tick(); expect(c.list).toHaveBeenCalledTimes(2);
 });
 
+it.each(['revision_conflict', 'stale_snapshot', 'request_conflict', 'invalid_transition'])(
+  'keeps the actual review blocking reason %s until explicit refresh', async code => {
+    const c = client(), el = root(); c.review.mockRejectedValue(new KnowledgeError(code));
+    dispose = mountReports(el, 'CASE-001', c); await tick(); fill(el); await tick();
+    const alerts = () => [...el.querySelectorAll('[role=alert]')].map(node => node.textContent ?? '');
+    expect(alerts().filter(text => text.includes(code))).toHaveLength(1);
+    if (code !== 'stale_snapshot') expect(el.textContent).not.toContain('stale_snapshot');
+    expect(el.querySelector<HTMLButtonElement>('[data-review-submit]')!.disabled).toBe(true);
+    expect(el.querySelector<HTMLTextAreaElement>('[data-rationale]')!.value).toBe('Test reason');
+    expect(c.review).toHaveBeenCalledTimes(1); expect(c.list).toHaveBeenCalledTimes(1);
+    el.querySelector<HTMLButtonElement>('[data-attempt]')!.click(); await tick();
+    expect(alerts().filter(text => text.includes(code))).toHaveLength(1);
+    if (code !== 'stale_snapshot') expect(el.textContent).not.toContain('stale_snapshot');
+    expect(el.querySelector<HTMLButtonElement>('[data-review-submit]')!.disabled).toBe(true);
+    el.querySelector<HTMLButtonElement>('[data-refresh]')!.click(); await tick();
+    expect(c.list).toHaveBeenCalledTimes(2);
+    expect(alerts().some(text => text.includes(code))).toBe(false);
+    expect(el.querySelector<HTMLButtonElement>('[data-review-submit]')!.disabled).toBe(false);
+  },
+);
+
 it('discards a late review reply after refresh/navigation to another source revision', async () => {
   const c = client(), el = root(); let finish: (value: unknown) => void = () => {};
   c.review.mockImplementation(() => new Promise(resolve => { finish = resolve; }));

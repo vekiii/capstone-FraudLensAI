@@ -115,13 +115,15 @@ Goal: explicit recovery without silent spend or mixed versions. Independent test
 
 ## Phase 6: US4 - Analyst review (T045-T051, P1)
 
-Status (2026-11-15): T045-T050 implemented and verified offline. T051 automated
-UI/API checks passed, including two isolated Chrome contexts and linked review
-correction. T051 remains unchecked because no actual human analyst identity/date/
-confirmation has been supplied. Test actions use AUTOMATED TEST OPERATOR (not
-human approval), never an inferred signature. Evidence and open confirmation:
-../../evidence/tasks/feature-003-review.md. T033 remains unchecked; current T052
-preparation status follows in Phase 7.
+Status (2026-11-15): T045-T051 complete in the fixture/test-provider review scope.
+Vedran supplied actual manual citation/decision/required-field/two-session/
+correction/needs-information observations, corroborated by five persisted human
+review events across three drafts. The misleading duplicate stale_snapshot label
+found during that review was fixed with intended RED -> GREEN tests; 186 frontend
+tests, typecheck and build pass. This does not claim a fresh post-fix human browser
+run, independent reproduction, code-review signature or real LLM evaluation.
+Evidence: ../../evidence/tasks/feature-003-review.md. T033 remains unchecked;
+T052 preparation/independent-review status follows in Phase 7.
 
 Goal: explicit human disposition with immutable drafts and conflict detection. Independent test: all allowed actions, missing rationale, needs-information restriction, stale concurrent review and linked correction.
 
@@ -131,7 +133,7 @@ Goal: explicit human disposition with immutable drafts and conflict detection. I
 - [x] T048 [US4] Implement POST reviews and amendment semantics in `backend/src/fraudlens/investigation/api.py`; actor from server demo settings, no AI tool route to disposition. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T046, T047; FR-022-023.)
 - [x] T049 [P] [US4] Write review UI RED tests in `frontend/tests/investigation-review.test.ts`: citation inspection, required rationale, allowed decisions by state, explicit submit, safe correction note, stale write recovery and unchanged original AI draft. (Depends: T037; FR-021-023.)
 - [x] T050 [US4] Implement review client/forms in `frontend/src/investigation/api.ts`/`controller.ts`/`views.ts`; retain draft/evidence, do not automatically select/submit a disposition, distinguish human review from semantic-evaluation rating. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T048, T049; FR-021-023.)
-- [ ] T051 [US4] Exercise all three dispositions, needs-information restriction, two-browser stale review and linked correction through actual UI/API; record real analyst identity/date and audit evidence in `evidence/tasks/feature-003-review.md`, never inferred signatures. (Depends: T050; FR-022-023, SC-005.)
+- [x] T051 [US4] Exercise all three dispositions, needs-information restriction, two-browser stale review and linked correction through actual UI/API; record real analyst identity/date and audit evidence in `evidence/tasks/feature-003-review.md`, never inferred signatures. (Depends: T050; FR-022-023, SC-005.)
 
 ## Phase 7: US5 - Evaluation (T052-T061, P2, required for release)
 
