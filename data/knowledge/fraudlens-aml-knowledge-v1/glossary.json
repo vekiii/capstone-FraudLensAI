@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "status": "staged_unreviewed",
+  "reviewed_by": null,
+  "reviewed_at": null,
+  "basis": "Authored translations of existing corpus concepts only; no held-out questions inspected.",
+  "terms": {
+    "nedostaje": ["missing"],
+    "nedostajuce": ["missing"],
+    "nedostajuće": ["missing"],
+    "činjenice": ["facts"],
+    "cinjenice": ["facts"],
+    "dokaz": ["evidence"],
+    "dokazi": ["evidence"],
+    "izvor": ["source"],
+    "izvori": ["sources"],
+    "citiranje": ["citation"],
+    "eskalacija": ["escalation"],
+    "pregled": ["review"],
+    "poverljivost": ["confidentiality"],
+    "dokumentacija": ["documentation"],
+    "sintetički": ["synthetic"],
+    "sinteticki": ["synthetic"]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "date": "2026-11-15",
+  "status": "implementation_lineage_not_T055_freeze",
+  "t052_bundle_sha256": "5cb654213934cbe11f6378eb6121ee40bfd046051d3671dbdaa082c4824f4700",
+  "original_protocol_sha256": "ea8d74547b64a89f71a00ee257806c0bf010ad84496d8dce0f2c9e32df914b92",
+  "original_sealed_inventory_sha256": "85e602d1fd69ee10d19b0e751943cd2d2ebde42afbe73f6cb0cc3b72fa448d37",
+  "original_approval_and_inputs_unchanged": true,
+  "implementation_changes": {
+    "backend/src/fraudlens/investigation/retrieval.py": {
+      "t052_sha256": "cac72d2c97477a631ba7a48dd2a6f2c03c5da3dea69350c590bd13097903004c",
+      "current_sha256": "126be07da52662beea6c3d7d0b773a962fef0372dda8b5125a3245d873f923ef"
+    }
+  },
+  "runtime_modules_without_evaluator_import": [
+    "__init__.py",
+    "api.py",
+    "context.py",
+    "environment.py",
+    "knowledge.py",
+    "models.py",
+    "provider.py",
+    "retrieval.py",
+    "review.py",
+    "settings.py",
+    "store.py",
+    "tools.py",
+    "validation.py",
+    "workflow.py"
+  ],
+  "new_artifact_sha256": {
+    "backend/src/fraudlens/investigation/evaluation.py": "915ca412fcbe3945d6d2cc0c16e73d5735023589cafe4514961159ce08c5c34d",
+    "backend/src/fraudlens/investigation/cli.py": "49fe8b9b86d74a3b9982a91e05a613706bd06fcecb9387852e2ff736ab4eb202",
+    "data/knowledge/fraudlens-aml-knowledge-v1/glossary.json": "48004887262b7d58bc4bf23c66b6929d329e6407ce4bf817a2446dee73dcc22e"
+  },
+  "held_out_exposure": "No retrieval/investigation held-out questions or references printed/read into model context. Safety stimuli inspected; H08 input/reference not opened.",
+  "glossary_review": "pending",
+  "t055": "not_frozen",
+  "t056": "not_run",
+  "live_provider": "not_called"
+}

@@ -1,3 +1,17 @@
+# Current handoff - Phase 7 partial, 2026-11-15
+T053 evaluator RED/GREEN delivered. T054 metrics/CLI/materialized test runner and
+bounded retrieval improvement implemented; glossary staged, review deferred by
+user until independent handoff. T055/T056 NOT executed; no held-out questions or
+reference answers exposed for tuning. T057 twelve control groups independently
+pass but exact frozen subcases remain partial. T058 blocked by open T033; no real
+provider call/.env read, no T033 diagnosis. T059 blocked, T060/T061 partial.
+T052 approval/input/reference/split/rubric/protocol seal preserved, with separate
+hash-only implementation lineage. Final full backend 709 PASS, Ruff/diff/41-file lineage audit PASS.
+Actual retrieval/LLM quality and measured 20-search latency remain unexecuted. No frontend changes or Git publication. No T062+.
+Evidence: [Phase 7 handoff](evidence/tasks/feature-003-phase-07-handoff.md).
+**Next step:** actual review of prepared glossary.json; then T055 development-only
+selection/freeze. The user's deferral is not approval. Earlier entries historical.
+
 # Current handoff - T052 complete and frozen, 2026-11-15
 
 Vedran explicitly confirms reviewing and approving all 12 scenario cards;

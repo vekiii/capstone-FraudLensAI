@@ -12,6 +12,28 @@ from fraudlens.investigation.provider import ProviderError
 def main(argv=None):
     parser = argparse.ArgumentParser()
     commands = parser.add_subparsers(dest='command', required=True)
+    evaluate = commands.add_parser('evaluate-retrieval')
+    evaluate.add_argument('--protocol', required=True)
+    evaluate.add_argument('--configuration', choices=['baseline','improved'], required=True)
+    evaluate.add_argument('--split', choices=['development','held_out'], required=True)
+    evaluate.add_argument('--store', required=True)
+    evaluate.add_argument('--output', required=True)
+    evaluate.add_argument('--freeze')
+    join = commands.add_parser('join-retrieval')
+    join.add_argument('--protocol', required=True)
+    join.add_argument('--predictions', required=True)
+    join.add_argument('--output', required=True)
+    reports = commands.add_parser('evaluate-reports')
+    reports.add_argument('--protocol', required=True)
+    reports.add_argument('--provider', choices=['test','openai'], required=True)
+    reports.add_argument('--split', choices=['development','held_out'], required=True)
+    reports.add_argument('--output', required=True)
+    reports.add_argument('--store', required=True)
+    reviews = commands.add_parser('summarize-reviews')
+    reviews.add_argument('--protocol', required=True)
+    reviews.add_argument('--reviews', required=True)
+    reviews.add_argument('--outcomes', required=True)
+    reviews.add_argument('--output', required=True)
     prepare = commands.add_parser('prepare-knowledge')
     prepare.add_argument('--manifest', required=True)
     prepare.add_argument('--store', required=True)
@@ -26,6 +48,40 @@ def main(argv=None):
     mode.add_argument('--poll', action='store_true')
     args = parser.parse_args(argv)
     try:
+        if args.command in ('evaluate-retrieval','join-retrieval','evaluate-reports','summarize-reviews'):
+            from fraudlens.investigation import evaluation
+            protocol = evaluation.verify_pack_inputs(args.protocol)
+            if args.command == 'evaluate-reports':
+                if args.provider == 'openai' or args.split != 'development':
+                    # Fail closed before settings/environment/provider initialization.
+                    print('Live/held-out report evaluation blocked: T033/T055 prerequisites required; no provider invoked.')
+                    return 2
+                inputs = evaluation.selected_inputs(Path(args.protocol).parent,'investigation',args.split)
+                knowledge = KnowledgeStore(args.store,initialize=False)
+                output = Path(args.output)
+                work = output.parent/(output.stem+'-test-stores')
+                work.mkdir(parents=True,exist_ok=True)
+                rows = evaluation.generate_reports(inputs,lambda item: evaluation.test_report(
+                    item,knowledge,work/(item['id']+'.sqlite')))
+                evaluation.write_frozen(output,dict(kind='reports',mode='test',split=args.split,rows=rows))
+                print(json.dumps({'status':'test_provider_only','count':len(rows)}))
+                return 0
+            if args.command == 'evaluate-retrieval':
+                result = evaluation.evaluate_retrieval(args.protocol,args.store,args.configuration,
+                            args.split,args.output,args.freeze)
+            elif args.command == 'join-retrieval':
+                frozen = json.loads(Path(args.predictions).read_text(encoding='utf-8'))
+                result = evaluation.offline_retrieval_join(Path(args.protocol).parent,frozen)
+                evaluation.write_frozen(args.output,result)
+            else:
+                records = json.loads(Path(args.reviews).read_text(encoding='utf-8'))
+                outcomes = evaluation.verify_seal(json.loads(Path(args.outcomes).read_text(encoding='utf-8')))['outcomes']
+                splits = json.loads((Path(args.protocol).parent/'splits.json').read_text(encoding='utf-8'))
+                result = evaluation.import_reviews(records,outcomes,splits['second_review_subset'])
+                evaluation.write_frozen(args.output,result)
+            print(json.dumps({'status':'completed','result_sha256':evaluation.digest(result),
+                              't052_bundle_sha256':protocol['bundle_sha256']}))
+            return 0
         if args.command == 'worker':
             from fraudlens.investigation.settings import load_settings
             from fraudlens.investigation.workflow import InvestigationService
