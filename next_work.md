@@ -1,4 +1,26 @@
-# Current handoff - feature 003 Phase 4 offline complete, 2026-11-15
+# Current handoff - feature 003 T033 attempted, capability pending, 2026-11-15
+Branch feature03, unchanged HEAD 8334b89. User authorized only T033 and private
+root .env loading, at most two API calls. Investigation settings now load root
+.env literals with process overrides; no new dependencies/global env mutation.
+Key/model stay private; default tests isolate the real file. Configuration RED
+6 failed / 1 passed -> targeted GREEN 125 PASS; full backend **636 PASS**, Ruff PASS.
+Existing synthetic-only probe used configured `gpt-6-luna`: first sandboxed
+ConnectError, then escalated HTTP **400**, code `unsupported_capability`.
+**Two transport attempts total**, counting the connection failure; no third call.
+Actual request ID: req_740bf4ff71d9420d9decca768e058fd8. No completed tool/report
+turn, returned model or usage; capability/access not established. Raw provider
+body was not retained, so rejected parameter/schema remains unknown. T033 stays
+unchecked. T023-T032/T034-T038 offline completion preserved; Phase 5+ unstarted.
+No installations, embeddings, frontend work, commit or push. Frontend/browser
+checks were not repeated; prior offline results below are historical.
+Evidence: [actual provider result](evidence/tasks/feature-003-provider-access.md),
+[safe results](evidence/tasks/feature-003-provider-probe-results.json),
+[original prompt](prompts/development/003-investigation-t033.md).
+**Next step:** separately authorize diagnosis of the recorded HTTP 400/request ID,
+with a new explicit provider-call budget if needed. No automatic continuation.
+Earlier handoffs below are historical.
+
+# Previous handoff - feature 003 Phase 4 offline complete, 2026-11-15
 Branch feature03, unchanged HEAD fece114. T023-T032 and T034-T038 complete.
 Saved T027-T030 reconciled against code/tests and recovered RED pytest caches.
 T031/T032 real SDK adapter + synthetic-only probe CLI verified with MockTransport;

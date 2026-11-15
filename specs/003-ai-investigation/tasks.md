@@ -60,8 +60,13 @@ Goal: useful search/source screen without a provider. Independent test: six revi
 
 ## Phase 4: US2 - Grounded report and controlled tools (T023-T038, P1)
 
-Status (2026-11-15): offline slice complete, T023-T032 and T034-T038. T033 live
-provider probe remains unchecked, awaiting separate agreement and configuration.
+Status (2026-11-15): offline slice complete, T023-T032 and T034-T038. T033 was
+explicitly authorized and executed with root .env loading: two transport attempts
+total, first ConnectError, second actual HTTP 400 / unsupported_capability.
+Capability gate remains pending and T033 unchecked; no returned model/usage.
+Fresh backend 636 PASS and Ruff PASS; see
+../../evidence/tasks/feature-003-provider-access.md. No further provider calls.
+The following offline verification is historical:
 Final backend 629 PASS; frontend 166 PASS; Ruff/typecheck/build PASS; actual
 browser/API/proxy/worker journey 9 PASS. Reconciled saved T027-T030 code and RED
 cache evidence. See ../../evidence/tasks/feature-003-fixture-journey.md. No
@@ -80,6 +85,9 @@ Goal: first end-to-end fixture investigation and separate opt-in real provider p
 - [x] T031 [P] [US2] Write mocked HTTP/SDK RED tests in `backend/tests/unit/test_investigation_openai.py`: configurable ID, strict function/report schema compilation, parallel tools disabled, required continuation items, refusal/incomplete/access/capability errors, max_retries=0, <=30-second request and outer deadline, <=48,000 input bytes/4096 output tokens/2 MiB bounded response stream, one transient retry/repair and actual-or-unknown usage. No real key/network in default tests. (Depends: T028; FR-017-018, FR-024, FR-028.)
 - [x] T032 [US2] Add official OpenAI SDK to `pyproject.toml` with generated `uv.lock`, implement real provider in `backend/src/fraudlens/investigation/provider.py` and safe `probe-provider` command in `cli.py`; resolve supported version at implementation, use locked installs thereafter. Implement bounded reading, explicit capability outcomes and no silent fallback; record mock GREEN and dependency versions in `evidence/tasks/feature-003-provider.md`. (Depends: T031, T030; FR-017-018, FR-024, FR-028.)
 - [ ] T033 [US2] Run explicitly requested synthetic provider availability/tool/report-schema probe using `backend/src/fraudlens/investigation/cli.py`; record actual model/request ID, supported capabilities/limits and usage or unknown in `evidence/tasks/feature-003-provider-access.md`. No guessed Luna model ID, key output or case data; missing access remains pending and does not block T034-T038 offline. (Depends: T032; external actual key/model access; FR-017, SC-008.)
+  Attempted 2026-11-15 with configured `gpt-6-luna`: ConnectError, then HTTP 400
+  (`unsupported_capability`), actual request ID recorded; cumulative two-attempt
+  budget exhausted. Tools/report schema not verified; leave unchecked.
 - [x] T034 [P] [US2] Write run/worker API RED tests in `backend/tests/integration/test_investigation_api.py`: POST/GET/list/evidence schemas, source snapshot resolution, queued creation without provider call, fixed local actor, request identity, safe feature-specific errors, JSON/same-origin guards, <=20 list items/count/truncated, and GET with no dispatch. (Depends: T006, T012, T030; FR-001-004, FR-019-021, FR-024.)
 - [x] T035 [US2] Implement run/evidence/list routes in `backend/src/fraudlens/investigation/api.py`, explicit single-worker --once/--poll in `cli.py` and complete composition in `backend/src/fraudlens/main.py`; T012/T034 become GREEN. Separate long work from HTTP, use bounded polling and safe error/status agreement. Record in `evidence/tasks/feature-003-api.md`. (Depends: T034; FR-019-021, FR-024.)
 - [x] T036 [P] [US2] Write report UI RED tests in `frontend/tests/investigation-reports.test.ts`: strict new closed decoders, returned case/context/attempt identity, queued/progress/needs-information/failed states, typed sections/evidence links, safe literal text, source/score/semantic-review notices, bounded polling and cancellation of obsolete browser requests. (Depends: T006; FR-013-017, FR-021.)

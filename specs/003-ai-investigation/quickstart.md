@@ -2,8 +2,11 @@
 
 Status (2026-11-15): Phase 4 offline T023-T032/T034-T038 complete; Phase 3 reviewed
 corpus preserved. Provider SDK adapter, worker, run API and report UI implemented;
-actual fixture browser/API/proxy/worker journey PASS. T033 live probe and Phase 5+
-remain pending. See ../../evidence/tasks/feature-003-fixture-journey.md.
+actual fixture browser/API/proxy/worker journey PASS. T033 was attempted separately:
+ConnectError then HTTP 400 / unsupported_capability; two-attempt budget exhausted.
+Capability gate and Phase 5+ remain pending. See
+../../evidence/tasks/feature-003-provider-access.md and
+../../evidence/tasks/feature-003-fixture-journey.md.
 Run from repository root on `feature03` (or a reviewed descendant), preserving
 the existing feature 002/ML branches. No automatic commit, push or merge.
 
@@ -23,8 +26,11 @@ npm.cmd --prefix frontend ci
 
 Windows commands use `py -3.14 -m uv`: uv is installed under Python 3.14 even
 when bare uv is absent from PATH. If bare uv works, it is equivalent for commands
-below; Unix contributors use their available uv launcher. No .env is required:
-settings read process environment only and do not automatically load .env.
+below; Unix contributors use their available uv launcher. Investigation settings
+now optionally read repository-root .env, independent of cwd; process values take
+precedence, including empty values. Single-line KEY=value literals support optional
+export, quotes and comments, with no interpolation/escape/shell expansion. Invalid
+or unreadable files fail safely. Foundation APP_MODE still reads process environment.
 
 Use existing Python 3.14 / Node 24 pins. A task adding the SDK resolves and commits
 the generated lockfile once; subsequent contributors use locked installs. Unix
@@ -112,22 +118,24 @@ Reproduce the complete isolated offline journey with free 8000/5173/9228 and Chr
 
 ## Explicit live provider gate
 
-Configure OPENAI_API_KEY privately in the backend process without printing it or
-committing an .env value. Set OPENAI_MODEL to the actual project-accessible ID,
-not the project name or a guessed Luna string. The application does not load .env
-unless implementation deliberately provides that capability; environment
-variables are the specified interface. Set INVESTIGATION_PROVIDER=openai.
+Configure OPENAI_API_KEY privately in root .env or the backend process without
+printing or committing it. Set OPENAI_MODEL to the explicitly intended ID; the
+configured `gpt-6-luna` was attempted on 2026-11-15 but its required capabilities
+remain unverified after HTTP 400. Process values override .env. Set
+INVESTIGATION_PROVIDER=openai for a real worker; the opt-in probe uses the real
+adapter independently of the ordinary test-provider/feature-enabled defaults.
 
 ```powershell
 .venv/Scripts/python.exe -m fraudlens.investigation.cli probe-provider --synthetic-only
 ```
 
-Run only when intentionally authorizing this small live synthetic check. Capture
+The current two-attempt authorization is exhausted; do not rerun under that budget.
+Run only with a new explicit authorization for this small live check. Capture
 safe availability/tool/schema capability outcome, actual returned model/request
 ID and usage or unknown. No key or model access was verified in planning. Failure
 is explicit pending access/capability; no fallback. A successful probe is not
-report-quality evaluation. Then repeat the investigation with real tool calls,
-configured single worker, typed report validation and human inspection.
+report-quality evaluation. Any later real investigation/worker/report evaluation
+requires its separately agreed scope; T033 alone does not authorize it.
 
 ## Frozen evaluation
 

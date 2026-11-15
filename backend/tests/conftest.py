@@ -5,6 +5,12 @@ import json
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def isolate_local_configuration(monkeypatch, tmp_path):
+    # Default tests must never read a contributor's real credentials/configuration.
+    monkeypatch.setattr('fraudlens.investigation.environment.ENV_FILE', tmp_path / '.env')
+
+
 @pytest.fixture
 def knowledge_factory(tmp_path):
     def factory(text='money transfer evidence', reviewed=True):

@@ -1,9 +1,10 @@
 """Private, side-effect-free investigation configuration, separate from APP_MODE."""
-import os
 from pathlib import Path
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator, model_validator
+
+from fraudlens.investigation.environment import read_environment
 
 ROOT = Path(__file__).resolve().parents[4]
 
@@ -49,18 +50,19 @@ class InvestigationSettings(BaseModel):
 
 
 def load_settings() -> InvestigationSettings:
-    """Read explicit environment only; no .env, database, SDK or network access.
+    """Read root .env plus process overrides; no database, SDK or network access.
 
     Values for key/model are private and excluded from repr and serialization.
     Errors intentionally omit supplied input, even for malformed unrelated fields.
     Presence of a model identifier is not evidence of provider access/capabilities.
     """
+    environment = read_environment()
     values = {}
     for name in InvestigationSettings.model_fields:
         variable = {'api_key': 'OPENAI_API_KEY', 'model': 'OPENAI_MODEL'}.get(
             name, 'INVESTIGATION_' + name.upper())
-        if variable in os.environ:
-            raw = os.environ[variable]
+        if variable in environment:
+            raw = environment[variable]
             if name.startswith('max_') or name.endswith('_seconds'):
                 # Integer-only environment spelling; no bool/float coercion.
                 if not raw.isascii() or not raw.isdecimal():

@@ -77,6 +77,11 @@ fallback or model substitution.
 `probe-provider --synthetic-only` uses only authored CASE-000 data, forces one
 tool then a limitations-only strict report, max two SDK requests with all configured
 smaller limits honored. Command requires explicit flag and key/model configuration;
-tests use MockTransport and dummy keys only. **T033 pending**, see
+tests use MockTransport and dummy keys only. **T033 capability pending**: a later
+authorized 2026-11-15 probe used root .env/configured `gpt-6-luna`, first
+ConnectError then actual HTTP 400 / unsupported_capability (two attempts total).
+No completed turn, returned model or usage; no further requests. Configuration
+now supports private root .env literals with process overrides and isolated tests;
+fresh backend 636 PASS / Ruff PASS. See
 [provider access](feature-003-provider-access.md). No provider capability/access,
 live report or model-quality claim follows from mocked GREEN.
