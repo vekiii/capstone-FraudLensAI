@@ -1,26 +1,61 @@
-# Investigation evaluation boundary
-Setup creates policy only. No held-out answers, evaluation packs, rubric/split
-files, corpus documents or generated results exist here as part of this phase.
+# Proposed investigation evaluation pack — T052
 
-Planned roles (created only by their actual tasks):
-- inputs/: reviewed synthetic/authored evaluation questions and cases; runtime
-  generation can receive only explicitly selected authorized input projections.
-- reference/: independently authored/reviewed expected facts, relevance judgments,
-  private answers and reviewer notes, never retrieval/provider/tool/prompt inputs.
-- splits.json / protocol.json: frozen development vs held-out identities, rubric,
-  denominators, hashes, reviewed configuration and second-review assignments.
-- ../results/feature-003/: ignored local generated predictions, metrics, reports,
-  failures and review outputs; concise sanitized evidence summaries go in evidence/.
+Prepared 2026-11-15 by Codex (AI coding agent). **Proposed, not independently
+human-reviewed or frozen. T052 remains incomplete.** Existing human corpus
+approval applies to the six source documents, not these expectations.
 
-Freeze corpus, inputs, independent references, splits and rubric before tuning.
-Use development data for selection; do not tune against held-out answers.
-Join reference answers only offline after outputs are frozen, never in generation.
-Runtime must not load private labels, hidden reviewer notes, training artifacts,
-reference answers or development prompts. No unrestricted file/database access.
-Only approved synthetic/authored case information may later leave the backend
-through an explicit allowlist; never actual customer data or credentials.
+| Artifact | Contents | Consumer |
+|---|---|---|
+| [inputs/retrieval.json](inputs/retrieval.json) | 30 Serbian/English questions | Selected input only to future search harness |
+| [inputs/investigation.json](inputs/investigation.json) | 12 materialized synthetic contexts, scoped history fixtures and queries | Selected input only to future generation harness |
+| [inputs/safety.json](inputs/safety.json) | 12 adversarial scenario stimuli | Isolated safety harness only |
+| [reference/](reference/) | Passage judgments, essential facts/missingness, rubric, canaries, origins and empty review record | Trusted offline reviewer/joiner only |
+| [splits.json](splits.json) | 10/20 questions, 4/8 cases, five second ratings and five ordinary demos preselected | Trusted orchestrator, never provider input |
+| [protocol.json](protocol.json) | Provisional hashes, selection rules, denominators, limits and open gates | Trusted offline verifier/orchestrator |
 
-Fixture/test-provider checks prove workflow/contract behavior, not live AI or ML
-quality. Actual model access, reviewed corpus and human report evaluation remain
-separate future gates. No source permission, producer review, reference review,
-model capability or acceptance is inferred from this README.
+There are 2 development and 4 held-out no-answer questions. Held-out primary
+reports precede the five ordinary demo attempts, some of which reuse scenario
+inputs; demo attempts cannot replace primary outcomes. Rubric requires one human
+to rate all eight and a different teammate to rate the five preselected cases.
+Neither role has been assigned to an actual person.
+
+References come from the retained, reviewed corpus text and supplied synthetic
+fixture/producer-contract context, never generated reports or provider scripts.
+Dataset-shaped scenarios are authored contract examples, **not actual producer
+integration**. Current runtime resolves only its existing fixtures. A future T054
+input harness must consume these exact materialized snapshots/history, not resolve
+the repeated fixture case ID to a different snapshot. Dataset outbound projection
+remains unavailable. This pack introduces no new HTTP/tool/runtime contract.
+
+Private means evaluation-only: files remain visible to repository readers; no OS
+access control or blind authoring is claimed. Codex saw all questions/answers while
+authoring and checking. The next tuner must use development only and exclude
+held-out expectations from its context. If held-out content influences tuning,
+retire those cases and version fresh held-out data; never call that an independent
+test. Only explicitly selected authorized input projections can later leave the
+backend. Never pass entire protocol, split, reference or safety files to a provider.
+
+The corpus loader accepts only manifest document paths under its reviewed document
+root. No evaluation files are placed there. Reference joining must be a separate
+offline stage after predictions/reports and their hashes are saved. The T054
+generation/join implementation and T053 leakage/metric tests are not built here.
+Static canary absence is not proof of all-turn runtime privacy.
+
+To repeat **structural checks only** from the repository root:
+
+```powershell
+$env:SPECIFY_FEATURE_DIRECTORY = 'specs/003-ai-investigation'
+.venv/Scripts/python.exe evidence/tasks/feature-003-evaluation-pack-check.py
+```
+
+This validates counts, splits, references, source/passage/context identities and
+hashes, exact essential facts, independent history arithmetic and private-canary
+separation. It stages sources without publishing and checks an existing local
+archive read-only. It has guards against environment-file reads, network and
+subprocess calls; it imports no provider/settings and runs no search or evaluation.
+Generated outputs later belong under ignored `evals/results/feature-003/`.
+
+For the actual reviewer checklist, commands, observed failures and remaining gates,
+see [T052 evidence](../../evidence/tasks/feature-003-evaluation-protocol.md).
+No tuning, held-out execution, provider access, safety execution or human approval
+is inferred from this package or a successful integrity check.

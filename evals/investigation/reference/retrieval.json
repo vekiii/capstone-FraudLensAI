@@ -1,0 +1,338 @@
+[
+  {
+    "id": "RQ-001",
+    "input_sha256": "a594a27c2d9611788883417b0e711bf2ee7aa021d46b34facbf191c296747a60",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "8d167c603b9634f1411a8203239863ba4b82af22c290f6900010701404ff060d"
+    ],
+    "relevant_document_ids": [
+      "sim-review"
+    ],
+    "source_rationale": "Review assigns all three dispositions to an explicit analyst decision with rationale."
+  },
+  {
+    "id": "RQ-002",
+    "input_sha256": "4a44fc6082678f3c54cf8b6ca7d855588b0fd909b37c687411cb7861068584d2",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "aef75299edaabfe2bd0de463c374d9b1a381fdacbbe9cc87313e80c6f433ce95"
+    ],
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "source_rationale": "Narrative distinguishes identifier validity from faithful interpretation."
+  },
+  {
+    "id": "RQ-003",
+    "input_sha256": "46caae7045930ec3a7f16829484ccc15674c3621048c729010dc1e76b680e8ac",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "4d95734de826db86c16c0490d2f152b24aaf1a0de898f86dde9b416e833e7093"
+    ],
+    "relevant_document_ids": [
+      "sim-missing"
+    ],
+    "source_rationale": "Missingness explicitly preserves unknown history and source of funds."
+  },
+  {
+    "id": "RQ-004",
+    "input_sha256": "c8b08426a6ac7ba4af1808110a3cd4a59be29ccb2d148bc70d51d46bb72937b1",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "5999900a56556a89910859e95eb2d624aa119222f85eea4ac48425f7d8f0b1ad"
+    ],
+    "relevant_document_ids": [
+      "ibm-guide"
+    ],
+    "source_rationale": "Field limitations preserves directional strings, raw time and time assumptions."
+  },
+  {
+    "id": "RQ-005",
+    "input_sha256": "89392b274c0f0c3e3beb5de4bf3a0c191eb40796f324109d74d2797a5f8a22b8",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "bf065cc99c914cfb4c32da8b832bf8f77f56eca15e17df5684c480cf42f20b2c"
+    ],
+    "relevant_document_ids": [
+      "us-records"
+    ],
+    "source_rationale": "Supporting documentation excerpt ties it to filing facts and circumstances."
+  },
+  {
+    "id": "RQ-006",
+    "input_sha256": "42b8375bb6f2bd4af0d92270eea9869c3b2637df73a5da5ccc4d6496518b9b81",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "b2bc999647cc73d569326c095ea76ea740c1ebae8b4877770bb033dafafeb988"
+    ],
+    "relevant_document_ids": [
+      "us-confidentiality"
+    ],
+    "source_rationale": "Scope denies blanket disclosure permission and limits US affiliate applicability."
+  },
+  {
+    "id": "RQ-007",
+    "input_sha256": "d304aa6e8f9f6b328bf4dd3ae8c1ee7fd810c88497fb0d9d6edaceb6e28d5166",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "4d95734de826db86c16c0490d2f152b24aaf1a0de898f86dde9b416e833e7093"
+    ],
+    "relevant_document_ids": [
+      "sim-missing"
+    ],
+    "source_rationale": "Missingness explicitly rejects either inference."
+  },
+  {
+    "id": "RQ-008",
+    "input_sha256": "d7434d8461ab22959352f6a6dd2aa0c80a7b435949a18b3a58fa3c5e73832a46",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "aef75299edaabfe2bd0de463c374d9b1a381fdacbbe9cc87313e80c6f433ce95"
+    ],
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "source_rationale": "Narrative separates observations, guidance and tentative hypotheses."
+  },
+  {
+    "id": "RQ-009",
+    "input_sha256": "1f4758b724f807f6d47531b44287d969b0a4f7a1683841aae787cde5580c292f",
+    "answerability": "no_answer",
+    "relevant_passage_ids": [],
+    "relevant_document_ids": [],
+    "source_rationale": "No retained passage covers Japanese tax rates."
+  },
+  {
+    "id": "RQ-010",
+    "input_sha256": "80621a18197ea88267d46b337da9bc28b0690eddd4ff69a31e1b2dd4607b8852",
+    "answerability": "no_answer",
+    "relevant_passage_ids": [],
+    "relevant_document_ids": [],
+    "source_rationale": "Credentials are outside all retained sources and must never be supplied."
+  },
+  {
+    "id": "RQ-011",
+    "input_sha256": "17de7fff10ae2e913eeb4c5fd8e36d4690a9fceabffdc4552d3846d43c96ee49",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "8d167c603b9634f1411a8203239863ba4b82af22c290f6900010701404ff060d"
+    ],
+    "relevant_document_ids": [
+      "sim-review"
+    ],
+    "source_rationale": "Review rejects score-as-proof and automatic regulatory filing."
+  },
+  {
+    "id": "RQ-012",
+    "input_sha256": "9efc8b299dd422fb30715c7e009473bc91f6aa545dced24b918956b756f8fe48",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "4d95734de826db86c16c0490d2f152b24aaf1a0de898f86dde9b416e833e7093"
+    ],
+    "relevant_document_ids": [
+      "sim-missing"
+    ],
+    "source_rationale": "Missingness requires identifying conflicting sources and versions."
+  },
+  {
+    "id": "RQ-013",
+    "input_sha256": "a3c18488a3017075efbb2f99fa839c230787a6e511ce98ec800c361f77c05eb7",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "aef75299edaabfe2bd0de463c374d9b1a381fdacbbe9cc87313e80c6f433ce95"
+    ],
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "source_rationale": "Narrative binds facts to case evidence and checks to applicable procedures."
+  },
+  {
+    "id": "RQ-014",
+    "input_sha256": "d302a188081871213aee681b99a02bf4ad917129b2683741c3be38dbf95d12b4",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "5999900a56556a89910859e95eb2d624aa119222f85eea4ac48425f7d8f0b1ad"
+    ],
+    "relevant_document_ids": [
+      "ibm-guide"
+    ],
+    "source_rationale": "Field limitations calls labels evaluation targets, not legal findings."
+  },
+  {
+    "id": "RQ-015",
+    "input_sha256": "c7eb6d54217728f50a69dc24900b5c1fb662be22e2b439661fa2ab3b7162721e",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "bf065cc99c914cfb4c32da8b832bf8f77f56eca15e17df5684c480cf42f20b2c"
+    ],
+    "relevant_document_ids": [
+      "us-records"
+    ],
+    "source_rationale": "Supporting documentation explicitly denies both claims."
+  },
+  {
+    "id": "RQ-016",
+    "input_sha256": "ea123d8789ac55e4d932cd0675f1794f6d4827649566ded280b73bc7c84a43c6",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "b2bc999647cc73d569326c095ea76ea740c1ebae8b4877770bb033dafafeb988"
+    ],
+    "relevant_document_ids": [
+      "us-confidentiality"
+    ],
+    "source_rationale": "Scope explicitly rejects Serbian-rule/current-law interpretation."
+  },
+  {
+    "id": "RQ-017",
+    "input_sha256": "6187df65715f09ea76813d4601620786022865c0bcc78e37045dc43dde1361cb",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "4d95734de826db86c16c0490d2f152b24aaf1a0de898f86dde9b416e833e7093"
+    ],
+    "relevant_document_ids": [
+      "sim-missing"
+    ],
+    "source_rationale": "Missingness calls for additional information."
+  },
+  {
+    "id": "RQ-018",
+    "input_sha256": "5b86a627ee147e52f393648ac0584e12a4912268bc1ded90f0b3e7ca58b9f397",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "5999900a56556a89910859e95eb2d624aa119222f85eea4ac48425f7d8f0b1ad"
+    ],
+    "relevant_document_ids": [
+      "ibm-guide"
+    ],
+    "source_rationale": "Guide distinguishes CDLA-Sharing-1.0 data license from repository Apache-2.0."
+  },
+  {
+    "id": "RQ-019",
+    "input_sha256": "d501ebe24c6ca2695799278ae14e36155784f670f860b9cd91387b0ababbd623",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "5999900a56556a89910859e95eb2d624aa119222f85eea4ac48425f7d8f0b1ad"
+    ],
+    "relevant_document_ids": [
+      "ibm-guide"
+    ],
+    "source_rationale": "Guide prohibits those inferences from fixture fields."
+  },
+  {
+    "id": "RQ-020",
+    "input_sha256": "091ea1b56c5a919b7f2b9f3d1711c3e4014b0c05194e84998a2750961c474bf5",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "aef75299edaabfe2bd0de463c374d9b1a381fdacbbe9cc87313e80c6f433ce95"
+    ],
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "source_rationale": "Narrative requires inspection of exact cited text and recording defects."
+  },
+  {
+    "id": "RQ-021",
+    "input_sha256": "22e531564a059f0048e8a23e73dd7050953c6afdc6ac93352459e2167e4239e8",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "bf065cc99c914cfb4c32da8b832bf8f77f56eca15e17df5684c480cf42f20b2c"
+    ],
+    "relevant_document_ids": [
+      "us-records"
+    ],
+    "source_rationale": "Its authored summary explicitly makes that distinction."
+  },
+  {
+    "id": "RQ-022",
+    "input_sha256": "2ace64d67c6236e6246800ac2369c8f9452bec2bc04b67c1916e50e32b302766",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "b2bc999647cc73d569326c095ea76ea740c1ebae8b4877770bb033dafafeb988"
+    ],
+    "relevant_document_ids": [
+      "us-confidentiality"
+    ],
+    "source_rationale": "Scope names FIN-2010-G006 and specified US affiliate relationships."
+  },
+  {
+    "id": "RQ-023",
+    "input_sha256": "e00098f638ff556d73b61eee450ce85194bd0bfaa81049cad6dac7c1c1513855",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "8d167c603b9634f1411a8203239863ba4b82af22c290f6900010701404ff060d"
+    ],
+    "relevant_document_ids": [
+      "sim-review"
+    ],
+    "source_rationale": "Review requires alternatives without invented customer facts."
+  },
+  {
+    "id": "RQ-024",
+    "input_sha256": "8e3c79857e287609fda60597044876d5b14efb238c10706d063bd274c37bde67",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "4d95734de826db86c16c0490d2f152b24aaf1a0de898f86dde9b416e833e7093"
+    ],
+    "relevant_document_ids": [
+      "sim-missing"
+    ],
+    "source_rationale": "Missingness explicitly leaves occupation and device evidence missing."
+  },
+  {
+    "id": "RQ-025",
+    "input_sha256": "e19f5b44291360c0acb23fec3f4871930b961a29590ac791969596da9ccda7b6",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "aef75299edaabfe2bd0de463c374d9b1a381fdacbbe9cc87313e80c6f433ce95"
+    ],
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "source_rationale": "Narrative requires all three exactly."
+  },
+  {
+    "id": "RQ-026",
+    "input_sha256": "77e48f6c97b698130beeded470f73f8a90bb98cbc9e3702c9d0ecaca6a5570ef",
+    "answerability": "answerable",
+    "relevant_passage_ids": [
+      "5999900a56556a89910859e95eb2d624aa119222f85eea4ac48425f7d8f0b1ad"
+    ],
+    "relevant_document_ids": [
+      "ibm-guide"
+    ],
+    "source_rationale": "Guide prohibits inferring occupation and timezone."
+  },
+  {
+    "id": "RQ-027",
+    "input_sha256": "44f65094efce6c38aad0b51de72b62acd546820830178d2321d13153114b6a62",
+    "answerability": "no_answer",
+    "relevant_passage_ids": [],
+    "relevant_document_ids": [],
+    "source_rationale": "Retained US historical excerpts and simulated procedures establish no current Serbian deadlines."
+  },
+  {
+    "id": "RQ-028",
+    "input_sha256": "37c80826a2db182e1bf0e3e576c7492bfdd4e6a1d30f7beb37885dcffad4e5ac",
+    "answerability": "no_answer",
+    "relevant_passage_ids": [],
+    "relevant_document_ids": [],
+    "source_rationale": "Knowledge passages contain no device/IP customer records."
+  },
+  {
+    "id": "RQ-029",
+    "input_sha256": "56338c8c500acd91716aca50cc61068eecf4b6ea17a1449145551ccda546f501",
+    "answerability": "no_answer",
+    "relevant_passage_ids": [],
+    "relevant_document_ids": [],
+    "source_rationale": "No rates or currency conversion policy are present."
+  },
+  {
+    "id": "RQ-030",
+    "input_sha256": "161fd25fd7176350fbb80330c67da772b1a11bd41a131bc91bb8a8ba1489892b",
+    "answerability": "no_answer",
+    "relevant_passage_ids": [],
+    "relevant_document_ids": [],
+    "source_rationale": "No medical treatment content exists in this AML corpus."
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "scope": "T052 structural verification only; not retrieval/live/safety evaluation",
+  "python": "3.14.7",
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "published_archive": "read-only archive equals staged corpus; no database writes",
+  "documents": 6,
+  "passages": 6,
+  "retrieval": {
+    "development": 10,
+    "held_out": 20,
+    "no_answers": {
+      "development": 2,
+      "held_out": 4
+    }
+  },
+  "investigation": {
+    "development": 4,
+    "held_out": 8
+  },
+  "safety_prepared_not_executed": 12,
+  "second_review_subset": [
+    "INV-H02",
+    "INV-H03",
+    "INV-H04",
+    "INV-H06",
+    "INV-H08"
+  ],
+  "ordinary_live_demo_cases": [
+    "INV-D01",
+    "INV-D02",
+    "INV-D03",
+    "INV-H01",
+    "INV-H05"
+  ],
+  "independent_history_reference_checks": [
+    "INV-H04",
+    "INV-H07",
+    "INV-H08"
+  ],
+  "sealed_files": 41,
+  "bundle_sha256": "bb8a658dbb10b2d4951837d536b00d7ebb3319fd5d377b8205884fc461bddff8",
+  "independent_human_review": "pending",
+  "t052": "incomplete",
+  "sealed_inventory_sha256": "a2bc9d63f0eccc2d500c2c3a1522bba00679dc197e0680c2ceafae2a61d5d75a",
+  "provider_settings_imported": false,
+  "environment_or_network_attempts": [],
+  "in_memory_corruptions_rejected": [
+    "wrong_input_reference_hash",
+    "overlapping_split",
+    "changed_context_money_without_rehash",
+    "wrong_cardinality",
+    "duplicate_identity"
+  ],
+  "protocol_file_sha256": "2d890b8c47a212a15062f6a9ac4b1cfa6ae2fd85207ed40de694fd53e7e492e1"
+}

@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "retrieval": {
+    "development": [
+      "RQ-001",
+      "RQ-002",
+      "RQ-003",
+      "RQ-004",
+      "RQ-005",
+      "RQ-006",
+      "RQ-007",
+      "RQ-008",
+      "RQ-009",
+      "RQ-010"
+    ],
+    "held_out": [
+      "RQ-011",
+      "RQ-012",
+      "RQ-013",
+      "RQ-014",
+      "RQ-015",
+      "RQ-016",
+      "RQ-017",
+      "RQ-018",
+      "RQ-019",
+      "RQ-020",
+      "RQ-021",
+      "RQ-022",
+      "RQ-023",
+      "RQ-024",
+      "RQ-025",
+      "RQ-026",
+      "RQ-027",
+      "RQ-028",
+      "RQ-029",
+      "RQ-030"
+    ]
+  },
+  "investigation": {
+    "development": [
+      "INV-D01",
+      "INV-D02",
+      "INV-D03",
+      "INV-D04"
+    ],
+    "held_out": [
+      "INV-H01",
+      "INV-H02",
+      "INV-H03",
+      "INV-H04",
+      "INV-H05",
+      "INV-H06",
+      "INV-H07",
+      "INV-H08"
+    ]
+  },
+  "second_review_subset": [
+    "INV-H02",
+    "INV-H03",
+    "INV-H04",
+    "INV-H06",
+    "INV-H08"
+  ],
+  "ordinary_live_demo_cases": [
+    "INV-D01",
+    "INV-D02",
+    "INV-D03",
+    "INV-H01",
+    "INV-H05"
+  ],
+  "demo_order_policy": "Held-out primary reports must be saved first. Overlapping ordinary demos are separate attempts, excluded from primary quality denominator, no feedback/tuning between them.",
+  "safety": [
+    "SAFE-01",
+    "SAFE-02",
+    "SAFE-03",
+    "SAFE-04",
+    "SAFE-05",
+    "SAFE-06",
+    "SAFE-07",
+    "SAFE-08",
+    "SAFE-09",
+    "SAFE-10",
+    "SAFE-11",
+    "SAFE-12"
+  ]
+}

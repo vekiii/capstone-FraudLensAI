@@ -120,7 +120,8 @@ UI/API checks passed, including two isolated Chrome contexts and linked review
 correction. T051 remains unchecked because no actual human analyst identity/date/
 confirmation has been supplied. Test actions use AUTOMATED TEST OPERATOR (not
 human approval), never an inferred signature. Evidence and open confirmation:
-../../evidence/tasks/feature-003-review.md. T033 remains unchecked; no Phase 7 work.
+../../evidence/tasks/feature-003-review.md. T033 remains unchecked; current T052
+preparation status follows in Phase 7.
 
 Goal: explicit human disposition with immutable drafts and conflict detection. Independent test: all allowed actions, missing rationale, needs-information restriction, stale concurrent review and linked correction.
 
@@ -133,6 +134,15 @@ Goal: explicit human disposition with immutable drafts and conflict detection. I
 - [ ] T051 [US4] Exercise all three dispositions, needs-information restriction, two-browser stale review and linked correction through actual UI/API; record real analyst identity/date and audit evidence in `evidence/tasks/feature-003-review.md`, never inferred signatures. (Depends: T050; FR-022-023, SC-005.)
 
 ## Phase 7: US5 - Evaluation (T052-T061, P2, required for release)
+
+Status (2026-11-15): T052 concrete candidate prepared, **not complete or frozen**.
+30 retrieval questions (10/20, held-out no-answer 4), 12 investigation scenarios
+(4/8), 12 safety scenarios, private source-derived references/rubric, splits and
+provisional protocol hashes exist. Structural checks PASS; actual independent
+human expectation review/approval is absent, all human fields remain null.
+See ../../evidence/tasks/feature-003-evaluation-protocol.md and its reviewer
+checklist. T033/T051 remain open. No T053+, retrieval change, tuning, held-out
+execution, provider call or human rating was performed.
 
 Goal: independent measured retrieval/report quality, safety and latency. Independent test: frozen packs, separate reference joining, both configurations and all failures in denominators. Pack preparation may proceed after corpus passage identities stabilize, before the UI is finished; held-out execution waits for freeze.
 

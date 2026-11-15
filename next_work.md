@@ -1,4 +1,41 @@
-# Current handoff - feature 003 Phase 6 offline, human T051 pending, 2026-11-15
+# Current handoff - feature 003 T052 candidate prepared, independent review pending, 2026-11-15
+Branch feature03; initial/current HEAD db02fa526c9ccf51db9aedd0c5eb9cf2bc3e47f2.
+Initial worktree clean. User authorized T052 preparation only despite open T051.
+Concrete evals/investigation pack: 30 bilingual retrieval questions (10 development,
+20 held-out; no-answer 2/4), 12 investigation scenarios (4/8), 12 safety stimuli,
+private source/context-derived references, rubric, splits and proposed protocol.
+Five second-rating cases and five ordinary live demos preselected before generation.
+No generated reports/provider scripts used as reference answers. Codex is the AI
+preparer; no human authorship/reviewer/approval attributed. Actual independent
+expectation review and freeze absent: **T052 stays unchecked, proposed_not_frozen**.
+Actual reviewer checklist and null review record are linked from the evidence.
+
+Fresh structural verification PASS: six reviewed documents/passages and read-only
+published archive equality; counts/split joins/IDs, 12 closed contract contexts,
+exact essential facts, 41 sealed file hashes and bundle links. Independent source
+arithmetic checks H04/H07/H08 history counts/currency totals/minute/bank boundaries.
+Five in-memory integrity corruptions rejected. Ruff/whitespace/scope checks PASS.
+No application behavior changed; backend/frontend suites/browser not repeated.
+These are artifact checks, not retrieval/LLM/ML quality or executed safety results.
+
+Held-out content was seen by the authoring agent, logged in exposure history;
+future tuning must exclude those expectations. Dataset-shaped cases are authored
+contract examples; exact materialized-input harness and dataset projection remain
+unimplemented. Existing fixture resolver cannot resolve variants by case ID alone.
+Real .env not read; no OpenAI/T033, search, retrieval modification, tuning, held-out
+evaluation, T053+, commit or push. T033 capability and real T051 confirmation stay
+open. Source/review records, runtime code and lockfiles unchanged.
+
+Evidence: [T052 package and real-review checklist](evidence/tasks/feature-003-evaluation-protocol.md),
+[actual structural results](evidence/tasks/feature-003-evaluation-pack-results.json),
+[pack index](evals/investigation/README.md),
+[original request](prompts/development/003-investigation-t052.md).
+**One concrete next step:** a real independent teammate reviews all source-bound
+expectations/rubric/splits/safety and records actual identity/date/findings/decision
+against the inspected content bundle in reference/review-record.json. Do not mark
+T052 complete or begin T053+ automatically. Earlier handoffs are historical.
+
+# Previous handoff - feature 003 Phase 6 offline, human T051 pending, 2026-11-15
 Branch feature03; baseline/current HEAD fcdf528. Initial worktree clean.
 T045-T050 implemented; stop at T051. Explicit analyst dispositions/rationale,
 server-owned actor, exact report/revision CAS, atomic review/audit/original

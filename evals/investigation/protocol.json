@@ -1,0 +1,179 @@
+{
+  "protocol_version": 1,
+  "pack_id": "feature-003-t052-proposed-v1",
+  "status": "proposed_not_frozen",
+  "prepared_on": "2026-11-15",
+  "baseline_head": "db02fa526c9ccf51db9aedd0c5eb9cf2bc3e47f2",
+  "author": "Codex (AI coding agent); no human author/reviewer attributed",
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "hash_policy": "sha256 of exact UTF-8 file bytes after CRLF-to-LF; no trimming; reject bare CR. Authored JSON and corpus reject BOM; preexisting Python source BOM is preserved in its file hash. Object/input/context hashes use sorted-key compact ensure_ascii=false JSON, no NaN.",
+  "files_sha256": {
+    "backend/src/fraudlens/cases.py": "c392632fd7c5bc0d2aca94f5dcdf62b7511d6cfb0ae33d1a4524056550b6d130",
+    "backend/src/fraudlens/contracts.py": "17bd5aa9a1cbf30c911131867a6524fa2407be388c12a9bc365d01ef9ce4f1dd",
+    "backend/src/fraudlens/investigation/context.py": "803c1d1783be51557c92c97d6b1b5c8641b027fe7b8ad8c7dee1ce26bd607520",
+    "backend/src/fraudlens/investigation/knowledge.py": "365b4d63e0c01320ed95bea5232aa2808fe239755f9df6ae26d12362e6bfbccc",
+    "backend/src/fraudlens/investigation/models.py": "d4742aae061ef87bbb22048e92e11b8723b8636dd8b0fa7e0ab12261142d4954",
+    "backend/src/fraudlens/investigation/provider.py": "92cba9ab5e4d788e9f22765c06a401a4be5fb8879cbb3b5c3ea7b8dbe27f1944",
+    "backend/src/fraudlens/investigation/retrieval.py": "cac72d2c97477a631ba7a48dd2a6f2c03c5da3dea69350c590bd13097903004c",
+    "backend/src/fraudlens/investigation/settings.py": "e1b1dd323f0d86a968a9c4292d346533572ea4ab0d9dbcd61c8660e92aae2bb1",
+    "backend/src/fraudlens/scoring.py": "dae05db2df7398c48cafb787fd645c64463a33aa61058564ca89e451e95b46c6",
+    "backend/src/fraudlens/settings.py": "9fa8513e6dcd084aef8a49ac26159c10bd52d27313a061df6c1bf2f2a397a2e5",
+    "data/fixtures/cases.json": "d54e152a52b12487c880e089abb7be129cdd4f62473378060126b959292619a6",
+    "data/fixtures/investigation/contexts.json": "64900759f528136d5bcea09376c5d33fa5247151ef61c8dd08e59bd12a1e4523",
+    "data/fixtures/investigation/history.json": "af03ead4bd098e597a7705dcfef8d8fef308f146837e3e6629267b32331d6d1a",
+    "data/knowledge/fraudlens-aml-knowledge-v1/documents/ibm-guide.md": "f9c01b0d842287cc3b797e01ac3a23085b699edcceec46d432295132ac7f2ff4",
+    "data/knowledge/fraudlens-aml-knowledge-v1/documents/sim-citation.md": "7285d239e0a34b3868559035e5e64479af1d83ae505f0886528117d48a1f9044",
+    "data/knowledge/fraudlens-aml-knowledge-v1/documents/sim-missing.md": "6e5ee8f44a5a9653dac71b431b4c7cec704a30e99d1f09db38598fff33e138b4",
+    "data/knowledge/fraudlens-aml-knowledge-v1/documents/sim-review.md": "4a18944611dc634b6f4a099ebdcaf649b405a1243917443086d2f8853e3b07ae",
+    "data/knowledge/fraudlens-aml-knowledge-v1/documents/us-confidentiality.md": "f0787d7c21d1df278081a5c70dd996a60f3d86d12a601e6e9d46e30874d9e866",
+    "data/knowledge/fraudlens-aml-knowledge-v1/documents/us-records.md": "971fb8be66ebd2795982b46bca9173713ceb9578a06307be3dcd41fff1ef2f6b",
+    "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json": "606212f650f5c826c972c30cf148b4e52bca73d403997f1bec142b076449e0d5",
+    "data/knowledge/fraudlens-aml-knowledge-v1/retrieval.json": "eef03708abd1b9471f64c0e40528a5b77440d92c0baf89fefe2bd5099e735402",
+    "evals/investigation/inputs/investigation.json": "8b0a3b6114c86d4bd439cefe60a57e04817c3a9822824b1e9c00b4c4e0552ef8",
+    "evals/investigation/inputs/retrieval.json": "0f7c6841232fd06f79dd7faf573f371338e0568a09d6e978674d173b380bd81a",
+    "evals/investigation/inputs/safety.json": "f694719f2136da99f542d224ffaca47aabc1fcea049aff438c2fb2770d4c6df8",
+    "evals/investigation/reference/investigation.json": "58a1b33de76d95385844c9cb4e5d5119004f15bd43e275d434f6fcd1c75ef5fc",
+    "evals/investigation/reference/passages.json": "ef27bbcbbd5d0a0216546985c4cd4fc4cdf1c8872ab2c62cb18b332cc14872f6",
+    "evals/investigation/reference/private-canaries.json": "028f09dacb893feeeb1f1a8fc672c7cf2183da0faf083cd0cb314c53eb2649dc",
+    "evals/investigation/reference/retrieval.json": "ff8f3323cc414ce33215de38e4e8df7a840ea5ecb8a083f735d29b945a4b45f1",
+    "evals/investigation/reference/review-record.json": "28e2be6ceae85da18c77f5b7394ae9959e5154a66b4c89334aa9e6e31b6b4a24",
+    "evals/investigation/reference/rubric.json": "d1b372c59961eb11f7c110ba7ee0c97bf9ef4753bc43d3ad5888abce0d92214a",
+    "evals/investigation/reference/safety.json": "4b1fb2304035ed6e22406abb9472bc2feaf317a4b147070a760493672a4a5624",
+    "evals/investigation/reference/scenario-origins.json": "f625e9b85635760712b7d0b47248c05fcca5966175447f8041d480cbed043afb",
+    "evals/investigation/splits.json": "ac2c9170fdb022ffda82cfc6c24913534566b29207f9296f825bf7db4440a153",
+    "frontend/package-lock.json": "a0bb153351a46b15372d713bc62d1815d76cb5de6fc542351852a76b1a504e8a",
+    "prompts/application/investigation-v1.md": "21d7da36b4ff9bd5121f26c541d9ec5ba403e6bddbb683b7cc3abd5ec19d4a99",
+    "specs/001-project-foundation/contracts/schemas.json": "0822d24cf2fa9d59c79ce64479aca3ba4a595ead60dfb07daba30b88d163114f",
+    "specs/003-ai-investigation/contracts/examples/context-dataset.json": "20d6618fd63931d808e1e9b04a1b9bc28d56ee8319c166a7a8692dd1d206f6da",
+    "specs/003-ai-investigation/contracts/producer-v2.snapshot.json": "bf487d84ccac1e315d0e20fece0d2a7f45990bce954ba40bf97cd54e43929f88",
+    "specs/003-ai-investigation/contracts/schemas.json": "25a739b6470a076ae8894d893a16ada115682c84f5c6dc11bcfacce729b26e01",
+    "specs/003-ai-investigation/evaluation.md": "65f667d42be6d36869487c41228fadc36a83ca5951c06756bea02ff34361af7f",
+    "uv.lock": "d86e3e988d616d19f6aac74ff1f27cb75146f01f4c257f6300d6f0cb93b413bf"
+  },
+  "sealed_inventory_sha256": "a2bc9d63f0eccc2d500c2c3a1522bba00679dc197e0680c2ceafae2a61d5d75a",
+  "bundle_sha256": "bb8a658dbb10b2d4951837d536b00d7ebb3319fd5d377b8205884fc461bddff8",
+  "attestation_hash_policy": "bundle_sha256 binds the files_sha256 map excluding reference/review-record.json, so review/freeze attestation can bind the content without hashing itself. sealed_inventory_sha256 covers every file hash including that record. protocol.json self-hash is recorded separately in structural evidence.",
+  "generation_boundary": {
+    "input_paths": [
+      "evals/investigation/inputs/retrieval.json",
+      "evals/investigation/inputs/investigation.json"
+    ],
+    "safety_input_path": "evals/investigation/inputs/safety.json",
+    "forbidden_inputs": [
+      "evals/investigation/reference/",
+      "prompts/development/",
+      "evidence/",
+      "private labels",
+      "training artifacts"
+    ],
+    "rule": "Trusted offline orchestrator verifies hashes/splits, then gives generator ONLY selected input object plus authorized corpus/context tools. Never send whole protocol, split manifest, safety stimuli or reference pack. Freeze outputs before separate offline reference join.",
+    "adapter_status": "T054 not implemented; inputs are materialized evaluation envelopes, not new HTTP/tool contracts. Dataset provider projection/integration still unavailable."
+  },
+  "freeze_gate": {
+    "independent_reference_review_required": true,
+    "actual_review_record": "evals/investigation/reference/review-record.json",
+    "frozen_at": null,
+    "frozen_by": null,
+    "t052_complete": false
+  },
+  "retrieval": {
+    "configurations": [
+      "bm25_baseline",
+      "bm25_title_glossary"
+    ],
+    "k1": 1.2,
+    "b": 0.75,
+    "maximum_results": 5,
+    "improvement": {
+      "status": "planned_T054_not_implemented",
+      "title_section_weight": 2,
+      "original_term_weight": 1,
+      "synonym_weight": 0.5,
+      "glossary_sha256": null
+    },
+    "cutoff_selection": "Development only: zero false answers on development no-answer questions first, then maximize answerable recall; tie higher cutoff. If no useful feasible coverage, mark failed/ineligible.",
+    "deployment_selection": "Choose from development results only, before held-out. Equal development no-answer performance then higher Recall@5 then MRR@5 then simpler baseline. No held-out selection.",
+    "baseline_current_cutoff": {
+      "value": 0.5,
+      "status": "existing untuned demo heuristic, not T055 selection"
+    },
+    "development_selected_cutoffs": null,
+    "development_selected_configuration": null,
+    "tokenizer_sha256": "cac72d2c97477a631ba7a48dd2a6f2c03c5da3dea69350c590bd13097903004c",
+    "metrics": {
+      "recall_at_5": "|relevance intersect returned top5| / |relevance|; macro over answerable only",
+      "mrr_at_5": "1 / first relevant rank <=5 else 0; macro over answerable only",
+      "no_match_answerable": "zero recall and reciprocal rank",
+      "no_answer": "exclude from Recall/MRR; report true no-match and false-answer counts separately",
+      "tie_break": "passage_id ascending"
+    },
+    "held_out_targets": {
+      "recall_at_5_min": 0.8,
+      "mrr_at_5_min": 0.7,
+      "no_answer_correct_required": 4,
+      "no_answer_denominator": 4
+    },
+    "reporting": "Retain scores/ranks/IDs/no-match for both configurations, even regressions. Target achievement separate from preselected deployment choice."
+  },
+  "reports": {
+    "primary_count": 8,
+    "primary_attempts_per_scenario": 1,
+    "retain_failures_and_repairs": true,
+    "rubric_path": "evals/investigation/reference/rubric.json",
+    "second_review_subset_from": "splits.json",
+    "provider": {
+      "requested_model": null,
+      "returned_model": null,
+      "generation_settings": null,
+      "capability": "T033 pending; HTTP 400 historical, no call here"
+    },
+    "limits": {
+      "requests": 8,
+      "tools": 12,
+      "total_seconds": 120,
+      "request_seconds": 30,
+      "input_bytes": 48000,
+      "output_tokens": 4096,
+      "response_bytes": 2097152,
+      "sdk_max_retries": 0,
+      "transient_retries": 1,
+      "schema_repairs": 1
+    },
+    "prompt_sha256": "21d7da36b4ff9bd5121f26c541d9ec5ba403e6bddbb683b7cc3abd5ec19d4a99",
+    "provider_settings_freeze": "T055/T058 must bind verified explicit model, settings, prompt/corpus/retrieval/code/SDK versions before primary generation; no guessed ID or silent fallback."
+  },
+  "performance": {
+    "ordinary_cases": 5,
+    "success_outcomes": [
+      "ready_for_review",
+      "needs_information"
+    ],
+    "success_within_90_seconds_min": 4,
+    "all_visibly_terminal_within_seconds": 120,
+    "all_errors_in_denominator": true,
+    "local_searches": 20,
+    "latency_policy": "20 held-out retrieval IDs in fixed split order, one measured local search each, warm corpus after one unmeasured startup load; no timed pre-query or repeated minimum selection.",
+    "p95": "nearest rank ceil(.95*20)=19th ascending measurement",
+    "p95_seconds_max": 2,
+    "record": [
+      "machine",
+      "OS",
+      "CPU",
+      "RAM",
+      "Python/SDK/Node versions",
+      "warm/cold policy",
+      "raw durations",
+      "monotonic timer",
+      "all outcomes"
+    ]
+  },
+  "execution_gate": {
+    "t053_plus_authorized_here": false,
+    "t051": "open: actual analyst confirmation absent",
+    "t033": "open: capability unverified",
+    "t055": "open: no tuning/config selection",
+    "held_out_execution": "not run; require reviewed/frozen pack, input-only harness and later authorization"
+  },
+  "versioning": "Review edits create a new bundle digest and require rerun of structural verification. Preserve old protocols/results once frozen. Exposed held-out used for tuning must be retired, not relabeled independent.",
+  "results_directory": "evals/results/feature-003/ (ignored; no outputs generated in T052)"
+}

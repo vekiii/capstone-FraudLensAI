@@ -1,0 +1,36 @@
+{
+  "status": "proposed",
+  "prepared_by": {
+    "kind": "AI coding agent",
+    "name": "Codex",
+    "date": "2026-11-15",
+    "human_authorship_claimed": false
+  },
+  "independent_expectation_review": {
+    "reviewer_identity": null,
+    "reviewed_at": null,
+    "decision": null,
+    "findings": [],
+    "reviewed_bundle_sha256": null
+  },
+  "primary_report_reviewer": null,
+  "secondary_report_reviewer": null,
+  "freeze": {
+    "status": "not_frozen",
+    "approved_by": null,
+    "approved_at": null,
+    "bundle_sha256": null
+  },
+  "exposure_history": [
+    {
+      "date": "2026-11-15",
+      "actor": "Codex (AI agent)",
+      "scope": "All authored development/held-out inputs and references exposed during preparation and structural verification; no predictions generated or metrics seen."
+    }
+  ],
+  "limitations": [
+    "Not blind to the authoring agent; repository separation is not an access-control guarantee.",
+    "Future tuner must use development only and keep held-out expectations out of tuning context; if used to tune, retire held-out and version a fresh pack.",
+    "Existing Milan corpus approval does not approve this evaluation pack."
+  ]
+}
