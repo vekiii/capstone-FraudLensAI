@@ -1,5 +1,6 @@
 """Explicit offline evaluation; never imported by runtime generation."""
 import copy
+import hashlib
 import json
 import math
 import re
@@ -226,6 +227,108 @@ def verify_pack_inputs(protocol_path):
     return protocol
 
 
+def validate_retrieval_freeze(freeze, protocol, root):
+    if (freeze.get('status') != 'retrieval_frozen'
+            or freeze.get('t052_bundle_sha256') != protocol['bundle_sha256']
+            or freeze.get('corpus_version') != protocol['corpus_version']
+            or freeze.get('deployment') not in ('baseline','improved')
+            or set(freeze.get('configurations',{})) != {'baseline','improved'}):
+        raise ValueError('Retrieval freeze identity mismatch')
+    for name,config in freeze['configurations'].items():
+        if digest(config) != freeze.get('configuration_hashes',{}).get(name):
+            raise ValueError('Frozen configuration hash mismatch')
+    for name,expected in freeze.get('artifacts',{}).items():
+        path=(Path(root)/name).resolve()
+        if not path.is_relative_to(Path(root).resolve()):
+            raise ValueError('Invalid artifact path')
+        if hashlib.sha256(path.read_bytes().replace(b'\r\n',b'\n')).hexdigest()!=expected:
+            raise ValueError('Artifact changed after configuration freeze')
+
+
+def freeze_development(protocol_path, store_path, output):
+    """Only ten development inputs/references may influence this selection."""
+    from fraudlens.investigation.knowledge import KnowledgeStore, stage
+    from fraudlens.investigation.retrieval import search
+    protocol_path=Path(protocol_path).resolve()
+    root=protocol_path.parents[2]
+    protocol=verify_pack_inputs(protocol_path)
+    knowledge_root=root/'data/knowledge/fraudlens-aml-knowledge-v1'
+    glossary=json.loads((knowledge_root/'glossary.json').read_text(encoding='utf-8'))
+    if glossary['status']!='reviewed' or not glossary['reviewed_by'] or not glossary['reviewed_at']:
+        raise ValueError('Actual glossary review required')
+    corpus=stage(knowledge_root/'manifest.json')
+    if corpus['corpus_version']!=protocol['corpus_version']:
+        raise ValueError('Approved corpus identity mismatch')
+    store=KnowledgeStore(store_path)
+    store.publish(knowledge_root/'manifest.json')
+    inputs=selected_inputs(protocol_path.parent,'retrieval','development')
+    if len(inputs)!=10:
+        raise ValueError('Ten development questions required')
+    # Trusted projection: discard unselected references before scoring/selection.
+    wanted={x['id'] for x in inputs}
+    references=[r for r in json.loads((protocol_path.parent/'reference/retrieval.json').read_text(encoding='utf-8')) if r['id'] in wanted]
+    configurations,choices,development={},{},{}
+    for name in ('baseline','improved'):
+        config=dict(configuration_version=3,algorithm='bm25',k1=1.2,b=.75,
+                    maximum_results=5,adequacy_cutoff=0,normalization=['NFKC','casefold'],
+                    term_policy='deduplicated max weights, sorted token summation',
+                    variant='baseline' if name=='baseline' else 'title_glossary')
+        if name=='improved':
+            config['glossary']=glossary
+        version=store.save_configuration(config)
+        rows=[]
+        for item in inputs:
+            found=search(store,item['query'],corpus['corpus_version'],version)
+            rows.append(dict(id=item['id'],split='development',language=item['language'],
+                input_sha256=digest(item),hits=[h['passage']['passage_id'] for h in found['hits']],
+                scores=[h['score'] for h in found['hits']]))
+        choice=select_development_cutoff(rows,references)
+        development[name]=dict(unthresholded_rows=rows,choice=choice)
+        if choice is not None:
+            config['adequacy_cutoff']=choice['cutoff']
+            configurations[name]=config
+            store.save_configuration(config)
+            thresholded=[{**r,'hits':[p for p,s in zip(r['hits'],r['scores']) if s>0 and s>=choice['cutoff']]} for r in rows]
+            choices[name]=retrieval_metrics(thresholded,references)
+    result_root=Path(store_path).parent
+    write_frozen(result_root/'development-selection.json',development)
+    if len(configurations)!=2:
+        return dict(status='ineligible',eligible=list(configurations),development_sha256=digest(development))
+    deployment=max(('baseline','improved'),key=lambda n:(
+        choices[n]['development']['overall']['recall_at_5'],
+        choices[n]['development']['overall']['mrr_at_5'],n=='baseline'))
+    artifacts={name:hashlib.sha256((root/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in (
+        'backend/src/fraudlens/investigation/retrieval.py',
+        'backend/src/fraudlens/investigation/evaluation.py',
+        'backend/src/fraudlens/investigation/cli.py',
+        'backend/src/fraudlens/investigation/settings.py',
+        'data/knowledge/fraudlens-aml-knowledge-v1/glossary.json',
+        'prompts/application/investigation-v1.md','evals/investigation/reference/rubric.json',
+        'evals/investigation/inputs/retrieval.json','evals/investigation/reference/retrieval.json',
+        'evals/investigation/splits.json')}
+    frozen=dict(status='retrieval_frozen',date='2026-11-15',t052_bundle_sha256=protocol['bundle_sha256'],
+        corpus_version=corpus['corpus_version'],configurations=configurations,
+        configuration_hashes={n:digest(c) for n,c in configurations.items()},deployment=deployment,
+        development_metrics=choices,development_predictions_sha256=digest(development),artifacts=artifacts,
+        tokenizer='NFKC/casefold Unicode alphanumeric sequences; sorted term summation',
+        glossary_sha256=digest(glossary),provider_capability='unverified_T033',
+        provider_metadata=protocol['reports']['provider'],settings_limits=protocol['reports']['limits'],
+        live_freeze_complete=False)
+    validate_retrieval_freeze(frozen,protocol,root)
+    # Preserve original T052 protocol/attestation before adding the configuration extension.
+    archive=protocol_path.parent/'freezes/t052-protocol.json'
+    archive.parent.mkdir(parents=True,exist_ok=True)
+    with archive.open('xb') as stream:
+        stream.write(protocol_path.read_bytes())
+    frozen['original_protocol_sha256']=hashlib.sha256(archive.read_bytes()).hexdigest()
+    write_frozen(output,frozen)
+    protocol['retrieval_configuration_freeze']=dict(path=str(Path(output).resolve().relative_to(root)).replace('\\','/'),
+        sha256=digest(frozen),t055='complete_retrieval_only',provider_capability='unverified_T033')
+    protocol_path.write_text(json.dumps(protocol,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    return dict(status='retrieval_frozen',deployment=deployment,
+                cutoffs={n:c['adequacy_cutoff'] for n,c in configurations.items()},metrics=choices,freeze_sha256=digest(frozen))
+
+
 def evaluate_retrieval(protocol_path, store_path, configuration, split, output, freeze_path=None):
     from fraudlens.investigation.knowledge import KnowledgeStore
     from fraudlens.investigation.retrieval import search
@@ -235,8 +338,7 @@ def evaluate_retrieval(protocol_path, store_path, configuration, split, output, 
     if not freeze_path:
         raise ValueError('Reviewed T055 configuration freeze required; no implicit demo configuration')
     freeze = verify_seal(json.loads(Path(freeze_path).read_text(encoding='utf-8')))
-    if freeze.get('status') != 'retrieval_frozen' or freeze.get('t052_bundle_sha256') != protocol['bundle_sha256']:
-        raise ValueError('T055 freeze binding mismatch')
+    validate_retrieval_freeze(freeze,protocol,Path(protocol_path).resolve().parents[2])
     config = freeze['configurations'][configuration]
     store = KnowledgeStore(store_path,initialize=False)
     retrieval = digest(config)

@@ -119,3 +119,26 @@ and T056 held-out evaluation are not run. T057 has 12 passing control groups but
 does not yet execute every frozen subcase (see safety record). T033 blocks live
 T058, then T059 actual ratings, full T060 and final T061. No defaults or fixture
 replacement bypass these gates. First next step: actual glossary review.
+
+
+## Glossary approval recorded - 2026-11-15
+
+Vedran Mitic explicitly confirmed: "Da, pregledao sam sve pojmove i potvrdjujem."
+This supersedes the earlier deferred-review entries. All 16 term mappings remain
+unchanged. Glossary status reviewed, actual reviewer Vedran Mitic, date 2026-11-15
+(date only, no invented review time). Approved glossary file SHA-256: 3725354237de09ef54ba87a10962e80fd8ebffef57b333912e3d2ca924577612.
+This approves the glossary, not T055 configuration selection, T056 results, live
+provider capability or human report ratings. Other recorded T054 implementation
+limits remain; no task checkbox inferred from this approval alone.
+
+
+## T054-T056 completed - 2026-11-15
+
+T054/T055/T056 are complete in their deterministic offline task scope. Reviewed
+glossary used; both development-selected cutoffs and baseline deployment choice
+frozen before held-out execution. Both held-out Recall/MRR 0.50, no-match 4/4;
+quality targets NOT met. Twenty measured searches per configuration, p95 2.8737ms
+baseline/2.4578ms improved. No post-holdout tuning, provider call or T033 diagnosis.
+Full backend 710 PASS, Ruff PASS. See [closure and exact commands](feature-003-t054-t056.md)
+and [result summary](feature-003-retrieval-results.json). Earlier pending T054-T056
+entries are historical. T057 and T058-T061 limits remain unchanged.

@@ -37,8 +37,18 @@ def main():
             if isinstance(node,ast.Import):
                 assert not any(x.name.endswith('.evaluation') for x in node.names)
         runtime.append(path.name)
-    result=dict(version=2,date='2026-11-15',status='implementation_lineage_not_T055_freeze',
-        t052_bundle_sha256=protocol['bundle_sha256'],original_protocol_sha256=file_hash(protocol_path),
+    extension=protocol.get('retrieval_configuration_freeze')
+    original=protocol_path.parent/'freezes/t052-protocol.json'
+    if extension:
+        old=json.loads(original.read_text(encoding='utf-8'))
+        assert {k:v for k,v in protocol.items() if k!='retrieval_configuration_freeze'}==old
+        frozen=json.loads((ROOT/extension['path']).read_text(encoding='utf-8'))
+        assert digest(frozen['payload'])==frozen['sha256']==extension['sha256']
+        for name,expected in frozen['payload']['artifacts'].items():
+            assert file_hash(ROOT/name)==expected, 'Changed freeze artifact'
+    result=dict(version=4 if extension else 2,date='2026-11-15',status='retrieval_freeze_audit' if extension else 'implementation_lineage_not_T055_freeze',
+        t052_bundle_sha256=protocol['bundle_sha256'],original_protocol_sha256=file_hash(original if extension else protocol_path),
+        current_protocol_sha256=file_hash(protocol_path),
         original_sealed_inventory_sha256=protocol['sealed_inventory_sha256'],
         original_approval_and_inputs_unchanged=True,implementation_changes=changes,
         runtime_modules_without_evaluator_import=sorted(runtime),
@@ -47,8 +57,10 @@ def main():
             'backend/src/fraudlens/investigation/cli.py',
             'data/knowledge/fraudlens-aml-knowledge-v1/glossary.json')},
         held_out_exposure='No retrieval/investigation held-out questions or references printed/read into model context. Safety stimuli inspected; H08 input/reference not opened.',
-        glossary_review='pending',t055='not_frozen',t056='not_run',live_provider='not_called')
-    target=ROOT/'evals/investigation/implementation-lineage-v2.json'
+        glossary_review=json.loads((ROOT/'data/knowledge/fraudlens-aml-knowledge-v1/glossary.json').read_text(encoding='utf-8'))['status'],
+        t055='retrieval_frozen' if extension else 'not_frozen',
+        t056='executed_below_quality_targets' if (ROOT/'evidence/tasks/feature-003-retrieval-results.json').exists() else 'not_run',live_provider='not_called')
+    target=ROOT/('evidence/tasks/feature-003-evaluation-audit-results.json' if extension else 'evals/investigation/implementation-lineage-v2.json')
     target.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(dict(status='PASS',files_hashed=len(approved),t052_bundle_sha256=protocol['bundle_sha256'],lineage_sha256=digest(result))))
 

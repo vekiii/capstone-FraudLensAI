@@ -262,3 +262,21 @@ Ne proglašavaj celu fazu ili feature završenim dok live/human uslovi nedostaju
 
 User: "Vazi, pregledacu kada zavrsis sve". Review is deferred, not approved.
 Finish independent work, preserve staged/null review metadata and pending gates.
+
+
+## Glossary approval recorded - 2026-11-15
+
+Vedran Mitic explicitly confirmed: "Da, pregledao sam sve pojmove i potvrdjujem."
+This supersedes the earlier deferred-review entries. All 16 term mappings remain
+unchanged. Glossary status reviewed, actual reviewer Vedran Mitic, date 2026-11-15
+(date only, no invented review time). Approved glossary file SHA-256: 3725354237de09ef54ba87a10962e80fd8ebffef57b333912e3d2ca924577612.
+This approves the glossary, not T055 configuration selection, T056 results, live
+provider capability or human report ratings. Other recorded T054 implementation
+limits remain; no task checkbox inferred from this approval alone.
+
+
+## T054-T056 continuation request - 2026-11-15
+
+Hajde onda dovsi T054 i T055. A mozes da dovrsis i T056 posto si rekao da je i on cekao potvrdu glosara.
+
+Continuation execution: T054-T056 closure recorded in evidence/tasks/feature-003-t054-t056.md. No new approval or provider-call authorization inferred.

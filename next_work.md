@@ -1,3 +1,24 @@
+# Current handoff - T054-T056 completed, 2026-11-15
+Feature03 baseline 875f9a2; preexisting approval edits preserved. T054 offline
+implementation/review complete. T055 both cutoffs selected from 10 development
+questions, baseline chosen before held-out; config freeze and original T052
+protocol archived separately. T056 both configs ran on all 20 held-out questions:
+Recall@5/MRR@5 0.50 each, no-match 4/4; quality targets failed, no improvement.
+20 real searches each; p95 baseline 2.8737ms/improved 2.4578ms. No post-holdout
+code/tuning/deployment changes. Full backend 710 PASS; Ruff/diff PASS.
+No provider calls, .env access, T033 diagnosis, T057+ changes or Git publication.
+Evidence: [T054-T056 closure](evidence/tasks/feature-003-t054-t056.md).
+Next: complete remaining exact T057 safety subcases; do not tune on this holdout.
+T033 -> T058 -> T059 -> complete T060/T061 remains blocked. Earlier entries historical.
+
+# Current update - glossary approved, 2026-11-15
+Vedran Mitic confirms reviewing and approving all 16 glossary entries. Recorded
+reviewed status/name/date; terms unchanged. Earlier deferred-review entries below
+are historical. T052 seal remains unchanged; no provider call or held-out execution.
+T054 still partial for other recorded limits; T055/T056 not executed, T033 open.
+Next: finish remaining T054 checks and T055 development-only selection/freeze.
+Evidence: evidence/tasks/feature-003-phase-07-handoff.md (approval amendment).
+
 # Current handoff - Phase 7 partial, 2026-11-15
 T053 evaluator RED/GREEN delivered. T054 metrics/CLI/materialized test runner and
 bounded retrieval improvement implemented; glossary staged, review deferred by

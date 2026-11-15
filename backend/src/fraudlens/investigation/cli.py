@@ -12,6 +12,10 @@ from fraudlens.investigation.provider import ProviderError
 def main(argv=None):
     parser = argparse.ArgumentParser()
     commands = parser.add_subparsers(dest='command', required=True)
+    freeze = commands.add_parser('freeze-retrieval')
+    freeze.add_argument('--protocol',required=True)
+    freeze.add_argument('--store',required=True)
+    freeze.add_argument('--output',required=True)
     evaluate = commands.add_parser('evaluate-retrieval')
     evaluate.add_argument('--protocol', required=True)
     evaluate.add_argument('--configuration', choices=['baseline','improved'], required=True)
@@ -48,9 +52,13 @@ def main(argv=None):
     mode.add_argument('--poll', action='store_true')
     args = parser.parse_args(argv)
     try:
-        if args.command in ('evaluate-retrieval','join-retrieval','evaluate-reports','summarize-reviews'):
+        if args.command in ('freeze-retrieval','evaluate-retrieval','join-retrieval','evaluate-reports','summarize-reviews'):
             from fraudlens.investigation import evaluation
             protocol = evaluation.verify_pack_inputs(args.protocol)
+            if args.command == 'freeze-retrieval':
+                result=evaluation.freeze_development(args.protocol,args.store,args.output)
+                print(json.dumps(result))
+                return 0 if result['status']=='retrieval_frozen' else 2
             if args.command == 'evaluate-reports':
                 if args.provider == 'openai' or args.split != 'development':
                     # Fail closed before settings/environment/provider initialization.

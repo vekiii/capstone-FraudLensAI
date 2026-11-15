@@ -1,0 +1,227 @@
+{
+  "date": "2026-11-15",
+  "machine": {
+    "system": "Windows",
+    "release": "10",
+    "architecture": "AMD64",
+    "processor": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+    "python": "3.14.3"
+  },
+  "policy": "Each configuration in fresh CLI process; imports/store setup excluded, no query warm-up, 20 sequential searches. OS filesystem caches warmed by earlier development preparation; body tokens recomputed per search. perf_counter wall milliseconds includes DB read/tokenization/ranking.",
+  "deployment_preselected": "baseline",
+  "configurations": {
+    "baseline": {
+      "metrics": {
+        "development": {
+          "en": {
+            "answerable_count": 4,
+            "correct_no_match": 1,
+            "false_answer": 0,
+            "mrr_at_5": 1.0,
+            "no_answer_count": 1,
+            "recall_at_5": 1.0
+          },
+          "overall": {
+            "answerable_count": 8,
+            "correct_no_match": 2,
+            "false_answer": 0,
+            "mrr_at_5": 0.5,
+            "no_answer_count": 2,
+            "recall_at_5": 0.5
+          },
+          "sr-Cyrl": {
+            "answerable_count": 1,
+            "correct_no_match": 0,
+            "false_answer": 0,
+            "mrr_at_5": 0.0,
+            "no_answer_count": 0,
+            "recall_at_5": 0.0
+          },
+          "sr-Latn": {
+            "answerable_count": 3,
+            "correct_no_match": 1,
+            "false_answer": 0,
+            "mrr_at_5": 0.0,
+            "no_answer_count": 1,
+            "recall_at_5": 0.0
+          }
+        },
+        "held_out": {
+          "en": {
+            "answerable_count": 8,
+            "correct_no_match": 2,
+            "false_answer": 0,
+            "mrr_at_5": 1.0,
+            "no_answer_count": 2,
+            "recall_at_5": 1.0
+          },
+          "overall": {
+            "answerable_count": 16,
+            "correct_no_match": 4,
+            "false_answer": 0,
+            "mrr_at_5": 0.5,
+            "no_answer_count": 4,
+            "recall_at_5": 0.5
+          },
+          "sr-Cyrl": {
+            "answerable_count": 2,
+            "correct_no_match": 1,
+            "false_answer": 0,
+            "mrr_at_5": 0.0,
+            "no_answer_count": 1,
+            "recall_at_5": 0.0
+          },
+          "sr-Latn": {
+            "answerable_count": 6,
+            "correct_no_match": 1,
+            "false_answer": 0,
+            "mrr_at_5": 0.0,
+            "no_answer_count": 1,
+            "recall_at_5": 0.0
+          }
+        }
+      },
+      "search_count": 20,
+      "raw_milliseconds": [
+        2.9596000003948575,
+        2.40739999935613,
+        2.8737000011460623,
+        1.8889000002673129,
+        2.505599999494734,
+        1.9363999999768566,
+        2.356799999688519,
+        1.852000001235865,
+        2.4776999998721294,
+        1.8861999997170642,
+        2.367800001593423,
+        1.8435999991197605,
+        2.4028999996517086,
+        1.847999999881722,
+        2.3492000000260305,
+        1.8405999999231426,
+        1.8626000000949716,
+        1.9045999997615581,
+        1.810499999919557,
+        1.788499999747728
+      ],
+      "p95_milliseconds": 2.8737000011460623,
+      "errors": 0,
+      "prediction_sha256": "22767e02e455b67b6b5e2f2e0af6880493c94c9ddfb7eab428b8b6366df6f068",
+      "metric_sha256": "3436318395080e19b3fc2e9e1eba60c825c6f6f9db38fae3ee20d5e282ffac00",
+      "targets": {
+        "recall": false,
+        "mrr": false,
+        "no_answer": true,
+        "p95": true
+      }
+    },
+    "improved": {
+      "metrics": {
+        "development": {
+          "en": {
+            "answerable_count": 4,
+            "correct_no_match": 1,
+            "false_answer": 0,
+            "mrr_at_5": 1.0,
+            "no_answer_count": 1,
+            "recall_at_5": 1.0
+          },
+          "overall": {
+            "answerable_count": 8,
+            "correct_no_match": 2,
+            "false_answer": 0,
+            "mrr_at_5": 0.5,
+            "no_answer_count": 2,
+            "recall_at_5": 0.5
+          },
+          "sr-Cyrl": {
+            "answerable_count": 1,
+            "correct_no_match": 0,
+            "false_answer": 0,
+            "mrr_at_5": 0.0,
+            "no_answer_count": 0,
+            "recall_at_5": 0.0
+          },
+          "sr-Latn": {
+            "answerable_count": 3,
+            "correct_no_match": 1,
+            "false_answer": 0,
+            "mrr_at_5": 0.0,
+            "no_answer_count": 1,
+            "recall_at_5": 0.0
+          }
+        },
+        "held_out": {
+          "en": {
+            "answerable_count": 8,
+            "correct_no_match": 2,
+            "false_answer": 0,
+            "mrr_at_5": 1.0,
+            "no_answer_count": 2,
+            "recall_at_5": 1.0
+          },
+          "overall": {
+            "answerable_count": 16,
+            "correct_no_match": 4,
+            "false_answer": 0,
+            "mrr_at_5": 0.5,
+            "no_answer_count": 4,
+            "recall_at_5": 0.5
+          },
+          "sr-Cyrl": {
+            "answerable_count": 2,
+            "correct_no_match": 1,
+            "false_answer": 0,
+            "mrr_at_5": 0.0,
+            "no_answer_count": 1,
+            "recall_at_5": 0.0
+          },
+          "sr-Latn": {
+            "answerable_count": 6,
+            "correct_no_match": 1,
+            "false_answer": 0,
+            "mrr_at_5": 0.0,
+            "no_answer_count": 1,
+            "recall_at_5": 0.0
+          }
+        }
+      },
+      "search_count": 20,
+      "raw_milliseconds": [
+        2.9204000002209796,
+        1.9826000007014954,
+        2.4207000005844748,
+        1.9472000003588619,
+        2.4372000007133465,
+        1.8718000010267133,
+        2.4578000011388212,
+        1.9286000006104587,
+        2.413800000795163,
+        1.883500000985805,
+        2.4068999991868623,
+        1.8989000000146916,
+        2.3854999999457505,
+        1.8637000011949567,
+        2.378600000156439,
+        1.855000000432483,
+        1.843199999711942,
+        1.820600000428385,
+        1.828499998737243,
+        1.8520999983593356
+      ],
+      "p95_milliseconds": 2.4578000011388212,
+      "errors": 0,
+      "prediction_sha256": "47130da0fabb3e205d84b162cf0d6acae229b793ddfe9fa09c55c06b50cbab14",
+      "metric_sha256": "3436318395080e19b3fc2e9e1eba60c825c6f6f9db38fae3ee20d5e282ffac00",
+      "targets": {
+        "recall": false,
+        "mrr": false,
+        "no_answer": true,
+        "p95": true
+      }
+    }
+  },
+  "freeze_sha256": "0476aaae2b8c269fd6f44528a9821fb4baca64e9a6d723059a0e3b89aa73e64b",
+  "status": "executed_below_retrieval_quality_targets",
+  "held_out_exposure": "Only IDs, counts, metrics, scores/hashes seen; raw questions/reference text not displayed. No further tuning permitted on this holdout."
+}

@@ -31,10 +31,10 @@
   "new_artifact_sha256": {
     "backend/src/fraudlens/investigation/evaluation.py": "915ca412fcbe3945d6d2cc0c16e73d5735023589cafe4514961159ce08c5c34d",
     "backend/src/fraudlens/investigation/cli.py": "49fe8b9b86d74a3b9982a91e05a613706bd06fcecb9387852e2ff736ab4eb202",
-    "data/knowledge/fraudlens-aml-knowledge-v1/glossary.json": "48004887262b7d58bc4bf23c66b6929d329e6407ce4bf817a2446dee73dcc22e"
+    "data/knowledge/fraudlens-aml-knowledge-v1/glossary.json": "c2da4e6bafd617bbb7605fbf556c3d3630fac10e80d0640f93466d6c24db73ca"
   },
   "held_out_exposure": "No retrieval/investigation held-out questions or references printed/read into model context. Safety stimuli inspected; H08 input/reference not opened.",
-  "glossary_review": "pending",
+  "glossary_review": "reviewed",
   "t055": "not_frozen",
   "t056": "not_run",
   "live_provider": "not_called"

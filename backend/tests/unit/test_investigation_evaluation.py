@@ -179,3 +179,24 @@ def test_generation_ids_cannot_be_filesystem_paths():
     with pytest.raises(ValueError):
         ev.generate_reports([dict(id='../escape',language='en',query='test')],
                             lambda item: pytest.fail('Unsafe ID reached runner'))
+
+
+def test_freeze_requires_bound_configuration_and_unchanged_code(tmp_path):
+    import hashlib
+    rank=tmp_path/'rank.py'
+    rank.write_text('authored rank code')
+    h=hashlib.sha256(rank.read_bytes()).hexdigest()
+    config=dict(algorithm='bm25',k1=1.2,b=.75,adequacy_cutoff=1,maximum_results=5)
+    frozen=dict(status='retrieval_frozen',t052_bundle_sha256='test-bundle',
+                corpus_version='corpus_'+'a'*64,artifacts={'rank.py':h},
+                configurations={'baseline':config,'improved':config},
+                configuration_hashes={'baseline':digest(config),'improved':digest(config)},
+                deployment='baseline',provider_capability='unverified_T033')
+    protocol=dict(bundle_sha256='test-bundle',corpus_version=frozen['corpus_version'])
+    ev.validate_retrieval_freeze(frozen,protocol,tmp_path)
+    for patch in ({'t052_bundle_sha256':'changed'},{'configuration_hashes':{}},{'deployment':'other'}):
+        with pytest.raises(ValueError):
+            ev.validate_retrieval_freeze({**frozen,**patch},protocol,tmp_path)
+    rank.write_text('changed after freeze')
+    with pytest.raises(ValueError):
+        ev.validate_retrieval_freeze(frozen,protocol,tmp_path)

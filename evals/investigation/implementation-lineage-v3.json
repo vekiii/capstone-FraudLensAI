@@ -1,0 +1,22 @@
+{
+  "version": 3,
+  "date": "2026-11-15",
+  "t052_bundle_sha256": "5cb654213934cbe11f6378eb6121ee40bfd046051d3671dbdaa082c4824f4700",
+  "original_protocol_sha256": "947d87fff80a2d54614487105247e6c8472b0397c6886a806ba94877a36be870",
+  "freeze_sha256": "0476aaae2b8c269fd6f44528a9821fb4baca64e9a6d723059a0e3b89aa73e64b",
+  "approved_inputs_references_splits_rubric_unchanged": true,
+  "freeze_artifacts_unchanged": true,
+  "provider_capability": "unverified_T033",
+  "live_provider_calls": 0,
+  "artifacts": {
+    "evals/results/feature-003/retrieval-v1/development-selection.json": "532417506978b1503970d84e0d58e8346a1c75ca269a248d4908a5d3548f983e",
+    "evals/results/feature-003/retrieval-v1/held-baseline.json": "ad98d0b615587161c429883218952db0a557b7e595afd060eaa0741ed0241b3c",
+    "evals/results/feature-003/retrieval-v1/held-improved.json": "0ac2da8a601a75bfd51e63577bb9664269f88c3e79808e4fe6e25bb8272f0ccd",
+    "evals/results/feature-003/retrieval-v1/metrics-baseline.json": "8c1af8a766381b92faf2587b2d5f8aef41bc95799810a3e01a18698802a0f716",
+    "evals/results/feature-003/retrieval-v1/metrics-improved.json": "8c1af8a766381b92faf2587b2d5f8aef41bc95799810a3e01a18698802a0f716",
+    "evals/results/feature-003/retrieval-v1/summary.json": "e4c541f580672664d2cf5c6192be3084530c917cad9bf964720df33d620184a4"
+  },
+  "summary_sha256": "69b20d72639ab4db8691d376b1aa494791418d54734e2276fbc6bd6eede51c78",
+  "tuning_after_held_out": false,
+  "status": "T054-T056_executed_quality_below_target"
+}

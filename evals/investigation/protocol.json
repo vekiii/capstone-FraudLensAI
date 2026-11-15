@@ -197,5 +197,11 @@
     "held_out_execution": "not run; require reviewed/frozen pack, input-only harness and later authorization"
   },
   "versioning": "Review edits create a new bundle digest and require rerun of structural verification. Preserve old protocols/results once frozen. Exposed held-out used for tuning must be retired, not relabeled independent.",
-  "results_directory": "evals/results/feature-003/ (ignored; no outputs generated in T052)"
+  "results_directory": "evals/results/feature-003/ (ignored; no outputs generated in T052)",
+  "retrieval_configuration_freeze": {
+    "path": "evals/investigation/freezes/retrieval-v1.json",
+    "sha256": "0476aaae2b8c269fd6f44528a9821fb4baca64e9a6d723059a0e3b89aa73e64b",
+    "t055": "complete_retrieval_only",
+    "provider_capability": "unverified_T033"
+  }
 }
