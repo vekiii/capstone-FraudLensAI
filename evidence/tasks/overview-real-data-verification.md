@@ -76,6 +76,6 @@ The full backend suite was not filtered. The same 71 failures and 4 errors occur
 - Existing T065 import evidence establishes the source file/version/hash and import row accounting, but its work database is not an active scored RunStore.
 - The installed experimental and separate AML-LGBM model files do not identify the authorized active application scorer and cannot supply its threshold or evaluation metrics.
 - Browser reload verifies stable error state only; no real active run existed for populated reload reconciliation.
-- This report and its screenshots were committed on the requested Feature 005 branch. Publication status for the final ledger commit is recorded in `next_work.md` after push verification.
+- This report and its screenshots were committed and pushed on the requested Feature 005 branch. `git ls-remote` confirmed remote tip `ccb62809e6117bf6869df5a9fa6d87bbca4862a2`; the final ledger receipt is recorded in `next_work.md`.
 
 Concrete next step: obtain the authorized completed `data/artifacts/feature-002-runs.sqlite` store and its exact trusted model manifest/artifact, then verify active-run SQL aggregates and API/browser values read-only.
