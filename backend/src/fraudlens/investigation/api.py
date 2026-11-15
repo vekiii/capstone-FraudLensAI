@@ -251,7 +251,7 @@ def read_evidence(request: Request, attempt_id: str, evidence_id: str):
         return feature_exception(exc)
 
 
-async def recovery_action(request, attempt_id, operation):
+async def mutation_action(request, attempt_id, operation):
     try:
         local_guard(request, mutation=True)
         query_keys(request, ())
@@ -265,11 +265,13 @@ async def recovery_action(request, attempt_id, operation):
             body = bytearray()
             async for chunk in request.stream():
                 body.extend(chunk)
-                if len(body) > 4096:
+                if len(body) > (65536 if operation == 'reviews' else 4096):
                     raise ValueError('Oversized request')
             payload = json.loads(body)
             if operation == 'retry':
                 payload = validate('RetryRequest', payload)
+            elif operation == 'reviews':
+                payload = validate('ReviewRequest', payload)
             elif payload != {}:
                 raise ValueError('Invalid cancel body')
         except (ValueError, TypeError):
@@ -277,9 +279,12 @@ async def recovery_action(request, attempt_id, operation):
         service = get_investigation_service(request, True)
         if operation == 'retry':
             result = service.retry(attempt_id, int(revision), payload['reuse_evidence'], service.settings.analyst, key)
+        elif operation == 'reviews':
+            from fraudlens.investigation.review import AnalystReviewService
+            result = AnalystReviewService(service).submit(attempt_id, int(revision), payload, service.settings.analyst, key)
         else:
             result = service.cancel(attempt_id, int(revision), service.settings.analyst, key)
-        return JSONResponse(result, status_code=202 if operation == 'retry' else 200,
+        return JSONResponse(result, status_code={'retry': 202, 'cancel': 200, 'reviews': 201}[operation],
                             headers={'ETag': str(result['revision'])})
     except (RouteFailure, ValueError, KeyError, OSError, sqlite3.Error, KnowledgeUnavailable, CaseNotFoundError) as exc:
         return feature_exception(exc)
@@ -287,12 +292,17 @@ async def recovery_action(request, attempt_id, operation):
 
 @investigation_router.post('/attempts/{attempt_id}/retry')
 async def retry_attempt(request: Request, attempt_id: str):
-    return await recovery_action(request, attempt_id, 'retry')
+    return await mutation_action(request, attempt_id, 'retry')
 
 
 @investigation_router.post('/attempts/{attempt_id}/cancel')
 async def cancel_attempt(request: Request, attempt_id: str):
-    return await recovery_action(request, attempt_id, 'cancel')
+    return await mutation_action(request, attempt_id, 'cancel')
+
+
+@investigation_router.post('/attempts/{attempt_id}/reviews')
+async def review_attempt(request: Request, attempt_id: str):
+    return await mutation_action(request, attempt_id, 'reviews')
 
 
 @investigation_router.api_route('/{unknown:path}', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])

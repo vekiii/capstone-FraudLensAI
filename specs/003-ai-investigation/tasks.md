@@ -115,14 +115,21 @@ Goal: explicit recovery without silent spend or mixed versions. Independent test
 
 ## Phase 6: US4 - Analyst review (T045-T051, P1)
 
+Status (2026-11-15): T045-T050 implemented and verified offline. T051 automated
+UI/API checks passed, including two isolated Chrome contexts and linked review
+correction. T051 remains unchecked because no actual human analyst identity/date/
+confirmation has been supplied. Test actions use AUTOMATED TEST OPERATOR (not
+human approval), never an inferred signature. Evidence and open confirmation:
+../../evidence/tasks/feature-003-review.md. T033 remains unchecked; no Phase 7 work.
+
 Goal: explicit human disposition with immutable drafts and conflict detection. Independent test: all allowed actions, missing rationale, needs-information restriction, stale concurrent review and linked correction.
 
-- [ ] T045 [P] [US4] Write review RED tests in `backend/tests/unit/test_investigation_review.py`: 'rationale 1-2000 after trim', 'actor 1-80', exact report revision, ready permits three dispositions, needs-information only request_more_information with saved draft, failed/cancelled none, immutable draft/correction events, review CAS and no generated-text authority. (Depends: T006, T040; FR-022-023.)
-- [ ] T046 [US4] Implement `backend/src/fraudlens/investigation/review.py` and atomic store review operations; separate human notes from model input, append linked corrections and update reviewed state only through explicit authorized action. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T045; FR-022-024.)
-- [ ] T047 [P] [US4] Write review API RED tests in `backend/tests/integration/test_investigation_review_api.py`: If-Match/key/report checks, empty/overlong rationale, forged actor, safe code/status errors, stale and superseded-review conflicts, same request replay. (Depends: T035, T045; FR-022-023.)
-- [ ] T048 [US4] Implement POST reviews and amendment semantics in `backend/src/fraudlens/investigation/api.py`; actor from server demo settings, no AI tool route to disposition. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T046, T047; FR-022-023.)
-- [ ] T049 [P] [US4] Write review UI RED tests in `frontend/tests/investigation-review.test.ts`: citation inspection, required rationale, allowed decisions by state, explicit submit, safe correction note, stale write recovery and unchanged original AI draft. (Depends: T037; FR-021-023.)
-- [ ] T050 [US4] Implement review client/forms in `frontend/src/investigation/api.ts`/`controller.ts`/`views.ts`; retain draft/evidence, do not automatically select/submit a disposition, distinguish human review from semantic-evaluation rating. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T048, T049; FR-021-023.)
+- [x] T045 [P] [US4] Write review RED tests in `backend/tests/unit/test_investigation_review.py`: 'rationale 1-2000 after trim', 'actor 1-80', exact report revision, ready permits three dispositions, needs-information only request_more_information with saved draft, failed/cancelled none, immutable draft/correction events, review CAS and no generated-text authority. (Depends: T006, T040; FR-022-023.)
+- [x] T046 [US4] Implement `backend/src/fraudlens/investigation/review.py` and atomic store review operations; separate human notes from model input, append linked corrections and update reviewed state only through explicit authorized action. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T045; FR-022-024.)
+- [x] T047 [P] [US4] Write review API RED tests in `backend/tests/integration/test_investigation_review_api.py`: If-Match/key/report checks, empty/overlong rationale, forged actor, safe code/status errors, stale and superseded-review conflicts, same request replay. (Depends: T035, T045; FR-022-023.)
+- [x] T048 [US4] Implement POST reviews and amendment semantics in `backend/src/fraudlens/investigation/api.py`; actor from server demo settings, no AI tool route to disposition. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T046, T047; FR-022-023.)
+- [x] T049 [P] [US4] Write review UI RED tests in `frontend/tests/investigation-review.test.ts`: citation inspection, required rationale, allowed decisions by state, explicit submit, safe correction note, stale write recovery and unchanged original AI draft. (Depends: T037; FR-021-023.)
+- [x] T050 [US4] Implement review client/forms in `frontend/src/investigation/api.ts`/`controller.ts`/`views.ts`; retain draft/evidence, do not automatically select/submit a disposition, distinguish human review from semantic-evaluation rating. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T048, T049; FR-021-023.)
 - [ ] T051 [US4] Exercise all three dispositions, needs-information restriction, two-browser stale review and linked correction through actual UI/API; record real analyst identity/date and audit evidence in `evidence/tasks/feature-003-review.md`, never inferred signatures. (Depends: T050; FR-022-023, SC-005.)
 
 ## Phase 7: US5 - Evaluation (T052-T061, P2, required for release)

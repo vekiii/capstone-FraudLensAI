@@ -93,7 +93,7 @@ def test_immutable_data_atomic_review_and_rollback(tmp_path):
     assert repo.get(attempt)['state'] == 'reviewed'
     with repo.connection() as db:
         assert db.execute('SELECT count(*) FROM reviews').fetchone()[0] == 1
-        assert db.execute("SELECT count(*) FROM audit_events WHERE json_extract(content,'$.operation') IS NULL").fetchone()[0] == 1
+        assert db.execute("SELECT count(*) FROM audit_events WHERE json_extract(content,'$.operation')='analyst_review'").fetchone()[0] == 1
         audit_count = db.execute('SELECT count(*) FROM audit_events').fetchone()[0]
         assert [json.loads(row[0])['state'] for row in db.execute(
             "SELECT content FROM audit_events WHERE json_extract(content,'$.operation')='transition' ORDER BY id"

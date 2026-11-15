@@ -1,0 +1,311 @@
+{
+  "mode": "Phase 6 automated review UI/API; authored fixture/test provider; not human approval or LLM evaluation",
+  "work": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-review-browser-c72ce8fe-0bbb-4d62-aaf9-850de3aad7ea",
+  "checks": [
+    {
+      "name": "Explicit empty decision, whitespace rationale, forged actor and wrong report are rejected without review writes",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Original bound citation inspected in actual browser",
+      "detail": {
+        "attempt": "att_bdacfda7cf854abc89696900d028c078",
+        "evidence": "ev_46779223074b4492b4eb5458e9a60244"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "Two independent browser contexts: one close accepted, stale escalate rejected 409 without overwrite",
+      "detail": {
+        "attempt": "att_bdacfda7cf854abc89696900d028c078",
+        "accepted_review": "rev_5e25f6a708844797b101e9ad4ccda9be",
+        "revision": 5
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "Explicit refresh, linked correction, safe literal note and original response replay after amendment",
+      "detail": {
+        "original": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T06:07:21.824263Z",
+          "disposition": "close",
+          "rationale": "AUTOMATED fixture close; no human approval",
+          "report_id": "b46d855e5173c38a7d36b782ebe5bd4ba6e49be7bb5b46cf7cc5b64dc76ae530",
+          "review_id": "rev_5e25f6a708844797b101e9ad4ccda9be",
+          "supersedes_review_id": null
+        },
+        "amendment": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": "<img src=x onerror=alert(1)> AUTOMATED literal correction",
+          "created_at": "2026-11-15T06:07:22.065314Z",
+          "disposition": "escalate",
+          "rationale": "AUTOMATED changed interpretation",
+          "report_id": "b46d855e5173c38a7d36b782ebe5bd4ba6e49be7bb5b46cf7cc5b64dc76ae530",
+          "review_id": "rev_777627e9dadb4792ad8de02524219a5f",
+          "supersedes_review_id": "rev_5e25f6a708844797b101e9ad4ccda9be"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "All three initial dispositions saved and reopened through actual UI",
+      "detail": [
+        "att_bdacfda7cf854abc89696900d028c078",
+        "att_c4bf59b5ec1e44688f86d61460307af3",
+        "att_18e24f6a80bf416f91b20cf51a32a736"
+      ],
+      "status": "PASS"
+    },
+    {
+      "name": "Saved limitations draft permits request-more-information only, including after review",
+      "detail": {
+        "attempt": "att_27f6e87a88234a23be733c945ccbddf3",
+        "report": "6f812fae4ee5be885f3acff1d981500fceb08ab112b75b16f6d4b24648ff4f53"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "Reopen and SQLite audit: five immutable review events, four unchanged drafts, stable budgets, no duplicate replay",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "No uncaught exceptions in either browser session",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "B73D7CB8DAB8BC1CA1EC6F16D2EE7F27",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_bdacfda7cf854abc89696900d028c078/evidence/ev_46779223074b4492b4eb5458e9a60244",
+      "status": 200
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_bdacfda7cf854abc89696900d028c078/reviews",
+      "status": 201
+    },
+    {
+      "session": "B73D7CB8DAB8BC1CA1EC6F16D2EE7F27",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_bdacfda7cf854abc89696900d028c078/reviews",
+      "status": 409
+    },
+    {
+      "session": "B73D7CB8DAB8BC1CA1EC6F16D2EE7F27",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "B73D7CB8DAB8BC1CA1EC6F16D2EE7F27",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_bdacfda7cf854abc89696900d028c078/reviews",
+      "status": 201
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_bdacfda7cf854abc89696900d028c078/reviews",
+      "status": 201
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_c4bf59b5ec1e44688f86d61460307af3/reviews",
+      "status": 201
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_18e24f6a80bf416f91b20cf51a32a736/reviews",
+      "status": 201
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_27f6e87a88234a23be733c945ccbddf3/reviews",
+      "status": 201
+    },
+    {
+      "session": "BC5724B536B60451239B9D9F19E2FDEF",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    }
+  ],
+  "chrome_stderr": "\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/4bd97146-f694-4cea-849a-400da6d551ae\r\n",
+  "browser": "Chrome/157.0.8103.52",
+  "sessions": [
+    "BC5724B536B60451239B9D9F19E2FDEF",
+    "B73D7CB8DAB8BC1CA1EC6F16D2EE7F27"
+  ],
+  "audit": {
+    "review_events": [
+      {
+        "expected_revision": 4,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T06:07:21.824263Z",
+          "disposition": "close",
+          "rationale": "AUTOMATED fixture close; no human approval",
+          "report_id": "b46d855e5173c38a7d36b782ebe5bd4ba6e49be7bb5b46cf7cc5b64dc76ae530",
+          "review_id": "rev_5e25f6a708844797b101e9ad4ccda9be",
+          "supersedes_review_id": null
+        },
+        "revision": 5,
+        "timestamp": "2026-11-15T06:07:21.824263Z"
+      },
+      {
+        "expected_revision": 5,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": "<img src=x onerror=alert(1)> AUTOMATED literal correction",
+          "created_at": "2026-11-15T06:07:22.065314Z",
+          "disposition": "escalate",
+          "rationale": "AUTOMATED changed interpretation",
+          "report_id": "b46d855e5173c38a7d36b782ebe5bd4ba6e49be7bb5b46cf7cc5b64dc76ae530",
+          "review_id": "rev_777627e9dadb4792ad8de02524219a5f",
+          "supersedes_review_id": "rev_5e25f6a708844797b101e9ad4ccda9be"
+        },
+        "revision": 6,
+        "timestamp": "2026-11-15T06:07:22.065314Z"
+      },
+      {
+        "expected_revision": 4,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T06:07:23.114716Z",
+          "disposition": "escalate",
+          "rationale": "AUTOMATED initial escalate",
+          "report_id": "8bd1c178cf059d2aeaaeb8def402d53e70aed4f4dbbddabf24e93af8ec1c011d",
+          "review_id": "rev_71598cd20c0e400180302badb264c1f4",
+          "supersedes_review_id": null
+        },
+        "revision": 5,
+        "timestamp": "2026-11-15T06:07:23.114716Z"
+      },
+      {
+        "expected_revision": 4,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T06:07:24.033108Z",
+          "disposition": "request_more_information",
+          "rationale": "AUTOMATED initial request for facts",
+          "report_id": "80e08ef449f7158a538c646f21230cb1fc12c7daa6f4aacb8650569b34cffda1",
+          "review_id": "rev_e8c0720179d64e8e82cd59a470f3c7c6",
+          "supersedes_review_id": null
+        },
+        "revision": 5,
+        "timestamp": "2026-11-15T06:07:24.033108Z"
+      },
+      {
+        "expected_revision": 4,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T06:07:25.403158Z",
+          "disposition": "request_more_information",
+          "rationale": "AUTOMATED needs-information limitation",
+          "report_id": "6f812fae4ee5be885f3acff1d981500fceb08ab112b75b16f6d4b24648ff4f53",
+          "review_id": "rev_53d86dc28260438f9d029661e8e9ee04",
+          "supersedes_review_id": null
+        },
+        "revision": 5,
+        "timestamp": "2026-11-15T06:07:25.403158Z"
+      }
+    ],
+    "review_count": 5,
+    "report_count": 4,
+    "review_request_keys": [
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "daa4ca26-becb-4ceb-9453-596ebb73d12f"
+      },
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "15380ed6-d183-413e-9b59-e68a64f3897a"
+      },
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "68294800-a66a-4a2a-88ee-73ac1d8b1ae3"
+      },
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "907219ff-0da5-4991-879f-1a07b447afb9"
+      },
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "32616ee7-bda5-4d5d-a0e5-406466b47cc7"
+      }
+    ]
+  },
+  "human_confirmation": {
+    "status": "PENDING",
+    "analyst_identity": null,
+    "human_review_date": null,
+    "reason": "All stored actions in this run were generated by the automated test operator."
+  },
+  "status": "PASS",
+  "owned_process_cleanup": "PASS"
+}

@@ -160,6 +160,10 @@ class InvestigationService:
         completed = [item for item in events if item['operation'] == 'dispatch_result']
         returned_model = next((item['returned_model'] for item in reversed(completed)
                                if item.get('returned_model')), None)
+        review = latest.get('analyst_review', {}).get('review')
+        report = latest.get('report', {}).get('report')
+        if report and review:
+            report = dict(report, semantic_review='reviewed_with_notes')
         return validate('RunView', dict(contract_version=1, run_id=row['run_id'], attempt_id=attempt_id,
             parent_attempt_id=binding.get('parent_attempt_id'), case_id=context['case_id'], context_revision=row['context_revision'],
             source_mode=context['source_mode'], snapshot_ref=context['snapshot_ref'],
@@ -172,7 +176,7 @@ class InvestigationService:
                 repairs=sum(item['operation'] == 'repair' for item in events),
                 transient_retries=sum(item['operation'] == 'transient_retry' for item in events),
                 deadline=latest.get('worker_started', {}).get('deadline')),
-            trace=trace, report=latest.get('report', {}).get('report'), review=None,
+            trace=trace, report=report, review=review,
             failure=latest.get('failure', {}).get('failure')))
 
     def _transaction_view(self, db, attempt_id):

@@ -88,4 +88,12 @@ function recoveryAction(parent: Run, operation: 'retry' | 'cancel', key: string,
 }
 export function retryInvestigation(parent: Run, reuse: boolean, key: string, signal?: AbortSignal) { return recoveryAction(parent, 'retry', key, reuse, signal); }
 export function cancelInvestigation(parent: Run, key: string, signal?: AbortSignal) { return recoveryAction(parent, 'cancel', key, false, signal); }
-export const reportClient = { list: listInvestigations, create: createInvestigation, attempt: getInvestigation, evidence: getEvidence, retry: retryInvestigation, cancel: cancelInvestigation };
+export type ReviewInput = Pick<NonNullable<Run['review']>, 'report_id' | 'disposition' | 'rationale' | 'correction_note' | 'supersedes_review_id'>;
+export function reviewInvestigation(parent: Run, body: ReviewInput, key: string, signal?: AbortSignal) {
+  return request(`/api/investigation/attempts/${encodeURIComponent(parent.attempt_id)}/reviews`, value => {
+    const run = decodeRun(value), review = run.review;
+    if (run.attempt_id !== parent.attempt_id || run.run_id !== parent.run_id || run.case_id !== parent.case_id || run.context_revision !== parent.context_revision || run.snapshot_ref !== parent.snapshot_ref || run.revision !== parent.revision + 1 || run.state !== 'reviewed' || !review || review.report_id !== body.report_id || run.report?.report_id !== parent.report?.report_id || review.supersedes_review_id !== body.supersedes_review_id || review.disposition !== body.disposition || review.rationale !== body.rationale || review.correction_note !== body.correction_note) throw new KnowledgeError('invalid_response');
+    return run;
+  }, signal, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key, 'If-Match': String(parent.revision) }, body: JSON.stringify(body) }, 201, true);
+}
+export const reportClient = { list: listInvestigations, create: createInvestigation, attempt: getInvestigation, evidence: getEvidence, retry: retryInvestigation, cancel: cancelInvestigation, review: reviewInvestigation };

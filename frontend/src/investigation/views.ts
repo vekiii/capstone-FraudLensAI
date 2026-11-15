@@ -1,6 +1,7 @@
 import type { KnowledgeDocument, Passage, Search } from './contracts';
 
 import type { Run, Evidence } from './contracts';
+import type { ReviewInput } from './api';
 function node<K extends keyof HTMLElementTagNameMap>(tag: K, text?: string) { const element = document.createElement(tag); if (text !== undefined) element.textContent = text; return element; }
 export function createKnowledgeView(root: HTMLElement, actions: { search(query: string): void; select(id: string): void; retry(): void }) {
   const title = node('h1', 'Pretraga izvora'); title.tabIndex = -1;
@@ -29,7 +30,7 @@ export function createKnowledgeView(root: HTMLElement, actions: { search(query: 
   };
 }
 
-export function createReportView(root: HTMLElement, actions: { start(): void; refresh(): void; select(id: string): void; evidence(id: string): void; retry(reuse: boolean): void; cancel(): void; parent(): void }) {
+export function createReportView(root: HTMLElement, actions: { start(): void; refresh(): void; select(id: string): void; evidence(id: string): void; retry(reuse: boolean): void; cancel(): void; parent(): void; review(body: ReviewInput): void }) {
   const heading = node('h2', 'AI istraga'); heading.tabIndex = -1;
   const list = node('div'); const panel = node('section'); panel.setAttribute('aria-live', 'polite');
   const source = node('section'); source.setAttribute('aria-live', 'polite');
@@ -38,6 +39,28 @@ export function createReportView(root: HTMLElement, actions: { start(): void; re
   const refresh = node('button', 'Osveži sačuvano stanje'); refresh.type = 'button'; refresh.dataset.refresh = ''; refresh.addEventListener('click', actions.refresh);
   root.replaceChildren(heading, node('p', 'Sintetički fixture podaci, bez ML predikcije. Skor nije verovatnoća prevare. AI nacrt podržava ljudsku odluku.'), start, refresh, list, history, panel, source);
   const section = (title: string) => { panel.append(node('h3', title)); };
+  function reviewForm(run: Run) {
+    const report = run.report!;
+    const form = node('form'); form.dataset.reviewForm = '';
+    const title = node('h3', run.review ? 'Korekcija odluke analitičara' : 'Odluka analitičara');
+    const label = node('label', 'Odluka '), select = node('select'); select.required = true; select.dataset.disposition = '';
+    const blank = node('option', 'Izaberite odluku'); blank.value = ''; select.append(blank);
+    const choices = report.draft.outcome === 'needs_information' ? ['request_more_information'] : ['escalate', 'close', 'request_more_information'];
+    const names: Record<string, string> = { escalate: 'Eskalirati', close: 'Zatvoriti', request_more_information: 'Zatražiti dodatne podatke' };
+    for (const choice of choices) { const option = node('option', names[choice]); option.value = choice; select.append(option); }
+    label.append(select);
+    const reasonLabel = node('label', 'Obrazloženje (obavezno) '), reason = node('textarea'); reason.required = true; reason.maxLength = 4000; reason.dataset.rationale = ''; reasonLabel.append(reason);
+    const noteLabel = node('label', run.review ? 'Beleška o korekciji (obavezno) ' : 'Beleška analitičara (opciono) '), note = node('textarea'); note.maxLength = 4000; note.required = !!run.review; note.dataset.correctionNote = ''; noteLabel.append(note);
+    const submit = node('button', run.review ? 'Sačuvaj povezanu korekciju' : 'Sačuvaj odluku'); submit.type = 'submit'; submit.dataset.reviewSubmit = '';
+    const message = node('p'); message.setAttribute('role', 'alert');
+    form.append(title, node('p', `Odluka se vezuje za AI nacrt ${report.report_id}, revizija pokušaja ${run.revision}. Originalni nacrt i dokazi ostaju sačuvani. Ovo nije ocena kvaliteta LLM-a.`), label, reasonLabel, noteLabel, submit, message);
+    form.addEventListener('submit', e => {
+      e.preventDefault(); const rationale = reason.value.trim(), correction = note.value.trim();
+      if (!choices.includes(select.value) || !rationale || [...rationale].length > 2000 || [...correction].length > 2000 || (run.review && !correction)) { message.textContent = 'Izaberite odluku i unesite obavezno obrazloženje i belešku za korekciju.'; return; }
+      actions.review({ report_id: report.report_id, disposition: select.value as ReviewInput['disposition'], rationale, correction_note: correction || null, supersedes_review_id: run.review?.review_id ?? null });
+    });
+    panel.append(form);
+  }
   return {
     loading() { start.disabled = true; panel.replaceChildren(node('p', 'Učitavanje sačuvane istrage…')); source.replaceChildren(); },
     saved(runs: Run[], total: number, truncated: boolean) {
@@ -46,7 +69,7 @@ export function createReportView(root: HTMLElement, actions: { start(): void; re
     },
     empty() { panel.replaceChildren(node('p', 'Nema sačuvane istrage. Pokretanje je izričita radnja.')); },
     historical(runs: Run[]) { history.replaceChildren(); for (const run of runs) { const button = node('button', `Istorijski izveštaj | ${run.created_at}`); button.dataset.history = run.attempt_id; button.addEventListener('click', () => actions.select(run.attempt_id)); history.append(button); } },
-    recoveryError(code: string, blocked = false) { const alert = node('p', `${code}. ${blocked ? 'Osvežite sačuvano stanje pre nove radnje.' : 'Ishod radnje nije potvrđen; ponovite istu radnju ili osvežite stanje.'}`); alert.setAttribute('role', 'alert'); panel.append(alert); if (blocked) { start.disabled = true; panel.querySelectorAll<HTMLButtonElement>('button[data-retry],button[data-cancel]').forEach(button => { button.disabled = true; }); } },
+    recoveryError(code: string, blocked = false) { const alert = node('p', `${code}. ${blocked ? 'Osvežite sačuvano stanje pre nove radnje.' : 'Ishod radnje nije potvrđen; ponovite istu radnju ili osvežite stanje.'}`); alert.setAttribute('role', 'alert'); panel.append(alert); if (blocked) { start.disabled = true; panel.querySelectorAll<HTMLButtonElement>('button[data-retry],button[data-cancel],button[data-review-submit]').forEach(button => { button.disabled = true; }); } },
     run(run: Run, historical = false) {
       panel.replaceChildren(); source.replaceChildren(); start.disabled = ['created', 'gathering_evidence', 'drafting'].includes(run.state);
       const status = node('p', run.state === 'created' ? 'Posao je sačuvan i čeka worker.' : `Stanje: ${run.state}`); status.dataset.runState = run.state; panel.append(status);
@@ -77,6 +100,19 @@ export function createReportView(root: HTMLElement, actions: { start(): void; re
         }
       }
       for (const [title, values] of [['Nedostajuće informacije', draft.missing_information], ['Ograničenja', draft.limitations]] as const) { section(title); for (const value of values) panel.append(node('p', value)); }
+      if (run.review) {
+        const review = run.review;
+        section('Sačuvana odluka analitičara');
+        panel.append(node('p', `${review.actor} | ${review.created_at} | ${review.disposition} | ${review.review_id}`), node('p', review.rationale));
+        if (review.correction_note) panel.append(node('p', review.correction_note));
+        if (review.supersedes_review_id) panel.append(node('p', `Korekcija prethodne odluke: ${review.supersedes_review_id}. Prethodni zapis je sačuvan.`));
+        panel.append(node('p', 'Lokalni zapis odluke; nije ocena kvaliteta LLM-a niti potpis nezavisnog evaluatora.'));
+      }
+      if (!historical && ['ready_for_review', 'needs_information', 'reviewed'].includes(run.state)) reviewForm(run);
+    },
+    restoreReview(body: ReviewInput) {
+      const select = panel.querySelector<HTMLSelectElement>('[data-disposition]'), reason = panel.querySelector<HTMLTextAreaElement>('[data-rationale]'), note = panel.querySelector<HTMLTextAreaElement>('[data-correction-note]');
+      if (select && reason && note) { select.value = body.disposition; reason.value = body.rationale; note.value = body.correction_note ?? ''; }
     },
     paused() { panel.append(node('p', 'Automatska provera je zaustavljena. Osvežite sačuvano stanje; novi provider zahtev se time ne pokreće.')); },
     evidence(item: Evidence, corpus: string) {

@@ -15,7 +15,7 @@ function clientWith(run = ready()) {
   return {
     list: vi.fn().mockResolvedValue({ contract_version: 1, total_count: 1, truncated: false, items: [run], snapshot_ref: run.snapshot_ref, context_revision: run.context_revision }),
     create: vi.fn().mockResolvedValue(run), attempt: vi.fn().mockResolvedValue(run), evidence: vi.fn().mockResolvedValue(evidence()),
-    retry: vi.fn(), cancel: vi.fn(),
+    retry: vi.fn(), cancel: vi.fn(), review: vi.fn(),
   };
 }
 

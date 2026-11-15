@@ -1,4 +1,40 @@
-# Current handoff - feature 003 Phase 5 complete offline, 2026-11-15
+# Current handoff - feature 003 Phase 6 offline, human T051 pending, 2026-11-15
+Branch feature03; baseline/current HEAD fcdf528. Initial worktree clean.
+T045-T050 implemented; stop at T051. Explicit analyst dispositions/rationale,
+server-owned actor, exact report/revision CAS, atomic review/audit/original
+response replay and linked immutable corrections. Needs-information restriction
+survives amendments. AI draft/evidence/validation records remain unchanged;
+semantic_review is a derived public flag, not a quality rating or signature.
+UI requires explicit selection/submit, keeps uncertain input/key, blocks stale
+writes until refresh, renders literal notes and retains original claims/citations.
+
+Executed intended RED: 17 review + 9 API + 6 UI; Unicode boundary API 1 / UI 1.
+Initial missing import/file URL setup errors were not RED. Final backend
+**683 PASS**, frontend **179 PASS**; Ruff/typecheck/build/diff checks PASS.
+Actual Chrome/API/Vite proxy/CLI check: **8 PASS**, two independent browser
+contexts, stale review 409, explicit refresh/linked correction, all three initial
+decisions, needs-information restriction, citation/reopen, immutable audit/replay.
+Five review events / four original drafts, stable budgets, cleanup/ports PASS.
+Chrome required sandbox escalation; failed runs and corrections documented.
+
+All browser review actions use AUTOMATED TEST OPERATOR (not human approval).
+T051 remains unchecked: actual human identity/date/decision and behavior
+confirmation are missing. No inferred Milan/team approval or independent
+reproduction, no LLM evaluation. No dependencies/lockfiles/corpus/producer/ML
+changes. Harnesses force fixture/test and absent ENV_FILE before settings load;
+actual .env was not read, OpenAI/T033 were not invoked. T033 capability gate
+remains open after the historical HTTP 400. No Phase 7+, commit or push.
+
+Evidence: [review implementation/checks/open human gate](evidence/tasks/feature-003-review.md),
+[actual browser/API/audit results](evidence/tasks/feature-003-review-browser-results.json),
+[saved request](prompts/development/003-investigation-phase-06.md).
+**One concrete next step:** a real analyst performs and explicitly confirms the
+T051 review/citation/correction/two-session flow, recording actual identity,
+date, findings and bound attempt/report/review IDs in the review evidence.
+Do not mark T051 complete or start the next phase from automated results.
+Earlier handoffs below are historical and superseded where different.
+
+# Previous handoff - feature 003 Phase 5 complete offline, 2026-11-15
 Branch feature03; baseline/current HEAD 093739f. Initial worktree clean.
 T039-T044 implemented and verified; stop at T044. Explicit retry/cancel with
 If-Match/key, durable original response replay, linked child attempts/fresh

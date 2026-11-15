@@ -1,6 +1,6 @@
 # Investigation and knowledge API v1 (planned)
 
-Status (2026-11-15): knowledge, create/list/attempt/evidence and Phase 5 retry/cancel routes implemented offline. Review endpoints remain planned Phase 6. Local same-origin FastAPI routes under `/api/investigation` and `/api/knowledge`; existing feature 001/002 endpoints and errors unchanged. [schemas.json](schemas.json) defines closed request/response bodies. GETs never cause provider requests. All responses are JSON with explicit `contract_version=1`; no raw exception/provider body or path is returned.
+Status (2026-11-15): knowledge, create/list/attempt/evidence, retry/cancel and Phase 6 review/amendment routes implemented offline. Human acceptance remains pending. Local same-origin FastAPI routes under `/api/investigation` and `/api/knowledge`; existing feature 001/002 endpoints and errors unchanged. [schemas.json](schemas.json) defines closed request/response bodies. GETs never cause provider requests. All responses are JSON with explicit `contract_version=1`; no raw exception/provider body or path is returned.
 
 ## Request identity and local access
 
@@ -36,7 +36,30 @@ the unchanged closed RunList body. Supplying `context_revision` pins subsequent
 reads; a current-source mismatch returns 409 stale_snapshot. The browser uses the
 resolved snapshot in CreateRequest, never a fabricated placeholder or source path.
 Historical attempts remain accessible by their immutable attempt ID. No dataset
-producer approval is implied. Review endpoints remain a later phase.
+producer approval is implied.
+
+Phase 6 review clarification: POST reviews also appends amendments. The exact
+saved report_id, If-Match attempt revision and current supersedes_review_id are
+checked together. Initial review requires supersedes_review_id=null; amendment
+requires the latest review ID and a nonempty correction_note. Stale report,
+revision or superseded review returns 409 revision_conflict. A missing amendment
+note or prohibited disposition returns 409 invalid_transition. Blank/oversized
+text, forged actor, missing headers or unknown fields return 422 invalid_request.
+Rationale, correction note and configured actor are trimmed; actor is server-owned.
+The HTTP review body is bounded to 64 KiB to accommodate legal escaped Unicode
+in both 2000-character text fields; field limits remain unchanged.
+
+Review record, audit, revision/state and saved original 201 RunView commit in one
+transaction. Same normalized request/actor/key returns that original response
+even after later amendments; changing target/revision/body with the same key
+returns request_conflict. All reviews remain immutable in SQLite. RunView exposes
+the latest review including its supersedes link; it does not expose the full
+audit history. Corrections are separate human notes bound to the same original
+report, never rewritten AI prose. Original report/evidence rows and validation
+events remain unchanged. semantic_review=reviewed_with_notes is derived in the
+public projection; it is not a scientific quality rating or inferred signature.
+Needs-information restrictions persist through amendments. Reviewed work cannot
+be retried/cancelled. No source refresh or provider call occurs during review.
 
 Phase 5 clarification: a run list returns the latest attempt of each run, with
 total_count counting runs, not parent/child attempts. Retry reserves/increments

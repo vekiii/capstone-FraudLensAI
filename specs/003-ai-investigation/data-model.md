@@ -1,6 +1,6 @@
 # Data model - feature 003
 
-Status: design, not implemented migrations. Closed machine-readable boundary definitions are in [schemas.json](contracts/schemas.json); provider-only projection differs from local context. IDs are opaque, never paths. No dataset labels are fields in these entities.
+Status: schema v1 and offline workflow/review implemented through Phase 6; evaluation and real producer integration remain planned. Closed machine-readable boundary definitions are in [schemas.json](contracts/schemas.json); provider-only projection differs from local context. IDs are opaque, never paths. No dataset labels are fields in these entities.
 
 ## Shared validation rules
 
@@ -44,6 +44,13 @@ Report contains report_id (content digest), attempt_id, context_revision, `outco
 Report content is immutable; corrections create a new linked revision. report_id is SHA-256 of canonical JSON containing attempt_id, context_revision and draft, so identical prose in two attempts does not collide in the report table. The public semantic_review value is derived from separate review records, not a mutation of the original draft or a scientific quality guarantee. Needs-information still persists a structured limitations draft if offered for review. No draft is accepted merely because it matches JSON shape. Store schema/reference checks separately from semantic review, initially not_reviewed.
 
 AnalystReview: review_id, report_id, expected attempt revision, actor from local application settings (not model input), disposition escalate|close|request_more_information, rationale, optional correction note, supersedes_review_id nullable, timestamp. Ready reports allow three dispositions; needs-information allows only request_more_information. Failed/cancelled attempts allow none. Update attempt to reviewed + append review/audit in one CAS transaction. Corrections reference current review/report and increment revision; no deletion/overwrite.
+
+Implementation: Review stores the existing closed public fields (created_at UTC);
+expected/new attempt revisions are recorded in its analyst_review audit event.
+An amendment requires a nonempty correction note and current supersedes_review_id;
+it retains the same report_id. Request replay stores the original public RunView
+atomically with this event. The latest review is projected publicly, while all
+earlier review/audit rows remain immutable locally. No schema migration is needed.
 
 ## States and allowed transitions
 

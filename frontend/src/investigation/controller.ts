@@ -4,6 +4,7 @@ import { createKnowledgeView, createReportView } from './views';
 import { reportClient, KnowledgeError } from './api';
 import { decodeRun, decodeEvidence, decodeRuns, decodeContextBinding } from './contracts';
 import type { Run } from './contracts';
+import type { ReviewInput } from './api';
 
 export type ReportClient = typeof reportClient;
 export function mountReports(root: HTMLElement, caseId: string, client: ReportClient = reportClient, options: { pollInterval?: number; maxPolls?: number } = {}) {
@@ -21,7 +22,7 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
   const maximum = Math.min(120, Math.max(1, options.maxPolls ?? 120));
   const current = (token: number) => !disposed && generation === token;
   function begin() { generation++; clearTimeout(timer); pending.abort(); evidencePending?.abort(); pending = new AbortController(); return generation; }
-  const view = createReportView(root, { start: () => { void create(); }, refresh: () => { void initialize(); }, select: id => { const run = saved.find(item => item.attempt_id === id) ?? history.get(id); if (run) { const token = begin(); polls = 0; show(run, token); } }, evidence: id => { void evidence(id); }, retry: reuse => { void mutate('retry', reuse); }, cancel: () => { void mutate('cancel', false); }, parent: () => { void parent(); } });
+  const view = createReportView(root, { start: () => { void create(); }, refresh: () => { void initialize(); }, select: id => { const run = saved.find(item => item.attempt_id === id) ?? history.get(id); if (run) { const token = begin(); polls = 0; show(run, token); } }, evidence: id => { void evidence(id); }, retry: reuse => { void mutate('retry', reuse); }, cancel: () => { void mutate('cancel', false); }, parent: () => { void parent(); }, review: body => { void review(body); } });
   function checked(value: unknown, expected?: string) { const run = decodeRun(value); if (run.case_id !== caseId || run.context_revision !== revision || run.snapshot_ref !== snapshot || (expected && run.attempt_id !== expected)) throw new Error(); return run; }
   function show(run: Run, token: number) {
     saved = saved.map(item => item.attempt_id === run.attempt_id ? run : item);
@@ -98,6 +99,25 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
       if (previous.attempt_id !== run.parent_attempt_id || previous.run_id !== run.run_id || previous.case_id !== caseId || previous.context_revision !== run.context_revision || previous.snapshot_ref !== run.snapshot_ref) throw new Error();
       show(previous, token);
     } catch { if (current(token)) view.error('invalid_response'); }
+  }
+  async function review(body: ReviewInput) {
+    const run = selected;
+    if (!run?.report || disposed || blocked || run.context_revision !== revision || !saved.some(item => item.attempt_id === run.attempt_id)) return;
+    const token = begin(); view.loading();
+    const identity = `${run.attempt_id}:${run.revision}:review:${JSON.stringify(body)}`;
+    let key = actionKeys.get(identity); if (!key) { key = crypto.randomUUID(); actionKeys.set(identity, key); }
+    try {
+      const value = await client.review(run, body, key, pending.signal);
+      if (!current(token)) return;
+      const next = checked(value, run.attempt_id);
+      if (next.run_id !== run.run_id || next.revision !== run.revision + 1 || next.state !== 'reviewed' || next.report?.report_id !== body.report_id || next.review?.supersedes_review_id !== body.supersedes_review_id) throw new Error();
+      actionKeys.delete(identity); show(next, token);
+    } catch (error) {
+      if (!current(token)) return;
+      const code = error instanceof KnowledgeError ? error.code : 'invalid_response';
+      blocked = ['stale_snapshot', 'revision_conflict', 'request_conflict', 'invalid_transition'].includes(code);
+      show(run, token); view.restoreReview(body); view.recoveryError(code, blocked);
+    }
   }
   async function evidence(id: string) {
     const run = selected, token = generation; if (!run?.report?.draft.citations.includes(id)) return;

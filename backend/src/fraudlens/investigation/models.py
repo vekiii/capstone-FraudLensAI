@@ -56,7 +56,7 @@ def validate(name, value):
         value = vars(value)
     value = copy.deepcopy(value)
     if isinstance(value, dict):
-        for key in ('query', 'rationale', 'actor'):
+        for key in ('query', 'rationale', 'actor', 'correction_note'):
             if isinstance(value.get(key), str):
                 value[key] = value[key].strip()
     _finite(value)

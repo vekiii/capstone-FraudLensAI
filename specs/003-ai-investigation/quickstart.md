@@ -4,7 +4,9 @@ Status (2026-11-15): Phase 4 offline T023-T032/T034-T038 complete; Phase 3 revie
 corpus preserved. Provider SDK adapter, worker, run API and report UI implemented;
 actual fixture browser/API/proxy/worker journey PASS. T033 was attempted separately:
 ConnectError then HTTP 400 / unsupported_capability; two-attempt budget exhausted.
-Capability gate and Phase 5+ remain pending. See
+Capability gate remains pending. Phase 5 recovery and Phase 6 review are now
+implemented offline; T051 actual human confirmation remains pending. See
+../../evidence/tasks/feature-003-review.md,
 ../../evidence/tasks/feature-003-provider-access.md and
 ../../evidence/tasks/feature-003-fixture-journey.md.
 Run from repository root on `feature03` (or a reviewed descendant), preserving
@@ -95,7 +97,7 @@ when a new attempt is created. They are diagnostics, not model quality evidence.
 Report list returns at most 20 saved runs. UI polls at most 120 times, then offers
 read-only refresh. Navigate away to stop browser polling; this does not cancel the
 durable worker attempt. Phase 5 now provides explicit retry/cancel controls;
-review controls remain a later phase.
+Phase 6 also provides explicit review and linked correction forms.
 
 Reproduce the complete isolated offline journey with free 8000/5173/9228 and Chrome:
 `node evidence/tasks/feature-003-fixture-journey.mjs --reviewed`.
@@ -129,7 +131,42 @@ in `evidence/tasks/feature-003-recovery.md`. Test provider results are workflow
 evidence, not model-quality or billing evaluation. No hidden automatic recovery
 of an interrupted dispatch occurs.
 
-## Recovery checks and planned review journey
+## Implemented review journey (Phase 6; human confirmation pending)
+
+With a fixture/test run ready for review, inspect its citations and choose an
+explicit decision; no decision is preselected. Enter 1–2000 characters of trimmed
+rationale and select Sačuvaj odluku. Actor comes from INVESTIGATION_ANALYST on the
+backend. Configure an actual operator's chosen identity only when that person
+performs the review; an automated test identity is not their signature.
+Needs-information offers only request_more_information and requires its saved
+limitations draft. Failed/cancelled/active attempts have no review form.
+
+Reopen the saved decision to see actor, UTC date, rationale and unchanged AI
+claims/citations. A correction requires an explicit decision, rationale and
+correction note. It appends a new review with a supersedes link. Prior events
+remain in the local SQLite audit; the panel displays the current review and link.
+No generated prose is modified. A disposition is not an evaluation rubric score.
+
+Open the same draft in two browser sessions. After the first saves, the stale
+second receives revision_conflict and must explicitly refresh before submitting
+a linked correction. An uncertain transport outcome preserves the same key and
+form input for repeating that exact request; no automatic submission occurs.
+
+Reproduce the automated two-context Chrome/API/proxy/CLI check:
+
+```powershell
+$env:PYTHONPATH = Join-Path $PWD 'backend/src'
+node evidence/tasks/feature-003-review-browser.mjs
+```
+
+This harness always forces fixture/test mode, an absent ENV_FILE and the actor
+AUTOMATED TEST OPERATOR (not human approval). It creates an isolated ignored
+archive, never reads the real .env, calls OpenAI or runs T033. Ports 8000/5173/9228
+must be free; Chrome sandbox restrictions may require an ordinary local terminal.
+See evidence/tasks/feature-003-review.md for executed results and the open T051
+human confirmation checklist. This command cannot complete that human gate.
+
+## Recovery and review checks
 
 1. Force a controlled provider timeout in a test script. Confirm failed state,
    exact counters, saved evidence and controlled error, not a completed report.
@@ -139,7 +176,7 @@ of an interrupted dispatch occurs.
 3. Cancel while waiting; late result cannot change the cancelled attempt. Reuse
    the same request key; no duplicate attempt. Reuse it with a different body;
    request_conflict. Revisions reject stale cancel/review writes.
-4. **Planned Phase 6, not implemented:** open citations and record rationale/disposition. Reopen and verify actor/time,
+4. Open citations and record rationale/disposition. Reopen and verify actor/time,
    original draft, separate correction and immutable audit trail. Needs-information
    allows only request_more_information on a saved limitations draft.
 5. Switch selected case while an old response is in flight. No mixed report.

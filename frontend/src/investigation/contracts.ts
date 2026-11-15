@@ -101,6 +101,8 @@ export function decodeRun(value: unknown) {
   if (complete !== (result.report !== null) || (result.state === 'failed' && !result.failure) || (result.failure && !['failed', 'cancelled'].includes(result.state))) return fail();
   if (result.report && result.state !== 'reviewed' && result.report.draft.outcome !== result.state) return fail();
   if ((result.state === 'reviewed') !== (result.review !== null) || (result.review && result.review.report_id !== result.report?.report_id)) return fail();
+  if (result.report && (result.report.semantic_review === 'reviewed_with_notes') !== (result.review !== null)) return fail();
+  if (result.review && result.report?.draft.outcome === 'needs_information' && result.review.disposition !== 'request_more_information') return fail();
   return result;
 }
 export type Run = ReturnType<typeof decodeRun>;

@@ -8,7 +8,7 @@ const ready = () => example('run-ready');
 const ended = () => ({ ...ready(), state: 'failed', report: null, failure: { code: 'interrupted', message: 'Controlled', outcome_unknown: true } });
 const tick = () => new Promise(resolve => setTimeout(resolve, 0));
 const list = (run = ended()) => ({ contract_version: 1, items: [run], total_count: 1, truncated: false, snapshot_ref: run.snapshot_ref, context_revision: run.context_revision });
-function client() { return { list: vi.fn().mockResolvedValue(list()), create: vi.fn(), attempt: vi.fn(), evidence: vi.fn(), retry: vi.fn(), cancel: vi.fn() }; }
+function client() { return { list: vi.fn().mockResolvedValue(list()), create: vi.fn(), attempt: vi.fn(), evidence: vi.fn(), retry: vi.fn(), cancel: vi.fn(), review: vi.fn() }; }
 let dispose: (() => void) | undefined;
 afterEach(() => { dispose?.(); document.body.replaceChildren(); vi.unstubAllGlobals(); });
 function root() { const el = document.createElement('section'); document.body.append(el); return el; }

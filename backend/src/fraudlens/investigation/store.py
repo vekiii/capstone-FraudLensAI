@@ -208,23 +208,54 @@ class InvestigationRepository:
         return report_id
 
     def review(self, attempt_id, revision, actor, disposition, rationale, report_id):
-        if not isinstance(actor, str) or not 1 <= len(actor.strip()) <= 80 or not isinstance(rationale, str) or not 1 <= len(rationale.strip()) <= 2000:
-            raise ValueError('Invalid review text')
-        if disposition not in ('close', 'escalate', 'request_more_information'):
-            raise ValueError('Invalid disposition')
+        """Internal explicit-action primitive; HTTP uses the durable request-key service."""
         with self.transaction() as db:
-            row = db.execute('SELECT state FROM attempts WHERE attempt_id=?', (attempt_id,)).fetchone()
-            report = db.execute('SELECT content FROM reports WHERE report_id=? AND attempt_id=?', (report_id, attempt_id)).fetchone()
-            if row is None or report is None or row[0] not in ('ready_for_review', 'needs_information'):
-                raise ValueError('Invalid report review')
-            if row[0] == 'needs_information' and disposition != 'request_more_information':
-                raise ValueError('Invalid needs-information disposition')
+            return self.append_review(db, attempt_id, revision, actor, dict(report_id=report_id,
+                disposition=disposition, rationale=rationale, correction_note=None, supersedes_review_id=None))
+
+    def append_review(self, db, attempt_id, revision, actor, request):
+        request = validate('ReviewRequest', request)
+        if not isinstance(actor, str) or not 1 <= len(actor.strip()) <= 80:
+            raise ValueError('Invalid review actor')
+        row = db.execute('SELECT state,revision FROM attempts WHERE attempt_id=?', (attempt_id,)).fetchone()
+        if row is None:
+            raise ValueError('Investigation not found')
+        if type(revision) is not int or row[1] != revision:
+            raise ValueError('revision_conflict')
+        if row[0] not in ('ready_for_review', 'needs_information', 'reviewed'):
+            raise ValueError('invalid_transition')
+        report = db.execute('SELECT report_id,content FROM reports WHERE attempt_id=? ORDER BY rowid DESC LIMIT 1',
+                            (attempt_id,)).fetchone()
+        if report is None:
+            raise ValueError('invalid_transition')
+        if report[0] != request['report_id']:
+            raise ValueError('revision_conflict')
+        current = db.execute('SELECT review_id FROM reviews WHERE attempt_id=? ORDER BY rowid DESC LIMIT 1',
+                             (attempt_id,)).fetchone()
+        if request['supersedes_review_id'] != (current[0] if current else None):
+            raise ValueError('revision_conflict')
+        if current and not request['correction_note']:
+            raise ValueError('invalid_transition')
+        draft = json.loads(report[1])['draft']
+        if draft['outcome'] == 'needs_information' and request['disposition'] != 'request_more_information':
+            raise ValueError('invalid_transition')
+        if current:
+            if row[0] != 'reviewed':
+                raise ValueError('invalid_transition')
+            db.execute('UPDATE attempts SET revision=revision+1 WHERE attempt_id=? AND revision=?',
+                       (attempt_id, revision))
+        else:
+            if row[0] == 'reviewed' or row[0] != draft['outcome']:
+                raise ValueError('invalid_transition')
             self._transition(db, attempt_id, revision, 'reviewed')
-            review_id = 'rev_' + uuid4().hex
-            content = canonical(dict(actor=actor, rationale=rationale.strip(), disposition=disposition,
-                                     report_id=report_id, timestamp=time.time())).decode()
-            db.execute('INSERT INTO reviews VALUES (?,?,?,?)', (review_id, attempt_id, report_id, content))
-            db.execute('INSERT INTO audit_events(attempt_id,content) VALUES (?,?)', (attempt_id, content))
+        review = validate('Review', dict(review_id='rev_' + uuid4().hex, actor=actor.strip(), **request,
+                    created_at=datetime.now(UTC).isoformat().replace('+00:00', 'Z')))
+        db.execute('INSERT INTO reviews VALUES (?,?,?,?)',
+                   (review['review_id'], attempt_id, report[0], canonical(review).decode()))
+        db.execute('INSERT INTO audit_events(attempt_id,content) VALUES (?,?)', (attempt_id,
+                   canonical(dict(operation='analyst_review', timestamp=review['created_at'],
+                       expected_revision=revision, revision=revision + 1, review=review)).decode()))
+        return review
 
     def reserve_tool(self, attempt_id, owner, name, arguments, call_id=None):
         definitions = {'get_case_facts': 'CaseFactsArguments',
