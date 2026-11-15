@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fraudlens.local/schemas/feature-005/prediction-v1.json",
+  "title": "Proposed persisted live prediction v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "transaction_id", "generation_id", "source_namespace", "source_lineage_id", "feature_version", "serving_contract_version", "feature_digest", "model_digest", "training_dataset_id", "score", "score_kind", "event_time_utc", "ingested_at", "scored_at", "history_coverage", "explanation"],
+  "properties": {
+    "schema_version": {"const": "live-prediction-v1"},
+    "transaction_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "generation_id": {"type": "string", "minLength": 1},
+    "source_namespace": {"type": "string", "minLength": 1},
+    "source_lineage_id": {"type": "string", "minLength": 1},
+    "feature_version": {"const": "history-v1"},
+    "serving_contract_version": {"type": "string", "minLength": 1},
+    "feature_digest": {"$ref": "#/$defs/digest"},
+    "model_digest": {"$ref": "#/$defs/digest"},
+    "training_dataset_id": {"type": "string", "minLength": 1},
+    "score": {"$ref": "#/$defs/probability"},
+    "score_kind": {"const": "uncalibrated_probability_estimate"},
+    "event_time_utc": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "ingested_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "scored_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "history_coverage": {"type": "object", "additionalProperties": false, "required": ["state", "start_utc"], "properties": {"state": {"const": "full"}, "start_utc": {"type": "string", "format": "date-time", "pattern": "Z$"}}},
+    "explanation": {"type": "object", "additionalProperties": false, "required": ["method", "explained_scale", "feature_digest", "base_value", "remainder", "items"], "properties": {
+      "method": {"enum": ["tree_path", "boosted_sequential_probability"]},
+      "explained_scale": {"const": "positive_class_estimate"},
+      "feature_digest": {"$ref": "#/$defs/digest"},
+      "base_value": {"type": "string", "pattern": "^-?[0-9]+(\\.[0-9]+)?$"},
+      "remainder": {"type": "string", "pattern": "^-?[0-9]+(\\.[0-9]+)?$"},
+      "items": {"type": "array", "maxItems": 3, "items": {"type": "object", "additionalProperties": false, "required": ["feature", "observed_value", "unit", "contribution"], "properties": {
+        "feature": {"type": "string", "minLength": 1},
+        "observed_value": {"type": ["string", "number", "null"]},
+        "unit": {"type": "string", "minLength": 1},
+        "contribution": {"type": "string", "pattern": "^-?[0-9]+(\\.[0-9]+)?$"}
+      }}}
+    }}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "probability": {"type": "string", "pattern": "^(0(\\.[0-9]+)?|1(\\.0+)?)$"}
+  }
+}

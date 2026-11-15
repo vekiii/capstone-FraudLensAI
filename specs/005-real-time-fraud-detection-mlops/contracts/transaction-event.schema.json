@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fraudlens.local/schemas/feature-005/transaction-event-v1.json",
+  "title": "Proposed live transaction event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source_namespace", "source_event_id", "transaction_id", "event_fact_digest", "event_time_utc", "sender_bank", "sender_account", "receiver_bank", "receiver_account", "paid_amount", "paid_currency", "received_amount", "received_currency", "payment_format"],
+  "properties": {
+    "schema_version": {"const": "live-transaction-v1"},
+    "source_namespace": {"type": "string", "minLength": 1, "maxLength": 80},
+    "source_event_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "transaction_id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"},
+    "event_fact_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "event_time_utc": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "sender_bank": {"type": "string", "minLength": 1, "maxLength": 128},
+    "sender_account": {"type": "string", "minLength": 1, "maxLength": 128},
+    "receiver_bank": {"type": "string", "minLength": 1, "maxLength": 128},
+    "receiver_account": {"type": "string", "minLength": 1, "maxLength": 128},
+    "paid_amount": {"$ref": "#/$defs/amount"},
+    "paid_currency": {"$ref": "#/$defs/currency"},
+    "received_amount": {"$ref": "#/$defs/amount"},
+    "received_currency": {"$ref": "#/$defs/currency"},
+    "payment_format": {"type": ["string", "null"], "minLength": 1, "maxLength": 80}
+  },
+  "$defs": {
+    "amount": {"type": "string", "pattern": "^(0|[1-9][0-9]{0,12})(\\.[0-9]{1,6})?$"},
+    "currency": {"type": "string", "minLength": 1, "maxLength": 17}
+  }
+}
