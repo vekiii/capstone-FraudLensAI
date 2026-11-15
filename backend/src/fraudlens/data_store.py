@@ -696,6 +696,9 @@ def _public_detail(run_id, dataset_version, case_id, transaction, assessment):
               'transaction': transaction, 'risk_assessment': assessment}
     if not validator.is_valid(detail):
         raise ValueError('published detail violates v2 schema')
+    score = Decimal(str(assessment['score']))
+    if not score.is_finite() or not 0 <= score <= 1:
+        raise ValueError('published score outside [0,1]')
     if (transaction['transaction_id'] != assessment['transaction_id']
             or transaction['event_time_utc'] != assessment['event_time_utc']
             or assessment['history_cutoff_exclusive_at'] != transaction['event_time_utc']

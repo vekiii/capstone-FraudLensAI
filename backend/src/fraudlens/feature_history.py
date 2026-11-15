@@ -6,7 +6,7 @@ import re
 from collections import Counter, defaultdict, deque
 from dataclasses import dataclass, fields
 from datetime import UTC, datetime, timedelta
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from itertools import groupby
 from typing import Iterable
 
@@ -145,9 +145,13 @@ def _event_fact(event: CanonicalTransaction) -> None:
                for name in ('sender_bank', 'sender_account', 'receiver_bank',
                             'receiver_account', 'paid_currency', 'received_currency')):
         raise ValueError('incomplete canonical event')
-    amount = Decimal(event.paid_amount)
-    if not amount.is_finite() or amount < 0:
-        raise ValueError('invalid current paid amount')
+    for field in ('paid_amount', 'received_amount'):
+        try:
+            amount = Decimal(getattr(event, field))
+        except (InvalidOperation, TypeError, ValueError):
+            raise ValueError(f'invalid {field.replace("_", " ")}') from None
+        if not amount.is_finite() or amount < 0:
+            raise ValueError(f'invalid {field.replace("_", " ")}')
 
 
 def _digest(version: str, event: CanonicalTransaction, values: dict,
