@@ -13,6 +13,7 @@ from fraudlens.cases import CaseNotFoundError, CaseScoringError, CaseService, Fi
 from fraudlens.contracts import CaseDetail, CaseList, Error, ErrorBody, Health
 from fraudlens.data_contracts import CaseDetailV2, CaseListV2, HealthV2
 from fraudlens.data_store import PublishedCaseNotFound, RunStore, RunUnavailable, StaleSnapshot
+from fraudlens.overview_contracts import OverviewResponse
 from fraudlens.scoring import FixtureScorer, Scorer
 from fraudlens.settings import Settings, load_settings
 
@@ -126,6 +127,22 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -
             'score_source': config.scorer,
             'dataset_version': active['dataset_version'] if active else None,
             'active_run_id': active['run_id'] if active else None})
+
+    @app.get('/api/overview', response_model=OverviewResponse,
+             responses={500: {'model': Error}, 503: {'model': Error}})
+    def overview(config: Annotated[Settings, Depends(get_settings)]):
+        if config.mode != 'dataset':
+            return _dataset_error(503)
+        try:
+            store = _dataset_store(config)
+            try:
+                return OverviewResponse.model_validate(store.overview_active(config.scorer))
+            finally:
+                store.close()
+        except RunUnavailable:
+            return _dataset_error(503)
+        except sqlite3.Error:
+            return _dataset_error(500)
 
     @app.get('/api/cases', response_model=CaseList | CaseListV2,
              responses={500: {'model': Error}})

@@ -32,6 +32,11 @@ _CASE_ID = re.compile(r'C[0-9a-f]{32}\Z')
 _BATCH_SIZE = 512
 
 
+def _overview_aggregation(expected_count: int) -> str:
+    """Select compact weekly buckets for large scored populations."""
+    return 'week' if expected_count > 10_000 else 'day'
+
+
 @contextmanager
 def _feature_build_lock(path: Path, version: str, feature_version: str):
     """Serialize one versioned build, including its cleanup, across connections.
@@ -950,6 +955,72 @@ class RunStore:
         run_id, version, scorer, alerts = self._active(score_source)
         return {'run_id': run_id, 'dataset_version': version,
                 'scorer_version': scorer, 'total_alerts': alerts}
+
+    def overview_active(self, score_source):
+        """Return bounded time/count aggregates for the active, label-free run."""
+        run = self.connection.execute('''
+            SELECT r.run_id,r.dataset_version,r.scorer_version,r.score_source,
+                   r.threshold,r.expected_count,r.scored_count,r.total_alerts
+            FROM active_run AS a JOIN scored_runs AS r ON r.run_id=a.run_id
+            WHERE a.singleton=1 AND r.status='completed' AND r.score_source=?
+        ''', (score_source,)).fetchone()
+        if run is None:
+            raise RunUnavailable('no compatible completed run')
+        run_id, version, scorer, source, threshold, expected, scored, flagged = run
+        aggregation = _overview_aggregation(expected)
+        if aggregation == 'week':
+            period_sql = "strftime('%Y-W%W',event_time)"
+        else:
+            period_sql = "substr(event_time,1,10)"
+        valid_day = "date(substr(event_time,1,10))=substr(event_time,1,10)"
+        period_sql = f'CASE WHEN {valid_day} THEN {period_sql} ELSE NULL END'
+        rows = self.connection.execute(f'''
+            SELECT {period_sql} AS period,COUNT(*),SUM(alert)
+            FROM scored_assessments WHERE run_id=?
+            GROUP BY period ORDER BY period
+        ''', (run_id,)).fetchall()
+        series = []
+        unknown_timestamps = 0
+        for period, transactions, flagged_count in rows:
+            if period is None:
+                unknown_timestamps = transactions
+                continue
+            series.append({'period': period, 'transactions': transactions,
+                           'flagged': flagged_count,
+                           'not_flagged': transactions - flagged_count})
+        not_flagged = scored - flagged
+        if (sum(point['transactions'] for point in series) + unknown_timestamps != scored
+                or sum(point['flagged'] for point in series)
+                + sum(point[2] for point in rows if point[0] is None) != flagged):
+            raise sqlite3.IntegrityError('overview aggregate does not match completed run')
+        model_name = ('Rule-based scorer' if source == 'rules' else
+                      'Boosted research candidate' if 'boosted-candidate' in scorer else
+                      'Decision tree model')
+        return {
+            'contract_version': 1,
+            'dataset': {
+                'data_source': 'ibm_aml_hi_small', 'dataset_version': version,
+                'run_id': run_id, 'scored_transactions': scored,
+                'unknown_timestamp_transactions': unknown_timestamps,
+                'confirmed_fraud': None, 'legitimate': None, 'fraud_rate': None,
+                'label_unavailable_reason': (
+                    'Ground-truth labels are kept in the private evaluation store and '
+                    'are not read by the public overview.'),
+            },
+            'predictions': {
+                'flagged': flagged, 'not_flagged': not_flagged,
+                'flag_rate': flagged / scored if scored else None,
+            },
+            'series': series, 'aggregation': aggregation,
+            'model': {
+                'name': model_name, 'source': source, 'scorer_version': scorer,
+                'threshold': threshold, 'evaluation_dataset': None,
+                'evaluation_split': None, 'precision': None, 'recall': None, 'f1': None,
+                'metric_source': (
+                    'Unavailable because this active run has no ground-truth labels. '
+                    'No training or holdout metrics are calculated by this endpoint.'),
+            },
+        }
 
     def list_active(self, score_source):
         run_id, version, scorer, total = self._active(score_source)
