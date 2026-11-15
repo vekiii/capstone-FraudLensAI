@@ -1,7 +1,7 @@
 # Dataset & Model Overview dashboard
 
 Date: 2026-11-15
-Branch: `model-implementations`
+Implemented and initially verified on `model-implementations`; published on `feature/005-real-time-fraud-detection-mlops-spec` in commits `9a6a2b8`, `63b89ad`, and `010e669`.
 Starting commit: `d9bd8a2` (`docs(evidence): record feature-002 publication ledger`)
 Original request: [dataset-model-overview-2026-11-15.md](../../prompts/development/dataset-model-overview-2026-11-15.md)
 
@@ -89,6 +89,6 @@ An isolated SQLite run was generated under ignored `.cache/` using the existing 
 - This checkout has no active publication run store. Fixture mode correctly returns a controlled unavailable state; actual counts/model identity become visible when an approved completed dataset-mode run store is configured.
 - The dashboard reports the active **scored population**, not all imported transactions. Confirmed label counts and precision/recall/F1 remain N/A by design because no label-safe aggregate or evaluation split is attached to the serving run.
 - A full live-data smoke test against the missing trusted active run and its artifact was not possible. No model was trained, threshold or mapping changed, and no private/holdout metric was calculated.
-- No commit or push was made.
+- The verified dashboard was subsequently committed and published on `feature/005-real-time-fraud-detection-mlops-spec`; the contribution ledger records the commit IDs and author.
 
 Concrete next step: configure an authorized completed dataset-mode run store in this checkout, then verify the displayed run identity, threshold and aggregates against that store.

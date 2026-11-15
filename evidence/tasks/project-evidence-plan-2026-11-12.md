@@ -528,3 +528,15 @@ The requester asked to start Phase 1 with **T001 only**, report the decision and
 | Resolve from Git history after publication | Isidora Popovic | `docs(evidence): update feature-005 T001 contribution ledger` | Updated this project ledger with the T001 commit and corrected the earlier Feature 005 handoff commit ID. A commit cannot contain its own hash without changing that hash. |
 
 Four older local Feature 002 drafts remain outside these commits. The next dependency is an attributed team scope decision with benefit and schedule/resource impact, not T002 implementation.
+
+## Dataset & Model Overview dashboard - 15 November 2026
+
+The requested Overview dashboard reuses the existing FastAPI and vanilla TypeScript/Vite architecture. It was implemented and verified on `model-implementations`, then applied as three scoped commits to `feature/005-real-time-fraud-detection-mlops-spec`. Git records Isidora Popovic (`popovicisidora17@gmail.com`) as author. This attribution identifies the commit account; it does not imply exclusive manual authorship or measured working time. The complete formulas, source provenance, checks, limitations, and screenshots are in the [dashboard evidence](dataset-model-overview.md).
+
+| Git author | Commit | Description and contribution |
+|---|---|---|
+| Isidora Popovic | `9a6a2b8` (`feat(overview): add read-only dataset aggregates`) | Adds a bounded aggregate-only API contract and `/api/overview` implementation over the existing active run store, plus focused backend API tests. Private evaluation labels and raw transaction rows are not exposed. |
+| Isidora Popovic | `63b89ad` (`feat(frontend): add responsive dataset and model overview`) | Adds the accessible Overview navigation/page, chart and KPI panels, responsive styles, strict client decoding and API/view tests. Confirmed labels and model evaluation metrics render as unavailable without verified provenance. |
+| Isidora Popovic | `010e669` (`docs(overview): record verification and screenshots`) | Adds the original development prompt, evidence report, and desktop/mobile screenshot evidence. |
+
+After applying these commits to the feature branch, the frontend suite passed **174 tests**, focused overview API tests passed **5 tests**, and typecheck/build, Ruff, and whitespace checks passed. The applicable 729-test backend regression was run before transfer on the implementation branch; its exclusions and broader baseline failures are recorded in the evidence. No production active-run store or trusted model artifact was available. Four pre-existing Feature 002 draft files were excluded. At this ledger update, the feature branch push and remote verification remain pending; no merge to `main` is claimed. The Feature 005 T001 scope decision remains pending and this dashboard work does not change that decision.
