@@ -10,6 +10,15 @@ Freeze content/config hashes, splits and expected relevance before tuning. If a 
 
 ## Retrieval
 
+Team decision, Vedran 2026-11-15: retain English, Serbian Latin and Serbian
+Cyrillic questions. Report retrieval metrics both overall and separately for
+`en`, `sr-Latn` and `sr-Cyrl`, separately within each split. Each group reports
+answerable/no-answer counts, Recall@5 and MRR@5 on answerable questions only,
+and correct-no-match/false-answer counts for no-answer questions. Empty
+denominators are N/A, not zero or perfect. These are descriptive breakdowns of
+the same frozen pack, not new per-language acceptance thresholds or permission
+to tune on held-out results. Preserve existing overall targets and selection rules.
+
 30 fixed questions: 10 development, 20 held-out, with Serbian and English wording and >=4 held-out no-answer questions. The two configurations are BM25 baseline and BM25+title/glossary improvement from research.md. Fix all weights/tokenization on development only. For each configuration select a no-match score cutoff from development predictions: prioritize zero false answers on development no-answer questions, then maximize answerable-question recall, break ties by higher cutoff. If no feasible cutoff preserves useful answerable coverage, record ineligible/failed quality rather than choose using held-out questions. Save raw scores/ranks and chosen cutoff.
 
 For each answerable question with relevance set R: Recall@5 = |R intersect top5| / |R|; reciprocal rank is 1 / first relevant rank if <=5 else 0. Report macro means across answerable questions; no-match on answerable questions counts 0. No-answer questions excluded from these two means and reported separately with true no-match/false-answer counts. Record document and passage IDs so chunking changes cannot silently alter labels. Tie order uses passage ID. Report both configurations even if improvement is negative; select deployable configuration from development, not final metrics.

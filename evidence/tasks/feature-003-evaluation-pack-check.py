@@ -141,7 +141,7 @@ def independent_history(item):
 
 def verify():
     protocol = load('evals/investigation/protocol.json')
-    require(protocol['status'] == 'proposed_not_frozen', 'T052 draft must not claim approval')
+    require(protocol['status'] in ('proposed_not_frozen', 'frozen'), 'Unknown T052 state')
     hashes = protocol['files_sha256']
     for path, expected in hashes.items():
         require(file_digest(path) == expected, 'Hash mismatch: ' + path)
@@ -248,11 +248,24 @@ def verify():
     require(rubric['pack_pass']['primary_reports'] == 8 and rubric['pack_pass']['passing_reports_min'] == 7, 'Report denominator/target')
     require(rubric['report_pass']['support_rate_min'] == .9 and rubric['report_pass']['essential_coverage_min'] == .8, 'Report target')
     review = load('evals/investigation/reference/review-record.json')
-    require(review['status'] == 'proposed' and review['prepared_by']['kind'] == 'AI coding agent'
+    require(review['prepared_by']['kind'] == 'AI coding agent'
             and review['prepared_by']['human_authorship_claimed'] is False, 'Authorship claim')
-    require(all(review['independent_expectation_review'][key] is None for key in ('reviewer_identity', 'reviewed_at', 'decision', 'reviewed_bundle_sha256')), 'No actual review supplied')
-    require(review['primary_report_reviewer'] is None and review['secondary_report_reviewer'] is None
-            and review['freeze']['status'] == 'not_frozen', 'Invented reviewer/freeze')
+    frozen = protocol['status'] == 'frozen'
+    approval = review['independent_expectation_review']
+    if frozen:
+        require(review['status'] == 'approved' and approval['decision'] == 'approved'
+                and bool(approval['reviewer_identity']) and bool(approval['reviewed_at'])
+                and approval['reviewed_bundle_sha256'] == protocol['bundle_sha256'], 'Missing bound approval')
+        require(review['freeze']['status'] == 'frozen'
+                and review['freeze']['bundle_sha256'] == protocol['bundle_sha256']
+                and review['freeze']['approved_by'] == approval['reviewer_identity']
+                and review['freeze']['approved_at'] == approval['reviewed_at']
+                and protocol['freeze_gate']['frozen_by'] == approval['reviewer_identity']
+                and protocol['freeze_gate']['frozen_at'] == approval['reviewed_at']
+                and protocol['freeze_gate']['t052_complete'] is True, 'Freeze mismatch')
+    else:
+        require(review['status'] == 'proposed' and review['freeze']['status'] == 'not_frozen', 'Invented freeze')
+        require(all(approval[key] is None for key in ('reviewer_identity', 'reviewed_at', 'decision', 'reviewed_bundle_sha256')), 'Unbound full review')
     canaries = load('evals/investigation/reference/private-canaries.json')
     public_text = json.dumps(list(questions.values()) + list(cases.values()) + list(safety.values()), ensure_ascii=False)
     public_text += ''.join(p['text'] for p in corpus['passages'])
@@ -268,7 +281,7 @@ def verify():
             'investigation': {'development': 4, 'held_out': 8}, 'safety_prepared_not_executed': 12,
             'second_review_subset': subset, 'ordinary_live_demo_cases': demos,
             'independent_history_reference_checks': history_checked, 'sealed_files': len(hashes),
-            'bundle_sha256': protocol['bundle_sha256'], 'independent_human_review': 'pending', 't052': 'incomplete',
+            'bundle_sha256': protocol['bundle_sha256'], 'independent_human_review': 'approved' if frozen else 'pending', 't052': 'complete' if frozen else 'incomplete',
             'sealed_inventory_sha256': protocol['sealed_inventory_sha256'],
             'provider_settings_imported': False, 'environment_or_network_attempts': blocked_events}
 

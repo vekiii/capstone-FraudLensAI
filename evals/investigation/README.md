@@ -1,8 +1,22 @@
+# Current status - T052 reviewed and frozen, 2026-11-15
+
+Vedran explicitly approved the remaining 12 scenario cards. Full bound approval
+and freeze are in reference/review-record.json and protocol.json. Structural
+checker now validates both proposed and genuinely approved/frozen states.
+T052 is complete; no live reports, safety execution or T053+ work is implied.
+Earlier proposed/partial status below is historical.
+
 # Proposed investigation evaluation pack — T052
 
-Prepared 2026-11-15 by Codex (AI coding agent). **Proposed, not independently
-human-reviewed or frozen. T052 remains incomplete.** Existing human corpus
-approval applies to the six source documents, not these expectations.
+Prepared 2026-11-15 by Codex (AI coding agent). **Proposed, partially reviewed
+by Vedran, not frozen. T052 remains incomplete.** Vedran explicitly approves
+retrieval expectations/no-answer, safety design, rubric/splits/protocol and
+overall/per-language reporting. See reference/review-record.json partial_review.
+The 12 investigation scenarios/history and whole-pack freeze remain pending;
+[readable review cards](../../evidence/tasks/feature-003-t052-scenario-review.md)
+replace reading repeated raw JSON wrappers. Earlier corpus review remains
+distinct from review of evaluation expectations. Actual live-report reviewer
+assignments may remain unassigned until people accept; no names are invented.
 
 | Artifact | Contents | Consumer |
 |---|---|---|

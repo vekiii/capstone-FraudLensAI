@@ -1,5 +1,5 @@
 {
-  "status": "proposed",
+  "status": "approved",
   "prepared_by": {
     "kind": "AI coding agent",
     "name": "Codex",
@@ -7,30 +7,65 @@
     "human_authorship_claimed": false
   },
   "independent_expectation_review": {
-    "reviewer_identity": null,
-    "reviewed_at": null,
-    "decision": null,
-    "findings": [],
-    "reviewed_bundle_sha256": null
+    "reviewer_identity": "Vedran",
+    "reviewed_at": "2026-11-15",
+    "decision": "approved",
+    "findings": [
+      "User explicitly confirms reviewing and approving all 12 readable scenario cards, completing previously approved retrieval/safety/rubric/splits/protocol review."
+    ],
+    "reviewed_bundle_sha256": "5cb654213934cbe11f6378eb6121ee40bfd046051d3671dbdaa082c4824f4700"
   },
   "primary_report_reviewer": null,
   "secondary_report_reviewer": null,
   "freeze": {
-    "status": "not_frozen",
-    "approved_by": null,
-    "approved_at": null,
-    "bundle_sha256": null
+    "status": "frozen",
+    "approved_by": "Vedran",
+    "approved_at": "2026-11-15",
+    "bundle_sha256": "5cb654213934cbe11f6378eb6121ee40bfd046051d3671dbdaa082c4824f4700"
   },
   "exposure_history": [
     {
       "date": "2026-11-15",
       "actor": "Codex (AI agent)",
       "scope": "All authored development/held-out inputs and references exposed during preparation and structural verification; no predictions generated or metrics seen."
+    },
+    {
+      "date": "2026-11-15",
+      "actor": "Vedran (human reviewer)",
+      "scope": "Reports reviewing retrieval questions/expectations, no-answer, rubric/splits/protocol and safety design; these are not a tuning context."
+    },
+    {
+      "date": "2026-11-15",
+      "actor": "Vedran (human reviewer)",
+      "scope": "Explicit final review/approval of all 12 scenario cards; not model tuning or report-quality rating."
     }
   ],
   "limitations": [
     "Not blind to the authoring agent; repository separation is not an access-control guarantee.",
     "Future tuner must use development only and keep held-out expectations out of tuning context; if used to tune, retire held-out and version a fresh pack.",
     "Existing Milan corpus approval does not approve this evaluation pack."
-  ]
+  ],
+  "partial_review": {
+    "reviewer_identity": "Vedran",
+    "reviewed_on": "2026-11-15",
+    "decision": "approved_stated_parts_pending_investigation_review",
+    "reported_structural_check": "PASS",
+    "inspected_candidate_bundle_sha256": "bb8a658dbb10b2d4951837d536b00d7ebb3319fd5d377b8205884fc461bddff8",
+    "approved_parts": [
+      "retrieval question/source/passage links and expectations",
+      "six no-answer judgments",
+      "previously reviewed corpus",
+      "safety expectation design only, not execution",
+      "rubric, splits and protocol review as reported",
+      "retain three languages and add per-language reporting",
+      "correct stale T051 execution-gate note"
+    ],
+    "pending_parts": [
+      "All 12 investigation scenarios and source-bound essential facts/missingness",
+      "Independent H04/H07/H08 history and currency/boundary review",
+      "Primary/secondary live-report reviewer assignments when accepted",
+      "Final whole-bundle approval and freeze"
+    ],
+    "evidence": "prompts/development/003-t052-review-decisions-2026-11-15.md"
+  }
 }

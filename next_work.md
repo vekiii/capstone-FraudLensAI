@@ -1,4 +1,42 @@
-# Current handoff - T051 completed; recovery error labels corrected, 2026-11-15
+# Current handoff - T052 complete and frozen, 2026-11-15
+
+Vedran explicitly confirms reviewing and approving all 12 scenario cards;
+previously approved retrieval/safety/rubric/splits/protocol and language reporting
+remain recorded. Bound full review/freeze saved, inventory resealed, T052 checked.
+Structural verifier PASS and Ruff PASS; no provider/network/environment access.
+See evidence/tasks/feature-003-evaluation-protocol.md and current results JSON.
+T033 remains open. No T053+ implementation, model evaluation, commit or push.
+Earlier partial/pending T052 entries below are historical.
+
+One concrete next step: implement T053 RED evaluation metric/denominator and
+reference-leakage tests. Use development-only context in future tuning sessions;
+this review conversation contains held-out answers and is not a tuning context.
+
+# Current handoff - T052 partially approved; compact scenario review remains, 2026-11-15
+
+Vedran explicitly approves retrieval question/source/passage expectations and
+their corpus derivation, six no-answer judgments, safety design and reviewed
+rubric/splits/protocol. Recorded partial_review in the evaluation review record;
+do not ask again for these parts. Added approved overall + en/sr-Latn/sr-Cyrl
+split-specific retrieval reporting with denominator/N/A rules; overall targets
+unchanged. Corrected protocol T051 status to complete. T033 remains open.
+
+T052 still unchecked: the 12 investigation scenarios/history were previously
+deferred as too large and have not been explicitly reviewed. Prepared
+[compact cards](evidence/tasks/feature-003-t052-scenario-review.md) with source
+values beside original expectations and H04/H07/H08 derived checks identified.
+No expected answers/splits were changed; no full review/freeze was invented.
+Candidate hashes/seals refreshed; actual structural checker PASS, no model calls,
+network/environment access, tuning or runtime code changes.
+See [latest review evidence](evidence/tasks/feature-003-evaluation-protocol.md).
+No commit/push, T053+ authorization or human report-quality ratings.
+
+**One concrete next step:** review the 12 compact scenario cards and source
+history arithmetic, report approval or specific IDs to fix; then bind actual
+whole-pack approval and freeze to the final content hash. Do not use these
+held-out expectations in a later tuning conversation.
+
+# Previous handoff - T051 completed; recovery error labels corrected, 2026-11-15
 
 On feature03, preserved earlier uncommitted human-observation/evidence edits.
 Fixed controller.ts to retain/render the actual blocking code once and reset

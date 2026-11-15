@@ -1,9 +1,9 @@
 {
   "status": "PASS",
   "scope": "T052 structural verification only; not retrieval/live/safety evaluation",
-  "python": "3.14.7",
+  "python": "3.14.3",
   "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
-  "published_archive": "read-only archive equals staged corpus; no database writes",
+  "published_archive": "absent; historical T015/T022 evidence only, no store created",
   "documents": 6,
   "passages": 6,
   "retrieval": {
@@ -39,10 +39,10 @@
     "INV-H08"
   ],
   "sealed_files": 41,
-  "bundle_sha256": "bb8a658dbb10b2d4951837d536b00d7ebb3319fd5d377b8205884fc461bddff8",
-  "independent_human_review": "pending",
-  "t052": "incomplete",
-  "sealed_inventory_sha256": "a2bc9d63f0eccc2d500c2c3a1522bba00679dc197e0680c2ceafae2a61d5d75a",
+  "bundle_sha256": "5cb654213934cbe11f6378eb6121ee40bfd046051d3671dbdaa082c4824f4700",
+  "independent_human_review": "approved",
+  "t052": "complete",
+  "sealed_inventory_sha256": "85e602d1fd69ee10d19b0e751943cd2d2ebde42afbe73f6cb0cc3b72fa448d37",
   "provider_settings_imported": false,
   "environment_or_network_attempts": [],
   "in_memory_corruptions_rejected": [
@@ -52,5 +52,5 @@
     "wrong_cardinality",
     "duplicate_identity"
   ],
-  "protocol_file_sha256": "2d890b8c47a212a15062f6a9ac4b1cfa6ae2fd85207ed40de694fd53e7e492e1"
+  "protocol_file_sha256": "ea8d74547b64a89f71a00ee257806c0bf010ad84496d8dce0f2c9e32df914b92"
 }

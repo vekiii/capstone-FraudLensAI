@@ -1,4 +1,70 @@
+# Final T052 approval and freeze - 2026-11-15
+
+User on the 12 readable scenario cards: "Okej, hvala ti na ovome, sada sam jasno
+pregledao i odobrio. Sta je sledeci korak?"
+Vedran's explicit final confirmation completes the earlier partial review.
+Recorded approved full review and frozen state against unchanged content bundle
+5cb654213934cbe11f6378eb6121ee40bfd046051d3671dbdaa082c4824f4700.
+Approval date is the reported session date, no precise review time invented.
+Resealed inventory includes the updated review record; expected answers unchanged.
+Checker previously assumed every pack must be proposed. It now retains draft
+checks and requires matching reviewer/date/bundle in all full approval/freeze
+fields for frozen packs; it does not approve on structural success alone.
+Actual structural check with --output PASS; five corruptions rejected, Ruff
+PASS, no network/environment access. Results file holds current seals.
+T052 checked complete. Reviewer assignments for future live reports remain
+unassigned, not fabricated. No provider/runtime tests or T053+ execution.
+Next: T053 RED tests for evaluation metrics, denominators and leakage isolation.
+Do not feed this approval/review conversation's held-out expectations to a tuner.
+Earlier open/partial handoffs below are historical. No commit/push.
+
 # Feature 003 T052 proposed evaluation pack — 2026-11-15
+
+## Latest review update — partial human approval, 2026-11-15
+
+Vedran explicitly clarified that the shared question/reference/passage files
+were reviewed and approved, not merely pasted. He confirms that expectations
+follow the already-reviewed corpus, accepts the six no-answer judgments and
+safety expectation design, and reports reviewing the rubric, splits and protocol.
+Recorded that actual approval in reference/review-record.json partial_review;
+full independent_expectation_review/freeze fields remain null pending review
+of the previously deferred 12 investigation scenarios/history.
+
+Original decision: [user request/annotations](../../prompts/development/003-t052-review-decisions-2026-11-15.md).
+Team-approved reporting now retains English/Serbian Latin/Cyrillic questions
+and reports overall plus per-language retrieval metrics, separately by split,
+with answerable/no-answer denominators and N/A for empty groups. No new thresholds,
+answers, partitions or held-out-based selection. Updated evaluation.md, protocol
+and T056 reporting requirement. Corrected the old protocol T051-open note to
+reflect actual completion; no automatic authorization for T053+.
+
+New [review cards](feature-003-t052-scenario-review.md) render all 12 original
+contexts next to exact expected facts plus limitations, missingness, history,
+allowed outcomes and critical errors. They omit repetitive JSON/hash wrappers,
+not substantive review coverage, and are not independent review or tuning data.
+H04/H07/H08 non-pointer facts remain labeled derived, requiring source-history
+inspection; the first card-render attempt assumed every fact had a JSON pointer
+and stopped with KeyError before writing a card file. Corrected that renderer
+to retain the original statement for these three derived boundary/count facts.
+No input/reference answer was changed to bypass the issue.
+
+Recomputed normalized file hashes, inventory seal and candidate bundle after
+approved reporting/metadata edits. Earlier hashes below are historical;
+current structural results are in feature-003-evaluation-pack-results.json.
+Actual checker with --output: PASS, all 41 sealed files, correct counts/joins,
+independent arithmetic checks, five integrity-corruption rejections, no
+environment/network access and not frozen. This is not retrieval/model/safety
+execution. User's reported PASS remains separate from this new execution.
+
+T052 stays unchecked only for the remaining investigation expectation/history
+review and final bundle approval/freeze. Previously approved parts are not being
+requested again. Primary/secondary report-rating assignments are later live
+evaluation roles and are not fabricated or newly required just to read cards.
+No provider calls, package installs, tuning, runtime code changes or Git
+commit/push. Next: Vedran reviews the compact cards/source arithmetic, records
+findings, then the final reviewed candidate can be sealed/frozen as a whole.
+
+## Historical preparation record (superseded where noted above)
 
 Concrete preparation only, branch `feature03`, initial HEAD
 `db02fa526c9ccf51db9aedd0c5eb9cf2bc3e47f2`. Initial worktree clean; no preexisting

@@ -1,7 +1,7 @@
 {
   "protocol_version": 1,
   "pack_id": "feature-003-t052-proposed-v1",
-  "status": "proposed_not_frozen",
+  "status": "frozen",
   "prepared_on": "2026-11-15",
   "baseline_head": "db02fa526c9ccf51db9aedd0c5eb9cf2bc3e47f2",
   "author": "Codex (AI coding agent); no human author/reviewer attributed",
@@ -36,7 +36,7 @@
     "evals/investigation/reference/passages.json": "ef27bbcbbd5d0a0216546985c4cd4fc4cdf1c8872ab2c62cb18b332cc14872f6",
     "evals/investigation/reference/private-canaries.json": "028f09dacb893feeeb1f1a8fc672c7cf2183da0faf083cd0cb314c53eb2649dc",
     "evals/investigation/reference/retrieval.json": "ff8f3323cc414ce33215de38e4e8df7a840ea5ecb8a083f735d29b945a4b45f1",
-    "evals/investigation/reference/review-record.json": "28e2be6ceae85da18c77f5b7394ae9959e5154a66b4c89334aa9e6e31b6b4a24",
+    "evals/investigation/reference/review-record.json": "aee8659082df5749e88e860e0317e42aea48172ed77f741b0ae553bfb308405d",
     "evals/investigation/reference/rubric.json": "d1b372c59961eb11f7c110ba7ee0c97bf9ef4753bc43d3ad5888abce0d92214a",
     "evals/investigation/reference/safety.json": "4b1fb2304035ed6e22406abb9472bc2feaf317a4b147070a760493672a4a5624",
     "evals/investigation/reference/scenario-origins.json": "f625e9b85635760712b7d0b47248c05fcca5966175447f8041d480cbed043afb",
@@ -47,11 +47,11 @@
     "specs/003-ai-investigation/contracts/examples/context-dataset.json": "20d6618fd63931d808e1e9b04a1b9bc28d56ee8319c166a7a8692dd1d206f6da",
     "specs/003-ai-investigation/contracts/producer-v2.snapshot.json": "bf487d84ccac1e315d0e20fece0d2a7f45990bce954ba40bf97cd54e43929f88",
     "specs/003-ai-investigation/contracts/schemas.json": "25a739b6470a076ae8894d893a16ada115682c84f5c6dc11bcfacce729b26e01",
-    "specs/003-ai-investigation/evaluation.md": "65f667d42be6d36869487c41228fadc36a83ca5951c06756bea02ff34361af7f",
+    "specs/003-ai-investigation/evaluation.md": "29afc4bcd754e36e5f4c4f254557395112ba16a0aace42edfe56bbf93c4ae1cc",
     "uv.lock": "d86e3e988d616d19f6aac74ff1f27cb75146f01f4c257f6300d6f0cb93b413bf"
   },
-  "sealed_inventory_sha256": "a2bc9d63f0eccc2d500c2c3a1522bba00679dc197e0680c2ceafae2a61d5d75a",
-  "bundle_sha256": "bb8a658dbb10b2d4951837d536b00d7ebb3319fd5d377b8205884fc461bddff8",
+  "sealed_inventory_sha256": "85e602d1fd69ee10d19b0e751943cd2d2ebde42afbe73f6cb0cc3b72fa448d37",
+  "bundle_sha256": "5cb654213934cbe11f6378eb6121ee40bfd046051d3671dbdaa082c4824f4700",
   "attestation_hash_policy": "bundle_sha256 binds the files_sha256 map excluding reference/review-record.json, so review/freeze attestation can bind the content without hashing itself. sealed_inventory_sha256 covers every file hash including that record. protocol.json self-hash is recorded separately in structural evidence.",
   "generation_boundary": {
     "input_paths": [
@@ -72,9 +72,9 @@
   "freeze_gate": {
     "independent_reference_review_required": true,
     "actual_review_record": "evals/investigation/reference/review-record.json",
-    "frozen_at": null,
-    "frozen_by": null,
-    "t052_complete": false
+    "frozen_at": "2026-11-15",
+    "frozen_by": "Vedran",
+    "t052_complete": true
   },
   "retrieval": {
     "configurations": [
@@ -113,7 +113,29 @@
       "no_answer_correct_required": 4,
       "no_answer_denominator": 4
     },
-    "reporting": "Retain scores/ranks/IDs/no-match for both configurations, even regressions. Target achievement separate from preselected deployment choice."
+    "reporting": "Retain scores/ranks/IDs/no-match for both configurations, even regressions. Target achievement separate from preselected deployment choice.",
+    "language_reporting": {
+      "decision_by": "Vedran",
+      "decision_date": "2026-11-15",
+      "overall": true,
+      "group_by": "language",
+      "groups": [
+        "en",
+        "sr-Latn",
+        "sr-Cyrl"
+      ],
+      "separate_by_split": true,
+      "fields": [
+        "answerable_count",
+        "no_answer_count",
+        "recall_at_5",
+        "mrr_at_5",
+        "correct_no_match_count",
+        "false_answer_count"
+      ],
+      "empty_denominator": "N/A",
+      "acceptance": "Existing overall targets unchanged; no new language-specific gates or held-out tuning."
+    }
   },
   "reports": {
     "primary_count": 8,
@@ -169,7 +191,7 @@
   },
   "execution_gate": {
     "t053_plus_authorized_here": false,
-    "t051": "open: actual analyst confirmation absent",
+    "t051": "complete: Vedran manual observations and conflict-label RED/GREEN closure recorded 2026-11-15",
     "t033": "open: capability unverified",
     "t055": "open: no tuning/config selection",
     "held_out_execution": "not run; require reviewed/frozen pack, input-only harness and later authorization"
