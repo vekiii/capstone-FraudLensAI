@@ -1,5 +1,11 @@
 # Next work - FraudLens AI
 
+## Feature 005 specification published on a dedicated branch - 2026-11-15
+
+Created `feature/005-real-time-fraud-detection-mlops-spec` from the current `model-implementations` tip and committed the proposed Feature 005 specification as `e93540f89907e71ea6fa2c90e551ede48c76667a` (`docs(feature-005): specify streaming fraud detection and MLOps`). The 24 new files under [Feature 005](specs/005-real-time-fraud-detection-mlops/spec.md) cover the specification, design and research, data and event contracts, JSON schemas, review checklists, three scope proposals, and a 46-task dependency-ordered backlog. The [project contribution ledger](evidence/tasks/project-evidence-plan-2026-11-12.md) records the commit attribution and work overview. Git whitespace checks passed for the staged specification. This is documentation only: no live infrastructure, model training, application behavior, or application tests were run. All Feature 005 tasks remain unchecked. The out-of-course stack requires the team's recorded T001 scope decision before implementation. Feature 002 T065/T066 remain blocked by the separately documented original-resource and protocol issues. The four unrelated local drafts remain uncommitted.
+
+One concrete next step: obtain and record the actual T001 team scope decision, including benefit and schedule impact, before starting the Feature 005 implementation backlog.
+
 ## Repository-wide model implementation guide - 2026-11-15
 
 Added [MODEL_IMPLEMENTATION_README.md](MODEL_IMPLEMENTATION_README.md) at the repository root. It traces the IBM synthetic source, history-v1 features and chronological split, frozen tree and separate boosted candidate parameters, recorded validation/test metrics, artifact checks, isolated full-run/API/UI integration, and the current acceptance limits. It distinguishes the 19/20 development-validation result from the 166 unlabeled full-run alerts and keeps T065/T066 blocked on missing or mismatched original evidence. All 22 local documentation links resolve and `git diff --check` passed. Documentation only; no model fit, source data access, application change, application test run, commit or push was part of this unit. One concrete next step: obtain and verify Elena's authorized same-hash database, artifact, explanation sample and protocol before completing T065/T066.

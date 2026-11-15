@@ -1,6 +1,6 @@
 # Feature 005: Real-time fraud detection and MLOps
 
-**Branch:** `model-implementations` · **Date:** 2026-11-15 · **Status:** proposed specification; no Feature 005 implementation or team scope approval recorded. This is a future live AML review system, not automatic fraud adjudication. The existing [Feature 002 batch path](../002-data-and-risk-scoring/quickstart.md) remains available. The [constitution](../../.specify/memory/constitution.md) requires explicit team approval, with benefit and schedule impact, before implementing the out-of-course infrastructure in this proposal.
+**Source branch:** `model-implementations` · **Publication branch:** `feature/005-real-time-fraud-detection-mlops-spec` · **Date:** 2026-11-15 · **Status:** proposed specification; no Feature 005 implementation or team scope approval recorded. This is a future live AML review system, not automatic fraud adjudication. The existing [Feature 002 batch path](../002-data-and-risk-scoring/quickstart.md) remains available. The [constitution](../../.specify/memory/constitution.md) requires explicit team approval, with benefit and schedule impact, before implementing the out-of-course infrastructure in this proposal.
 
 ## Problem and outcome
 
