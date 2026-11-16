@@ -1,0 +1,247 @@
+{
+  "protocol_version": "feature-002-benchmark-v1",
+  "status": "frozen_eligible",
+  "created_date": "2026-11-13",
+  "canonical_serialization": {
+    "encoding": "UTF-8",
+    "object_keys": "lexicographic",
+    "separators": [",", ":"],
+    "ascii_escaping": true,
+    "sha256_scope": "entire JSON value excluding external evidence checksum"
+  },
+  "dataset": {
+    "name": "IBM AML HI-Small",
+    "release": "kaggle-v8",
+    "source_member": "HI-Small_Trans.csv",
+    "license": "CDLA-Sharing-1.0",
+    "source_sha256": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040",
+    "mapping_sha256": "a816260aecc12f056dedc53397ff9c5f19b0e9b5bd669db1e1d1b2a849093e57",
+    "time_policy_sha256": "67a408fc52e57035115186c3c9863dfeac5a72d709292e0f7baeef560086d781",
+    "dataset_version": "dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802",
+    "source_records": 5078345,
+    "event_valid_records": 5078345,
+    "event_rejected_records": 0
+  },
+  "feature_snapshot": {
+    "catalog_version": "history-v1",
+    "feature_policy_sha256": "683e5d767d3d130a523c3a657063b493ff1821818e601888e1c83a8ca91ed1f4",
+    "snapshot_count": 5078345,
+    "scoreable_count": 3963424,
+    "warmup_excluded_count": 1114921,
+    "coverage_excluded_count": 0,
+    "predictor_order": [
+      "current_paid_amount",
+      "current_paid_currency",
+      "current_payment_format",
+      "receiver_distinct_senders_24h",
+      "receiver_in_count_24h",
+      "receiver_received_count_same_currency_24h",
+      "receiver_received_sum_same_currency_24h",
+      "sender_distinct_receivers_24h",
+      "sender_out_count_24h",
+      "sender_paid_count_same_currency_24h",
+      "sender_paid_sum_same_currency_24h"
+    ],
+    "excluded_inputs": [
+      "isFraud",
+      "label_status",
+      "transaction_id",
+      "case_id",
+      "source_ordinal",
+      "source_row_ref",
+      "sender_account",
+      "receiver_account",
+      "sender_join_key",
+      "receiver_join_key",
+      "future_event_facts",
+      "full_file_aggregates"
+    ]
+  },
+  "partition": {
+    "view": "all event-valid transactions with full history-v1 coverage at or after the 24-hour warmup cutoff; labels do not affect membership",
+    "source_start": "2022-09-01T00:00:00+00:00",
+    "warmup_hours": 24,
+    "warmup_cutoff": "2022-09-02T00:00:00+00:00",
+    "rule": "chronological 70/15/15 by row count; sort by event_time_utc then transaction_id; timestamp groups remain intact; choose the nearest cumulative whole-timestamp boundary; equal distance chooses the earlier boundary",
+    "manifest_algorithm": "feature-002-split-v1",
+    "membership_sha256": "4f1d59c098db2a05c5e01fbea655c9b3480ebc3f49e6fbdfde110ab5452b197e",
+    "manifest_protocol_sha256": "6a7eda42eb5417e12e2300a84f704ea30524d4742644a290e67f9b94fe942c74",
+    "membership_frozen_before_label_join": true,
+    "roles": {
+      "train": {
+        "purpose": "supervised model fitting and all learned preprocessing",
+        "first_event_time": "2022-09-02T00:00:00+00:00",
+        "last_event_time": "2022-09-08T07:21:00+00:00",
+        "rows": 2774357,
+        "label_eligible": 2774357,
+        "label_ineligible": 0,
+        "positives": 2822,
+        "negatives": 2771535,
+        "prevalence": 0.0010171726277476186
+      },
+      "validation": {
+        "purpose": "candidate selection and scorer-specific threshold selection only",
+        "first_event_time": "2022-09-08T07:22:00+00:00",
+        "last_event_time": "2022-09-09T09:31:00+00:00",
+        "rows": 594715,
+        "label_eligible": 594715,
+        "label_ineligible": 0,
+        "positives": 588,
+        "negatives": 594127,
+        "prevalence": 0.0009887088773614253
+      },
+      "test": {
+        "purpose": "sealed final metrics only after model, transforms, thresholds and predictions are frozen",
+        "first_event_time": "2022-09-09T09:32:00+00:00",
+        "last_event_time": "2022-09-18T16:18:00+00:00",
+        "rows": 594352,
+        "label_eligible": 594352,
+        "label_ineligible": 0,
+        "positives": 1445,
+        "negatives": 592907,
+        "prevalence": 0.00243121921016502
+      }
+    },
+    "eligibility": {
+      "eligible": true,
+      "requirements": {
+        "all_partitions_nonempty": true,
+        "both_classes_each_partition": true,
+        "minimum_validation_positives": 20,
+        "minimum_test_positives": 20
+      },
+      "ineligibility_reasons": []
+    }
+  },
+  "label_roles": {
+    "train": "eligible labels may fit candidates and training-only transforms",
+    "validation": "eligible labels may select candidates and thresholds; never fit preprocessing or estimator parameters",
+    "test": "labels remain sealed until all model artifacts, thresholds and per-row predictions are frozen and verified"
+  },
+  "candidates": {
+    "fit_limit": 6,
+    "fit_concurrency": 1,
+    "random_seed": 42,
+    "candidate_order_and_tie_rank": [
+      {"rank": 1, "family": "logistic_regression", "penalty": "l2", "C": 0.1, "solver": "lbfgs"},
+      {"rank": 2, "family": "logistic_regression", "penalty": "l2", "C": 1.0, "solver": "lbfgs"},
+      {"rank": 3, "family": "decision_tree", "criterion": "gini", "max_depth": 3, "min_samples_leaf": 500},
+      {"rank": 4, "family": "decision_tree", "criterion": "gini", "max_depth": 3, "min_samples_leaf": 100},
+      {"rank": 5, "family": "decision_tree", "criterion": "gini", "max_depth": 5, "min_samples_leaf": 500},
+      {"rank": 6, "family": "decision_tree", "criterion": "gini", "max_depth": 5, "min_samples_leaf": 100}
+    ],
+    "remaining_estimator_parameters": "pinned scikit-learn 1.9.1 defaults, recorded in each fit manifest",
+    "class_imbalance": "retain natural training prevalence; no class weights, resampling or synthetic examples",
+    "calibration": "none",
+    "automl": "not included",
+    "refit_after_selection": false
+  },
+  "preprocessing": {
+    "fit_rows": "train only",
+    "numeric": "training-fold median imputation with missingness indicators; standard scaling fitted on train for logistic regression only",
+    "categorical": "explicit missing-value category followed by one-hot encoding; unknown validation/test categories ignored using the frozen encoder",
+    "feature_selection": "none",
+    "validation_test_refit": false,
+    "input_feature_order": "feature_snapshot.predictor_order"
+  },
+  "selection": {
+    "primary_metric": "non-interpolated average precision",
+    "positive_label": 1,
+    "implementation": "scikit-learn 1.9.1 average_precision_score",
+    "average_precision_tie_tolerance": 1e-6,
+    "tie_break_order": [
+      "higher validation average precision outside the tie tolerance",
+      "higher validation Precision@K when average precision differs by at most the tie tolerance",
+      "candidate_order_and_tie_rank"
+    ],
+    "K": "min(20, eligible partition rows)",
+    "ranking_ties": "descending score then ascending stable transaction_id; disclose any score tie crossing K",
+    "recall_at_k_denominator": "all eligible positive labels in that partition"
+  },
+  "threshold_selection": {
+    "roles": ["validation only"],
+    "per_scorer": true,
+    "candidates": "each distinct validation score as an inclusive threshold, plus symbolic no-alert above the maximum",
+    "maximum_validation_alerts": 20,
+    "score_ties": "preserve all equal-score rows",
+    "objective": "maximize F0.5",
+    "tie_break_order": ["fewer alerts", "higher threshold"],
+    "no_predictions_F0_5": 0,
+    "test_alert_cap": null,
+    "freeze_before_test_predictions": true
+  },
+  "baseline": {
+    "scorer": "rules-v1",
+    "policy_sha256": "a281d38b8777b53882f4515dda7de927ff64dce43188e99c258419b1d605b5ce",
+    "score_kind": "ordinal_rule_score",
+    "comparison_population": "identical label-eligible transaction IDs for each role",
+    "threshold_selection": "same validation-only F0.5 policy as model; scorer-specific numeric threshold"
+  },
+  "reporting": {
+    "test_metrics_after_single_label_disclosure": [
+      "average_precision",
+      "prevalence",
+      "precision_at_k",
+      "recall_at_k",
+      "k_boundary_tie_group",
+      "true_positive",
+      "false_positive",
+      "true_negative",
+      "false_negative",
+      "precision_at_frozen_threshold",
+      "recall_at_frozen_threshold",
+      "alert_rate",
+      "model_brier_score",
+      "model_reliability_table_or_not_estimable_reason"
+    ],
+    "reliability_bins": "10 equal-width bins over [0,1]; report each nonempty bin's count, mean prediction and observed positive fraction; descriptive only",
+    "uncertainty": "not quantified unless a dependence-aware method is declared before test disclosure; state reason and limitation",
+    "probability_claim": "model outputs are uncalibrated estimates; rules-v1 scores are ordinal and receive no Brier score",
+    "comparison": "rules-v1 and selected model use identical eligible transaction IDs and metric definitions"
+  },
+  "resource_budget": {
+    "source": "T028 resource-pilot prospective recommendation; these are stop ceilings, not demonstrated model-fit capacity",
+    "max_seconds_per_fit": 1800,
+    "max_total_fit_seconds": 10800,
+    "max_peak_working_set_bytes": 3221225472,
+    "max_temporary_and_artifact_bytes": 4294967296,
+    "concurrent_fits": 1,
+    "on_limit": "stop and record controlled failure; do not relax limits or switch runtime",
+    "training_view_reduction": "none; use the complete chronological train role and preserve validation/test roles"
+  },
+  "reproducibility": {
+    "python": "3.14.10",
+    "platform": "Windows 11 x86_64",
+    "dependencies": {"scikit-learn": "1.9.1", "numpy": "2.5.4", "scipy": "1.18.1"},
+    "predictions_max_absolute_difference": 1e-12,
+    "metrics_max_absolute_difference": 1e-12,
+    "counts_membership_and_decisions": "exact equality",
+    "explanation_reconstruction_max_absolute_error": 1e-12,
+    "label_free_review_sample": {
+      "count": 5,
+      "population": "sealed test transaction IDs",
+      "selection": "sort by SHA-256 of UTF-8 prefix 'FraudLensAI/feature-002/v1/review\\0' concatenated with transaction_id; take the five smallest digests; labels are not read",
+      "purpose": "manual explanation and provenance review only; not a metric population or selection input"
+    }
+  },
+  "holdout": {
+    "role": "test",
+    "disclosures_allowed": 1,
+    "required_order": [
+      "freeze selected model and fitted transforms",
+      "freeze rules/model validation thresholds and calibration status",
+      "produce all test predictions without reading test labels",
+      "persist and verify prediction identities, values and hashes",
+      "join test labels once for final metrics and atomically mark holdout consumed"
+    ],
+    "reuse": "any later access is exploratory only; no confirmatory claim, model selection, retraining or threshold change",
+    "label_access_before_frozen_predictions": false
+  },
+  "reference_methodology": {
+    "reference_url": "https://github.com/shejz/IEEE-CIS-Fraud-Detection",
+    "resolved_upstream_commit_sha": "492cd00e40518c5f636686a3b079bb70a47bb6f5",
+    "use": "methodological reference only; no upstream code, dataset, features, thresholds, weights or results transferred",
+    "license_status": "no repository LICENSE file is visible in the upstream root listing; permission to copy code is unconfirmed, so no upstream code was copied",
+    "incompatible_features_excluded": ["Vesta V-columns", "card identity columns", "TransactionDT"]
+  }
+}
