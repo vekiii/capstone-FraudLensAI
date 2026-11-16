@@ -1,47 +1,43 @@
-# Current handoff - final check complete; WAIT BEFORE MERGE, 2026-11-16
+# Current handoff - reliability fixes merged into feature03, 2026-11-16
 
-Branch feature03-reliability-v2. User authorizes commits of logical units but
-explicitly requires waiting before merge into feature03. Preparation committed
-as dd140af; final results/review/handoff in the following commit. No actual merge,
-checkout, rebase/reset or target update. No new production/prompt/config changes
-since1936d23. Next action is JOINT USER REVIEW/MERGE DECISION, not another batch.
+ACTIVE BRANCH feature03. User explicitly authorized merge and push after joint
+review. Clean worktree/remote refs rechecked; git merge --ff-only moved feature03
+from cd98ea021a38b362b5766c4e23a1e55ec0ad0dcd to reliability tip
+920296436643e2c25ca27fc19441ecedf7e078c6, no conflicts. Resulting tree exactly
+matches tested reliability tree. This handoff/evidence update is a docs-only
+follow-up commit; publishing origin/feature03 requested. Verify Git remote for
+final publication identity. Reliability branch retained; no force push/deletion.
 
-T091-T093 executed. Final authored development-v8: two ordinary cases and one
-separate controlled application-candidate omission of mandatory notice. Raw real
-model output/private continuation unchanged. Exact notice/prompt/policy pinned.
-Actual18/25 transports:17generation+1judge, allHTTP200 gpt-6-luna. Known101,617
-tokens (86,241input+15,376output), unknown0, spend unknown. No timeout/quota/retry.
-All3 valid <90/120s:781ready_for_review46.789s,782needs_information26.687s,
-783needs_information38.841s. Ordinary781 repaired assertion_scope_mismatch once
-at38,925bytes. Controlled783 repaired human_authority_notice_required once at
-35,580bytes, then real LLM report validated. All final reports include notice.
-Technical recovery PASS; all existing caps and local fact/schema checks retained.
+Next concrete feature03 step: T062 reconcile the current feature002 producer/
+history contract with our pinned context contract and obtain actual producing/
+affected-consuming review before adapter work. Do not infer approval from merge.
+T063 actual adapter RED beyond authored guards remains partial,T064 real adapter
+unstarted,T066 teammate reproduction/human review,T067 full Converge pending.
+T094 rubric/control disagreement review also pending; no automatic new API batch.
 
-QUALITY NOT CONFIRMED: raw judge ratings favor ordinary2/2 and diagnostic, but
-calibration2/3 FAILED. CAL8-B fabricated-funds critical error WAS correctly caught;
-missingness_correct=true differed from frozen expectedfalse because limitations
-also disclose unknown fields. Strict gate retained:quality_assessment_valid=false,
-passing_development_reports=null, controlled_report_quality_pass=null. No label
-changes, regrading, judge rerun or improvement/release claim. T094 records pending
-rubric/control disagreement review for later feature03 work, not automatic action.
+Merged runtime: bounded timeout retry/quota handling, fixed safe repair guidance,
+shared schema within48k, opt-in script normalization, mandatory exact human final
+notice on new attempts (promptv4/private policy). One repair then controlled fail;
+original raw responses, immutable reports and old binding/retry semantics retained.
+No frontend/public schema/dependency/.env changes. Local ignored guide199 lines.
 
-Full backend919 PASS69.01s, frontend186/typecheck/build PASS, Ruff/diff PASS.
-Focused review found no blocking code defect (agent self-review, not human signoff).
-Local/remote feature03 pinned cd98ea021a38b362b5766c4e23a1e55ec0ad0dcd, an ancestor
-of preparation HEADdd140af. merge-tree preview exit0/no conflicts; result equals
-HEADtree. Recheck target before any actual merge. Feature03 ref remains unchanged.
-No new browser/process journeys; historical checks kept distinct.
+Verification inherited from IDENTICAL merged tree: backend919 PASS69.01s,
+frontend186/typecheck/build PASS,Ruff/diff PASS; no repeated full suite needed for
+fast-forward with no code reconciliation. Post-merge offline integrity audit
+rechecked. Evidence/tasks/feature-003-merge-readiness.md records actual merge and
+remaining limits. No new provider calls or historical result edits during merge.
 
-Integrity audit PASS:actual source/prompt/policy/config bindings,44 prior artifacts
-preserved,10 new raw/metadata hashes,13 cited IDs resolve, raw fault still rejected.
-Evidence/tasks/feature-003-final-live-v8.md and final-live-v8-results.json;
-evidence/tasks/feature-003-merge-readiness.md records review/remaining risks.
-Raw outputs ignored evals/results/feature-003/development-v8/. Never replay any
-completed builder/batch or reuse unused7 transports. Local guide ignored199lines.
+Final live check:18HTTP200 gpt-6-luna;3 valid reports in46.789/26.687/38.841s.
+Ordinary assertion-scope repair and controlled notice-omission recovery succeeded
+at38,925/35,580bytes. Known101,617 tokens,unknown0,spend unknown. Caps unchanged.
+QUALITY STILL UNCONFIRMED: calibration2/3 FAILED on missingness interpretation;
+fabricated-funds critical allegation WAS detected. Raw favorable ratings not
+accepted:quality_assessment_valid=false,passing_development_reports=null. No
+regrading, changed control labels or judge rerun. Full feature not accepted.
 
-Recommendation: ready for joint review of merging scoped reliability fixes into
-UNFINISHED feature03, with quality gate explicitly pending. Do not claim feature
-complete or independently validated. T062 producer/consumer review pending,T063
-partial authored guards,T064 real adapter unstarted,T066 teammate/human review/
-reproduction,T067 full Converge remain open. Original0/8 quality,retrieval0.50/0.50,
-failed latency/outlier and all earlier development outcomes remain unchanged.
+Final evidence/tasks/feature-003-final-live-v8.md and final-live-v8-results.json.
+44 prior artifacts preserved,10 new hashes,13 cited IDs resolve; actual runtime/
+prompt/policy/config bindings audited. Ignored raw development-v8 results remain.
+Never replay completed builders/batches or reuse unused7 transports. All original
+0/8 quality,retrieval0.50/0.50 and failed latency/outlier results remain FAILED.
+Fresh independent quality/reference review still required for acceptance.
