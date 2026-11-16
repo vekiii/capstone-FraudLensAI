@@ -7,7 +7,6 @@ from dataclasses import replace
 from datetime import timezone
 from decimal import Decimal
 
-import psycopg
 import pytest
 
 from fraudlens.live_producer import produce_transactions, synthetic_timeline
@@ -37,7 +36,7 @@ def test_timeline_is_deterministic_and_covers_identity_currency_and_ties():
 
 def test_producer_inserts_exact_facts_and_same_timeline_is_idempotent(isolated_live_postgres):
     timeline = synthetic_timeline()
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs()) as connection:
+    with isolated_live_postgres.connect() as connection:
         assert produce_transactions(connection, timeline) == len(timeline)
         assert produce_transactions(connection, synthetic_timeline()) == 0
         rows = connection.execute(
@@ -67,7 +66,7 @@ def test_producer_inserts_exact_facts_and_same_timeline_is_idempotent(isolated_l
 def test_same_source_identity_with_changed_fact_fails_closed(isolated_live_postgres):
     event = synthetic_timeline()[0]
     changed = with_canonical_digest(replace(event, paid_amount=Decimal("125.410000")))
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs()) as connection:
+    with isolated_live_postgres.connect() as connection:
         assert produce_transactions(connection, [event]) == 1
         with pytest.raises(FactConflict, match="conflicts with existing facts"):
             with connection.transaction():

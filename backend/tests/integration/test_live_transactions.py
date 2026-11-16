@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+import socket
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from decimal import Decimal
+from threading import Barrier
+from time import monotonic
 from typing import Any
 
 import psycopg
@@ -64,7 +68,7 @@ def _require_live_schema_and_record(
 
 
 def test_source_identity_and_canonical_transaction_id_are_stable(isolated_live_postgres):
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs()) as connection:
+    with isolated_live_postgres.connect() as connection:
         assert _require_live_schema_and_record(connection) is True
         row = _row(connection)
     assert row[0:4] == (
@@ -76,7 +80,7 @@ def test_source_identity_and_canonical_transaction_id_are_stable(isolated_live_p
 
 
 def test_exact_decimal_currency_and_utc_time_round_trip(isolated_live_postgres):
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs()) as connection:
+    with isolated_live_postgres.connect() as connection:
         _require_live_schema_and_record(connection)
         row = _row(connection)
     assert format(row[9], "f") == "1234567890123.123456"
@@ -88,7 +92,7 @@ def test_exact_decimal_currency_and_utc_time_round_trip(isolated_live_postgres):
 
 
 def test_sender_and_receiver_identities_include_bank_and_account(isolated_live_postgres):
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs()) as connection:
+    with isolated_live_postgres.connect() as connection:
         _require_live_schema_and_record(connection)
         row = _row(connection)
     assert (row[5], row[6]) == ("BANK-A", "acct-0091")
@@ -96,7 +100,7 @@ def test_sender_and_receiver_identities_include_bank_and_account(isolated_live_p
 
 
 def test_same_source_id_and_same_facts_is_a_noop(isolated_live_postgres):
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs()) as connection:
+    with isolated_live_postgres.connect() as connection:
         assert _require_live_schema_and_record(connection) is True
         assert _record(connection, FACT) is False
         assert connection.execute("SELECT count(*) FROM fraudlens.live_transactions").fetchone()[0] == 1
@@ -105,14 +109,14 @@ def test_same_source_id_and_same_facts_is_a_noop(isolated_live_postgres):
 
 def test_same_source_id_with_changed_facts_is_a_conflict(isolated_live_postgres):
     changed = {**FACT, "event_fact_digest": "b" * 64, "paid_amount": Decimal("99.000001")}
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs()) as connection:
+    with isolated_live_postgres.connect() as connection:
         _require_live_schema_and_record(connection)
         with pytest.raises(errors.UniqueViolation, match="source event reused with different facts"):
             _record(connection, changed)
 
 
 def test_update_of_immutable_facts_is_denied(isolated_live_postgres):
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs(), autocommit=True) as connection:
+    with isolated_live_postgres.connect(autocommit=True) as connection:
         _require_live_schema_and_record(connection)
         connection.execute("SET ROLE live_producer")
         with pytest.raises(errors.InsufficientPrivilege):
@@ -130,7 +134,7 @@ def test_update_of_immutable_facts_is_denied(isolated_live_postgres):
 
 
 def test_delete_of_immutable_facts_is_denied(isolated_live_postgres):
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs(), autocommit=True) as connection:
+    with isolated_live_postgres.connect(autocommit=True) as connection:
         _require_live_schema_and_record(connection)
         connection.execute("SET ROLE live_producer")
         with pytest.raises(errors.InsufficientPrivilege):
@@ -145,19 +149,141 @@ def test_delete_of_immutable_facts_is_denied(isolated_live_postgres):
                 "DELETE FROM fraudlens.live_transactions WHERE transaction_id = %s",
                 (FACT["transaction_id"],),
             )
-@pytest.mark.parametrize("amount", [Decimal("10000000000000"), Decimal("1.0000001")])
+@pytest.mark.parametrize(
+    "amount",
+    [Decimal("-0.000001"), Decimal("10000000000000"), Decimal("1.0000001")],
+)
 def test_numeric_bounds_match_event_contract(isolated_live_postgres, amount):
     invalid = {**FACT, "paid_amount": amount}
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs()) as connection:
+    with isolated_live_postgres.connect() as connection:
         _require_live_schema(connection)
         with pytest.raises(errors.CheckViolation):
             _record(connection, invalid)
 
 
+@pytest.mark.parametrize("amount", [Decimal("0.000000"), Decimal("9999999999999.999999")])
+def test_numeric_inclusive_and_maximum_valid_boundaries(isolated_live_postgres, amount):
+    valid = {**FACT, "paid_amount": amount}
+    with isolated_live_postgres.connect() as connection:
+        assert _require_live_schema_and_record(connection, valid) is True
+        stored = connection.execute(
+            "SELECT paid_amount FROM fraudlens.live_transactions WHERE transaction_id = %s",
+            (FACT["transaction_id"],),
+        ).fetchone()[0]
+    assert stored == amount
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "error_type"),
+    [
+        ("transaction_id", "bad; DROP TABLE fraudlens.live_transactions;--", errors.CheckViolation),
+        ("transaction_id", "x" * 129, errors.StringDataRightTruncation),
+        ("source_namespace", "   ", errors.CheckViolation),
+        ("paid_currency", "   ", errors.CheckViolation),
+    ],
+)
+def test_malformed_or_oversized_text_fails_before_fact_insert(
+    isolated_live_postgres, field, value, error_type
+):
+    invalid = {**FACT, field: value}
+    with isolated_live_postgres.connect() as connection:
+        _require_live_schema(connection)
+        with pytest.raises(error_type):
+            _record(connection, invalid)
+
+
+def test_reused_transaction_id_with_different_source_is_a_conflict(isolated_live_postgres):
+    changed = {
+        **FACT,
+        "source_namespace": "different-source",
+        "source_event_id": "different-event",
+        "event_fact_digest": "b" * 64,
+    }
+    with isolated_live_postgres.connect() as connection:
+        _require_live_schema_and_record(connection)
+        with pytest.raises(errors.UniqueViolation):
+            _record(connection, changed)
+
+
+def test_transaction_rollback_removes_fact_and_ingestion_receipt(isolated_live_postgres):
+    with pytest.raises(RuntimeError, match="force test rollback"):
+        with isolated_live_postgres.connect() as connection:
+            _require_live_schema(connection)
+            _record(connection, FACT)
+            raise RuntimeError("force test rollback")
+
+    with isolated_live_postgres.connect() as connection:
+        assert connection.execute(
+            "SELECT count(*) FROM fraudlens.live_transactions"
+        ).fetchone()[0] == 0
+        assert connection.execute(
+            "SELECT count(*) FROM fraudlens.ingestion_receipts"
+        ).fetchone()[0] == 0
+
+
+def test_concurrent_exact_retries_create_one_fact_and_one_receipt(isolated_live_postgres):
+    barrier = Barrier(2)
+
+    def insert_once() -> bool:
+        with isolated_live_postgres.connect() as connection:
+            barrier.wait(timeout=5)
+            return _record(connection, FACT)
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        results = list(executor.map(lambda _index: insert_once(), range(2)))
+
+    assert sorted(results) == [False, True]
+    with isolated_live_postgres.connect() as connection:
+        assert connection.execute(
+            "SELECT count(*) FROM fraudlens.live_transactions"
+        ).fetchone()[0] == 1
+        assert connection.execute(
+            "SELECT count(*) FROM fraudlens.ingestion_receipts"
+        ).fetchone()[0] == 1
+
+
+def test_lock_timeout_aborts_without_partial_fact(isolated_live_postgres):
+    with isolated_live_postgres.connect() as blocker:
+        _require_live_schema(blocker)
+        blocker.execute("LOCK TABLE fraudlens.live_transactions IN ACCESS EXCLUSIVE MODE")
+        with isolated_live_postgres.connect() as contender:
+            contender.execute("SET LOCAL lock_timeout = '100ms'")
+            with pytest.raises(errors.LockNotAvailable):
+                _record(contender, FACT)
+            contender.rollback()
+        blocker.rollback()
+
+    with isolated_live_postgres.connect() as connection:
+        assert connection.execute(
+            "SELECT count(*) FROM fraudlens.live_transactions"
+        ).fetchone()[0] == 0
+        assert connection.execute(
+            "SELECT count(*) FROM fraudlens.ingestion_receipts"
+        ).fetchone()[0] == 0
+
+
+def test_loopback_database_outage_honors_bounded_connect_timeout():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        probe.bind(("127.0.0.1", 0))
+        unavailable_port = probe.getsockname()[1]
+
+    started = monotonic()
+    with pytest.raises(psycopg.OperationalError):
+        psycopg.connect(
+            host="127.0.0.1",
+            port=unavailable_port,
+            dbname="synthetic_security_test",
+            user="synthetic_security_test",
+            password="synthetic-not-a-secret",
+            connect_timeout=1,
+        )
+    assert monotonic() - started < 3
+
+
 def test_catalog_enforces_keys_immutability_no_labels_and_role_boundaries(
     isolated_live_postgres,
 ):
-    with psycopg.connect(**isolated_live_postgres.connect_kwargs()) as connection:
+    with isolated_live_postgres.connect() as connection:
         columns = {
             row[0]
             for row in connection.execute(
