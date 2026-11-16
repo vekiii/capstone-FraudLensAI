@@ -109,3 +109,76 @@ quality, see [actual results](feature-003-automated-evaluation.md) and
 quality/time targets remain preserved in the historical
 [Phase 7 handoff](feature-003-t058-t061-handoff.md).
 T067/Converge and full acceptance have not been run or inferred.
+
+## User-approved T066 review amendment and progress, 2026-11-16
+
+User explicitly confirmed the team agreed that the user performs the human review,
+including parts they helped implement. This supersedes the requirement for a
+second teammate for T066 only. Record as contributor self-review, not independent
+reproduction; independent quality/evaluation gates are unaffected. Historical
+second-teammate instructions above describe the previous procedure.
+
+User-reported execution (not independently executed by the agent):
+- Branch: feature03; reviewed HEAD:987b64cf8717a18eafc95c2dbcbc3655c9d6898c.
+- Python3.14.3; Node24.20.0; npm11.19.0; checkout D:/AIBootcamp/capstone.
+- Working-tree cleanliness, uv/browser versions and exact execution time unreported.
+- prepare-knowledge returned retrieval071f1a593fa17471295860bb5abc3a0064261a7e159bdf3d530494881001bccb
+  and corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3.
+  Exact passage comparison and command exit code not yet reported.
+- Vite startup failed: Port5173 is already in use. This does not establish UI success.
+  Leave other processes intact; use5174 or stop an identified owned Vite terminal.
+- UI, worker, review/correction/conflict, API and regression observations pending.
+
+T066 remains unchecked; human review has started, not been completed.
+
+## Current T066 handoff to Milan - 2026-11-16
+
+User explicitly assigned the REST of this review to Milan. Milan has not yet
+reported execution or approval. Keep T066 unchecked. Prior user self-review is
+preserved and must not be attributed to Milan or relabeled independent review.
+Earlier pending statements are superseded only by the concrete observations below.
+
+Additional actual user-reported observations from this conversation:
+- Search supporting documentation returned US supporting records first and IBM
+  synthetic field limitations second. First result opened the Supporting
+  documentation passage, authored-v1-2026-11-14, historical2007 US scope,
+  FinCEN link, dates, exact short excerpt and authored-summary limitations.
+  Source rendering observed; independent comparison to original website unrun.
+- nomatchxyz displayed Nema dovoljno dobrog pogotka.
+- Worker output and UI both ready_for_review for
+  att_6f254c9544c544baad75ac473c76fec3.
+- TEST provider notice present; saved evidence opens; missing decision and empty
+  rationale rejected according to user. No model-quality conclusion.
+- Reload preserved close review rev_1a692774fc244fc78ce007a8b8445e36,
+  actor literally TVOJE_IME, timestamp2026-11-16T14:45:53.776903Z,
+  rationale T066 ? provera ?uvanja odluke. Do not replace this alias with a real name.
+- Correction escalate rev_9e1c3aaa855548cfa355144736ccdb65 at
+  2026-11-16T14:50:24.622660Z, rationale T066 ? korekcija,
+  correction note Provera istorije odluka. Displayed previous review
+  rev_dd5a17b53e614e27bf244e04aa4dacd6, DIFFERENT from the supplied close ID.
+  Intermediate review or changed selected attempt not established; chain verification
+  remains unresolved. This mismatch alone is not a proven implementation bug.
+
+Milan's remaining checks:
+1. Record actual identity/role, branch/HEAD/diff, environment and commands. Read
+   AGENTS.md, next_work.md, quickstart and this current handoff. Use provider=test,
+   source=fixture and empty process key/model. Backend8000; frontend5174 was
+   proposed after5173 was occupied; confirm actual available ports, do not kill
+   unrelated processes. Use same store/config in API and worker terminals.
+2. Resolve the review-chain mismatch above using the exact selected attempt and
+   saved review history. If the user's local store is unavailable, say so and
+   independently reproduce a fresh linked correction; do not invent old events.
+3. Execute two-window stale revision conflict and refresh; prior user has not
+   supplied the conflict result for this T066 run.
+4. Verify cancel/retry, backend failure/restart recovery, direct/proxy404 and422,
+   and remaining case navigation/rapid-selection checks.
+5. Run documented backend/Ruff/frontend test/typecheck/build and diff checks;
+   record real counts/exits. Inspect new dataset adapter and run controlled
+   producer smoke; distinguish it from unavailable full IBM/model validation.
+6. Review code/contracts/evidence, record findings, unrun cases and explicit actual
+   decision in this file under Milan's own dated record. Keep user and Milan
+   observations separate; his participation in implementation, if any, disclosed.
+
+T061/quality findings and T094 remain separate open conditions. No live API batch,
+regrading, merge, commit or push authorized by this handoff. Next step: Milan
+records his reviewed checkout and starts remaining T066 checks. T067 remains open.

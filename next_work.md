@@ -1,4 +1,35 @@
-# Current handoff - T062-T064 consumer adapter complete, 2026-11-16
+# Current handoff - Milan owns remaining T066 review, 2026-11-16
+
+User explicitly handed remaining T066 review to Milan. T066 and T067 stay open;
+Milan execution/approval is not yet reported. User already observed successful
+source search/passage opening, no-match, test worker/UI ready_for_review, evidence
+opening, required decision/rationale validation and persisted close decision.
+Saved alias is literally TVOJE_IME. Correction saved, but its predecessor ID differs
+from the prior supplied review; intermediate event/attempt selection unconfirmed.
+
+[Exact IDs, observations and Milan checklist](evidence/tasks/feature-003-reproduction.md)
+are in the final Current T066 handoff section. Preserve attribution: user results
+are self-review, not Milan's execution or independent reproduction. Remaining:
+review-chain mismatch, two-window conflict, cancel/retry/recovery, API404/422,
+navigation, regression and code/contracts/evidence review. Full IBM/model checks
+and quality/T061/T094 gates remain unresolved; no automatic live run/merge/push.
+
+**Next step:** Milan records actual reviewed branch/HEAD/diff/environment, then
+executes remaining checklist with test provider and matching API/worker store.
+Frontend5174 was proposed because5173 occupied; confirm ports on his machine.
+
+# Previous handoff - user T066 review started, 2026-11-16
+
+Team explicitly approved user-led contributor self-review for T066, replacing
+second-teammate execution only; no independent-review claim or quality gate waiver.
+User reports feature03 HEAD987b64c, Python3.14.3/Node24.20.0/npm11.19.0 and successful
+knowledge publication with recorded corpus/retrieval IDs. Vite startup failed:
+5173 occupied. UI/worker/API/regression/human findings remain pending; T066 unchecked.
+Details: evidence/tasks/feature-003-reproduction.md (superseding amendment at end).
+Next concrete step: launch owned frontend on5174 and continue manual case/search
+checks using that port, with backend8000 and explicit test-provider settings.
+
+# Previous handoff - T062-T064 consumer adapter complete, 2026-11-16
 
 Branch feature03, baseline1f3a09d. User explicitly confirmed producer/investigation
 agreement on behalf of the team and assigned feature003 history implementation to
