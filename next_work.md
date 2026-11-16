@@ -1,5 +1,33 @@
 # Next work - FraudLens AI
+## Current branch consolidation and Phase 4 gate — 2026-11-16
 
+Committed the accumulated working changes on `feature/005-real-time-fraud-detection-mlops-spec` in four scoped commits: Feature 005 scope records and task-state updates (`c09e964`); PostgreSQL live-fact store, producer, migration, pinned environment notes and T002–T005 evidence (`ec43ecc`); Feature 005 showcase site and T057/T058 evidence (`a4553f1`); and Feature 002 local protocol-review artifacts (`57ce87f`). These commits preserve the existing partial/blocked statuses and do not claim Phase 4 completion.
+
+Phase 4 T026–T030 is **BLOCKED at T022**: the T022 migration, worker implementation and evidence are absent, and its Phase 3 prerequisites T012, T014, T016, T020 and T021 remain unchecked. No Phase 4 files or tests were run in the latest gate audit. T002 remains PARTIAL; T003–T005 are recorded complete; T057 is complete and T058 partial. The Feature 002 draft protocol and audit artifacts are committed as working review material, not as a completed independent review.
+
+One concrete next step: continue the ordered core backlog at T006, then complete Phase 2 and Phase 3 through T022 before resuming T026.
+
+## Feature 005 showcase foundation — T057 done, T058 partial (2026-11-16)
+
+Built a separate local-only React 18/Vite site in `web/` at `http://127.0.0.1:5174/` with four routes, responsive tokens/grid, navigation/footer, GSAP reveal and scroll motions, Lenis/ScrollTrigger sync, a fixed three.js canvas and reduced-motion/low-power/WebGL-failure fallback. Exact dependency pins and licences are in `web/package.json` and `web/README.md`; `npm audit` found zero vulnerabilities after updating React Router to 7.18.5.
+
+T058 is partial: pages read values and feature definitions from `web/public/data/`; metrics, EDA, corpus and RAG evaluation remain “Not yet measured”. `/live` shows a FIXTURE badge and samples marked “ILLUSTRATIVE, not model output” in JSON and on screen, with a local-data fallback if the API is down. No RAG backend, external LLM call or live scoring was added. Evidence: [T047 scope report](evidence/tasks/feature-005-rag-scope-decision.md), [T057](evidence/tasks/feature-005-t057.md), [T058](evidence/tasks/feature-005-t058.md).
+
+Checks: `npm.cmd --prefix web run test -- --run` (9 passed), typecheck, build and npm audit passed; build warns that the minified entry chunk is 860.80 kB. All four local routes and seven JSON files returned HTTP 200. Visual browser QA was unavailable because the browser host could not connect; no accessibility/performance score is claimed. RAG/provider/corpus/hosting decisions remain open under T047; T058 still needs T054 results and T055 API integration.
+
+One concrete next step: continue the ordered core backlog at T006 while retaining T058 as partial until its RAG evaluation and approved API source are available.
+
+## Feature 005 Phase 1 — T003–T005 complete; T002 partial (2026-11-16)
+
+The existing PostgreSQL 16.14 container was reused. Its inspected image digest matches `infra/compose/versions.env`; the project is `fraudlens-live`, healthy at `127.0.0.1:5432`. Tests create and drop isolated databases, never use the persistent `fraudlens_live` database. `.env.local` is ignored, and test fixture repr suppresses its password.
+
+T001 is recorded DONE. T002 remains PARTIAL and unchecked as directed: PostgreSQL is pinned/verified, while broker, Debezium, dbt, MLflow, Prometheus/Grafana pins remain NOT VERIFIED; role policy and numerical retention/outage horizons are proposed and need requester confirmation. The requester explicitly accepted T003 while this remains partial.
+
+T003 RED was captured and T003 passes after T004. T004's migration/store pass 10 real-PostgreSQL tests; catalog verifies primary/unique keys, checks/FKs, immutable trigger, no label column and least-privilege grants. T005 passes 3 producer tests; combined T003/T005 tests pass 13. Evidence: [T003](evidence/tasks/feature-005-t003.md), [T004](evidence/tasks/feature-005-t004.md), [T005](evidence/tasks/feature-005-t005.md), and [T002](evidence/tasks/feature-005-t002.md).
+
+The documented Feature 002 backend regression was run after T004 and T005. Both runs failed only in existing conditions: absent trusted model manifests/artifacts and a Windows symlink privilege error. Results and exact commands are in T004/T005 evidence. No Feature 002 code was changed.
+
+One concrete next task: T006, pinned local infrastructure, while preserving T002 as PARTIAL until remaining service pins and policy are verified/confirmed.
 ## Feature 005 Phase 7 RAG and showcase specification published - 2026-11-16
 
 Published as `024956d8579a9eeb9cbba290c54d9ea273842381` (`docs(feature-005): add RAG and showcase phase`) and pushed successfully to `origin/feature/005-real-time-fraud-detection-mlops-spec`, advancing it from `2a5b769` to `024956d`. It adds a four-route showcase contract and advisory RAG-verification proposal, requirements, task backlog, data-model tables, architecture/research/evidence notes, and proposal 002. T047 is an explicit pending team decision gate; no implementation or team approval is claimed. This is Phase 7, not the existing Phase 5 training/evaluation work. The original Feature 005 Phases 1–6 and current Feature 002 batch path remain unchanged. `git diff --cached --check` passed; no application tests or services were run. See the [Phase 7 contract](specs/005-real-time-fraud-detection-mlops/contracts/website-and-rag.md), [scope proposal](specs/005-real-time-fraud-detection-mlops/proposals/002-rag-and-showcase.md), and [project contribution ledger](evidence/tasks/project-evidence-plan-2026-11-12.md#feature-005-phase-7-rag-and-showcase-specification---16-november-2026).
