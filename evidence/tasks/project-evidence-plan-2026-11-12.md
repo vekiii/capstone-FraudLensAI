@@ -633,3 +633,7 @@ The security and test-harness changes were committed on `feature/005-real-time-f
 
 The ten follow-up security tests report **9 passed, 0 failed, 1 skipped/not testable**. The retained unauthenticated API test separately fails. Commands, vulnerabilities found, fixes, limitations, and remaining gaps are recorded in the linked security audit and task evidence. Docker and the disposable database were unavailable for live lock-timeout verification. Authentication remains not implemented; no deployment security claim is made. These commits are local at this ledger entry; origin publication will be recorded after remote verification.
 
+
+## Publication receipt — 16 November 2026
+
+The commits `827779d`, `5ea0c4c`, and `4b41608` were pushed to `origin/feature/005-real-time-fraud-detection-mlops-spec`. `git ls-remote` confirmed remote tip `4b41608eba2fea573fd94d8aed32ccd995312aad`, matching local `HEAD` at verification. This push advances only the requested feature branch; no merge to `main` was made. The push itself did not rerun tests; verification results are those recorded in the security audit.
