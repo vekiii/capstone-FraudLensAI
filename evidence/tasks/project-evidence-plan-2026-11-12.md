@@ -559,3 +559,17 @@ Prepared on `feature/005-real-time-fraud-detection-mlops-spec` from starting com
 The initial cross-branch state was checked from Git: `002-data-and-risk-scoring` at `27ac7d49e3d638717c752dce225216d291bf9e87` matched its remote; Feature 005 at the starting commit above matched its remote; local `model-implementations` at `9f728957b68528864421745a46842339ef94c897` had seven commits not present on `origin/model-implementations` (`d9bd8a2e3629a2d3939fc5507583f310428c53ac`); local `main` at `b03e8e3b9b5a4234beb2fcc15fecf3b1507df737` was 24 commits behind `origin/main` (`0fbe31315052542575b22515c83b0a062efeaa31`). These are publication-state observations, not a merge or endorsement of changes in other branches. Prior work on Feature 002, the dataset/model Overview, real-data verification, and the original Feature 005 specification remains recorded in the preceding ledger sections.
 
 The Phase 7 specification commit `024956d8579a9eeb9cbba290c54d9ea273842381` (`docs(feature-005): add RAG and showcase phase`) was pushed to `origin/feature/005-real-time-fraud-detection-mlops-spec`; push output advanced the branch from `2a5b769` to `024956d`. The project handoff was updated after publication. No merge to `main` is claimed; T047 remains pending team decision.
+
+## Accumulated work committed and pushed — 16 November 2026
+
+The accumulated working-tree changes were split into focused commits on `feature/005-real-time-fraud-detection-mlops-spec` and pushed to `origin/feature/005-real-time-fraud-detection-mlops-spec`. Remote verification reported `2e2963b209b2a839a22a1c06140690e9f6106cd7`, matching local `HEAD` at publication time.
+
+| Commit | Description |
+|---|---|
+| `c09e964` | Records Feature 005 scope decisions and current task state, including the technical agreement and RAG/showcase scope evidence. |
+| `ec43ecc` | Adds the PostgreSQL live-fact migration/store and synthetic producer, isolated integration tests, environment notes, and T002–T005 evidence. T002 remains partial. |
+| `a4553f1` | Adds the Feature 005 showcase site and T057/T058 evidence. T057 is complete; T058 remains partial. |
+| `57ce87f` | Saves Feature 002 protocol review working artifacts: local draft protocol, validation/scanning scripts, and audit draft. These artifacts do not claim independent review completion. |
+| `2e2963b` | Updates `next_work.md` with the commit set and Phase 4 dependency gate. |
+
+The Phase 4 preflight found T026–T030 blocked because T022 and its Phase 3 prerequisites are incomplete. No Phase 4 code or tests were run. Historical verification outcomes remain in task-specific evidence; packaging and publication did not rerun those checks. The push changed only the current feature branch. No merge or update to `main` was made.
