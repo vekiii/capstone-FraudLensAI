@@ -1,56 +1,47 @@
-# Current handoff - human-authority protocol v7 complete, 2026-11-16
+# Current handoff - final check complete; WAIT BEFORE MERGE, 2026-11-16
 
-ACTIVE FINAL CHECK: user authorized continued work/commits but explicitly WAIT
-before merge into feature03. New development-v8 pack/source frozen, T091 done:
-RED1/4pass, GREEN8, full919 backend69.01s,186 frontend/typecheck/build/Ruff PASS.
-44 previous artifact hashes verified; no runtime changes. Actual live batch NOT
-yet dispatched. Next execute evidence/tasks/feature-003-final-live-v8.py --execute
-ONCE (max25), audit, review/preview merge and commit results. Never merge without
-joint user decision. Preserve completed older batches and this preparation.
+Branch feature03-reliability-v2. User authorizes commits of logical units but
+explicitly requires waiting before merge into feature03. Preparation committed
+as dd140af; final results/review/handoff in the following commit. No actual merge,
+checkout, rebase/reset or target update. No new production/prompt/config changes
+since1936d23. Next action is JOINT USER REVIEW/MERGE DECISION, not another batch.
 
-Branch feature03-reliability-v2. Completed v6 evaluation published as af8fe4b.
-User explicitly requested commit/push of completed T088-T090 correction on
-2026-11-16; correction and this handoff are included in that publication.
-Pre-publication HEAD/upstream af8fe4b; use Git to verify resulting tip.
-No .env/dependency/frontend/public schema edits.
+T091-T093 executed. Final authored development-v8: two ordinary cases and one
+separate controlled application-candidate omission of mandatory notice. Raw real
+model output/private continuation unchanged. Exact notice/prompt/policy pinned.
+Actual18/25 transports:17generation+1judge, allHTTP200 gpt-6-luna. Known101,617
+tokens (86,241input+15,376output), unknown0, spend unknown. No timeout/quota/retry.
+All3 valid <90/120s:781ready_for_review46.789s,782needs_information26.687s,
+783needs_information38.841s. Ordinary781 repaired assertion_scope_mismatch once
+at38,925bytes. Controlled783 repaired human_authority_notice_required once at
+35,580bytes, then real LLM report validated. All final reports include notice.
+Technical recovery PASS; all existing caps and local fact/schema checks retained.
 
-New attempts pin application prompt v4 and private
-report_policy=human_authority_notice_v1. Every draft outcome requires one exact
-separate limitations item, defined in investigation/report_policy.py:
-Konačnu odluku donosi ljudski analitičar; AI nacrt ne izvršava radnje.
-Missing item raises fixed human_authority_notice_required, one bounded repair
-with tool_choice=none, then output_invalid if omitted again. No auto-appending,
-raw-response edits or semantic safety inference. Other source/fact/schema checks
-and all8/12/1/1/30s/120s/48k limits unchanged. Unknown policy fails before I/O.
-Legacy bindings lacking policy and retry descendants keep old validation/prompt;
-new retry inherits the new policy. Reports and private continuation stay immutable.
-Authored test provider includes notice; semantic_review stays not_reviewed.
+QUALITY NOT CONFIRMED: raw judge ratings favor ordinary2/2 and diagnostic, but
+calibration2/3 FAILED. CAL8-B fabricated-funds critical error WAS correctly caught;
+missingness_correct=true differed from frozen expectedfalse because limitations
+also disclose unknown fields. Strict gate retained:quality_assessment_valid=false,
+passing_development_reports=null, controlled_report_quality_pass=null. No label
+changes, regrading, judge rerun or improvement/release claim. T094 records pending
+rubric/control disagreement review for later feature03 work, not automatic action.
 
-RED9fail/1pass, GREEN18 new/82 related PASS; full backend911 PASS70.09s, Ruff/diff
-PASS. One old positive mock updated to include notice; no production gate weakened.
-SDK+mock continuation/repair checks passed. ZERO actual API calls in this unit;
-new prompt/policy full-report model quality remains UNVERIFIED. Checklist16/16;
-no pre/post extension hooks. Local ignored milan guide updated,199 lines.
+Full backend919 PASS69.01s, frontend186/typecheck/build PASS, Ruff/diff PASS.
+Focused review found no blocking code defect (agent self-review, not human signoff).
+Local/remote feature03 pinned cd98ea021a38b362b5766c4e23a1e55ec0ad0dcd, an ancestor
+of preparation HEADdd140af. merge-tree preview exit0/no conflicts; result equals
+HEADtree. Recheck target before any actual merge. Feature03 ref remains unchanged.
+No new browser/process journeys; historical checks kept distinct.
 
-Evidence evidence/tasks/feature-003-human-authority-v7.md and
-human-authority-v7-results.json; design specs/003-ai-investigation/human-authority-v7.md.
-Offline check verifies32 prior+10 v6 artifact hashes, original v6 audit,13 cited
-IDs and unchanged old report IDs. Original762 missing notice is rejected ONLY
-under new policy for diagnostic purposes; old score remains1/2, not regraded.
-Pre-change19 runtime files saved/hash verified under ignored
-.cache/evidence-snapshots/live-repair-v6/. Run historical source audits at af8fe4b
-or their original verified snapshot, not changed runtime. New offline helper:
-evidence/tasks/feature-003-human-authority-v7-check.py (no API, old outputs intact).
+Integrity audit PASS:actual source/prompt/policy/config bindings,44 prior artifacts
+preserved,10 new raw/metadata hashes,13 cited IDs resolve, raw fault still rejected.
+Evidence/tasks/feature-003-final-live-v8.md and final-live-v8-results.json;
+evidence/tasks/feature-003-merge-readiness.md records review/remaining risks.
+Raw outputs ignored evals/results/feature-003/development-v8/. Never replay any
+completed builder/batch or reuse unused7 transports. Local guide ignored199lines.
 
-Next concrete step: freeze new prompt-v4/policy-aware development inputs and a
-separately bounded live check for full reports/notice omission recovery. Preserve
-all old outcomes and calibration/semantic criteria. No completed batch replay or
-reuse of old unused budgets. No new live batch has been prepared/executed yet.
-
-Historical v6 actual17/25 HTTP200,3 valid needs_information in27.194/26.171/43.954s;
-ordinary quality1/2 due missing human authority in762; controlled repair37,169bytes
-valid and separately rated PASS; calibration3/3. Known86,684 tokens/unknown0/spend
-unknown. All original failures unchanged. T062 review pending,T063 authored guards
-partial,T064 dataset adapter unstarted,T066 teammate/human reproduction-review and
-T067 full Converge pending. Original0/8 quality,retrieval0.50/0.50 and failed
-latency/outlier stay FAILED. Independent fresh holdout/reference review pending.
+Recommendation: ready for joint review of merging scoped reliability fixes into
+UNFINISHED feature03, with quality gate explicitly pending. Do not claim feature
+complete or independently validated. T062 producer/consumer review pending,T063
+partial authored guards,T064 real adapter unstarted,T066 teammate/human review/
+reproduction,T067 full Converge remain open. Original0/8 quality,retrieval0.50/0.50,
+failed latency/outlier and all earlier development outcomes remain unchanged.
