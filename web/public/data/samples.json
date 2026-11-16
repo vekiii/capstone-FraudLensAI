@@ -1,0 +1,10 @@
+{
+  "source_version": "illustrative-v1",
+  "generated_at": "2026-11-16T10:34:51Z",
+  "source": "illustrative",
+  "label": "ILLUSTRATIVE, not model output",
+  "samples": [
+    {"id":"demo-01","label":"ILLUSTRATIVE, not model output","title":"Synthetic transfer timeline","status":"Illustrative only","amount":"—","currency":"—"},
+    {"id":"demo-02","label":"ILLUSTRATIVE, not model output","title":"Coverage boundary example","status":"Illustrative only","amount":"—","currency":"—"}
+  ]
+}
