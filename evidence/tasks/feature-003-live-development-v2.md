@@ -1,6 +1,7 @@
 # Actual live development check v2 — 2026-11-16
 
-Current status: preparation frozen, live dispatch not yet started. User authorized
+Current status: **live development run and automated assessment completed**.
+Preparation history follows, then actual results. User authorized
 publication then actual LLM quality checks; [original request](../../prompts/development/003-live-development-v2-2026-11-16.md).
 [Protocol/design](../../specs/003-ai-investigation/live-development-v2.md).
 
@@ -59,3 +60,77 @@ producer, frontend or old evaluation artifacts changed in this follow-up.
 Full backend regression **833 PASS in42.44s**, exit0 (814+19 runner checks):
 `.venv/Scripts/python.exe -m pytest backend/tests -q --tb=short --basetemp=.cache/live-development-v2/full-tmp -o cache_dir=.cache/live-development-v2/full-cache`.
 No live outcome, usage, quality rating or spend is inferred from preparation.
+
+## Actual execution and results
+
+Setup/protocol committed/pushed as **103c3c0**, then executed exactly once:
+
+```powershell
+$env:PYTHONPATH = Join-Path $PWD 'backend/src'
+.venv/Scripts/python.exe -X utf8 evidence/tasks/feature-003-live-development-v2.py --execute
+.venv/Scripts/python.exe -X utf8 evidence/tasks/feature-003-live-development-audit.py
+.venv/Scripts/python.exe -X utf8 evidence/tasks/feature-003-reliability-diagnose.py
+```
+
+Runner exit0 means completed execution/aggregation, not all cases passed. Actual
+**17/25 transport attempts:16 generation +1 judge**. **16 HTTP200**,1 generation
+attempt without response headers. No model switch, case rerun or extra judge;
+all3 original outcomes retained. Returned model gpt-6-luna on all16 completed
+provider responses. No runtime/prompt/retrieval/expectation changes between cases.
+
+| Case | Actual result | Seconds | Requests/tools | Automated support | Essential coverage | Development pass |
+|---|---|---:|---|---|---|---|
+| DEV2-701 incomplete multi-currency history | failed,budget_exhausted; no report |37.971|5/4|N/A|N/A|FAIL|
+| DEV2-702 unavailable history | needs_information |21.054|5/4|4/4|4/5 (80%)|PASS|
+| DEV2-703 controlled no guidance | needs_information |21.051|6/5|4/4|5/6 (83.33%)|PASS|
+
+All three used zero repairs. **2/3** yielded validated drafts within90s; all three
+terminated within120s. This is descriptive on this development sample, not the
+separate five-case release criterion. First case's fifth dispatch had no headers
+for29.987s and unknown provider outcome/usage. Together with the fixed30s request
+limit,5<8 requests and37.971<120 total, this is consistent with per-request timeout,
+not exhausting8 dispatches/120s. Underlying provider/network cause is unknown;
+the recorded public code remains budget_exhausted. Do not assume it cost zero.
+
+Single stateless same-model judge completed and rated all units of both existing
+reports. Generation failure remains failed with no invented claim ratings.
+On those TWO reports only: **8/8 observational units supported**, **9/11 essential
+units present**, **1/1 procedure applicable**. No-guidance case has zero procedural
+units (applicability N/A, not100%). Both drafts had correct missingness and no
+critical unsupported claim/additional issue according to this machine judge.
+Missing E01 coverage: explicit statement that transfer is not bank loss; on703
+also explicit focal transaction ID. These compound predeclared requirements were
+not relaxed after scoring. Same-model judgment is not independent correctness.
+
+Usage reported for16 completed responses: **56,917 input +7,354 output =64,271
+known tokens**, plus1 attempt with unknown usage; actual spend unknown. Judge
+cost/latency not counted as a case-generation latency. No pricing invented.
+
+## Actual post-run audit and boundaries
+
+Audit PASS, exit0. [Safe machine results](feature-003-live-development-v2-results.json)
+include exact hashes, denominators, timing/usage/status counts. Nine raw/metadata
+artifacts sealed and hash-bound under ignored evals/results/feature-003/development-v2.
+All source/protocol hashes still match pre-dispatch freeze; all3 context/input/
+corpus/retrieval bindings and report validation rechecked. **8 cited IDs resolve**
+to the exact saved evidence; zero unknown IDs. Same-model raw judge response/rating
+and packets preserved; no raw outputs/SQLite/opaque reasoning/key committed.
+
+Original baseline42-file check PASS: only the expected three runtime maintenance
+sources differ from cd98ea0, other39 original files unchanged, including old
+protocol/holdout/reference/summary artifacts. Old raw execution archives still
+absent here; no fresh old-raw-integrity claim. Local .env unchanged. Git publication
+checked private-key absence and excluded local/generated files before staging.
+
+The DEV2-702 language metadata says sr-Cyrl but its authored instruction/query hints
+are Latin Serbian, as on the other cases. No live Cyrillic/cross-language quality
+claim follows; offline script-equivalence checks remain separate. This metadata
+limitation is disclosed without rewriting the frozen inputs.
+
+Original0/8 quality,0.50 retrieval and failed original demo/outlier remain unchanged.
+New2/3 is **not a comparable before/after improvement estimate**: different
+development cases and a single automated primary judge, no independent reference
+review/secondary judge/human validation. Producer integration and T066/T067 remain
+pending. Do not spend unused8 attempts or rerun the completed batch to replace the
+failed case. Next concrete work: diagnose the30s no-header timeout with offline
+regressions before planning any separately bounded new live revision.

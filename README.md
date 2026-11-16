@@ -1,5 +1,11 @@
 # FraudLens AI
 
+Actual LLM development check (2026-11-16): three new synthetic cases with
+gpt-6-luna, **2/3 development passes** under one same-model automated judge; the
+remaining case failed during a 30-second request window. All outcomes retained,
+17 transports total. This is not an independent release evaluation or a comparable
+before/after estimate. See [results and limits](evidence/tasks/feature-003-live-development-v2.md).
+
 Reliability maintenance (2026-11-16): new attempts use prompt v2, actionable safe
 repair feedback, a final drafting request and bounded provider cleanup. An opt-in
 Serbian script-normalization candidate is available; original evaluation failures

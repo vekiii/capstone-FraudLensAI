@@ -1,15 +1,26 @@
-# Current handoff — branch pushed; live development v2 frozen, 2026-11-16
+# Current handoff — new branch/live development v2 completed, 2026-11-16
 
 User now explicitly authorized new branch push then actual LLM quality checks.
 Created feature03-reliability-v2 from feature03, pushed maintenance7ed606c to origin.
 feature03 remains cd98ea0. New protocol: specs/003-ai-investigation/live-development-v2.md.
 T073 prepared/frozen3 NEW synthetic development inputs and separate expectations,
-durable cap25 (8/case+1judge), no unknown-dispatch replay. Actual live calls so far0.
+durable cap25 (8/case+1judge), no unknown-dispatch replay. Setup pushed103c3c0.
 34 targeted/mock checks PASS; full backend833 PASS; Ruff/diff PASS.
-Next: execute bounded development-v2 once, then one offline batch judge; preserve
-all results. This user authorization supersedes the earlier no-live boundary below.
-Evidence: evidence/tasks/feature-003-live-development-v2.md. No runtime tuning
-between cases; no independent holdout/human/release claims. Pending T074/T075.
+T074/T075 complete:17/25 actual transports (16generation+1judge),16HTTP200 and1
+unknown/no-header request. DEV2-701 failed budget_exhausted after37.971s; its fifth
+request waited29.987s without headers, consistent with30s request timeout. Cause/
+usage/spend unknown for that request. DEV2-702/703 needs_information at21.054/21.051s.
+Same-model single-judge development PASS2/3: support4/4 each, coverage4/5 and5/6;
+missingness correct, no critical flags on those TWO drafts. All3 terminal<120s.
+Known64,271 tokens plus1 unknown usage attempt; spend unknown. Audit/hashes PASS,
+8 cited IDs resolve; raw/new sealed outputs ignored under development-v2/. Old
+outcomes unchanged; no comparable before/after or independent/human quality claim.
+No runtime tuning between cases; no reruns/extra judges/unused8-attempt reuse.
+Evidence: evidence/tasks/feature-003-live-development-v2.md and
+evidence/tasks/feature-003-live-development-v2-results.json.
+Local guide remains ignored; .env unchanged. T062–T064/T066/T067 pending.
+Next: diagnose30s no-header timeout with offline regressions, then scope a
+separately bounded new live revision if requested. Do NOT replay completed batch.
 
 ## Completed maintenance context
 
