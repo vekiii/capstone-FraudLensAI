@@ -6,6 +6,9 @@
 
 ## Summary
 
+Maintenance follow-up (2026-11-16): [reliability-v2.md](reliability-v2.md) defines
+the user-authorized post-evaluation development revision and preservation boundary.
+
 Deliver curated knowledge search, a bounded tool-using investigation, immutable evidence-backed reports and explicit human disposition. Work from authored fixtures before dataset/model integration. Add feature-local modules and a separate SQLite store; preserve foundation response contracts and do not import unfinished ML code. The first useful increment is US1 search/source inspection; the complete investigation MVP includes US2-US4, and US5 evaluation is mandatory for release.
 
 ## Technical Context

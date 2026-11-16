@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Protocol
 
 from fraudlens.investigation.models import SCHEMA, canonical, validate
+from fraudlens.investigation.repair import REPAIR_HINTS
 
 ROOT = Path(__file__).resolve().parents[4]
 PRIVATE = re.compile(r'label|laundering|isfraud|reference.answer|source.path|source.row|reviewer', re.I)
@@ -112,7 +113,10 @@ class OpenAIProvider:
                 pending.append(dict(type='function_call_output', call_id=item['call_id'],
                                     output=canonical(item['result']).decode()))
             elif item['type'] == 'repair':
-                pending.append(dict(role='user', content='Repair the draft: output_invalid. Use only supplied evidence.'))
+                instruction = 'Repair the draft: output_invalid. Use only supplied evidence.'
+                if 'reason' in item:
+                    instruction += ' ' + REPAIR_HINTS[item['reason']]
+                pending.append(dict(role='user', content=instruction))
         payload = dict(model=self.model, instructions=self.prompt, input=pending,
             tools=tools, parallel_tool_calls=False, store=False,
             include=['reasoning.encrypted_content'],
@@ -309,8 +313,11 @@ def project_conversation(conversation):
                 _keys(item, ('type', 'call_id', 'result'), ('call_id', 'result'))
                 _provider_result(item['result'])
             elif kind == 'repair':
-                _keys(item, ('type', 'code'), ('type', 'code'))
+                _keys(item, ('type', 'code', 'reason'), ('type', 'code'))
                 if item['code'] != 'output_invalid':
+                    raise ProviderError('provider_input_invalid')
+                if 'reason' in item and (not isinstance(item['reason'], str)
+                                        or item['reason'] not in REPAIR_HINTS):
                     raise ProviderError('provider_input_invalid')
             else:
                 raise ProviderError('provider_input_invalid')

@@ -1,4 +1,30 @@
-# Current handoff - T059/T060/T061 completed, 2026-11-15
+# Current handoff — reliability v2 maintenance completed, 2026-11-16
+
+User authorized option1 diagnosis/fixes and short guide in milan. T068–T072 complete:
+safe allowlisted repair reasons, prompt v2 for new attempts, last request/repair
+restricted to drafting, bounded async provider cleanup, opt-in Cyrillic glossary
+lookup and separate unvalidated development config. Original config/prompt/results
+unchanged. .env unchanged; no new API calls, installs, model switch or Git publication.
+
+Executed RED→GREEN; full backend814 PASS (791+23), Ruff/diff PASS. Isolated actual
+local HTTP/CLI test-provider journey8/8 PASS. No browser/manual UI/frontend rerun.
+Local ignored guide: milan/feature03-provere-v2.md,144 lines. Evidence:
+evidence/tasks/feature-003-reliability-v2.md and baseline manifest. Original runtime
+at cd98ea021a38b362b5766c4e23a1e55ec0ad0dcd; old frozen-source audits must use it,
+not the changed development checkout. Of42 baseline files only3 expected runtime
+sources changed, other39 match. Ignored raw live-v1/judge-v2/retrieval-v1 archives
+ABSENT here: no fresh raw-integrity/exact old-rejection/outlier-cause claim.
+
+Original quality0/8, retrieval0.50/0.50, demo2/5-within90 and7496.290s outlier remain
+FAILED. No old batch replay/unused-budget reuse. New independent quality estimates
+need a NEW versioned protocol/fresh holdout. T062 producer review, T063 partial
+authored guards, T064 real adapter, T066 actual teammate reproduction/human review
+and T067 final feature Converge remain pending. V2 focused review is not T067.
+Next: review v2 and scope/freeze a bounded development-only live test on new
+synthetic input before fresh independent evaluation. Producer integration is a
+separate pending team dependency. No additional live execution authorized here.
+
+## Historical handoff — 2026-11-15 (superseded current next step)
 
 User-authorized post-hoc report-judging-v2 replaces BOTH human rating roles.
 User approved max6 new gpt-6-luna judge attempts; actual3/6, all200, no retries.

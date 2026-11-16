@@ -7,6 +7,13 @@ from collections import Counter
 from fraudlens.investigation.knowledge import KnowledgeUnavailable
 from fraudlens.investigation.models import validate
 
+SERBIAN_LATIN = str.maketrans(dict(zip(
+    'абвгдђежзијклљмнњопрстћуфхцчџш',
+    ('a', 'b', 'v', 'g', 'd', 'đ', 'e', 'ž', 'z', 'i', 'j', 'k', 'l', 'lj',
+     'm', 'n', 'nj', 'o', 'p', 'r', 's', 't', 'ć', 'u', 'f', 'h', 'c', 'č', 'dž', 'š'),
+    strict=True,
+)))
+
 
 def tokens(text):
     text = unicodedata.normalize('NFKC', text).casefold()
@@ -21,6 +28,9 @@ class SearchResult(dict):
 def search(store, query, corpus, retrieval):
     query = validate('SearchArguments', {'query': query})['query']
     config = store.configuration(retrieval)
+    policy = config.get('query_normalization', 'legacy')
+    if not isinstance(policy, str) or policy not in ('legacy', 'sr_cyrillic_to_latin_v1'):
+        raise KnowledgeUnavailable('Unknown query normalization policy')
     cutoff = config.get('adequacy_cutoff')
     if (isinstance(cutoff, bool) or not isinstance(cutoff, (int, float))
             or not math.isfinite(cutoff) or cutoff < 0
@@ -36,6 +46,10 @@ def search(store, query, corpus, retrieval):
     if variant not in ('baseline','title_glossary'):
         raise KnowledgeUnavailable('Unknown retrieval variant')
     weights = {term:1.0 for term in tokens(query)}
+    if policy == 'sr_cyrillic_to_latin_v1':
+        # Only script conversion for lookup, no new concepts or inferred synonyms.
+        # Without this explicit configuration old hashes/scores keep old semantics.
+        weights = {term.translate(SERBIAN_LATIN): weight for term, weight in weights.items()}
     titles = [Counter(tokens(p['document']['title']+' '+p['section'])) for p in passages]
     if variant == 'title_glossary':
         glossary = config.get('glossary',{})

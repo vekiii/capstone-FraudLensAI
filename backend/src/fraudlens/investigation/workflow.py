@@ -11,6 +11,7 @@ from uuid import UUID, uuid4
 from fraudlens.investigation.context import CaseContextReader, outbound_context
 from fraudlens.investigation.models import SCHEMA, canonical, digest, validate
 from fraudlens.investigation.provider import ProviderError, ScriptedProvider
+from fraudlens.investigation.repair import repair_reason
 from fraudlens.investigation.settings import InvestigationSettings
 from fraudlens.investigation.tools import ToolExecutor, content_digest, definitions
 from fraudlens.investigation.validation import validate_report
@@ -106,7 +107,7 @@ class InvestigationService:
         if self.settings.provider == 'openai' and not self.settings.api_key.get_secret_value():
             raise ValueError('provider_unavailable')
         from fraudlens.investigation.models import ROOT
-        prompt = (ROOT / 'prompts/application/investigation-v1.md').read_text(encoding='utf-8')
+        prompt = (ROOT / 'prompts/application/investigation-v2.md').read_text(encoding='utf-8')
         limits = {key: getattr(self.settings, key) for key in (
             'max_provider_requests', 'max_tool_calls', 'total_timeout_seconds', 'request_timeout_seconds',
             'max_input_bytes', 'max_output_tokens', 'max_response_bytes')}
@@ -352,6 +353,9 @@ class InvestigationService:
                 request_limits = dict(request_timeout=min(30, limits['request_timeout_seconds'], remaining),
                     max_input_bytes=limits['max_input_bytes'], max_output_tokens=limits['max_output_tokens'],
                     max_response_bytes=limits['max_response_bytes'])
+                if repairs or sequence == limits['max_provider_requests']:
+                    # Tool gathering cannot consume the last chance to draft.
+                    request_limits['tool_choice'] = 'none'
                 try:
                     async with asyncio.timeout(request_limits['request_timeout']):
                         turn = await provider.next_turn(messages, definitions(), SCHEMA['$defs']['ReportDraft'], request_limits)
@@ -399,13 +403,14 @@ class InvestigationService:
                 try:
                     report = validate_report(turn.draft, self.evidence(attempt_id), attempt_id,
                         context['context_revision'], context, binding['corpus_version'])
-                except ValueError:
+                except ValueError as exc:
                     if repairs:
                         raise ProviderError('output_invalid') from None
                     repairs += 1
+                    reason = repair_reason(exc)
                     with self.repo.transaction() as db:
-                        event(db, attempt_id, 'repair')
-                    messages.append(dict(type='repair', code='output_invalid'))
+                        event(db, attempt_id, 'repair', reason=reason)
+                    messages.append(dict(type='repair', code='output_invalid', reason=reason))
                     continue
                 self._complete(attempt_id, owner, report)
                 break
@@ -420,5 +425,18 @@ class InvestigationService:
             raise
         finally:
             if provider is not None and hasattr(provider, 'aclose'):
-                await provider.aclose()
+                # Closing a transport must not strand the CLI after state is saved.
+                # asyncio cancellation is cooperative; host suspension/blocking code
+                # still cannot be bounded by an in-process coroutine timeout.
+                status = None
+                try:
+                    async with asyncio.timeout(min(1, max(0, deadline - time.monotonic()))):
+                        await provider.aclose()
+                except TimeoutError:
+                    status = 'timeout'
+                except Exception:
+                    status = 'failed'
+                if status:
+                    with self.repo.transaction() as db:
+                        event(db, attempt_id, 'provider_cleanup', status=status)
         return self.read(attempt_id)

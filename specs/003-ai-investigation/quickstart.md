@@ -1,5 +1,13 @@
 # Feature 003 validation quickstart
 
+2026-11-16 maintenance: [reliability v2](reliability-v2.md)
+defines prompt/repair/deadline checks and an opt-in script-normalization
+candidate. Backend regression: 814 PASS. This is a post-evaluation revision;
+original frozen quality/time failures below are preserved, not re-evaluated.
+The isolated new check is `.venv/Scripts/python.exe -X utf8 evidence/tasks/feature-003-reliability-smoke.py`.
+Use `--retrieval data/knowledge/fraudlens-aml-knowledge-v1/retrieval-development-v2.json`
+with prepare-knowledge and a separate store to explicitly try the candidate.
+
 Status (2026-11-15): reviewed six-document search, fixture investigation, durable
 worker/recovery and analyst review are implemented; T051 human confirmation and
 T033 synthetic provider capability check are complete. T054–T058 were executed,

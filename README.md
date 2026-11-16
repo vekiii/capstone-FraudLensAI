@@ -1,5 +1,12 @@
 # FraudLens AI
 
+Reliability maintenance (2026-11-16): new attempts use prompt v2, actionable safe
+repair feedback, a final drafting request and bounded provider cleanup. An opt-in
+Serbian script-normalization candidate is available; original evaluation failures
+remain unchanged. **814 backend tests PASS**; no new live evaluation. See the
+[executable quickstart](specs/003-ai-investigation/quickstart.md) and
+[maintenance evidence](evidence/tasks/feature-003-reliability-v2.md).
+
 Feature 003 update (2026-11-15): reviewed-source search, test-provider investigation,
 evidence/report browsing, durable recovery and explicit analyst review are
 implemented. [Executable quickstart](specs/003-ai-investigation/quickstart.md)

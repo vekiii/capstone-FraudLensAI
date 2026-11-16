@@ -272,3 +272,15 @@ Setup -> foundational boundaries -> US1 source/search -> US2 offline report -> U
 | SC-008 | T033, T052-T061, T066-T067 |
 
 All 67 tasks remain unchecked at generation. Checking a RED task means its intended failing cases were actually observed, not that feature behavior is implemented. A gate task is complete only when its actual evidence exists.
+
+## Phase 9: User-authorized reliability follow-up (2026-11-16)
+
+Scope/design: [reliability-v2.md](reliability-v2.md). This maintenance is separate
+from pending T062–T067 and does not close any failed quality criterion. All new
+checks use authored development fixtures, not the exposed holdout. No live calls.
+
+- [x] T068 Diagnose committed generation/retrieval/timing summaries without loading held-out references; record available/missing archives, immutable baseline hashes and defensible findings in evidence/tasks/feature-003-reliability-v2.md. (FR-025–028, SC-008.)
+- [x] T069 Add intended RED then GREEN tests for safe actionable report-repair diagnostics, reserving the final request for drafting and SDK serialization; implement allowlisted feedback, preserved single-repair/privacy controls and a separately versioned structural application prompt in provider.py/workflow.py. (Depends: T068; FR-013–018, FR-024.)
+- [x] T070 Reproduce asynchronous provider-cleanup timeout/error gaps; bound cleanup within remaining attempt time and preserve persisted state/cancellation/usage accounting. Record limitations without attributing the old outlier to an unproven cause. (Depends: T068; FR-018–020, SC-006.)
+- [x] T071 Add intended RED then GREEN script-equivalence/no-match/unknown-policy tests and implement opt-in versioned Serbian glossary lookup normalization in retrieval.py; supply an explicitly unvalidated separate development config, preserving legacy configuration behavior and old frozen results. (Depends: T068; FR-007–008, FR-025–028, SC-002.)
+- [x] T072 Run complete backend/Ruff, isolated local diagnostic journey and integrity checks; record commands/results/remaining evaluation needs, write milan/feature03-provere-v2.md below 200 lines with explained PowerShell commands, and update next_work.md. (Depends: T069–T071; FR-028, SC-004–008.)
