@@ -1,5 +1,13 @@
 # Current handoff - human-authority protocol v7 complete, 2026-11-16
 
+ACTIVE FINAL CHECK: user authorized continued work/commits but explicitly WAIT
+before merge into feature03. New development-v8 pack/source frozen, T091 done:
+RED1/4pass, GREEN8, full919 backend69.01s,186 frontend/typecheck/build/Ruff PASS.
+44 previous artifact hashes verified; no runtime changes. Actual live batch NOT
+yet dispatched. Next execute evidence/tasks/feature-003-final-live-v8.py --execute
+ONCE (max25), audit, review/preview merge and commit results. Never merge without
+joint user decision. Preserve completed older batches and this preparation.
+
 Branch feature03-reliability-v2. Completed v6 evaluation published as af8fe4b.
 User explicitly requested commit/push of completed T088-T090 correction on
 2026-11-16; correction and this handoff are included in that publication.

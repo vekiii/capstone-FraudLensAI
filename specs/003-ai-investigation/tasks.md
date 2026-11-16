@@ -337,3 +337,11 @@ Design: [human-authority-v7.md](human-authority-v7.md). No old scoring changes.
 
 - [x] T089 Implement pinned prompt v4/private human_authority_notice_v1 for new attempts, exact-item validation and fixed safe repair hint; retain legacy/retry pinning, raw response/report immutability and existing budgets. Add negative/SDK/recovery regressions. GREEN18 new/82 related; full protocol guard without raw draft edits. (Depends:T088; FR-013–020, FR-022–024.)
 - [x] T090 Run full backend/Ruff and offline prior artifact/source preservation checks; record actual evidence, local guide and handoff, keeping model-quality verification pending. Full911/Ruff PASS; offline32 prior+10 v6 hashes/13 citations PASS; no live calls. See evidence/tasks/feature-003-human-authority-v7.md. (Depends:T089; FR-024–028, SC-008.)
+
+## Final reliability follow-up and merge preparation
+
+Scope: [final-live-check.md](final-live-check.md). User requires waiting before merge.
+
+- [x] T091 Prepare/test new policy-aware three-case development pack and one-shot notice-omission diagnostic; freeze source/prompt/config and separate references/calibrations, max25 ledger. RED1/4pass, GREEN8, full919 backend/186 frontend/build/Ruff PASS;44 earlier artifact hashes verified. (Depends:T090; FR-013–020, FR-024–028.)
+- [ ] T092 Execute one bounded unchanged actual-model batch and calibrated judge; audit ordinary/diagnostic results, bindings, usage, citations and old artifact preservation. (Depends:T091; FR-018, FR-025–028.)
+- [ ] T093 Review branch diff and target ancestry/merge preview; run backend/frontend regression, record remaining feature gates, commit evidence/handoff and WAIT for user's merge decision. This is not T067/full acceptance or human sign-off. (Depends:T092; FR-028, SC-004–008.)
