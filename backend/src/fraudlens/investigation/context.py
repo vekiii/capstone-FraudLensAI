@@ -20,12 +20,15 @@ def instant(value):
 
 
 class CaseContextReader:
-    def __init__(self, fixture_path=None, metadata_path=None):
+    def __init__(self, fixture_path=None, metadata_path=None, dataset_reader=None):
+        self.dataset_reader = dataset_reader
         self.fixture_path = Path(fixture_path or Settings().fixture_path)
         self.metadata_path = Path(metadata_path or FIXTURES / 'contexts.json')
 
     def resolve(self, case_id, source_mode, snapshot_ref):
         if source_mode != 'fixture':
+            if source_mode == 'dataset' and self.dataset_reader is not None:
+                return self.dataset_reader.resolve(case_id, snapshot_ref)
             raise ValueError('Dataset context unavailable; no fixture fallback')
         metadata = json.loads(self.metadata_path.read_text(encoding='utf-8'))
         snapshot = 'fixture_' + digest({
@@ -46,7 +49,8 @@ class CaseContextReader:
 
 
 class HistoryReader:
-    def __init__(self, events=None, accounts=None):
+    def __init__(self, events=None, accounts=None, dataset_reader=None):
+        self.dataset_reader = dataset_reader
         self.events = copy.deepcopy(events) if events is not None else json.loads(
             (FIXTURES / 'history.json').read_text())['events']
         self.accounts = copy.deepcopy(accounts) if accounts is not None else json.loads(
@@ -54,6 +58,8 @@ class HistoryReader:
 
     def read(self, context, account_side, limit=50):
         context = validate('InvestigationContext', context)
+        if context['source_mode'] == 'dataset' and self.dataset_reader is not None:
+            return self.dataset_reader.read(context, account_side, limit)
         if account_side not in ('sender', 'receiver') or type(limit) is not int or not 1 <= limit <= 50:
             raise ValueError('Invalid history arguments')
         history = context['history']
@@ -101,7 +107,12 @@ def outbound_context(context, run_id):
         result=dict(source_mode='dataset',notice='Authored/synthetic benchmark context; not a legal finding.',
             context_revision=context['context_revision'],case_id=context['case_id'],transaction=tx,
             assessment=copy.deepcopy(context['source_payload']['risk_assessment']))
-        validate_outbound_dataset(result)
+        if context['contract_version'] == 2:
+            result['context_contract_version'] = 2
+            result['notice'] = ('Synthetic benchmark; preserve score kind and limitations. '
+                                'Boosted contributions are sequential, order/baseline dependent, '
+                                'not causal/SHAP or calibrated probability. Human decision required.')
+        validate_outbound_dataset(result, context['contract_version'])
         return result
     tx, risk = context['source_payload']['transaction'], context['source_payload']['risk_assessment']
     def alias(side):
@@ -115,12 +126,14 @@ def outbound_context(context, run_id):
                             ('score', 'source', 'scorer_version', 'scored_at', 'explanation')})
 
 
-def validate_outbound_dataset(value):
+def validate_outbound_dataset(value, contract_version=None):
     """Closed aliased projection of the pinned producer schema, no producer DB access."""
     from jsonschema import Draft202012Validator, FormatChecker
 
-    from fraudlens.investigation.models import PRODUCER
-    tx=copy.deepcopy(PRODUCER['$defs']['TransactionV2'])
+    from fraudlens.investigation.models import PRODUCER, PRODUCER_V2
+    version = value.get('context_contract_version', 1) if contract_version is None else contract_version
+    producer = PRODUCER_V2 if version == 2 else PRODUCER
+    tx=copy.deepcopy(producer['$defs']['TransactionV2'])
     for side in ('sender','receiver'):
         del tx['properties'][side]
         tx['required'].remove(side)
@@ -130,8 +143,11 @@ def validate_outbound_dataset(value):
         required=['source_mode','notice','context_revision','case_id','transaction','assessment'],
         properties=dict(source_mode=dict(const='dataset'),notice=dict(type='string'),
             context_revision=dict(type='string',pattern='^[0-9a-f]{64}$'),
-            case_id=PRODUCER['$defs']['CaseId'],transaction=tx,
-            assessment={'$ref':'#/$defs/AssessmentV2'}),**{'$defs':PRODUCER['$defs']})
+            case_id=producer['$defs']['CaseId'],transaction=tx,
+            assessment={'$ref':'#/$defs/AssessmentV2'}),**{'$defs':producer['$defs']})
+    if version == 2:
+        schema['properties']['context_contract_version'] = {'const': 2}
+        schema['required'].append('context_contract_version')
     try:
         Draft202012Validator(schema,format_checker=FormatChecker()).validate(value)
     except Exception as exc:

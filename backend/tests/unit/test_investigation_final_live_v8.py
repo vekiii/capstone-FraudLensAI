@@ -50,17 +50,35 @@ def test_notice_fault_cannot_be_injected_into_an_ordinary_or_old_case(case):
         runner.invalid_candidate(messages, Turn('draft', draft=scripted_draft(messages, 'grounded')))
 
 
-def test_prepare_pins_actual_prompt_and_policy_without_opening_expectations(tmp_path, monkeypatch):
+@pytest.mark.parametrize('artifact_state', ['valid', 'changed', 'missing'])
+def test_prepare_pins_actual_prompt_and_policy_without_opening_expectations(tmp_path, monkeypatch, artifact_state):
     original = runner.core.load
+    artifact = tmp_path / 'authored-prior-audit.json'
+    artifact.write_text('{"kind":"authored test artifact, not actual live evidence"}')
+    expected_artifact_hash = runner.core.sha(artifact)
+    if artifact_state == 'changed':
+        artifact.write_text('{"kind":"changed authored test artifact"}')
+    elif artifact_state == 'missing':
+        artifact.unlink()
 
     def guarded(path):
         if path.name in ('reference.json', 'calibrations.json'):
             pytest.fail('Expected labels opened before generation')
-        return original(path)
+        data = original(path)
+        if path == runner.PACK / 'protocol.json':
+            # Unit preparation must not depend on ignored historical live archives.
+            # Keep actual code hashes/checks; use an independently hashed local fixture.
+            data['preserved_artifacts'] = {str(artifact): expected_artifact_hash}
+        return data
 
     monkeypatch.setattr(runner.core, 'load', guarded)
     monkeypatch.setattr(runner.core, 'load_settings', lambda: InvestigationSettings(
         provider='openai', model='gpt-6-luna', api_key='AUTHORED-NOT-REAL'))
+    if artifact_state != 'valid':
+        error = ValueError if artifact_state == 'changed' else FileNotFoundError
+        with pytest.raises(error):
+            runner.prepare(tmp_path / 'run')
+        return
     _, _, _, _, _, freeze = runner.prepare(tmp_path / 'run')
     assert freeze['report_policy'] == HUMAN_AUTHORITY_POLICY
     assert freeze['prompt_sha256'] == runner.core.sha(runner.ROOT / 'prompts/application/investigation-v4.md')

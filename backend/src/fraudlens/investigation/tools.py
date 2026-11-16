@@ -112,12 +112,17 @@ class ToolExecutor:
                 ('availability', 'coverage', 'returned_count', 'eligible_count', 'truncated', 'totals')}
         body.update(account_side=side, events=[], view_scope=self.context['history']['view_scope'],
                     totals_scope='per_currency_permitted_lookback_before_truncation')
+        if self.context['contract_version'] == 2:
+            body['totals_scope'] = 'per_direction_per_currency_permitted_lookback_before_truncation'
         for key in ('cutoff', 'start', 'lookback_days'):
             body[key] = raw.get(key)
         for event in raw['events']:
             body['events'].append({**{key: event[key] for key in
                                       ('transaction_id', 'occurred_at', 'amount', 'currency')},
                                    'account_alias': alias})
+            if self.context['contract_version'] == 2:
+                body['events'][-1].update({key: event[key] for key in
+                                          ('direction', 'event_time_raw', 'time_basis')})
         history = {**self.context['history'], 'availability': raw['availability'],
                    'coverage': raw['coverage'], 'cutoff': raw.get('cutoff'), 'start': raw.get('start')}
         if raw['availability'] == 'unavailable':

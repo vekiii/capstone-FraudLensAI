@@ -8,7 +8,7 @@ import time
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
-from fraudlens.investigation.context import CaseContextReader, outbound_context
+from fraudlens.investigation.context import CaseContextReader, HistoryReader, outbound_context
 from fraudlens.investigation.models import SCHEMA, canonical, digest, validate
 from fraudlens.investigation.provider import ProviderError, ScriptedProvider, safe_diagnostic
 from fraudlens.investigation.repair import repair_reason
@@ -65,8 +65,14 @@ class InvestigationService:
         self.repo, self.knowledge = repository, knowledge
         self.settings = settings or InvestigationSettings()
         self.provider_factory = provider_factory or self._provider
-        self.context_reader = CaseContextReader()
-        self.history_reader = history_reader
+        dataset_reader = None
+        if self.settings.source == 'dataset':
+            from fraudlens.investigation.dataset import DatasetReader
+            dataset_reader = DatasetReader(self.settings.dataset_run_store, self.settings.dataset_store,
+                                           self.settings.dataset_score_source)
+        self.context_reader = CaseContextReader(dataset_reader=dataset_reader)
+        self.history_reader = history_reader or (HistoryReader(dataset_reader=dataset_reader)
+                                                 if dataset_reader is not None else None)
 
     def _provider(self, binding):
         if binding['provider_mode'] == 'test':

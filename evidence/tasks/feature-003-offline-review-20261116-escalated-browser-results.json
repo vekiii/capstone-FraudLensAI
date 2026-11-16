@@ -1,0 +1,22 @@
+{
+  "mode": "Automated local browser/process regression, no human review or real provider calls",
+  "status": "FAIL",
+  "real_provider_calls": 0,
+  "results": [
+    {
+      "source": "feature-003-knowledge-smoke.mjs",
+      "source_sha256": "1331a87556acf7bdd270dc3f7af10bc65339ccae18272dfe93a8b53e78220f84",
+      "generated_sha256": "71da0c95dbf86096f9f29565a567009ceab981f1140a71777be075d1a1455da9",
+      "command": [
+        "node",
+        "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-9fff889ca5484e72940fb43bb6d3e710\\feature-003-knowledge-smoke.mjs",
+        "--reviewed"
+      ],
+      "exit_code": 1,
+      "result": "feature-003-offline-review-20261116-escalated-knowledge-results.json",
+      "status": "FAIL",
+      "checks": 0,
+      "log": "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-9fff889ca5484e72940fb43bb6d3e710\\knowledge.log"
+    }
+  ]
+}

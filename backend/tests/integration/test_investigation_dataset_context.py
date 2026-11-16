@@ -1,8 +1,9 @@
 """Pinned authored boundary checks, NOT reviewed/live producer adapter evidence.
 
-T062 human review and the actual producer/history port remain pending. These
-tests verify existing safeguards without pretending a synthetic reader is that
-adapter, or weakening the frozen schema to accept newer producer methods.
+These historical version1 guards remain unchanged by the reviewed version2
+adapter. Actual consumer checks live in test_investigation_dataset_adapter.py;
+the producer-code smoke uses support/producer_dataset_smoke.py. None of these
+controlled records is a real IBM/model performance result.
 """
 import copy
 import json

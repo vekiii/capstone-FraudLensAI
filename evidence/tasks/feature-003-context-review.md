@@ -78,3 +78,42 @@ Actual producing reviewer: **pending**. Actual affected-consuming reviewer:
 not a human signature or approval. T062 remains unchecked. Authored contract
 regressions can run now; actual adapter RED/GREEN and real producer smoke remain
 dependent (T063/T064). See [Phase 8 handoff](feature-003-phase-08-handoff.md).
+
+## Superseding review decision, 2026-11-16 (T062)
+
+The user explicitly confirmed the supplied technical agreement on behalf of the
+team: "Ako mislis da ce raditi kao takav, onda ga potvrdjujemo. Koleginice su
+svakako to radile kao potvrdu." They assigned feature003 history implementation
+to the investigation contributor and producer work to the ML contributors.
+This is actual user-conveyed collective approval, not approval inferred from
+role, a passing test or an agent signature. No separate personal signatures are
+claimed. The pending status above is preserved as the dated historical state.
+
+Actual reviewed producer source:
+487c427ea50e169f5e36898420d659f05ead2c60 on
+origin/feature/005-real-time-fraud-detection-mlops-spec. Inspected data_store.py,
+data_contracts.py, feature002 schema and supplied agreement. Agreement is suitable
+for a consumer adapter. The producer still has no seven-day HTTP history route;
+feature003 now owns the fixed read-only SQLite consumer described in
+[accepted boundary/version2](../../specs/003-ai-investigation/dataset-adapter-agreement-v2.md).
+This resolves ownership without modifying their store, scorer or schema.
+
+Parsed schema comparison found exactly one change from the original pin:
+ExplanationAvailable.method adds boosted_sequential_probability. New snapshot
+SHA256 (exact exported bytes):
+3bb54c0bcad5f4683db8ee6ef1e663749993a25ab144869190ce0182ac6f7ab2.
+Original producer-v2.snapshot.json is untouched; new context-v2.json selects the
+new snapshot explicitly. Sequential positive-class contributions preserve scale,
+reconstruction, exact money, source identities and raw time assumptions.
+
+History: bank AND account, both directions with paid/received semantics, seven-day
+inclusive start/exclusive focal minute, focal exclusion, maximum50, eligible count,
+whole-item truncation, direction/currency totals, incomplete/full benchmark coverage
+and unavailable distinct from empty. SQL is fixed/parameterized, authorizer blocks
+private tables, connections use mode=ro and finite five-second query deadlines.
+Actual producer-generated store smoke passes for rules/model-shaped publications;
+see [execution evidence](feature-003-context.md). No full IBM stores are available.
+
+User expressly deferred the colleague document's unavailable 9454bfc reviewed SHA
+correction until after feature003. That separate documentation follow-up does not
+block this adapter, which is bound to the available source above. T062 complete.

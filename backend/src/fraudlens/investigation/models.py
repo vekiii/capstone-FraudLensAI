@@ -15,9 +15,14 @@ ROOT = Path(__file__).resolve().parents[4]
 SCHEMA_PATH = ROOT / 'specs/003-ai-investigation/contracts/schemas.json'
 SCHEMA = json.loads(SCHEMA_PATH.read_text(encoding='utf-8'))
 PRODUCER = json.loads(SCHEMA_PATH.with_name('producer-v2.snapshot.json').read_text())
+PRODUCER_V2 = json.loads(SCHEMA_PATH.with_name('producer-v2-reviewed-20261116.snapshot.json').read_text())
+CONTEXT_V2 = json.loads(SCHEMA_PATH.with_name('context-v2.json').read_text())
 FOUNDATION = json.loads((ROOT / 'specs/001-project-foundation/contracts/schemas.json').read_text())
 REGISTRY = Registry().with_resources([
     (SCHEMA['$id'], Resource.from_contents(SCHEMA)),
+    (CONTEXT_V2['$id'], Resource.from_contents(CONTEXT_V2)),
+    (urljoin(SCHEMA['$id'], 'producer-v2-reviewed-20261116.snapshot.json'),
+     Resource.from_contents(PRODUCER_V2)),
     (urljoin(SCHEMA['$id'], 'producer-v2.snapshot.json'), Resource.from_contents(PRODUCER)),
     (urljoin(SCHEMA['$id'], '../../001-project-foundation/contracts/schemas.json'),
      Resource.from_contents(FOUNDATION)),
@@ -60,7 +65,8 @@ def validate(name, value):
             if isinstance(value.get(key), str):
                 value[key] = value[key].strip()
     _finite(value)
-    schema = {**SCHEMA, '$ref': '#/$defs/' + name}
+    selected = CONTEXT_V2 if name == 'InvestigationContext' and value.get('contract_version') == 2 else SCHEMA
+    schema = {**selected, '$ref': '#/$defs/' + name}
     try:
         Draft202012Validator(schema, registry=REGISTRY,
                              format_checker=FormatChecker()).validate(value)
@@ -85,7 +91,8 @@ def validate(name, value):
             explanation = assessment['explanation']
             if explanation['status'] == 'available' and explanation['explained_scale'] != {
                 'rules': 'risk_score', 'linear_log_odds': 'log_odds',
-                'tree_path': 'positive_class_estimate'}[explanation['method']]:
+                'tree_path': 'positive_class_estimate',
+                'boosted_sequential_probability': 'positive_class_estimate'}[explanation['method']]:
                 raise ValueError('Explanation scale mismatch')
         elif assessment['source'] != 'fixture' or assessment['scorer_version'] != 'fixture-v1':
             raise ValueError('Fixture provenance changed')

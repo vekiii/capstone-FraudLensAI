@@ -1,5 +1,41 @@
 # Feature 003 validation quickstart
 
+## Reviewed dataset adapter (T062-T064, 2026-11-16)
+
+See [accepted boundary](dataset-adapter-agreement-v2.md). The API and worker must
+use the same trusted server configuration and existing completed/active producer
+stores. Replace the example paths with the actual producer stores; investigation
+never creates, imports, scores or activates them. Default fixture setup below
+remains usable while those stores are unavailable.
+
+```powershell
+$env:INVESTIGATION_SOURCE = 'dataset'
+$env:INVESTIGATION_DATASET_RUN_STORE = 'data/processed/scored-runs.sqlite'
+$env:INVESTIGATION_DATASET_STORE = 'data/processed/dataset.sqlite'
+$env:INVESTIGATION_DATASET_SCORE_SOURCE = 'rules' # or model, explicitly
+```
+
+Prepare knowledge and run API/worker with the existing commands below, using
+these dataset overrides in both terminals. POST `/api/investigation/runs` with
+the producer's exact `case_id`, `snapshot_ref`, and `source_mode: dataset` plus
+an Idempotency-Key UUID. GET of a saved attempt remains free of provider calls.
+Old active-run references fail with stale_snapshot; missing canonical history
+is unavailable, never evidence of zero activity. Dataset case browsing/UI still
+depends on integrating the producer feature; this adapter does not merge it.
+
+Offline checks, with no credentials or provider calls:
+
+```powershell
+.venv/Scripts/python.exe -m pytest backend/tests/integration/test_investigation_dataset_adapter.py backend/tests/integration/test_investigation_dataset_context.py -q
+.venv/Scripts/python.exe backend/tests/support/producer_dataset_smoke.py
+```
+
+The smoke exports the reviewed local Git commit to ignored .cache, invokes its
+actual DatasetStore/RunStore with authored records, then checks exact detail
+parity, history and provider projections. It writes a clearly labeled evidence
+JSON. It performs no ML inference or training. Full IBM/model validation requires
+the producer's actual published stores and is not established by these checks.
+
 2026-11-16 maintenance: [reliability v2](reliability-v2.md)
 defines prompt/repair/deadline checks and an opt-in script-normalization
 candidate. Backend regression: 814 PASS. This is a post-evaluation revision;

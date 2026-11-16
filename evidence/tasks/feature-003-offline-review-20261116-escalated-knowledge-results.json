@@ -1,0 +1,9 @@
+{
+  "mode": "automated headless Chrome; six human-reviewed source texts; isolated TEST replacement only for historical-version check",
+  "work": "D:\\AIBootcamp\\capstone\\.cache\\003-smoke-eb8c5e46-0997-427c-b4bc-62368871cd60",
+  "checks": [],
+  "errors": [],
+  "status": "FAIL",
+  "failure": "Error: listen EADDRINUSE: address already in use 127.0.0.1:5173\n    at Server.setupListenHandle [as _listen2] (node:net:2324:16)\n    at listenInCluster (node:net:2433:12)\n    at node:net:2662:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)",
+  "cleanup_error": "Error: listen EADDRINUSE: address already in use 127.0.0.1:5173"
+}

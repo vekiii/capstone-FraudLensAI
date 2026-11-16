@@ -323,6 +323,8 @@ def project_conversation(conversation):
                 _keys(item, ('type', 'data'), ('type', 'data'))
                 data = item['data']
                 keys = ('source_mode', 'notice', 'context_revision', 'case_id', 'transaction', 'assessment')
+                if data.get('source_mode') == 'dataset' and 'context_contract_version' in data:
+                    keys += ('context_contract_version',)
                 _keys(data, keys, keys)
                 if data['source_mode']=='dataset':
                     from fraudlens.investigation.context import validate_outbound_dataset

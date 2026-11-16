@@ -16,6 +16,9 @@ class InvestigationSettings(BaseModel):
     test_scenario: Literal['grounded', 'needs_information', 'invalid_citation', 'refusal', 'incomplete'] = 'grounded'
     source: Literal['fixture', 'dataset'] = 'fixture'
     store: Path = ROOT / 'data/processed/investigations.sqlite'
+    dataset_run_store: Path = ROOT / 'data/processed/scored-runs.sqlite'
+    dataset_store: Path = ROOT / 'data/processed/dataset.sqlite'
+    dataset_score_source: Literal['rules', 'model'] = 'rules'
     analyst: str = Field(default='local-demo-analyst', min_length=1, max_length=80)
     api_key: SecretStr = Field(default_factory=lambda: SecretStr(''), repr=False, exclude=True)
     model: SecretStr = Field(default_factory=lambda: SecretStr(''), repr=False, exclude=True)
@@ -27,7 +30,7 @@ class InvestigationSettings(BaseModel):
     max_output_tokens: int = Field(default=4096, ge=1, le=4096)
     max_response_bytes: int = Field(default=2097152, ge=1, le=2097152)
 
-    @field_validator('store', mode='before')
+    @field_validator('store', 'dataset_run_store', 'dataset_store', mode='before')
     @classmethod
     def resolve_store(cls, value):
         if isinstance(value, str) and not value.strip():

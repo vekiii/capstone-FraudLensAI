@@ -10,6 +10,15 @@ Query length is 1-500 trimmed Unicode characters. Narrative text is 1-2000 chara
 
 ## InvestigationContext
 
+2026-11-16 additive version: dataset contexts may explicitly use contract_version2
+via `contracts/context-v2.json` and the separately pinned
+`producer-v2-reviewed-20261116.snapshot.json`. Fixture and historical version1
+contexts retain their existing schema. Public RunView/report envelopes remain1.
+The dataset provider projection carries context_contract_version2; omission means
+the old reviewed methods only. Directional history totals are nested by direction,
+then currency, preserving exact values and raw time/basis in evidence. See
+[accepted consumer agreement](dataset-adapter-agreement-v2.md).
+
 Fields: `contract_version`, `context_revision` (hash of the context excluding itself), `source_mode` fixture|dataset, `case_id`, `snapshot_ref`, `dataset_version` (nullable for fixture), `observed_at`, `source_payload`, `history`.
 
 - `source_payload` is unchanged foundation CaseDetail for fixture or pinned producer CaseDetailV2 for dataset. Fixture snapshot is an application-generated `fixture_<64 hex>` digest binding fixture file and scorer version. It is not called a completed dataset run. Fixture dataset_version is null; dataset version is the producer dv_ identifier.

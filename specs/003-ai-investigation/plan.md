@@ -1,5 +1,12 @@
 # Implementation Plan: Evidence-backed AI Investigation
 
+2026-11-16 T062-T064 implementation addendum:
+[accepted producer/consumer boundary and version2 design](dataset-adapter-agreement-v2.md).
+History is implemented by the feature003 read-only adapter over reviewed existing
+stores, without importing or modifying producer code or databases. Historical
+source pins/evaluation bindings remain intact; controlled producer compatibility
+is distinguished from unavailable full IBM/model validation.
+
 **Branch**: `feature03` | **Date**: 2026-11-13 | **Spec**: [spec.md](spec.md)
 
 **Input**: `specs/003-ai-investigation/spec.md`; all runtime behavior below is planned, not implemented.

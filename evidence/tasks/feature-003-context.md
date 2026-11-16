@@ -58,3 +58,74 @@ not actual IBM rules/model-context smoke. No production context/scorer/DB/schema
 change, private-label query or trained-model claim. Actual port review is the
 next condition before real adapter implementation. See
 [regression](feature-003-regression.md) and [handoff](feature-003-phase-08-handoff.md).
+
+## T062-T064 implemented after explicit agreement, 2026-11-16
+
+Baseline feature03 1f3a09d, preserving preexisting offline-review changes. Original
+request: prompts/development/003-dataset-adapter-2026-11-16.md. Governance and
+feature artifacts read, feature directory explicitly selected for Spec-kit
+prerequisites. Requirements checklist16/16 checked, no unchecked gate. No hooks
+file. Used speckit-implement scoped only to these three tasks.
+
+T062: actual user-conveyed team confirmation and available producer SHA recorded
+in [review](feature-003-context-review.md). The feature003-owned history adapter
+uses the existing producer SQLite layout without a merge or database changes.
+Version1/old producer pin unchanged. New dataset context2 and explicit outbound
+context_contract_version2 select the separately reviewed producer snapshot.
+Public run/report envelopes remain version1. Dependencies/lockfiles unchanged.
+
+T063 RED: `.venv/Scripts/python.exe -m pytest
+backend/tests/integration/test_investigation_dataset_adapter.py -q` exited1:
+12 failures, all missing fraudlens.investigation.dataset, the intended absent
+consumer implementation. Then implemented DatasetReader, delegation/wiring and
+versioned validation. Expanded tests cover real configured service/API/archive
+and tools, boosted projection, fixed read-only SQL and source switching.
+
+Final GREEN:
+
+| Actual command | Result |
+|---|---|
+| `.venv/Scripts/python.exe -m pytest backend/tests -q --tb=short` | 936 PASS,135.61s,exit0 |
+| `.venv/Scripts/python.exe -m pytest backend/tests/integration/test_investigation_dataset_adapter.py backend/tests/integration/test_investigation_dataset_context.py -q --tb=short` | 35 PASS,2.55s,exit0 after three further source-switch cases and expanded HTTP checks |
+| `.venv/Scripts/ruff.exe check backend` | PASS,exit0 after final test edits |
+| `git diff --check` | PASS,exit0 before documentation completion; repeated at handoff |
+| `.venv/Scripts/python.exe backend/tests/support/producer_dataset_smoke.py` | PASS,exit0, actual pinned producer export and published stores |
+
+The full suite collected936 before the three added cases; all18 new adapter tests
+plus17 historical safeguards passed in the final targeted35. No claim of a second
+full939-test run. Python3.14.3, Ruff0.17.4, Node24.20.0. No frontend source changes;
+earlier frontend186/build/browser results are historical, not rerun for this unit.
+
+T064: CaseContextReader/HistoryReader delegate dataset mode to the new feature-local
+dataset.py; InvestigationService builds it from explicitly configured paths/source.
+Missing stores never create files or fall back to fixtures. Completed active run,
+source dataset and identities must match. Exact decimal strings/raw time/source
+currency names remain intact; explanation source/scale/reconstruction checked.
+History excludes same-minute/future/focal/foreign-bank records, returns maximum50
+movements and sums all eligible movements with Decimal by direction/currency.
+Raw identities become run-scoped aliases in provider evidence; private table
+reads are denied and no labels enter the explicit operational projection.
+
+Producer compatibility evidence:
+[feature-003-dataset-producer-smoke-20261116.json](feature-003-dataset-producer-smoke-20261116.json).
+Actual producer DatasetStore/RunStore from487c427 creates controlled canonical
+records and completed active rules/model-shaped publications. Both read back
+exactly equal to producer detail_active; history and provider projection PASS;
+source hashes before/after equal, zero provider calls/label reads. Model values
+are authored; this is NOT trained inference, model evaluation or full IBM smoke.
+The producer code is exported only to ignored .cache, never merged/imported into
+the running feature03 package. New code does not modify scorer/database schemas.
+
+T062/T063/T064 consumer implementation and available compatibility checks complete.
+Actual IBM import/run stores and trained model artifacts are absent locally, so
+full real-population validation remains unrun and required before claiming full
+dataset/model acceptance under T067/SC-007. No historical evaluation, protocol,
+ratings or failed quality outcomes were rewritten. No real .env read, network,
+training, package install, commit, push or ML merge in this unit.
+
+Final HTTP follow-up: expanded the configured-service test to require404 for a
+valid but absent dataset case. RED:503 instead of404 (1failed,17deselected).
+Adapter now raises the existing CaseNotFoundError, preserving the public API
+envelope. Final command adds test_investigation_api.py to the two dataset files:
+**44 PASS,5.06s,exit0**. Ruff and final git diff --check PASS. This focused run
+is after the small404 exception correction; the936 full-suite result predates it.

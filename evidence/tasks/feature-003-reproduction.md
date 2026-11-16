@@ -1,5 +1,20 @@
 # T066 executable handoff and teammate reproduction — 2026-11-15
 
+## Latest agent reproduction - 2026-11-16
+
+[Fresh run/review evidence](feature-003-offline-review-20261116.md): backend 921
+PASS, frontend 186 PASS, Ruff/typecheck/build PASS, 29 isolated actual browser/
+API/proxy and 6 process observations PASS. Fixed one unit test's dependency on
+an ignored historical live artifact using an independently hashed test fixture
+and changed/missing negative cases. Runtime/frozen results were not changed.
+Existing app port 5173 was preserved; generated harness used 5174 and cleanup
+passed. No provider/environment-file access or package installations.
+
+These are agent-executed checks, not another teammate's manual execution or
+human code/contracts sign-off. The actual teammate table below stays pending;
+T066 remains unchecked. T094 technical clarification proposal is ready for
+human review, with historical quality failures preserved.
+
 Status: **partial**. Documentation and independent automated regression are
 complete; another teammate's actual execution and human code/contracts/evidence
 review are **pending**, as is full T061. No names, signatures, dates, commands or
