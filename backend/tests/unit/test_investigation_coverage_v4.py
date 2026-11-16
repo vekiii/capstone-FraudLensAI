@@ -66,7 +66,7 @@ def test_calibration_binding_error_is_not_accepted():
     assert assess_calibration(packets, ratings, expected)['passed'] is False
 
 
-def test_new_attempt_pins_v3_and_retry_keeps_older_prompt(runtime, monkeypatch):
+def test_new_attempt_pins_v4_and_retry_keeps_older_prompt(runtime, monkeypatch):
     from pathlib import Path
     _, request, make = runtime
     service = make('needs_information')
@@ -74,7 +74,7 @@ def test_new_attempt_pins_v3_and_retry_keeps_older_prompt(runtime, monkeypatch):
     old = Path('prompts/application/investigation-v2.md').read_text(encoding='utf-8')
 
     def older(self, *args, **kwargs):
-        if self.name == 'investigation-v3.md':
+        if self.name == 'investigation-v4.md':
             return old
         return read(self, *args, **kwargs)
 
@@ -87,4 +87,4 @@ def test_new_attempt_pins_v3_and_retry_keeps_older_prompt(runtime, monkeypatch):
                           '00000000-0000-4000-8000-000000000004')
     assert service.binding(child['attempt_id'])['prompt'] == old
     fresh = create(service, request)
-    assert service.binding(fresh['attempt_id'])['prompt'].startswith('# Investigation application prompt v3')
+    assert service.binding(fresh['attempt_id'])['prompt'].startswith('# Investigation application prompt v4')

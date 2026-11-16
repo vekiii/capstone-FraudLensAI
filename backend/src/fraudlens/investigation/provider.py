@@ -10,6 +10,7 @@ from typing import Protocol
 
 from fraudlens.investigation.models import SCHEMA, canonical, validate
 from fraudlens.investigation.repair import REPAIR_HINTS
+from fraudlens.investigation.report_policy import HUMAN_AUTHORITY_NOTICE
 
 ROOT = Path(__file__).resolve().parents[4]
 PRIVATE = re.compile(r'label|laundering|isfraud|reference.answer|source.path|source.row|reviewer', re.I)
@@ -376,7 +377,8 @@ def scripted_draft(conversation, scenario):
     draft = dict(outcome='needs_information', summary=[], observed_facts=[], risk_indicators=[],
         alternative_explanations=[], missing_information=['Zanimanje, uredjaj i poreklo sredstava nisu dostupni.'],
         recommended_checks=[], limitations=['TEST provider: autorski scenario, nije stvaran AI izvestaj.',
-        'Sinteticki fixture skor nije kalibrisana verovatnoca; semanticki pregled nije obavljen.'], citations=[])
+        'Sinteticki fixture skor nije kalibrisana verovatnoca; semanticki pregled nije obavljen.',
+        HUMAN_AUTHORITY_NOTICE], citations=[])
     if scenario == 'needs_information' or case is None:
         draft['limitations'].append('Nema dovoljno dokaza za koristan zakljucak.')
         return validate('ReportDraft', draft)

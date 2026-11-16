@@ -4,6 +4,7 @@ import hashlib
 from datetime import UTC, datetime
 
 from fraudlens.investigation.models import digest, validate
+from fraudlens.investigation.report_policy import HUMAN_AUTHORITY_NOTICE, HUMAN_AUTHORITY_POLICY
 from fraudlens.investigation.tools import content_digest
 
 SECTIONS = (
@@ -88,8 +89,11 @@ def _claim(claim, section, sources):
 
 
 def validate_report(
-    draft, evidence, attempt_id, context_revision, context=None, corpus_version=None
+    draft, evidence, attempt_id, context_revision, context=None, corpus_version=None,
+    *, report_policy=None
 ):
+    if report_policy not in (None, HUMAN_AUTHORITY_POLICY):
+        raise ValueError("unsupported_report_policy")
     draft = validate("ReportDraft", draft)
     validate("AttemptId", attempt_id)
     validate("Digest", context_revision)
@@ -117,6 +121,9 @@ def validate_report(
     )
     if limited and not draft["limitations"]:
         raise ValueError("source_limitations_required")
+    # A whole protocol item, not keyword/semantic approval of other report prose.
+    if report_policy == HUMAN_AUTHORITY_POLICY and HUMAN_AUTHORITY_NOTICE not in draft["limitations"]:
+        raise ValueError("human_authority_notice_required")
     content = dict(attempt_id=attempt_id, context_revision=context_revision, draft=draft)
     return validate(
         "Report",

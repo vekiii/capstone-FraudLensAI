@@ -329,4 +329,11 @@ Scope: [live-repair-v6.md](live-repair-v6.md); production runtime4262193 unchang
 
 ## Remaining defect found by development-v6
 
-- [ ] T088 Reproduce omitted human-final-authority disclosure in no-guidance drafts with an authored RED regression; design/version a correction preserving original model outputs, immutable reports and all semantic quality requirements before a fresh separately scoped evaluation. DEV6-762 remains failed; no historical regrading. (Depends:T087; FR-013–017, FR-022–028.)
+- [x] T088 Reproduce omitted human-final-authority disclosure in no-guidance drafts with an authored RED regression; design/version a correction preserving original model outputs, immutable reports and all semantic quality requirements before a fresh separately scoped evaluation. RED9 failed/1 passed, scoped human-authority-v7.md design; DEV6-762 remains failed, no historical regrading. (Depends:T087; FR-013–017, FR-022–028.)
+
+## Phase 15: Human-authority protocol correction (2026-11-16)
+
+Design: [human-authority-v7.md](human-authority-v7.md). No old scoring changes.
+
+- [x] T089 Implement pinned prompt v4/private human_authority_notice_v1 for new attempts, exact-item validation and fixed safe repair hint; retain legacy/retry pinning, raw response/report immutability and existing budgets. Add negative/SDK/recovery regressions. GREEN18 new/82 related; full protocol guard without raw draft edits. (Depends:T088; FR-013–020, FR-022–024.)
+- [x] T090 Run full backend/Ruff and offline prior artifact/source preservation checks; record actual evidence, local guide and handoff, keeping model-quality verification pending. Full911/Ruff PASS; offline32 prior+10 v6 hashes/13 citations PASS; no live calls. See evidence/tasks/feature-003-human-authority-v7.md. (Depends:T089; FR-024–028, SC-008.)

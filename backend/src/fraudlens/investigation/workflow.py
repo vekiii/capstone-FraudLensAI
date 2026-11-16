@@ -12,6 +12,7 @@ from fraudlens.investigation.context import CaseContextReader, outbound_context
 from fraudlens.investigation.models import SCHEMA, canonical, digest, validate
 from fraudlens.investigation.provider import ProviderError, ScriptedProvider, safe_diagnostic
 from fraudlens.investigation.repair import repair_reason
+from fraudlens.investigation.report_policy import HUMAN_AUTHORITY_POLICY
 from fraudlens.investigation.settings import InvestigationSettings
 from fraudlens.investigation.tools import ToolExecutor, content_digest, definitions
 from fraudlens.investigation.validation import validate_report
@@ -107,7 +108,7 @@ class InvestigationService:
         if self.settings.provider == 'openai' and not self.settings.api_key.get_secret_value():
             raise ValueError('provider_unavailable')
         from fraudlens.investigation.models import ROOT
-        prompt = (ROOT / 'prompts/application/investigation-v3.md').read_text(encoding='utf-8')
+        prompt = (ROOT / 'prompts/application/investigation-v4.md').read_text(encoding='utf-8')
         limits = {key: getattr(self.settings, key) for key in (
             'max_provider_requests', 'max_tool_calls', 'total_timeout_seconds', 'request_timeout_seconds',
             'max_input_bytes', 'max_output_tokens', 'max_response_bytes')}
@@ -115,7 +116,8 @@ class InvestigationService:
                        prompt_version=digest(prompt), limits=limits, timestamp=instant(),
                        provider_mode=self.settings.provider, requested_model=(
                            self.settings.model.get_secret_value() if self.settings.provider == 'openai' else None),
-                       test_scenario=getattr(self.settings, 'test_scenario', 'grounded'))
+                       test_scenario=getattr(self.settings, 'test_scenario', 'grounded'),
+                       report_policy=HUMAN_AUTHORITY_POLICY)
         row = self.repo.create(context, actor, 'create', request_key, request, binding=binding)
         # Repository keeps the original creation row, even after worker progress.
         return self._project(row, context, [self.binding(row['attempt_id'])], [])
@@ -340,6 +342,8 @@ class InvestigationService:
         retries, repairs = 0, 0
         provider = None
         try:
+            if binding.get('report_policy') not in (None, HUMAN_AUTHORITY_POLICY):
+                raise ProviderError('unsupported_capability')
             self.context_reader.resolve(context['case_id'], context['source_mode'], context['snapshot_ref'])
             provider = self.provider_factory(binding)
             executor = ToolExecutor(self.repo, attempt_id, owner, context, self.knowledge,
@@ -411,7 +415,8 @@ class InvestigationService:
                         raise ProviderError('interrupted')
                 try:
                     report = validate_report(turn.draft, self.evidence(attempt_id), attempt_id,
-                        context['context_revision'], context, binding['corpus_version'])
+                        context['context_revision'], context, binding['corpus_version'],
+                        report_policy=binding.get('report_policy'))
                 except ValueError as exc:
                     if repairs:
                         raise ProviderError('output_invalid') from None

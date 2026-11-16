@@ -30,6 +30,17 @@ Model output supplies report content only, not IDs/permissions/state/review. The
 
 Preserve provider-required continuation items/call IDs privately, including opaque reasoning items if required by the API. Do not expose a reasoning transcript or present model reasoning as evidence. Store=false where supported; local state is authoritative. Required settings must be verified against the selected model; no assumption of temperature/seed support.
 
+Maintenance v7: new attempts privately pin `report_policy=human_authority_notice_v1`
+with application prompt v4. Require the exact separate limitations item
+`Konačnu odluku donosi ljudski analitičar; AI nacrt ne izvršava radnje.` in either
+outcome. Omission uses fixed `human_authority_notice_required` repair guidance,
+within the existing single-repair budget, then fails if still absent. This is a
+literal protocol check, not semantic safety approval. Raw drafts are not edited;
+the public ReportDraft schema and semantic_review status remain unchanged. Old
+bindings lacking this policy retain old validation; retry inherits its parent's
+policy/prompt. Unknown policy is rejected before dispatch. Full design:
+[human-authority-v7.md](../human-authority-v7.md).
+
 ## Accounting and recovery
 
 8 dispatched provider requests, 12 executed tools, 120 s elapsed per attempt. Request <=30 s and <=remaining deadline; input <=48,000 UTF-8 bytes; max_output_tokens=4096; full received response <=2 MiB using bounded transport reading (Content-Length alone is insufficient). SDK hidden retries disabled. At most one transient retry with <=2 s backoff and one schema/reference repair; both count against all budgets. Oversize/incomplete/refusal does not trigger endless repair. No retry for access, unsupported model/schema or rejected credentials. Persist actual/unknown usage, never inferred spend.

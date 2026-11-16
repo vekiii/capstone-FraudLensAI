@@ -7,6 +7,7 @@ from pathlib import Path
 import httpx2
 import pytest
 
+from fraudlens.investigation.report_policy import HUMAN_AUTHORITY_NOTICE
 from fraudlens.investigation.settings import InvestigationSettings
 
 PATH = Path(__file__).resolve().parents[3] / 'evidence/tasks/feature-003-live-development-v2.py'
@@ -133,7 +134,8 @@ def test_actual_sdk_mocked_generation_pins_configs_and_never_reads_expectations(
     monkeypatch.setattr(runner, 'load', guarded)
     draft = dict(outcome='needs_information', summary=[], observed_facts=[], risk_indicators=[],
         alternative_explanations=[], recommended_checks=[], citations=[],
-        missing_information=['Authored test missing information.'], limitations=['Authored test only.'])
+        missing_information=['Authored test missing information.'],
+        limitations=['Authored test only.', HUMAN_AUTHORITY_NOTICE])
 
     def handler(request):
         body = json.loads(request.content)
