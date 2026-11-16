@@ -1257,3 +1257,7 @@ One concrete next step: resolve the source-mapping and graph-state provenance ga
 ## Git publication status — 2026-11-16
 
 Security and test-harness work is committed locally in `827779d` and `5ea0c4c`; security evidence and prompt records are being committed separately. The next step is to push these commits to `origin/feature/005-real-time-fraud-detection-mlops-spec` and verify the remote tip. No merge to `main` is intended.
+
+## Final publication confirmation — 2026-11-16
+
+The security/test-harness implementation and evidence commits are pushed to `origin/feature/005-real-time-fraud-detection-mlops-spec`. The last verified remote tip before this final handoff update was `e7ae0ece89ff00c6103880b4cd59b80a20e3bc8c`. The current handoff and ledger reconciliation are being committed and pushed next. The security audit and retained authentication failure remain as documented; no tests were rerun during Git publication.
