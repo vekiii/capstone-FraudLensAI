@@ -1,6 +1,6 @@
 # Proposal 002: RAG verification and showcase website
 
-**Status:** pending team decision. **Date:** 2026-11-16. This proposal does not authorize implementation. T047 is the decision-record task; T001 remains the overall Feature 005 scope gate.
+**Status:** showcase-only implementation authorized per requester-reported prior team agreement; RAG implementation choices remain pending. **Recorded:** 2026-11-16. T047 remains open for the unresolved RAG and hosting decisions; T001 remains the overall Feature 005 scope gate.
 
 ## Proposal
 
@@ -29,4 +29,6 @@ The team should record an attributed approve/reject/defer decision and decide:
 
 ## Decision record
 
-**Decision:** pending. **Decision date:** not supplied. **Participants/approvers:** not supplied. **Conditions or objections:** pending. Do not replace these fields with inferred approval; complete them in T047 after the team discussion.
+**Showcase decision:** APPROVE local implementation of a separate `web/` showcase, as requested by the current requester and attributed by them to prior team discussion and agreement. **Original decision date:** not supplied. **Named participants/reviewers:** not supplied. **Recorded:** 2026-11-16. **Conditions for this implementation:** synthetic data only; no external LLM calls; no real-world quality claims. This record describes the user's report; it does not invent names or the original meeting date.
+
+**RAG decision details:** not decided by the current showcase request. Vector store, embedding model, LLM provider/model, corpus owner/licence/review process, and production hosting remain open. No RAG backend, external provider call, or hosted deployment is authorized by the site-only decision. T047 stays unchecked until its full decision record is complete.
