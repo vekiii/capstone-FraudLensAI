@@ -1,4 +1,10 @@
 # Next work - FraudLens AI
+
+## Feature 005 security and edge-case audit recorded - 2026-11-16
+
+Added [focused audit evidence](evidence/security/feature-005-security-edge-case-audit-2026-11-16.md) for the local implemented scope. The database-independent API/integration slice passed 102 tests; frontend tests (174), showcase tests (9), typechecks/builds and Ruff passed. The backend unit suite remains failing (418 passed, 71 failed, 4 errors), Python OSV audit was blocked by network policy, and PostgreSQL destructive-lifecycle integration tests and browser checks were not run. npm offline audits reported zero vulnerabilities. The evidence records one medium deployment-boundary finding: no authentication on the read-only API. No application behavior or task markers changed; T022 and Phase 4 remain blocked as recorded.
+
+One concrete next step remains: continue the ordered core backlog at T006, then complete Phase 2 and Phase 3 through T022 before resuming T026.
 ## Current branch consolidation and Phase 4 gate — 2026-11-16
 
 Committed the accumulated working changes on `feature/005-real-time-fraud-detection-mlops-spec` in four scoped commits: Feature 005 scope records and task-state updates (`c09e964`); PostgreSQL live-fact store, producer, migration, pinned environment notes and T002–T005 evidence (`ec43ecc`); Feature 005 showcase site and T057/T058 evidence (`a4553f1`); and Feature 002 local protocol-review artifacts (`57ce87f`). The handoff commit is `2e2963b`. All five commits were pushed; `git ls-remote` confirmed origin at `2e2963b209b2a839a22a1c06140690e9f6106cd7`. These commits preserve the existing partial/blocked statuses and do not claim Phase 4 completion. The contribution ledger records the commit set.
