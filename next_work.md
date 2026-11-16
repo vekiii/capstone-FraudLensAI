@@ -1,4 +1,17 @@
-# Current handoff — reliability v2 maintenance completed, 2026-11-16
+# Current handoff — branch pushed; live development v2 frozen, 2026-11-16
+
+User now explicitly authorized new branch push then actual LLM quality checks.
+Created feature03-reliability-v2 from feature03, pushed maintenance7ed606c to origin.
+feature03 remains cd98ea0. New protocol: specs/003-ai-investigation/live-development-v2.md.
+T073 prepared/frozen3 NEW synthetic development inputs and separate expectations,
+durable cap25 (8/case+1judge), no unknown-dispatch replay. Actual live calls so far0.
+34 targeted/mock checks PASS; full backend833 PASS; Ruff/diff PASS.
+Next: execute bounded development-v2 once, then one offline batch judge; preserve
+all results. This user authorization supersedes the earlier no-live boundary below.
+Evidence: evidence/tasks/feature-003-live-development-v2.md. No runtime tuning
+between cases; no independent holdout/human/release claims. Pending T074/T075.
+
+## Completed maintenance context
 
 User authorized option1 diagnosis/fixes and short guide in milan. T068–T072 complete:
 safe allowlisted repair reasons, prompt v2 for new attempts, last request/repair

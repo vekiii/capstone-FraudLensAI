@@ -284,3 +284,12 @@ checks use authored development fixtures, not the exposed holdout. No live calls
 - [x] T070 Reproduce asynchronous provider-cleanup timeout/error gaps; bound cleanup within remaining attempt time and preserve persisted state/cancellation/usage accounting. Record limitations without attributing the old outlier to an unproven cause. (Depends: T068; FR-018–020, SC-006.)
 - [x] T071 Add intended RED then GREEN script-equivalence/no-match/unknown-policy tests and implement opt-in versioned Serbian glossary lookup normalization in retrieval.py; supply an explicitly unvalidated separate development config, preserving legacy configuration behavior and old frozen results. (Depends: T068; FR-007–008, FR-025–028, SC-002.)
 - [x] T072 Run complete backend/Ruff, isolated local diagnostic journey and integrity checks; record commands/results/remaining evaluation needs, write milan/feature03-provere-v2.md below 200 lines with explained PowerShell commands, and update next_work.md. (Depends: T069–T071; FR-028, SC-004–008.)
+
+## Phase 10: Authorized live development check (2026-11-16)
+
+Scope: [live-development-v2.md](live-development-v2.md), three new authored
+development cases, not an independent holdout or replacement for failed targets.
+
+- [x] T073 Freeze new label-free inputs/separate expectations and protocol; implement/test durable25/global,8/case,1/judge transport caps, no ambiguous replay and reference separation in evidence/tasks/feature-003-live-development-v2.py. (FR-018, FR-024–028.)
+- [ ] T074 Execute at most three actual-provider development investigations on the published reliability branch without intervening tuning; preserve all outcomes/usage/traces/errors under ignored development-v2, then perform at most one stateless batch judge call and conservative aggregation. (Depends:T073; FR-013–018, FR-027–028.)
+- [ ] T075 Audit actual results/source/input/output hashes and no-reference leakage; publish honest development metrics/evidence and update next_work.md on the new branch, preserving pending human/producer/release gates. (Depends:T074; FR-024–028, SC-008.)
