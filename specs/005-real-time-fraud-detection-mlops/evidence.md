@@ -19,3 +19,19 @@
 | E-13 | INFERRED | Kafka keying by sender or receiver alone cannot keep both account histories in one partition. | E-01 plus transaction sender/receiver fields in `data_contracts.py`, `CanonicalTransaction` | Use one ordered partition initially; prove any later scaling scheme. |
 | E-14 | PROPOSED | PostgreSQL, Debezium, broker, worker, dbt, MLflow and monitoring are target components only. | `plan.md`, architecture diagram | Implementation needs team approval and new tasks. |
 | E-15 | NOT VERIFIED | Docker image versions, local service compatibility, latency, WAL usage, approved artifact transfer and confirmed-label availability. | No corresponding implementation/configuration or execution evidence in inspected repository | Keep target numbers proposed and gate deployment on actual checks. |
+
+
+## Evidence register — 2026-11-16 RAG and showcase proposal
+
+These entries distinguish repository observations from proposed design and unverified dependencies. No service or application test was run for this specification revision.
+
+| ID | Status | Claim / observation | Exact file and symbol | Implication |
+|---|---|---|---|---|
+| E-16 | VERIFIED | The Feature 005 backlog defines T001 to T046 in six phases and adds proposed Phase 7 tasks T047 to T060; T001 is the hard team scope gate. | `tasks.md`, phase headings | T047 is an additional gate for the RAG/showcase work and cannot bypass T001. |
+| E-17 | VERIFIED | The proposed data model stores the feature JSON in `feature_snapshots` and the explanation JSON in `predictions`; `confirmed_labels` sits in a restricted schema and is never joined on the worker or API read path. | `data-model.md`, `feature_snapshots`, `predictions`, `confirmed_labels` rows | A RAG query can be built from committed snapshot, score and explanation without any label access. |
+| E-18 | VERIFIED | The live API proposal uses `/api/live/v1/alerts` and `/api/live/v1/alerts/{case_id}` with generation-bound cursor pagination and a controlled 409 on a stale generation. | `plan.md`, "API, ML lifecycle and operations" | Verification fields are added to these routes additively; list ordering and cursor stay unchanged. |
+| E-19 | VERIFIED | The repository requires Python `>=3.14,<3.15` and declares no vector store, embedding or LLM client dependency. | `pyproject.toml`, `[project]` (already recorded as E-10) | Any retrieval or LLM client must support Python 3.14; T050 must confirm or record BLOCKED. |
+| E-20 | INFERRED | A verifier that only reads committed `alert_decisions` cannot delay or roll back FR-009, because FR-009 commits in the worker's own transaction before any row is visible to it. | `plan.md`, "Inference and persistence"; `data-model.md`, `alert_decisions` | Supports NFR-007 and the choice of a separate polling process. |
+| E-21 | INFERRED | Replay generations create new assessments, so verifications keyed to one generation cannot be reused in another. | `data-model.md`, `replay_jobs`, `active_generation` | Verification rows are keyed by `(generation, transaction_id, config_id)` and not copied across generations. |
+| E-22 | PROPOSED | A knowledge-base build, embedding model, vector index, LLM verifier, `verifier` database role and a four-route showcase site are target components only. | `spec.md` FR-016 to FR-020; `contracts/website-and-rag.md` | Implementation needs the T047 decision and tasks T048 to T060. |
+| E-23 | NOT VERIFIED | Embedding and LLM provider availability and terms, whether any external call is permitted for synthetic data, vector-store compatibility with Python 3.14, retrieval quality on the authored corpus, verification latency and cost, GSAP/three.js/Lenis licence terms and versions, and Lighthouse results. | No implementation, configuration or execution evidence | Keep all numbers proposed; resolve in T047, T050, T054, T057 and T059 with actual observations. |

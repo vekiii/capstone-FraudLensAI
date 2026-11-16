@@ -70,3 +70,54 @@ Prometheus metrics: CDC slot/WAL lag, broker offset lag, pending buffer age, wat
 ## Migration and verification sequence
 
 Keep Feature 002 SQLite/CLI and fixture APIs untouched. Add PostgreSQL schema and synthetic producer first, then CDC and durable buffering, then parity-tested history/inference, then live API/UI, then offline ELT/registry and observability. Run the live path in shadow mode with a separately pinned candidate; compare feature/prediction outputs before any analyst activation. Activation is a reviewed database pointer switch. Roll back that pointer, then stop worker/connector if integrity is uncertain; preserve audit and replay ranges. [Tasks](tasks.md) follow this order. No infrastructure, migrations, tests or benchmark were run while writing this plan.
+
+## Proposed Phase 7 architecture: verification layer and showcase site
+
+All paths and behavior below are proposed; no service or application behavior was run or verified for this revision.
+
+## 1. Diagram (new, third flowchart)
+
+```mermaid
+flowchart LR
+  S[(Committed alert_decisions, predictions, feature_snapshots)] --> Q[Verifier process: structured query builder]
+  KB[(kb_versions, documents, chunks)] --> R[Hybrid retrieval and rerank]
+  Q --> R
+  R --> L[LLM structured verdict]
+  L --> C[Citation validator]
+  C --> VR[(verification_runs)]
+  C --> VF[(unavailable or downgraded status)]
+  VR --> A[FastAPI live read endpoints]
+  A --> U[Dashboard live mode and showcase site]
+```
+
+## 2. Rows for the boundaries table
+
+| Existing verified boundary | Proposed additive module/path | Responsibility |
+|---|---|---|
+| `backend/src/fraudlens/live_store.py` (proposed in T004) and `backend/migrations/` | `backend/migrations/007_knowledge_base.sql`, `008_verification.sql` | Knowledge-base versions and verification config/runs tables, separate from predictions and alert decisions. |
+| `backend/src/fraudlens/live_api.py` (proposed in T027) | additive fields in the same module; `contracts/live-alert-api.md` update | `verification` and `review_priority_suggestion` on alert detail; verdict and status on the list. No request-time LLM call. |
+| `frontend/src/live/` (proposed in T029) and no existing site | `frontend/src/live/verification/`, `backend/src/fraudlens/rag/`, `web/` (location per decision (j)) | Dashboard evidence panel; knowledge-base build, query builder, verifier, citation validator; four-route showcase site. |
+
+## 3. Verification layer (proposed)
+
+**Position in the pipeline.** The verifier is a separate process with its own database role. It polls committed `alert_decisions` for the active generation, selects rows where `alert` is true, coverage is full, and no `verification_runs` row exists for the active verification config, and processes them in `(event_time, transaction_id)` order. Because it only reads committed rows, the worker's atomic output transaction (FR-009) never waits on it, and a verifier crash cannot move the checkpoint. This keeps the existing rule that the database transaction, not an offset, is authoritative.
+
+**Query construction.** The query text is built from the persisted `feature_snapshots` feature JSON, `predictions` score and explanation, and coverage state, mapped to descriptor bands defined in the feature contract. It never reads `confirmed_labels`, never reads source free-text, and never includes account identifiers. The 11 `history-v1` features are the only numeric inputs.
+
+**Retrieval and verdict.** Hybrid keyword and dense search over the pinned `kb_version`, rerank, then a structured-output LLM call with the rule "use only the provided passages; answer `uncertain` if insufficient; cite passage ids". The citation validator checks every cited id against the retrieved set, enforces schema validity, and downgrades to `uncertain` on any failure. One retry on parse failure, then `status = unavailable`.
+
+**Generations.** A verification belongs to `(generation, transaction_id, config_id)`. A replay generation (FR-012) produces new assessments, so it gets new verifications on demand; verifications are never copied across generations. Rolling back a generation or model digest does not delete verification rows; the API simply reads those matching the active generation and config.
+
+**Configuration governance.** The corpus, embedding model, LLM and prompt version are pinned in a `verification_configs` row approved by a named reviewer, mirroring the `deployment_versions` pattern. A mutable alias or a silent prompt edit cannot change what runs. Changing any of the four creates a new config and requires the same review.
+
+**Authority.** A verification is advisory. It cannot change a score, an alert decision, a case, or generation state, and no API or UI path acts on it automatically. Its absence, `skipped` and `unavailable` states are first-class and displayed.
+
+**Operations.** Separate `verifier` role: read on committed assessment tables, write on verification tables only; API role gets read on verification tables; neither the worker nor the label curator role gets access. The LLM credential lives only in the verifier's ignored env or secret mount. Compose services stay loopback-bound. If decision (h) does not permit external calls, a local model or a mock provider labelled as such is the only option, and the site must say so.
+
+**Site.** The showcase site is a read-only client. It consumes generated static JSON and, once T055 exists, the FR-010 endpoints; it adds no write endpoint and no transaction input. Until the live path exists it reads fixture and Feature 002 batch results with a visible source badge.
+
+## 4. Additions to existing paragraphs
+
+- **Prometheus metrics sentence:** append "verification latency, cost, empty-retrieval rate, parse-failure rate, unavailable rate and citation-downgrade count, with no raw transaction, account or passage-text labels."
+- **Performance gate paragraph:** append "The NFR-001 budget excludes verification. Verification latency is measured and reported separately in T059; no target is asserted until measured."
+- **Migration and verification sequence:** append "The verification layer is added after the live API (Phase 4) and runs first in shadow: verdicts are stored and compared on the evaluation set before the dashboard shows them to analysts. Site foundation work (T057) needs only T047 and may proceed in parallel with Phases 2 to 6; site pages (T058) start from fixture and batch data."
