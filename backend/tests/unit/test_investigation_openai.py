@@ -180,7 +180,10 @@ def test_compilation_keeps_closed_required_shape_without_changing_source_schema(
     schema = compile_report_schema()
     def check(value):
         if isinstance(value, dict):
-            assert '$ref' not in value and 'allOf' not in value
+            assert 'allOf' not in value
+            if '$ref' in value:
+                assert value == {'$ref': '#/$defs/Claim'}
+                assert 'Claim' in schema['$defs']
             if value.get('type') == 'object':
                 assert value['additionalProperties'] is False
                 assert set(value['required']) == set(value['properties'])

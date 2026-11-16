@@ -309,3 +309,12 @@ Scope: [coverage-v4.md](coverage-v4.md). New development protocol, no old regrad
 - [x] T079 Add RED→GREEN calibration-gate and prompt-binding regressions; implement application prompt v3 and judge prompt v3 with explicit identity/coverage and draft/human-review semantics, preserving every required limitation and numerical threshold. (FR-013–017, FR-022–028.)
 - [x] T080 Freeze separate development-v4 inputs/atomic references/calibration packets and expected labels; test exclusion from generation, strict role/unit binding and calibration-failure gating; run full regression and one max25 actual batch. Actual17 transports, calibration3/3, development pass2/3; controlled repair-size failure retained. (Depends:T079; FR-018, FR-024–028.)
 - [x] T081 Audit actual metrics, calibration results, prior artifact preservation and limitations; update evidence, local guide and next_work.md without human/release/publication claims. Audit PASS; next repair-context work explicitly pending. (Depends:T080; FR-024–028, SC-008.)
+
+## Phase 13: Repair serialization maintenance (2026-11-16)
+
+Scope/design: [repair-v5.md](repair-v5.md). Completed work committed as eedbe72;
+no old live batch replay or regrading, and no change to release gates.
+
+- [x] T082 Reproduce repair-context exhaustion through the actual SDK with authored continuation; add expanded-schema equivalence/negative and strict single-repair workflow checks. Preserve pre-change source/output hashes. RED4 failures/8 passes observed before implementation. (FR-013–020, FR-024.)
+- [x] T083 Share repeated Claim definitions in the provider schema, retaining every continuation/evidence byte and all validation/budget limits; verify the preserved failed repair offline through mocked SDK transport without real API calls. GREEN32; pending repair46,148<48,000 bytes, old invalid assertion still rejected. (Depends:T082; FR-015, FR-017–020.)
+- [x] T084 Run backend/Ruff and integrity checks; record original/current payload sizes, honest test limitations and one next step in evidence and next_work.md. Full882/Ruff/integrity PASS; separate actual synthetic capability2/2 HTTP200, not report-quality evidence. See evidence/tasks/feature-003-repair-v5.md. (Depends:T083; FR-024–028, SC-008.)

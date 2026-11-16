@@ -37,10 +37,12 @@ def safe_diagnostic(value):
 
 
 def compile_report_schema():
-    """Inline reachable definitions; conditional business rules stay in validation.py.
+    """Compile the provider subset, sharing the repeated Claim definition.
 
     The provider enforces the closed shape. Original allOf/if/then conditions and
     uniqueItems constraints are enforced again by the unchanged local validator.
+    Sharing a definition changes representation only; keep the entire private
+    continuation and evidence available within the existing request-byte limit.
     """
     def compile_node(node):
         if isinstance(node, list):
@@ -60,7 +62,13 @@ def compile_report_schema():
         if isinstance(pattern,str) and pattern.endswith(r'(?![\s\S])'):
             compiled['pattern']=pattern[:-len(r'(?![\s\S])')]+'$'
         return compiled
-    return compile_node(SCHEMA['$defs']['ReportDraft'])
+    schema = compile_node(SCHEMA['$defs']['ReportDraft'])
+    claim = schema['properties']['summary']['items']
+    for field in schema['properties'].values():
+        if field.get('items') == claim:
+            field['items'] = {'$ref': '#/$defs/Claim'}
+    schema['$defs'] = {'Claim': claim}
+    return schema
 
 
 def _bounded_transport(inner):
