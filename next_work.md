@@ -1,78 +1,40 @@
-# Current handoff — new branch/live development v2 completed, 2026-11-16
+# Current handoff ? coverage/calibration v4 complete, 2026-11-16
 
-User now explicitly authorized new branch push then actual LLM quality checks.
-Created feature03-reliability-v2 from feature03, pushed maintenance7ed606c to origin.
-feature03 remains cd98ea0. New protocol: specs/003-ai-investigation/live-development-v2.md.
-T073 prepared/frozen3 NEW synthetic development inputs and separate expectations,
-durable cap25 (8/case+1judge), no unknown-dispatch replay. Setup pushed103c3c0.
-34 targeted/mock checks PASS; full backend833 PASS; Ruff/diff PASS.
-T074/T075 complete:17/25 actual transports (16generation+1judge),16HTTP200 and1
-unknown/no-header request. DEV2-701 failed budget_exhausted after37.971s; its fifth
-request waited29.987s without headers, consistent with30s request timeout. Cause/
-usage/spend unknown for that request. DEV2-702/703 needs_information at21.054/21.051s.
-Same-model single-judge development PASS2/3: support4/4 each, coverage4/5 and5/6;
-missingness correct, no critical flags on those TWO drafts. All3 terminal<120s.
-Known64,271 tokens plus1 unknown usage attempt; spend unknown. Audit/hashes PASS,
-8 cited IDs resolve; raw/new sealed outputs ignored under development-v2/. Old
-outcomes unchanged; no comparable before/after or independent/human quality claim.
-No runtime tuning between cases; no reruns/extra judges/unused8-attempt reuse.
-Evidence: evidence/tasks/feature-003-live-development-v2.md and
-evidence/tasks/feature-003-live-development-v2-results.json.
-Local guide remains ignored; .env unchanged. T062–T064/T066/T067 pending.
-Next: diagnose30s no-header timeout with offline regressions, then scope a
-separately bounded new live revision if requested. Do NOT replay completed batch.
+Branch feature03-reliability-v2; HEAD46a15ed plus uncommitted timeout-v3 and
+coverage-v4 changes. No commit/push or .env/dependency changes. Preserve this work.
+T076?T081 completed within their scoped maintenance/development checks.
+Full backend870 PASS, focused17/related48 PASS, Ruff/diff PASS. Frontend unchanged.
 
-## Completed maintenance context
+Runtime: one bounded transient retry for request timeout; total timeout still
+budget_exhausted; known credit/quota nonretryable with private safe diagnostics.
+Public schemas/limits unchanged:8requests,12tools,30s/request,120s total,48k input.
+New attempts pin application promptv3; old attempts/retries retain their old prompt.
+Judge promptv3 distinguishes draft needs_information from an analyst disposition.
+Atomic development facts + mandatory disclosures preserve all requirements and
+90% support/80% coverage thresholds. Calibration failure prevents quality claims.
 
-User authorized option1 diagnosis/fixes and short guide in milan. T068–T072 complete:
-safe allowlisted repair reasons, prompt v2 for new attempts, last request/repair
-restricted to drafting, bounded async provider cleanup, opt-in Cyrillic glossary
-lookup and separate unvalidated development config. Original config/prompt/results
-unchanged. .env unchanged; no new API calls, installs, model switch or Git publication.
+Live development-v4:17/25 attempts (16generation+1judge),16HTTP200+1unknown timeout.
+741 valid65.404s, one timeout at29.993s RECOVERED by one retry;743 valid26.515s.
+742 failed35.218s: typed null assertion on missing eligible_count Fact rejected;
+repair payload reconstructed offline at49,925>48,000 bytes, no sixth HTTP sent.
+Calibration3/3 PASS; actual development quality2/3. On two delivered reports:
+support8/8, essential coverage19/19, procedures2/2, disclosures correct, no critical
+machine flags. No independent/human or comparable before/after improvement claim.
+Known79,502 tokens plus1 unknown usage, spend unknown. No quota errors observed.
+Unused8 attempts NOT reusable; do NOT rerun any completed v2/v3/v4 batch.
+Audit/hash PASS:20 prior v2/v3 JSON artifacts and v3 source snapshot preserved;
+8 cited IDs resolve. Raw outputs remain ignored under evals/results/feature-003/.
 
-Executed RED→GREEN; full backend814 PASS (791+23), Ruff/diff PASS. Isolated actual
-local HTTP/CLI test-provider journey8/8 PASS. No browser/manual UI/frontend rerun.
-Local ignored guide: milan/feature03-provere-v2.md,144 lines. Evidence:
-evidence/tasks/feature-003-reliability-v2.md and baseline manifest. Original runtime
-at cd98ea021a38b362b5766c4e23a1e55ec0ad0dcd; old frozen-source audits must use it,
-not the changed development checkout. Of42 baseline files only3 expected runtime
-sources changed, other39 match. Ignored raw live-v1/judge-v2/retrieval-v1 archives
-ABSENT here: no fresh raw-integrity/exact old-rejection/outlier-cause claim.
+Evidence: evidence/tasks/feature-003-coverage-v4.md, coverage-v4-results.json and
+coverage-v4-repair-diagnosis.json. Detailed timeout-v3 and live-development-v2
+history remains in their task evidence. V3 source snapshot before v4 selection:
+.cache/evidence-snapshots/timeout-v3/ (ignored). Old source audits require their
+original revision/snapshot, not current code. Local milan guide remains ignored.
 
-Original quality0/8, retrieval0.50/0.50, demo2/5-within90 and7496.290s outlier remain
-FAILED. No old batch replay/unused-budget reuse. New independent quality estimates
-need a NEW versioned protocol/fresh holdout. T062 producer review, T063 partial
-authored guards, T064 real adapter, T066 actual teammate reproduction/human review
-and T067 final feature Converge remain pending. V2 focused review is not T067.
-Next: review v2 and scope/freeze a bounded development-only live test on new
-synthetic input before fresh independent evaluation. Producer integration is a
-separate pending team dependency. No additional live execution authorized here.
-
-## Historical handoff — 2026-11-15 (superseded current next step)
-
-User-authorized post-hoc report-judging-v2 replaces BOTH human rating roles.
-User approved max6 new gpt-6-luna judge attempts; actual3/6, all200, no retries.
-All8 primary/5 secondary outcomes accounted; 48 rated units across3 independent
-stateless requests (H02/H05 primary, H02 secondary). Ten failed role/outcomes
-retained without invented claims. Raw outputs/disagreement immutable; same-model
-agreement is not independent human validation. No Vedran/Milan signatures.
-Conservative quality0/8 pass (target7/8): six generation failures; H02/H05 gaps.
-H02 support4/4, coverage11/13; H05 support5/5, coverage6/9; missingness false.
-One unresolved additional-issue disagreement retained, no automatic pass.
-Judge31,082 tokens known, no unknown judge usage; spend unknown. Generation
-ledger remains86, original13 live outcomes/16 source/10 retrieval hashes unchanged.
-T056 retrieval0.50/0.50 and live demo2/5-within90/outlier7496.290s remain FAILED.
-T059/T060/T061 checked for executed automated evaluation/audit, not acceptance.
-791 backend/15 targeted PASS, Ruff/diff PASS; no runtime/producer changes.
-Evidence: evidence/tasks/feature-003-automated-evaluation.md and
-feature-003-judge-results.json. Ignored raw/sealed outputs: judge-v2/ under
-evals/results/feature-003/. Do NOT rerun completed batch or reuse unused budget.
-
-T065 fixture regression complete. T062 source reconciliation partial; actual
-producer/affected-consumer review pending (user awaiting ML/data teammates).
-T063 authored guards partial; real T064 adapter unstarted pending that interface.
-T066 docs complete, actual teammate reproduction/human code review still pending.
-T067 unstarted. No generation rerun, tuning, model switch, Git publication.
-Next: receive actual producer/consumer decision on the prepared SHA-pinned
-context/history review packet: evidence/tasks/feature-003-context-review.md.
-Earlier detailed history remains in task evidence and prior Git handoffs.
+Next concrete step: RED SDK regression for repair-context exhaustion, then fit
+repair within48k while retaining required continuation/provenance and strict
+fact validation; separately scope any NEW live check. No old failure replacement.
+T062 producer/consumer review pending;T063 authored guards partial;T064 real adapter
+unstarted. T066 actual teammate reproduction/human review and T067 full feature
+Converge pending. Original0/8 quality, retrieval0.50/0.50 and original failed
+latency/outlier remain FAILED. Independent fresh holdout/reference review pending.

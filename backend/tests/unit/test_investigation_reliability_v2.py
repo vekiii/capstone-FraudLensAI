@@ -58,7 +58,7 @@ def test_repair_explains_local_rejection_and_revalidates(runtime, fault, reason)
     assert result['budget']['provider_requests'] == 5
     repairs = [e for e in service.events(run['attempt_id']) if e['operation'] == 'repair']
     assert len(repairs) == 1 and repairs[0]['reason'] == reason
-    assert service.binding(run['attempt_id'])['prompt'].startswith('# Investigation application prompt v2')
+    assert service.binding(run['attempt_id'])['prompt'].startswith('# Investigation application prompt v3')
 
 
 def test_unknown_validator_exception_never_enters_feedback_or_audit(runtime, monkeypatch):

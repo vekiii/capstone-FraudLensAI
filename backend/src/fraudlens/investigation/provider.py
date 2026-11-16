@@ -13,6 +13,27 @@ from fraudlens.investigation.repair import REPAIR_HINTS
 
 ROOT = Path(__file__).resolve().parents[4]
 PRIVATE = re.compile(r'label|laundering|isfraud|reference.answer|source.path|source.row|reviewer', re.I)
+QUOTA_CODES = frozenset({'insufficient_quota', 'credit_balance_exhausted',
+    'organization_usage_limit_exceeded', 'organization_spend_limit_exceeded',
+    'project_spend_limit_exceeded', 'usage_limit_exceeded'})
+PROVIDER_CODES = QUOTA_CODES | {'rate_limit_exceeded', 'slow_down', 'server_is_overloaded', 'server_overloaded'}
+DIAGNOSTIC_REASONS = frozenset({'request_timeout', 'attempt_timeout', 'connection_error',
+                               'rate_limit', 'quota_exhausted', 'http_error'})
+
+
+def safe_diagnostic(value):
+    """Only fixed codes and a numeric status may enter private audit events."""
+    if not isinstance(value, dict):
+        return {}
+    result = {}
+    reason, code, status = value.get('reason'), value.get('provider_code'), value.get('http_status')
+    if isinstance(reason, str) and reason in DIAGNOSTIC_REASONS:
+        result['reason'] = reason
+    if type(status) is int and 100 <= status <= 599:
+        result['http_status'] = status
+    if isinstance(code, str) and code in PROVIDER_CODES:
+        result['provider_code'] = code
+    return result
 
 
 def compile_report_schema():
@@ -150,20 +171,28 @@ class OpenAIProvider:
                 raise ProviderError('provider_incomplete') from None
             code = ('provider_access' if exc.status_code in (401, 403) else
                     'unsupported_capability' if exc.status_code in (400, 404, 422) else 'provider_failure')
-            retryable = exc.status_code == 429 or exc.status_code >= 500
+            provider_code = getattr(exc, 'code', None)
+            quota = (isinstance(provider_code, str) and provider_code in QUOTA_CODES
+                     or getattr(exc, 'type', None) == 'insufficient_quota')
+            retryable = (exc.status_code == 429 or exc.status_code >= 500) and not quota
             try:
                 delay = float(exc.response.headers.get('retry-after', '0'))
             except ValueError:
                 delay = 3  # Fail rather than ignore an unbounded/unparseable delay.
-            raise ProviderError(code, retryable=retryable, retry_after=delay) from None
-        except (APIConnectionError, APITimeoutError):
+            reason = 'quota_exhausted' if quota else 'rate_limit' if exc.status_code == 429 else 'http_error'
+            raise ProviderError(code, retryable=retryable, retry_after=delay,
+                diagnostic=dict(reason=reason, http_status=exc.status_code, provider_code=provider_code)) from None
+        except (APIConnectionError, APITimeoutError) as exc:
             if self.transport.input_exceeded:
                 raise ProviderError('budget_exhausted') from None
             if self.transport.exceeded:
                 raise ProviderError('provider_incomplete') from None
-            raise ProviderError('provider_failure', retryable=True, outcome_unknown=True) from None
+            reason = 'request_timeout' if isinstance(exc, APITimeoutError) else 'connection_error'
+            raise ProviderError('provider_failure', retryable=True, outcome_unknown=True,
+                                diagnostic=dict(reason=reason)) from None
         except TimeoutError:
-            raise ProviderError('budget_exhausted', outcome_unknown=True) from None
+            raise ProviderError('provider_failure', retryable=True, outcome_unknown=True,
+                                diagnostic=dict(reason='request_timeout')) from None
         except (ValueError, TypeError):
             raise ProviderError('provider_incomplete') from None
         if not isinstance(response, dict) or not isinstance(response.get('output'), list):
@@ -236,10 +265,11 @@ class Turn:
 
 
 class ProviderError(ValueError):
-    def __init__(self, code, retryable=False, retry_after=0, outcome_unknown=False):
+    def __init__(self, code, retryable=False, retry_after=0, outcome_unknown=False, diagnostic=None):
         super().__init__(code)
         self.code, self.retryable = code, retryable
         self.retry_after, self.outcome_unknown = retry_after, outcome_unknown
+        self.diagnostic = safe_diagnostic(diagnostic)
 
 
 def _keys(value, allowed, required=None):

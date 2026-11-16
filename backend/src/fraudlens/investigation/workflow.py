@@ -10,7 +10,7 @@ from uuid import UUID, uuid4
 
 from fraudlens.investigation.context import CaseContextReader, outbound_context
 from fraudlens.investigation.models import SCHEMA, canonical, digest, validate
-from fraudlens.investigation.provider import ProviderError, ScriptedProvider
+from fraudlens.investigation.provider import ProviderError, ScriptedProvider, safe_diagnostic
 from fraudlens.investigation.repair import repair_reason
 from fraudlens.investigation.settings import InvestigationSettings
 from fraudlens.investigation.tools import ToolExecutor, content_digest, definitions
@@ -107,7 +107,7 @@ class InvestigationService:
         if self.settings.provider == 'openai' and not self.settings.api_key.get_secret_value():
             raise ValueError('provider_unavailable')
         from fraudlens.investigation.models import ROOT
-        prompt = (ROOT / 'prompts/application/investigation-v2.md').read_text(encoding='utf-8')
+        prompt = (ROOT / 'prompts/application/investigation-v3.md').read_text(encoding='utf-8')
         limits = {key: getattr(self.settings, key) for key in (
             'max_provider_requests', 'max_tool_calls', 'total_timeout_seconds', 'request_timeout_seconds',
             'max_input_bytes', 'max_output_tokens', 'max_response_bytes')}
@@ -127,21 +127,22 @@ class InvestigationService:
             if row and row[0] in ACTIVE and (lease[0] != attempt_id or lease[1] < time.time() or owner_dead(lease[2])):
                 self._failure(db, attempt_id, row[1], 'interrupted')
 
-    def _failure(self, db, attempt_id, revision, code, unknown=False):
+    def _failure(self, db, attempt_id, revision, code, unknown=False, diagnostic=None):
         allowed = SCHEMA['$defs']['Failure']['properties']['code']['enum']
         code = code if code in allowed else 'context_unavailable'
         pending = db.execute("SELECT 1 FROM provider_dispatches WHERE attempt_id=? AND outcome IN ('pending','unknown')",
                              (attempt_id,)).fetchone()
         event(db, attempt_id, 'failure', failure=validate('Failure', dict(code=code,
-            message='Investigation ended with a controlled limitation or failure.', outcome_unknown=unknown or bool(pending))))
+            message='Investigation ended with a controlled limitation or failure.', outcome_unknown=unknown or bool(pending))),
+            **({'diagnostic': safe_diagnostic(diagnostic)} if diagnostic else {}))
         db.execute("UPDATE provider_dispatches SET outcome='unknown' WHERE attempt_id=? AND outcome='pending'", (attempt_id,))
         self.repo._transition(db, attempt_id, revision, 'failed')
 
-    def fail(self, attempt_id, code, unknown=False):
+    def fail(self, attempt_id, code, unknown=False, diagnostic=None):
         with self.repo.transaction() as db:
             row = db.execute('SELECT state,revision FROM attempts WHERE attempt_id=?', (attempt_id,)).fetchone()
             if row and row[0] in ACTIVE | {'created'}:
-                self._failure(db, attempt_id, row[1], code, unknown)
+                self._failure(db, attempt_id, row[1], code, unknown, diagnostic)
 
     def read(self, attempt_id):
         validate('AttemptId', attempt_id)
@@ -288,7 +289,7 @@ class InvestigationService:
     def _claim(self, attempt_id, owner, seconds):
         return self.repo.claim(attempt_id, owner, seconds)
 
-    def _dispatch_result(self, attempt_id, sequence, outcome, turn=None, owner=None):
+    def _dispatch_result(self, attempt_id, sequence, outcome, turn=None, owner=None, diagnostic=None):
         with self.repo.transaction() as db:
             row = db.execute('SELECT state FROM attempts WHERE attempt_id=?', (attempt_id,)).fetchone()
             lease = db.execute('SELECT attempt_id,owner,expires FROM worker_lease WHERE singleton=1').fetchone()
@@ -302,7 +303,8 @@ class InvestigationService:
             event(db, attempt_id, 'dispatch_result', sequence=sequence, outcome=outcome,
                   returned_model=turn.returned_model if turn else None,
                   request_id=turn.request_id if turn else None, usage=turn.usage if turn else None,
-                  private_items=list(turn.private_items) if turn else [])
+                  private_items=list(turn.private_items) if turn else [],
+                  **({'diagnostic': safe_diagnostic(diagnostic)} if diagnostic else {}))
 
     def _complete(self, attempt_id, owner, report):
         with self.repo.transaction() as db:
@@ -359,18 +361,25 @@ class InvestigationService:
                 try:
                     async with asyncio.timeout(request_limits['request_timeout']):
                         turn = await provider.next_turn(messages, definitions(), SCHEMA['$defs']['ReportDraft'], request_limits)
-                except TimeoutError:
-                    raise ProviderError('budget_exhausted', outcome_unknown=True) from None
-                except ProviderError as exc:
-                    self._dispatch_result(attempt_id, sequence, 'unknown' if exc.outcome_unknown else 'failed', owner=owner)
-                    if exc.retryable and retries == 0 and 0 <= exc.retry_after <= 2 and exc.code != 'provider_access':
+                except (TimeoutError, ProviderError) as error:
+                    exc = (ProviderError('provider_failure', retryable=True, outcome_unknown=True,
+                           diagnostic=dict(reason='request_timeout')) if isinstance(error, TimeoutError) else error)
+                    if deadline - time.monotonic() <= 0:
+                        # An expired lease cannot accept a dispatch-result write.
+                        raise ProviderError('budget_exhausted', outcome_unknown=exc.outcome_unknown,
+                                            diagnostic=dict(reason='attempt_timeout')) from None
+                    self._dispatch_result(attempt_id, sequence, 'unknown' if exc.outcome_unknown else 'failed',
+                                          owner=owner, diagnostic=exc.diagnostic)
+                    if (exc.retryable and retries == 0 and 0 <= exc.retry_after <= 2
+                            and exc.code != 'provider_access' and sequence < limits['max_provider_requests']):
                         retries += 1
                         with self.repo.transaction() as db:
-                            event(db, attempt_id, 'transient_retry')
+                            event(db, attempt_id, 'transient_retry',
+                                  **({'diagnostic': safe_diagnostic(exc.diagnostic)} if exc.diagnostic else {}))
                         async with asyncio.timeout(max(0, deadline - time.monotonic())):
                             await asyncio.sleep(exc.retry_after)
                         continue
-                    raise
+                    raise exc from None
                 self._dispatch_result(attempt_id, sequence, 'completed', turn, owner)
                 if time.monotonic() >= deadline:
                     raise ProviderError('budget_exhausted')
@@ -415,7 +424,7 @@ class InvestigationService:
                 self._complete(attempt_id, owner, report)
                 break
         except ProviderError as exc:
-            self.fail(attempt_id, exc.code, exc.outcome_unknown)
+            self.fail(attempt_id, exc.code, exc.outcome_unknown, exc.diagnostic)
         except TimeoutError:
             self.fail(attempt_id, 'budget_exhausted')
         except (ValueError, OSError, KeyError):

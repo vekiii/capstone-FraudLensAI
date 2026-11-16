@@ -1,0 +1,98 @@
+{
+  "kind": "authored_template_development_not_independent_holdout",
+  "canary": "DEV3_REFERENCE_ONLY_CANARY_20261116",
+  "items": [
+    {
+      "id": "DEV3-721",
+      "essential_facts": [
+        "Focal transfer TX-721 is exactly 7050.80 EUR; not bank loss.",
+        "Recorded focal time 2026-11-12T10:30:45Z; independently verified fixture time-basis provenance is unavailable.",
+        "Score 0.58 is an authored fixture illustration, not ML inference, guilt or calibrated probability.",
+        "Occupation, device and source of funds are unavailable; no invented customer identity or explanation.",
+        "Sender history is available but INCOMPLETE: two eligible events before the focal minute in the seven-day window.",
+        "Separate history totals EUR 210.20 and USD 31.05; never combine currencies.",
+        "Receiver history unavailable is not evidence of no prior activity."
+      ],
+      "expected_missing_fields": [
+        "occupation",
+        "device",
+        "source of funds",
+        "independently verified fixture time provenance",
+        "full history coverage",
+        "receiver history"
+      ],
+      "expected_limitations": [
+        "authored synthetic fixture, not actual customer/model evidence",
+        "human analyst final authority"
+      ],
+      "guidance_policy": "Only actual applicable procedure evidence supports procedural recommendations; 723 controlled no-match.",
+      "history_expectation": "Incomplete sender/unavailable receiver on721; unavailable both sides otherwise.",
+      "critical_errors": [
+        "invented guilt/identity/funds",
+        "changed exact money/time",
+        "mixed-currency arithmetic",
+        "automatic intervention"
+      ]
+    },
+    {
+      "id": "DEV3-722",
+      "essential_facts": [
+        "Focal transfer TX-722 is exactly 158.42 GBP; not bank loss.",
+        "Recorded focal time 2026-11-12T10:30:45Z; independently verified fixture time-basis provenance is unavailable.",
+        "Score 0.27 is an authored fixture illustration, not ML inference, guilt or calibrated probability.",
+        "Occupation, device and source of funds are unavailable; no invented customer identity or explanation.",
+        "Account history is unavailable, not observed empty history or zero prior activity."
+      ],
+      "expected_missing_fields": [
+        "occupation",
+        "device",
+        "source of funds",
+        "independently verified fixture time provenance",
+        "account history"
+      ],
+      "expected_limitations": [
+        "authored synthetic fixture, not actual customer/model evidence",
+        "human analyst final authority"
+      ],
+      "guidance_policy": "Only actual applicable procedure evidence supports procedural recommendations; 723 controlled no-match.",
+      "history_expectation": "Incomplete sender/unavailable receiver on721; unavailable both sides otherwise.",
+      "critical_errors": [
+        "invented guilt/identity/funds",
+        "changed exact money/time",
+        "mixed-currency arithmetic",
+        "automatic intervention"
+      ]
+    },
+    {
+      "id": "DEV3-723",
+      "essential_facts": [
+        "Focal transfer TX-723 is exactly 940.17 USD; not bank loss.",
+        "Recorded focal time 2026-11-12T10:30:45Z; independently verified fixture time-basis provenance is unavailable.",
+        "Score 0.49 is an authored fixture illustration, not ML inference, guilt or calibrated probability.",
+        "Occupation, device and source of funds are unavailable; no invented customer identity or explanation.",
+        "Account history is unavailable, not observed empty history or zero prior activity.",
+        "Controlled retrieval returns no procedure passage; no unsupported procedural recommendation."
+      ],
+      "expected_missing_fields": [
+        "occupation",
+        "device",
+        "source of funds",
+        "independently verified fixture time provenance",
+        "account history",
+        "applicable procedural guidance"
+      ],
+      "expected_limitations": [
+        "authored synthetic fixture, not actual customer/model evidence",
+        "human analyst final authority"
+      ],
+      "guidance_policy": "Only actual applicable procedure evidence supports procedural recommendations; 723 controlled no-match.",
+      "history_expectation": "Incomplete sender/unavailable receiver on721; unavailable both sides otherwise.",
+      "critical_errors": [
+        "invented guilt/identity/funds",
+        "changed exact money/time",
+        "mixed-currency arithmetic",
+        "automatic intervention"
+      ]
+    }
+  ]
+}

@@ -293,3 +293,19 @@ development cases, not an independent holdout or replacement for failed targets.
 - [x] T073 Freeze new label-free inputs/separate expectations and protocol; implement/test durable25/global,8/case,1/judge transport caps, no ambiguous replay and reference separation in evidence/tasks/feature-003-live-development-v2.py. (FR-018, FR-024–028.)
 - [x] T074 Execute at most three actual-provider development investigations on the published reliability branch without intervening tuning; preserve all outcomes/usage/traces/errors under ignored development-v2, then perform at most one stateless batch judge call and conservative aggregation. Actual17/25 transports,2/3 development pass, one unknown-timeout failure retained. (Depends:T073; FR-013–018, FR-027–028.)
 - [x] T075 Audit actual results/source/input/output hashes and no-reference leakage; publish honest development metrics/evidence and update next_work.md on the new branch, preserving pending human/producer/release gates. Audit PASS; no full-feature acceptance claim. (Depends:T074; FR-024–028, SC-008.)
+
+## Phase 11: Timeout/quota follow-up (2026-11-16)
+
+Scope/design: [timeout-v3.md](timeout-v3.md); preserve all completed v2 outcomes.
+
+- [x] T076 Reproduce request-timeout retry asymmetry and HTTP429 credit/quota misclassification with authored SDK/workflow RED checks; implement safe private diagnostics and one bounded retry without raising existing ceilings or changing public contracts. (FR-017–020, FR-024.)
+- [x] T077 Run complete backend/Ruff and freeze a separate development-v3 input/reference/runner protocol with max25 transports; execute one unchanged batch, retaining all outcomes and stopping after reported quota/access errors. Actual16 transports,3 valid drafts, raw machine quality0/3; no live timeout observed. (Depends:T076; FR-018, FR-025–028.)
+- [x] T078 Audit v3 results/source/usage/diagnostics and preserve v2 hashes; record evidence, short local instructions and next_work.md with actual results and pending review/release limitations. Audit PASS; disputed judge state/disposition interpretation retained without score correction. (Depends:T077; FR-024–028, SC-008.)
+
+## Phase 12: Coverage/judge calibration (2026-11-16)
+
+Scope: [coverage-v4.md](coverage-v4.md). New development protocol, no old regrading.
+
+- [x] T079 Add RED→GREEN calibration-gate and prompt-binding regressions; implement application prompt v3 and judge prompt v3 with explicit identity/coverage and draft/human-review semantics, preserving every required limitation and numerical threshold. (FR-013–017, FR-022–028.)
+- [x] T080 Freeze separate development-v4 inputs/atomic references/calibration packets and expected labels; test exclusion from generation, strict role/unit binding and calibration-failure gating; run full regression and one max25 actual batch. Actual17 transports, calibration3/3, development pass2/3; controlled repair-size failure retained. (Depends:T079; FR-018, FR-024–028.)
+- [x] T081 Audit actual metrics, calibration results, prior artifact preservation and limitations; update evidence, local guide and next_work.md without human/release/publication claims. Audit PASS; next repair-context work explicitly pending. (Depends:T080; FR-024–028, SC-008.)

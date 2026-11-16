@@ -1,0 +1,12 @@
+{
+  "id": "DEV4-742",
+  "kind": "offline_repair_payload_reconstruction",
+  "repair_reason": "exact_assertion_mismatch",
+  "completed_turns": 5,
+  "canonical_utf8_bytes": 49925,
+  "httpx_json_bytes": 49925,
+  "configured_input_limit": 48000,
+  "exceeds_input_limit": true,
+  "expected_preserved_private_items": true,
+  "actual_api_calls": 0
+}

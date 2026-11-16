@@ -1,5 +1,18 @@
 # FraudLens AI
 
+Coverage/calibration development v4 (2026-11-16, local): **870 backend tests PASS**;
+new prompt clarifies transaction IDs and mandatory source disclosures. Judge
+calibration3/3, actual development reports2/3 pass, including one recovered request
+timeout. Remaining failure: invalid exact assertion followed by repair payload
+49,925>48,000 bytes; preserved without rerun. This is not independent release
+evaluation. [Actual results and limits](evidence/tasks/feature-003-coverage-v4.md).
+
+Timeout/quota maintenance (2026-11-16, local follow-up): one bounded retry for
+request timeout, distinct private credit/quota diagnostics, unchanged public
+contracts/limits. **853 backend tests PASS**. New development-v3:3 validated drafts,
+raw single-judge semantic pass0/3; a disputed state/disposition interpretation is
+retained for review. [Evidence and limits](evidence/tasks/feature-003-timeout-v3.md).
+
 Actual LLM development check (2026-11-16): three new synthetic cases with
 gpt-6-luna, **2/3 development passes** under one same-model automated judge; the
 remaining case failed during a 30-second request window. All outcomes retained,
