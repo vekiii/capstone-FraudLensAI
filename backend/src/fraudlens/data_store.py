@@ -769,7 +769,7 @@ class RunStore:
         self.path = Path(path)
         self.connection = sqlite3.connect(
             f'{self.path.resolve().as_uri()}?mode=ro' if read_only else self.path,
-            timeout=30, isolation_level=None, uri=read_only)
+            timeout=30, isolation_level=None, uri=True)
         self.connection.execute('PRAGMA foreign_keys=ON')
         if read_only:
             self.connection.execute('PRAGMA query_only=ON')
@@ -796,6 +796,26 @@ class RunStore:
             CREATE TABLE IF NOT EXISTS active_run (
                 singleton INTEGER PRIMARY KEY CHECK(singleton=1),
                 run_id TEXT NOT NULL REFERENCES scored_runs(run_id));
+            CREATE TABLE IF NOT EXISTS run_policies (
+                run_id TEXT PRIMARY KEY REFERENCES scored_runs(run_id),
+                policy_id TEXT NOT NULL,
+                source_run_id TEXT NOT NULL,
+                source_store_sha256 TEXT NOT NULL,
+                selection_sha256 TEXT NOT NULL,
+                threshold_eligible_count INTEGER NOT NULL,
+                capacity_excluded_count INTEGER NOT NULL);
+            CREATE TRIGGER IF NOT EXISTS immutable_policy_update
+            BEFORE UPDATE ON run_policies
+            WHEN (SELECT status FROM scored_runs WHERE run_id=OLD.run_id)='completed'
+            BEGIN SELECT RAISE(ABORT,'completed policy immutable'); END;
+            CREATE TRIGGER IF NOT EXISTS immutable_policy_insert
+            BEFORE INSERT ON run_policies
+            WHEN (SELECT status FROM scored_runs WHERE run_id=NEW.run_id)='completed'
+            BEGIN SELECT RAISE(ABORT,'completed policy immutable'); END;
+            CREATE TRIGGER IF NOT EXISTS immutable_policy_delete
+            BEFORE DELETE ON run_policies
+            WHEN (SELECT status FROM scored_runs WHERE run_id=OLD.run_id)='completed'
+            BEGIN SELECT RAISE(ABORT,'completed policy immutable'); END;
             CREATE TRIGGER IF NOT EXISTS immutable_scored_update
             BEFORE UPDATE ON scored_assessments
             WHEN (SELECT status FROM scored_runs WHERE run_id=OLD.run_id)='completed'
@@ -906,7 +926,13 @@ class RunStore:
             run = self.connection.execute('''
                 SELECT expected_count,scored_count,total_alerts,status
                 FROM scored_runs WHERE run_id=?''', (run_id,)).fetchone()
+            policy = self.connection.execute('''
+                SELECT policy_id,threshold_eligible_count,capacity_excluded_count
+                FROM run_policies WHERE run_id=?''', (run_id,)).fetchone()
             if (run is None or run[3] != 'staging' or run[0] != run[1]
+                    or policy is not None and (
+                        policy[0] != 'boosted_utc_daily_top20_v1'
+                        or policy[1] != run[2] + policy[2])
                     or run[1] != self.connection.execute(
                         'SELECT COUNT(*) FROM scored_assessments WHERE run_id=?',
                         (run_id,)).fetchone()[0]
@@ -966,7 +992,7 @@ class RunStore:
                   'score_source': source}
                  for case, transaction, at, score, kind, source in rows]
         items.sort(key=lambda item: (item['event_time'], item['transaction_id']))
-        return {'contract_version': 2, 'snapshot_ref': run_id,
+        result = {'contract_version': 2, 'snapshot_ref': run_id,
                 'dataset_version': version, 'data_source': 'ibm_aml_hi_small',
                 'score_source': score_source, 'scorer_version': scorer,
                 'total_alerts': total, 'displayed_count': len(items),
@@ -975,6 +1001,15 @@ class RunStore:
                     'from': items[0]['event_time'] if items else None,
                     'to': items[-1]['event_time'] if items else None},
                 'items': items}
+        if self.connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='run_policies'").fetchone():
+            policy = self.connection.execute('''
+                SELECT policy_id,threshold_eligible_count,capacity_excluded_count
+                FROM run_policies WHERE run_id=?''', (run_id,)).fetchone()
+            if policy is not None:
+                result.update(alert_policy_id=policy[0],
+                              threshold_eligible_count=policy[1],
+                              capacity_excluded_count=policy[2])
+        return result
 
     def detail_active(self, score_source, snapshot_ref, case_id):
         run_id, version, _, _ = self._active(score_source)

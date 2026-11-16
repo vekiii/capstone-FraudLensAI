@@ -729,6 +729,15 @@ together; weakening closed-object, identity or score checks is not a migration.
   preselected 24-hour UTC period must meet the user-approved floor of at least
   five positives among at most 20 alerts before considering activation. The
   period and compatible source must be fixed before any new labels are read.
+- For a new isolated local run only, the user-authorized
+  `boosted_utc_daily_top20_v1` publication policy may derive from a verified
+  immutable boosted score run. Keep all scored assessments; among scores at or
+  above `0.9936687168275105`, publish the highest 20 per UTC date, breaking
+  score ties by stable transaction ID. Record source-run provenance, policy ID,
+  eligible, excluded and selected counts. The API list and case detail must
+  use that same selected snapshot. This technical path does not change the
+  previously completed run, shared active scorer, independent acceptance
+  criteria or pending teammate review.
 
 ### Explicit exclusions
 - No LLM decision-making or generated investigation narratives, RAG ingestion/retrieval,

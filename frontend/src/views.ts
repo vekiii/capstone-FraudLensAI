@@ -199,6 +199,10 @@ export function createCaseView(root: HTMLElement, actions: Actions) {
           if (listing && 'contract_version' in listing) {
             panel.append(status(`Ukupno upozorenja: ${listing.total_alerts}; `
               + `prikazano: ${listing.displayed_count}.`));
+            if (listing.alert_policy_id) panel.append(element('p',
+              `Dnevni limit: najviše 20 po UTC danu; iznad praga: `
+              + `${listing.threshold_eligible_count}; izostavljeno: `
+              + `${listing.capacity_excluded_count}.`, 'muted'));
             if (listing.truncated) panel.append(element('p',
               'Prikazano je najnovijih 100 upozorenja.', 'muted'));
             if (!items.length) panel.append(element('p', 'Nema upozorenja u aktivnom runu.'));

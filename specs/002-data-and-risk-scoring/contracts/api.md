@@ -65,6 +65,16 @@ items length and is at most 100. truncated is true exactly when
 total_alerts > displayed_count. The list is a review display, not the
 test/evaluation population.
 
+For a completed run with policy `boosted_utc_daily_top20_v1`, the same v2
+response additionally includes `alert_policy_id`,
+`threshold_eligible_count` and `capacity_excluded_count`. In that run,
+`total_alerts` counts the final selected published cases, and
+`threshold_eligible_count = total_alerts + capacity_excluded_count`. The
+optional fields are absent for legacy runs, preserving their response shape
+and threshold-count semantics. List and detail use the same immutable
+`alert=1` snapshot; a capacity-excluded transaction has no case detail in
+that snapshot. The 100-item display bound applies after daily selection.
+
 When more than 100 alerts exist, select the most recent 100 by descending
 event time, then ascending transaction ID for ties. Return the chosen
 items ascending by event time and transaction ID. The frontend must not

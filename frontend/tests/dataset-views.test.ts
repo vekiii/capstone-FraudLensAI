@@ -9,6 +9,16 @@ let dispose: (() => void) | undefined;
 beforeEach(() => { root = document.createElement('main'); document.body.append(root); });
 afterEach(() => { dispose?.(); document.body.replaceChildren(); });
 
+it('shows selected and threshold counts for the capped run', async () => {
+  const list = decodeCaseListV2({ ...LIST_V2,
+    alert_policy_id: 'boosted_utc_daily_top20_v1',
+    threshold_eligible_count: 3, capacity_excluded_count: 2 });
+  dispose = mountCaseApp(root, { getCases: async () => list,
+    getCase: async () => decodeCaseDetailV2(DETAIL_V2) });
+  await vi.waitFor(() => expect(root.textContent).toContain('Dnevni limit'));
+  expect(root.textContent).toContain('iznad praga: 3; izostavljeno: 2');
+});
+
 it('preserves server v2 order and carries list snapshot into detail', async () => {
   const newer = { ...LIST_V2.items[0], case_id: `C${'2'.repeat(32)}`,
     transaction_id: `D${'2'.repeat(32)}`, event_time: '2022-09-11T10:00:00Z' };

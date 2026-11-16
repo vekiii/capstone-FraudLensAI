@@ -208,6 +208,8 @@ export interface CaseListV2 {
   contract_version: 2; snapshot_ref: string; dataset_version: string;
   data_source: 'ibm_aml_hi_small'; score_source: V2Source; scorer_version: string;
   total_alerts: number; displayed_count: number; truncated: boolean;
+  alert_policy_id?: 'boosted_utc_daily_top20_v1';
+  threshold_eligible_count?: number; capacity_excluded_count?: number;
   selected_time_range: { from: string | null; to: string | null };
   items: CaseSummaryV2[];
 }
@@ -392,9 +394,12 @@ function v2Summary(value: unknown): CaseSummaryV2 {
     score_kind: scoreKind, score_source: scoreSource };
 }
 export function decodeCaseListV2(value: unknown): CaseListV2 {
+  const hasPolicy = isRecord(value) && Object.hasOwn(value, 'alert_policy_id');
   const object = closedObject(value, ['contract_version', 'snapshot_ref', 'dataset_version',
     'data_source', 'score_source', 'scorer_version', 'total_alerts', 'displayed_count',
-    'truncated', 'selected_time_range', 'items']);
+    'truncated', 'selected_time_range', 'items',
+    ...(hasPolicy ? ['alert_policy_id', 'threshold_eligible_count',
+      'capacity_excluded_count'] : [])]);
   if (object.contract_version !== 2 || object.data_source !== 'ibm_aml_hi_small'
       || !Array.isArray(object.items) || object.items.length > 100
       || typeof object.truncated !== 'boolean') return invalid();
@@ -402,6 +407,11 @@ export function decodeCaseListV2(value: unknown): CaseListV2 {
   const items = object.items.map(v2Summary);
   const total = nonnegativeInteger(object.total_alerts);
   const count = nonnegativeInteger(object.displayed_count);
+  const eligible = hasPolicy ? nonnegativeInteger(object.threshold_eligible_count) : undefined;
+  const excluded = hasPolicy ? nonnegativeInteger(object.capacity_excluded_count) : undefined;
+  if (hasPolicy && (object.alert_policy_id !== 'boosted_utc_daily_top20_v1'
+      || eligible === undefined || excluded === undefined
+      || eligible !== total + excluded)) return invalid();
   const sourceValue = v2Source(object.score_source);
   const from = nullableInstant(range.from);
   const to = nullableInstant(range.to);
@@ -419,6 +429,8 @@ export function decodeCaseListV2(value: unknown): CaseListV2 {
     dataset_version: v2Version(object.dataset_version), data_source: 'ibm_aml_hi_small',
     score_source: sourceValue, scorer_version: boundedText(object.scorer_version, 80),
     total_alerts: total, displayed_count: count, truncated: object.truncated,
+    ...(hasPolicy ? { alert_policy_id: 'boosted_utc_daily_top20_v1' as const,
+      threshold_eligible_count: eligible, capacity_excluded_count: excluded } : {}),
     selected_time_range: { from, to }, items };
 }
 export function decodeCaseDetailV2(value: unknown): CaseDetailV2 {

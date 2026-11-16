@@ -26,6 +26,7 @@ settings; no download occurs at application startup.
 | freeze-protocol | Dataset/feature version and reviewed protocol configuration | Immutable SplitManifest/EvaluationProtocol and eligibility report | Ineligible classes/positives => explicit ineligible report; no fit or test metric |
 | evaluate | Frozen protocol ID | Training/validation selection, frozen predictions, one final test comparison/report and holdout-consumed record | Failed candidate or missing artifact => explicit incomplete report, no fabricated improvement |
 | score-run | Completed dataset, feature/scorer/artifact version and frozen threshold | Label-free staged ScoredRun and ReviewCaseSnapshot, completed after validation | Failure => no active pointer change |
+| derive-daily-cap-run | Immutable completed boosted source run, exact source-store SHA-256, trusted artifact/manifest, frozen protocol and threshold, new run ID and isolated store, `boosted_utc_daily_top20_v1` | Copy all assessments into a new immutable run with recorded source provenance; publish only the daily-selected cases | Hash, source, policy, count or artifact mismatch => nonzero; no active pointer change |
 | activate-run | Completed run ID | One atomic active pointer update after compatibility/hash checks | Missing/incomplete/incompatible run => no pointer change |
 | reproduce | Report/protocol ID and matching local source/artifacts | Recomputed prediction/metric comparison under frozen tolerance | Missing hash/version or divergence => explicit failure and difference report |
 
@@ -376,3 +377,21 @@ the active pointer. The API never reads staging rows. Mid-run failure,
 restart or failed activation leaves the previous active complete run
 unchanged. A selected run's list/detail responses must agree; a
 superseded snapshot reference yields 409 stale_snapshot.
+
+For the separately identified `boosted_utc_daily_top20_v1` policy, first
+take scores at or above the frozen boosted threshold. Group by the UTC date
+of the approved `assumed_utc_for_synthetic_benchmark` event coordinate. Within
+each date, rank by score descending and stable transaction ID ascending;
+publish at most 20 cases. A score tie at position 20 is resolved by ID. This
+is a publication rule distinct from the validation threshold-selection rule,
+which preserves whole-score ties. Keep every scored assessment, including
+capacity-excluded rows, in the new isolated store. In that run,
+`total_alerts` is the final selected case count and must equal the number of
+`alert=1` rows. Record policy ID, source run ID, exact source-store hash,
+selection digest, threshold-eligible count and capacity-excluded count in
+immutable run metadata; the two counts must sum to threshold-eligible count.
+The source run remains unchanged. Do not apply this policy to rules, the
+frozen tree, or any earlier completed run. A partial source day is reported
+as such in evidence; the cap still applies to the events present on that date.
+This local policy implementation does not authorize shared activation or an
+independent utility claim.

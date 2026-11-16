@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Literal, Protocol
 
 from jsonschema import Draft202012Validator, FormatChecker
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 
 DatasetStatus = Literal['staged', 'complete', 'failed']
 LabelStatus = Literal['eligible_positive', 'eligible_negative', 'missing', 'invalid',
@@ -408,6 +408,14 @@ def _public_semantics(name: str, value: dict):
                                         and value['active_run_id'] is not None):
             raise ValueError('v2 health state mismatch')
     if name == 'CaseListV2':
+        policy_keys = {'alert_policy_id', 'threshold_eligible_count',
+                       'capacity_excluded_count'}
+        if policy_keys & value.keys():
+            if (not policy_keys <= value.keys()
+                    or value['alert_policy_id'] != 'boosted_utc_daily_top20_v1'
+                    or value['threshold_eligible_count'] != value['total_alerts']
+                    + value['capacity_excluded_count']):
+                raise ValueError('v2 alert policy count mismatch')
         items = value['items']
         count = value['displayed_count']
         if (count != len(items) or value['total_alerts'] < count
@@ -465,7 +473,8 @@ class _PublicV2(BaseModel):
 
     @model_validator(mode='after')
     def validate_public(self):
-        _public_semantics(type(self).__name__, self.model_dump(mode='json'))
+        _public_semantics(type(self).__name__, self.model_dump(mode='json',
+                                                                exclude_unset=True))
         return self
 
 
@@ -487,10 +496,22 @@ class CaseListV2(_PublicV2):
     score_source: Literal['rules', 'model']
     scorer_version: str
     total_alerts: int
+    alert_policy_id: Literal['boosted_utc_daily_top20_v1'] | None = None
+    threshold_eligible_count: int | None = None
+    capacity_excluded_count: int | None = None
     displayed_count: int
     truncated: bool
     selected_time_range: dict
     items: list[dict]
+
+    @model_serializer(mode='wrap')
+    def serialize(self, handler):
+        value = handler(self)
+        for key in ('alert_policy_id', 'threshold_eligible_count',
+                    'capacity_excluded_count'):
+            if key not in self.model_fields_set:
+                value.pop(key, None)
+        return value
 
 
 class CaseDetailV2(_PublicV2):

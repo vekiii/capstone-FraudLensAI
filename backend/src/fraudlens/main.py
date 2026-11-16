@@ -128,6 +128,7 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -
             'active_run_id': active['run_id'] if active else None})
 
     @app.get('/api/cases', response_model=CaseList | CaseListV2,
+             response_model_exclude_unset=True,
              responses={500: {'model': Error}})
     def case_list(config: Annotated[Settings, Depends(get_settings)],
                   service: Annotated[CaseService, Depends(get_case_service)]):

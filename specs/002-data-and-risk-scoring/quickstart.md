@@ -1,5 +1,74 @@
 # Feature 002 validation quickstart
 
+## Main local model path: HistGradientBoosting
+
+For new **local** Feature 002 model runs, use the pinned boosted artifact and
+`model-history-v1-boosted-candidate` scorer. The shared active run is still the
+frozen tree while the human, independent-period and capacity gates remain open.
+The exact commands for a new isolated run, activation and API are in
+[Obtain the local model before scoring](#obtain-the-local-model-before-scoring).
+The original tree and R1–R3 paths below remain available for T066 and benchmark
+comparison.
+
+From a clean checkout, install the lockfile and supply these **local, ignored**
+inputs through the authorized team channel: `data/raw/HI-Small_Trans.csv`
+(`b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`),
+the complete `data/processed/feature-002-ibm-v8-rules-work.sqlite` with
+5,078,345 `history-v1` snapshots (contributor's full-file SHA-256
+`5397b637814cbed9cf31389613207335321597c9682ec67d31abacf28ebda4d9`),
+and the whole trusted boosted artifact
+directory `artifacts/feature-002-boosted-validation-20261114/`. Verify
+`manifest.json` (`013c7ebe5ab5a5270a7b66af200060d3499c31eb2598c06a038ca887fd9320a6`),
+`metadata.json` (`c59376e06350bb403bd58898ef63f1588bc866b46dbead7fee09f3787b542044`)
+and `model.joblib` (`fce2a4057e46e02f0974bfcfdcae983e0952d6a3b98efea714e44746f08866c8`)
+with `shasum -a 256` or PowerShell `Get-FileHash -Algorithm SHA256` **before**
+loading the model. The tracked protocol must hash to
+`01fff67d44895b5a1aa6de6dfbb6c6c107f01c041ba7c972bf42210e2b316068`.
+The CLI reports `source_store_missing`, `protocol_missing`,
+`model_artifact_missing`, `model_manifest_mismatch` and related specific
+errors for absent or incompatible inputs. A newly fitted artifact has a new
+manifest identity and cannot use the pinned hash.
+
+On this contributor's machine, the completed `run_boosted_full_20261114_v3`
+already exists in ignored `evals/results/boosted-full-20261114-v3.sqlite`:
+`completed|3963424|3963424|166`. Reuse it for read-only inspection; do not
+rescore it. The main path's frozen threshold is `0.9936687168275105`.
+
+### Isolated daily top-20 publication from verified scores
+
+The source v3 store must match SHA-256
+`732eefa75ad46c80404c34301ae6d72be87d4eb61f0d618457f7c760224dce06`.
+The command below verifies that complete source run, its exact bytes, the
+trusted boosted artifact and protocol **before** creating a new store. It
+copies all 3,963,424 score assessments and their explanations, binds them to
+a new run ID, and publishes at most 20 threshold-eligible cases per UTC day.
+No model prediction or private-label query is made. Use a new output path/ID
+for every attempt; do not overwrite v3 or use the shared store.
+
+```sh
+PYTHONPATH=backend/src .venv/bin/python -m fraudlens.pipeline_cli derive-daily-cap-run --source-store evals/results/boosted-full-20261114-v3.sqlite --source-store-sha 732eefa75ad46c80404c34301ae6d72be87d4eb61f0d618457f7c760224dce06 --source-run-id run_boosted_full_20261114_v3 --run-store evals/results/boosted-daily20-20261116-v1.sqlite --run-id run_boosted_daily20_20261116_v1 --protocol evals/protocols/feature_002_v1.json --artifact-dir artifacts/feature-002-boosted-validation-20261114 --manifest-sha 013c7ebe5ab5a5270a7b66af200060d3499c31eb2598c06a038ca887fd9320a6 --threshold 0.9936687168275105 --policy-id boosted_utc_daily_top20_v1
+sqlite3 -readonly evals/results/boosted-daily20-20261116-v1.sqlite 'SELECT status,expected_count,scored_count,total_alerts FROM scored_runs WHERE run_id="run_boosted_daily20_20261116_v1";'
+PYTHONPATH=backend/src .venv/bin/python -m fraudlens.pipeline_cli activate-run --run-store evals/results/boosted-daily20-20261116-v1.sqlite --run-id run_boosted_daily20_20261116_v1 --scorer model --manifest-sha 013c7ebe5ab5a5270a7b66af200060d3499c31eb2598c06a038ca887fd9320a6
+APP_MODE=dataset APP_SCORER=model APP_RUN_STORE=$PWD/evals/results/boosted-daily20-20261116-v1.sqlite PYTHONPATH=backend/src .venv/bin/uvicorn fraudlens.main:app --host 127.0.0.1 --port 8000
+VITE_APP_MODE=dataset npm --prefix frontend run dev -- --host 127.0.0.1
+```
+
+Run the last two commands in separate terminals; open
+`http://127.0.0.1:5173/` and select a case. The list reports final selected
+`total_alerts`, pre-cap `threshold_eligible_count` and
+`capacity_excluded_count`; case detail uses the same run snapshot. The
+expected completed row is `completed|3963424|3963424|159`, with 166
+threshold-eligible and seven capacity-excluded. Two days change: September 2
+24→20 and September 9 23→20. The 100-item display bound remains separate.
+This is an isolated technical run, not shared activation or an independent
+utility result. A fresh `score-run` remains the path when no verified score
+archive exists; its exact command is below. In a clean checkout that produces
+a new full score archive, calculate that store's SHA-256 after its run is
+`completed`, then substitute the new source path/hash/run ID and a fresh target
+path/run ID in `derive-daily-cap-run`. Its count and score differences must be
+recorded; do not claim it is the contributor's byte-identical v3 run unless
+the source hash actually matches.
+
 Feature 002 has a working local IBM import, history-v1 features, frozen model,
 offline evaluation and read-only v2 UI. [T016 evidence](../../evidence/tasks/feature-002-import-identity.md#t016-declared-ibm-v8-import-and-exact-replay--2026-11-13)
 records the first import and immutable replay. Run commands from the repository
@@ -114,7 +183,7 @@ From the repository root, the existing fixture path can be checked
 without IBM data. Record each new run's actual result separately.
 
     UV_CACHE_DIR="$PWD/.cache/uv" uv sync --locked --group dev
-    UV_CACHE_DIR="$PWD/.cache/uv" PYTHONPATH=.:backend/src uv run --locked pytest backend/tests --ignore=backend/tests/unit/test_pretrained_loader.py --ignore=backend/tests/unit/test_pretrained_ibm_inference.py
+    UV_CACHE_DIR="$PWD/.cache/uv" PYTHONPATH=.:backend/src uv run --locked pytest backend/tests
     UV_CACHE_DIR="$PWD/.cache/uv" uv run --locked ruff check backend
     cd frontend
     npm ci
@@ -122,8 +191,9 @@ without IBM data. Record each new run's actual result separately.
     npm run typecheck
     npm run build
 
-The excluded pretrained suites are a separate known RED proposal for an
-incompatible external model; run and report them separately. Backend tests cover
+The abandoned, unimplemented pretrained proposal suites were removed after a
+caller and requirement audit; their historical RED results remain in evidence.
+Backend tests cover
 the unchanged v1 schema and reviewed v2 schema parity. Record actual results in
 `evidence/tasks/feature-002-regression.md`.
 

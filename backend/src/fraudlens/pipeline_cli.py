@@ -15,6 +15,11 @@ from pathlib import Path
 
 from fraudlens.benchmark_phase8 import labels as benchmark_labels
 from fraudlens.benchmark_phase8 import predict as benchmark_predict
+from fraudlens.daily_capacity_publication import (
+    FROZEN_THRESHOLD,
+    POLICY_ID,
+    derive_daily_cap_run,
+)
 from fraudlens.data_contracts import CanonicalTransaction, ScoreRequestV2, score_v2
 from fraudlens.data_import import derive_dataset_version, inspect_source, iter_canonical_rows
 from fraudlens.data_store import DatasetStore, RunStore
@@ -296,9 +301,12 @@ def _source_row(row, version):
 
 
 def _score_run(args):
-    if (args.source_store.resolve() == args.run_store.resolve()
-            or not args.source_store.is_file() or not args.protocol.is_file()):
-        raise ValueError('source_missing_or_output_conflict')
+    if args.source_store.resolve() == args.run_store.resolve():
+        raise ValueError('score_store_conflict')
+    if not args.source_store.is_file():
+        raise ValueError('source_store_missing')
+    if not args.protocol.is_file():
+        raise ValueError('protocol_missing')
     protocol_raw = args.protocol.read_bytes()
     protocol = json.loads(protocol_raw)
     candidate = (args.scorer == 'model'
@@ -318,7 +326,9 @@ def _score_run(args):
         scorer_version = 'rules-v1'
     else:
         if args.artifact_dir is None or args.manifest_sha is None:
-            raise ValueError('verified model artifact required')
+            raise ValueError('model_artifact_required')
+        if not args.artifact_dir.is_dir():
+            raise ValueError('model_artifact_missing')
         artifact = load_trusted_artifact(
             args.artifact_dir, expected_manifest_sha256=args.manifest_sha,
             expected_dataset_version=args.dataset_version,
@@ -395,6 +405,8 @@ def _score_run(args):
 
 
 def _activate_run(args):
+    if not args.run_store.is_file():
+        raise ValueError('run_store_missing')
     runs = RunStore(args.run_store)
     try:
         runs.activate(args.run_id, args.scorer, args.manifest_sha)
@@ -402,6 +414,30 @@ def _activate_run(args):
                 'score_source': args.scorer}
     finally:
         runs.close()
+
+
+def _derive_daily_cap_run(args):
+    if args.policy_id != POLICY_ID or args.threshold != FROZEN_THRESHOLD:
+        raise ValueError('daily_policy_mismatch')
+    if not args.protocol.is_file():
+        raise ValueError('protocol_missing')
+    if not args.artifact_dir.is_dir():
+        raise ValueError('model_artifact_missing')
+    protocol_raw = args.protocol.read_bytes()
+    protocol = json.loads(protocol_raw)
+    artifact = load_trusted_artifact(
+        args.artifact_dir, expected_manifest_sha256=args.manifest_sha,
+        expected_dataset_version=protocol['dataset_version'],
+        expected_protocol_sha256=protocol.get(
+            'protocol_sha256', hashlib.sha256(protocol_raw).hexdigest()),
+        expected_scorer_version=BOOSTED_SCORER_VERSION)
+    if Decimal(str(artifact.manifest['validation_threshold']['threshold'])) != Decimal(
+            FROZEN_THRESHOLD):
+        raise ValueError('candidate threshold mismatch')
+    return derive_daily_cap_run(
+        args.source_store, args.source_run_id, args.run_store, args.run_id,
+        manifest_sha=artifact.manifest_sha256, threshold=args.threshold,
+        expected_source_sha256=args.source_store_sha)
 
 
 def validate_reproduction_files(protocol, prediction_bytes, report):
@@ -563,6 +599,17 @@ def main(argv=None):
     score_run.add_argument('--threshold', required=True)
     score_run.add_argument('--artifact-dir', type=Path)
     score_run.add_argument('--manifest-sha')
+    derive = commands.add_parser('derive-daily-cap-run')
+    derive.add_argument('--source-store', type=Path, required=True)
+    derive.add_argument('--source-store-sha', required=True)
+    derive.add_argument('--source-run-id', required=True)
+    derive.add_argument('--run-store', type=Path, required=True)
+    derive.add_argument('--run-id', required=True)
+    derive.add_argument('--protocol', type=Path, required=True)
+    derive.add_argument('--artifact-dir', type=Path, required=True)
+    derive.add_argument('--manifest-sha', required=True)
+    derive.add_argument('--threshold', required=True)
+    derive.add_argument('--policy-id', required=True)
     activate_run = commands.add_parser('activate-run')
     activate_run.add_argument('--run-store', type=Path, required=True)
     activate_run.add_argument('--run-id', required=True)
@@ -601,6 +648,9 @@ def main(argv=None):
         if args.command == 'score-run':
             print(json.dumps(_score_run(args), sort_keys=True))
             return 0
+        if args.command == 'derive-daily-cap-run':
+            print(json.dumps(_derive_daily_cap_run(args), sort_keys=True))
+            return 0
         if args.command == 'activate-run':
             print(json.dumps(_activate_run(args), sort_keys=True))
             return 0
@@ -619,7 +669,30 @@ def main(argv=None):
                                 delimiter=args.delimiter, columns=columns or None,
                                 mapping_path=args.mapping)
     except (ValueError, OSError, sqlite3.Error, KeyError, json.JSONDecodeError) as exc:
-        if args is not None and args.command in {'import', 'build-features', 'freeze-protocol', 'evaluate'} and isinstance(exc, ValueError) and str(exc) in {
+        model_errors = {
+            'manifest hash mismatch': 'model_manifest_mismatch',
+            'metadata hash mismatch': 'model_metadata_mismatch',
+            'model hash mismatch': 'model_file_mismatch',
+            'artifact origin or version incompatible': 'model_artifact_incompatible',
+            'artifact metadata incompatible': 'model_artifact_incompatible',
+            'artifact feature order incompatible': 'model_artifact_incompatible',
+            'candidate threshold mismatch': 'candidate_threshold_mismatch',
+            'source build incomplete': 'source_build_incomplete',
+        }
+        if args is not None and args.command in {
+                'score-run', 'activate-run', 'derive-daily-cap-run'}:
+            code = (model_errors.get(str(exc), str(exc))
+                    if isinstance(exc, ValueError) and (
+                        str(exc) in model_errors or str(exc) in {
+                            'score_store_conflict', 'source_store_missing',
+                            'protocol_missing', 'frozen_publication_mismatch',
+                            'model_artifact_required', 'model_artifact_missing',
+                            'run_store_missing', 'daily_policy_mismatch',
+                            'invalid_arguments'})
+                    else 'score_run_failed' if args.command in {
+                        'score-run', 'derive-daily-cap-run'}
+                    else 'activation_failed')
+        elif args is not None and args.command in {'import', 'build-features', 'freeze-protocol', 'evaluate'} and isinstance(exc, ValueError) and str(exc) in {
                 'source_binding_mismatch', 'source_mismatch', 'mapping_mismatch',
                 'mapping_approval_mismatch', 'row_reconciliation_failed',
                 'dataset_incomplete', 'dataset_incompatible', 'feature_count_mismatch',

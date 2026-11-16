@@ -1,5 +1,30 @@
 # T067 convergence preparation — pending review
 
+## User-authorized isolated daily policy and team handoff — 2026-11-16
+
+The user authorized finishing the local technical path for
+`boosted_utc_daily_top20_v1` and publishing code/evidence for team review.
+The versioned [contract](../../specs/002-data-and-risk-scoring/contracts/data-and-scoring.md),
+derived-run code, strict optional API list fields, frontend display, tests and
+[private handoff inventory](feature-002-team-handoff-2026-11-16.md) now exist.
+The original v3 score archive remains immutable with 166 threshold alerts;
+the new policy run preserves all 3,963,424 scores/assessments and is expected
+to publish 159 cases after seven daily overflow exclusions. The exact
+completed-run outcome and API/browser checks are recorded in
+[publication evidence](feature-002-daily-cap-publication-2026-11-16.md).
+This is technical local readiness, not shared activation. T065 still needs
+another teammate's five-case explanation review; T066 needs her same-hash
+boosted and original-tree reproduction; T067 needs real team code/contract/
+evidence review and a separate shared-activation decision. No previously
+unseen compatible 24-hour source exists locally. Before reading labels in
+one, freeze exact interval, boosted artifact, threshold and this policy;
+require at least five hits among at most 20 alerts. Phase 2 trace remains
+unavailable. Do not mark Feature 002 accepted from the current IBM reuse.
+
+## Local boosted path and capacity decision inventory — 2026-11-16
+
+The contributor has a verified local boosted path and a completed immutable v3 technical run (3,963,424 scored; 166 threshold alerts), with API/UI list/detail checks. The shared active run remains on the original scorer. An offline, read-only daily top-20 proposal would retain 159 and remove seven alerts; 2 September (24→20) and 9 September (23→20) are the two over-capacity full UTC days. In already inspected train/validation rows it would reduce hits from 108 to 106; test labels were not read. [The proposed contract diff](../../specs/002-data-and-risk-scoring/proposals/boosted-daily-cap-contract.md) is pending team decision because current scoring/API contracts define all threshold crossings as alerts and `total_alerts` accordingly. No product cap is active. T065 remains open for another teammate's full five-case explanation review, T066 for her independent same-hash source/artifact/report reproduction, and T067 for human code/contract/evidence review plus capacity decision. A previously unseen compatible 24-hour UTC source with adequate warm-up is still absent; freeze period/model/threshold/approved policy before reading its labels and require at least five hits among no more than 20 alerts. Phase 2 compliance trace remains unavailable. Do not close Feature 002 or promote the shared active run.
+
 ## Boosted candidate addendum — 2026-11-14
 
 The separate [boosted development/integration evidence](feature-002-boosted-validation.md#trusted-candidate-artifact-and-isolated-integration--2026-11-14) shows exact 19/20 validation reproduction from a saved trusted local artifact, plus label-free isolated API/UI publication. This does not alter the frozen T029–T064 completion evidence or the published T062 exploratory benchmark. No untouched compatible 24-hour source exists locally, so the user-approved acceptance floor (at least five positives among at most 20 alerts) has no independent result. Full-source candidate scoring and shared activation remain open. The five candidate review examples are ignored at `evals/results/boosted-explanation-review.json`; T065 still requires Isidora's actual five-example review, T066 her independent reproduction, and T067 actual human code/contract/evidence review. Do not mark SC-006, SC-009, independent FR-015 acceptance or Phase 2 compliance complete on this addendum.

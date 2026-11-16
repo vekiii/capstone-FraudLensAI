@@ -180,6 +180,53 @@ def test_alert_list_uses_bounded_ordered_index(tmp_path):
     store.close()
 
 
+def test_boosted_cli_reports_missing_and_mismatched_local_inputs(
+        tmp_path, capsys, monkeypatch):
+    import json
+    import sqlite3
+
+    from fraudlens.pipeline_cli import main
+
+    source = tmp_path / 'source.sqlite'
+    output = tmp_path / 'runs.sqlite'
+    protocol = tmp_path / 'protocol.json'
+    args = ['score-run', '--source-store', str(source), '--run-store', str(output),
+            '--dataset-version', VERSION, '--protocol', str(protocol),
+            '--run-id', 'run_boosted_missing', '--scorer', 'model',
+            '--scorer-version', 'model-history-v1-boosted-candidate',
+            '--threshold', '0.9936687168275105']
+
+    assert main(args) == 2
+    assert 'source_store_missing' in capsys.readouterr().out
+    sqlite3.connect(source).close()
+    assert main(args) == 2
+    assert 'protocol_missing' in capsys.readouterr().out
+    protocol.write_text(json.dumps({'dataset_version': VERSION,
+                                    'feature_version': 'history-v1'}))
+    assert main(args) == 2
+    assert 'model_artifact_required' in capsys.readouterr().out
+    artifact = tmp_path / 'missing-artifact'
+    with_artifact = [*args, '--artifact-dir', str(artifact),
+                     '--manifest-sha', 'a' * 64]
+    assert main(with_artifact) == 2
+    assert 'model_artifact_missing' in capsys.readouterr().out
+    artifact.mkdir()
+
+    def bad_loader(*_args, **_kwargs):
+        raise ValueError('manifest hash mismatch')
+
+    monkeypatch.setattr('fraudlens.pipeline_cli.load_trusted_artifact', bad_loader)
+    assert main(with_artifact) == 2
+    assert 'model_manifest_mismatch' in capsys.readouterr().out
+    assert not output.exists()
+
+    assert main(['activate-run', '--run-store', str(output),
+                 '--run-id', 'run_boosted_missing', '--scorer', 'model',
+                 '--manifest-sha', 'a' * 64]) == 2
+    assert 'run_store_missing' in capsys.readouterr().out
+    assert not output.exists()
+
+
 def test_cli_rules_zero_run_and_model_failure_do_not_substitute(
         tmp_path, capsys, monkeypatch):
     import json
