@@ -76,3 +76,22 @@ Policy proposals, requiring requester confirmation:
 | `live_api_reader` | Read-only access to approved views, no writes or label access. |
 
 **Retention/outage proposal (needs owner confirmation):** retain source WAL and broker events longer than the maximum supported outage plus replay horizon; retain canonical SQL facts for the supported history/replay horizon or keep a reconstructible archive; declare a gap if that horizon is exceeded. The numeric outage horizon, WAL cap, broker duration and canonical/archive retention are unspecified. No concrete retention settings are applied. T002 remains unticked.
+
+## Test-infrastructure safety follow-up — 2026-11-16
+
+The current working tree hardens the PostgreSQL integration fixture without
+changing the T002 service inventory or completing T002. Live database tests now
+require `FRAUDLENS_TEST_PG_DISPOSABLE=1`, reject non-loopback hosts, generate a
+unique `fraudlens_test_<uuid>` database, reject name collisions, serialize setup
+through an advisory lock, verify the database owner and exact generated name
+before cleanup, and never drop cluster-global roles. The supported local API
+launcher is independently fixed to `127.0.0.1`; it does not add API
+authentication.
+
+With the disposable flag explicitly absent, the non-destructive focused command
+reported **14 passed and 20 skipped**: one launcher test and thirteen pure
+fixture-guard cases passed, while all live PostgreSQL cases skipped before any
+credential read or connection. Ruff passed for all related files. This verifies
+the guard logic and skip boundary only. It does not verify live database
+behavior, broker/CDC/dbt/MLflow/monitoring pins, retention settings, TLS, or host
+hardening. T002 remains **PARTIAL and unchecked**.

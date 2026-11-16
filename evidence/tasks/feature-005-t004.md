@@ -39,3 +39,47 @@ CATALOG role_privileges={'producer_execute': True, 'producer_update': False, 'pr
 ```
 
 No `confirmed_labels` or target column appears in `live_transactions`. Role membership is not granted to login principals. No passwords, DSNs, or `.env.local` contents are in this record.
+
+## Post-completion test-harness hardening — 2026-11-16
+
+The historical T004 database results above are unchanged. The current working
+tree makes their fixture safer for future execution: it requires explicit
+`FRAUDLENS_TEST_PG_DISPOSABLE=1`, accepts only loopback PostgreSQL, uses a unique
+`fraudlens_test_<uuid>` database under an advisory lock, rejects pre-existing
+name collisions, verifies exact name and owner before dropping, and no longer
+drops migration-created roles. Pure guard tests cover loopback/non-loopback
+hosts, generated namespace acceptance, and rejection of persistent, mismatched,
+unowned, or malformed database targets.
+
+The live transaction test module also adds boundary cases for a negative amount,
+inclusive zero and maximum valid amount, SQL-injection-shaped and oversized
+identifiers, blank text, transaction-ID reuse across sources, rollback of facts
+and receipts, and concurrent identical retries. These new live cases are
+**present but not executed**: the reconciliation run deliberately omitted the
+disposable-cluster flag and reported **13 fixture-guard passes and 20 live-test
+skips**. The separate loopback-launcher test also passed, producing the combined
+**14 passed, 20 skipped** result. No PostgreSQL connection or mutation occurred.
+
+Ruff passed across the modified fixture, live tests, pure safety tests, local
+launcher, and HTTP security test module. This follow-up strengthens future test
+safety and coverage but does not replace the need to run the 20 live cases on an
+approved disposable PostgreSQL cluster.
+
+## Security fault follow-up — 2026-11-16
+
+Two further fault tests were added. A loopback outage test selects an ephemeral
+closed port, uses a synthetic username/password and one-second connection
+timeout, and passed within the three-second bound. A live lock-contention test
+holds an access-exclusive lock, applies a 100 ms `lock_timeout`, expects
+`LockNotAvailable`, and then checks that neither facts nor receipts were partly
+persisted. The lock test is **SKIPPED / NOT TESTABLE** because Docker Desktop and
+the approved disposable PostgreSQL service were unavailable.
+
+The first failed fixture connection exposed the ignored local PostgreSQL
+credential in pytest's rendering of expanded `psycopg` keyword arguments. The
+fixture now uses a credential-redacting connection helper, and all live
+integration callers use that boundary. A repeat failure showed only host, port,
+database and `ConnectionTimeout`; the credential did not recur. The disclosed
+local credential still requires rotation before reuse. These outcomes and exact
+commands are recorded in the security audit; they do not alter T004's historical
+completion status or represent the skipped lock test as a pass.

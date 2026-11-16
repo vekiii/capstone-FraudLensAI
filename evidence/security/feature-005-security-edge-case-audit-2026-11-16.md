@@ -5,6 +5,147 @@
 **Baseline commit:** `487c427ea50e169f5e36898420d659f05ead2c60`
 **Recommendation:** **GO for the local synthetic/read-only demonstration in the audited scope. NO-GO for external deployment or a real-time fraud-detection claim.** This recommendation does not evaluate or complete Phase 4.
 
+## Post-audit evidence update — 2026-11-16
+
+The results below remain the historical outcome at baseline commit `487c427`.
+A later working-tree security unit added ten database-independent HTTP boundary
+tests. Nine pass and the authentication requirement remains RED because
+unauthenticated `GET /api/cases` returns 200 rather than 401/403. The 62 closest
+existing API regressions pass; the combined focused result is **71 passed, 1
+failed, 0 skipped**. See
+[`feature-005-security-test-coverage-2026-11-16.md`](feature-005-security-test-coverage-2026-11-16.md)
+for the test-by-test table and exact commands.
+
+Related pre-existing working-tree hardening now provides a supported local API
+launcher fixed to `127.0.0.1:8000` and makes the PostgreSQL integration fixture
+explicitly opt-in, loopback-only, uniquely named, owner-checked, and unable to
+drop roles. Non-destructive verification reported **14 passed**: one launcher
+test and thirteen pure fixture-guard cases. The **20 live PostgreSQL cases
+skipped** because `FRAUDLENS_TEST_PG_DISPOSABLE=1` was deliberately absent.
+This improves the test harness and local launch boundary; it does not implement
+authentication and does not convert the original unrun PostgreSQL checks into
+passes. Ruff passed across these related implementation and test files.
+
+## Security hardening follow-up — 2026-11-16
+
+### Scope and outcome
+
+Ten additional tests were written before application changes. All inputs were
+synthetic and local. No production system or real dataset was used. The retained
+new-test result is **9 passed, 0 failed, 1 skipped / not testable**:
+
+| New test | Risk | Final result | Evidence |
+|---|---|---|---|
+| Success and error responses apply security headers | Missing CSP, clickjacking, MIME sniffing, referrer/feature leakage, caching | **PASS** | Both 200 and 404 responses contain the required headers and no unsafe CSP source. |
+| Read-only API never issues cookies | Accidental session/cookie exposure | **PASS** | Neither success nor error response contains `Set-Cookie`. |
+| Oversized body rejected before routing | Memory/resource abuse | **PASS** | A 1,048,577-byte synthetic body returns bounded generic 413. |
+| Encoded NUL/Unicode/XSS path rejected | Parser ambiguity and reflection | **PASS** | Closed 404/422 JSON response contains no input or traceback. |
+| Tracked contents exclude high-confidence secrets | Current credential/key exposure | **PASS** | Git grep found no AWS access-key ID, private-key header, long `sk-` token, or GitHub token pattern in tracked content. |
+| Git history excludes high-confidence secrets | Historical credential/key exposure | **PASS** | `git log -G` found no matching commit across all refs. This is targeted pattern scanning, not a full secret-scanner certification. |
+| Both browser entry points declare restrictive CSP | Static-site script/object/form injection | **PASS** | `web/index.html` and `frontend/index.html` declare CSP without `unsafe-inline` or `unsafe-eval`. |
+| Malicious Unicode sample content is DOM-escaped | Stored/DOM XSS | **PASS** | React server rendering escapes an injected `<img onerror>` payload; no raw element is produced. This is not a real-browser DOM test. |
+| Loopback PostgreSQL outage is bounded | Database outage hang | **PASS** | Connection to a deliberately unavailable local ephemeral port raises `OperationalError` within the 1-second configured timeout and under 3 seconds total. |
+| PostgreSQL lock timeout aborts without partial rows | Lock contention and partial commit | **SKIP / NOT TESTABLE** | Docker Desktop and the disposable PostgreSQL service were unavailable. With opt-in absent the final test skips before credentials or connection. |
+
+The previously retained authentication test remains **FAIL**: unauthenticated
+`GET /api/cases` returns 200 instead of 401/403. It is not counted among the ten
+new tests. Authentication remains a release blocker for shared exposure; T028's
+analyst authorization depends on the unimplemented T022/T027 live path. No
+partial or invented authentication scheme was added to the existing fixture and
+batch API.
+
+### RED results and vulnerabilities confirmed
+
+The test-first runs established three application gaps:
+
+- Backend hardening RED: **2 failed, 4 passed**. Security headers were absent,
+  and the 1,048,577-byte body reached route handling and returned 405 instead of
+  413.
+- Showcase security RED: **1 failed, 1 passed**. Both entry points lacked CSP;
+  React already escaped the malicious sample.
+- PostgreSQL fault RED: outage test passed; lock-timeout setup errored because
+  the approved disposable service was unavailable.
+
+The failed PostgreSQL setup also exposed the ignored local database credential
+inside the original `psycopg.connect(**kwargs)` pytest traceback. The secret
+value is deliberately omitted from this evidence. This was a confirmed
+test-harness disclosure. The credential must be treated as compromised and
+rotated before that local database is reused; rotation could not be completed
+while Docker Desktop was unavailable.
+
+### Fixes implemented
+
+- `backend/src/fraudlens/main.py` now applies these headers to success and error
+  responses: restrictive JSON API CSP, `X-Content-Type-Options: nosniff`,
+  `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, a restrictive
+  `Permissions-Policy`, and `Cache-Control: no-store`.
+- The same middleware rejects a declared request body above 1 MiB with the
+  existing generic error envelope and status 413. This does not replace ASGI or
+  reverse-proxy streaming/body limits.
+- `web/index.html` and `frontend/index.html` now provide restrictive CSP metadata
+  for self-hosted scripts/styles, local API connections, data images, and blocked
+  objects/base/form actions. A deployment HTTP CSP header is still preferred.
+- The PostgreSQL test fixture now connects through a credential-redacting helper.
+  Connection failure raises a sanitized host/port/database and exception type,
+  with no password. All integration tests were changed to use that helper, and
+  raw credential kwargs are private to it.
+
+A repeat of the unavailable-database setup produced only:
+`PostgreSQL connection failed for 127.0.0.1:5432/postgres (ConnectionTimeout)`.
+No credential appeared. No password-bearing pytest artifact was found under the
+workspace audit temporary directory.
+
+### Commands and actual verification
+
+| Command | Result |
+|---|---|
+| `uv run --locked --offline pytest backend/tests/integration/test_security_hardening.py -q -p no:cacheprovider --basetemp=.audit-tmp/security-hardening-red` | RED: 2 failed, 4 passed. |
+| `npm.cmd --prefix web run test -- --run src/security.test.tsx` (before fixes) | RED: 1 failed, 1 passed. |
+| `FRAUDLENS_TEST_PG_DISPOSABLE=1 ... pytest ...::test_lock_timeout_aborts_without_partial_fact ...::test_loopback_database_outage_honors_bounded_connect_timeout` | 1 passed, 1 setup error; disposable DB unavailable. The initial traceback exposed the ignored credential. |
+| `uv run --locked --offline pytest backend/tests/integration/test_security_hardening.py -q -p no:cacheprovider --basetemp=.audit-tmp/security-hardening-green` | **6 passed**, one existing Starlette/httpx warning. |
+| `npm.cmd --prefix web run test -- --run src/security.test.tsx` (after fixes) | **2 passed**. |
+| Sanitized opt-in PostgreSQL lock-timeout retry | Setup error because PostgreSQL was unavailable; sanitized exception contained no credential. |
+| Final two PostgreSQL fault tests with opt-in absent | **1 passed, 1 skipped**. |
+| Focused backend security/API regression: new six, prior ten, and `test_api_errors.py`, `test_startup.py`, `test_dataset_api.py`, `test_cases.py` | **77 passed, 1 failed**; only the retained unauthenticated-access test failed. |
+| `npm.cmd --prefix web run test -- --run` | **11 passed** in 4 files. |
+| `npm.cmd --prefix web run build` | Typecheck/build passed; existing 860.70 kB chunk warning remains. |
+| `npm.cmd --prefix frontend run test -- --run` | **174 passed** in 10 files. |
+| `npm.cmd --prefix frontend run build` | Typecheck/build passed. |
+| Local launcher, PostgreSQL guard, and producer safety regression | **15 passed, 2 skipped**; live producer cases skipped without disposable opt-in. |
+| Ruff across all related backend implementation/test files | **PASS**, `All checks passed!`. |
+| `uv audit --locked` inside sandbox | BLOCKED by socket policy; no vulnerability conclusion. |
+| `uv audit --locked` through approved network access | **PASS**: 49 packages, no known vulnerabilities or adverse project statuses. Point-in-time OSV result. |
+| Elevated `docker ps -a --filter name=fraudlens-live ...` | Docker Desktop Linux engine pipe absent; disposable PostgreSQL unavailable. |
+
+### Remaining critical gaps
+
+- **Authentication/authorization: NOT IMPLEMENTED.** The existing RED test still
+  proves unauthenticated case disclosure. MFA, RBAC/ABAC, password hashing,
+  sessions, and secure authentication cookies remain NOT IMPLEMENTED / NOT
+  APPLICABLE to the current local read-only architecture.
+- **Credential rotation required.** The ignored local PostgreSQL credential was
+  disclosed in an internal test traceback before sanitization. It must be
+  rotated before reuse. The fixture fix prevents the same traceback path; it
+  does not revoke the disclosed value.
+- **PostgreSQL lock behavior: NOT TESTABLE in this run.** The lock-timeout test is
+  present but could not execute without Docker. The earlier concurrency and
+  rollback tests were not rerun against a live disposable database in this unit.
+- **Browser/deployment controls:** CSP was checked from source and React static
+  rendering, not a real browser. No browser CSP enforcement report, DOM mutation
+  test, HTTP CSP/header test for static hosting, HSTS, TLS, WAF, DDoS protection,
+  origin-IP protection, host hardening, backup, or encryption-at-rest control
+  was tested. These remain NOT TESTABLE or NOT IMPLEMENTED.
+- **Request limits:** the application checks declared `Content-Length`; chunked
+  streaming and server/proxy limits remain untested. Current public routes are
+  read-only, but deployment-level limits are still required.
+- **Secrets:** high-confidence current/history patterns passed, but no dedicated
+  entropy-aware scanner or provider verification ran. This is not whole-history
+  secret certification.
+- **Dependencies:** OSV reported no known issues for the locked Python set at
+  execution time. This is not a guarantee against undisclosed or future issues.
+- **CORS/cookies:** hostile preflight and absence of cookies pass locally. No
+  credentialed browser-origin or reverse-proxy test ran.
+
 ## Scope and method
 
 The initial working tree was clean. The audit covered the existing FastAPI/Feature 002 fixture and batch API, Feature 005 immutable PostgreSQL fact schema and synthetic producer, the `frontend/` app, and the separate `web/` showcase. It did not implement features, change runtime behavior, change task checkboxes, or contact production services. No real transaction data was used.

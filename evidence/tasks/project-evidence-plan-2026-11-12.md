@@ -1,4 +1,4 @@
-# FraudLens AI project evidence and contribution plan
+﻿# FraudLens AI project evidence and contribution plan
 
 Prepared 12 November 2026. Covered history: 11–12 November 2026, through
 `f63bffe490358a4fba06d27b896d42c5e81bf882` on `initialization`.
@@ -573,3 +573,63 @@ The accumulated working-tree changes were split into focused commits on `feature
 | `2e2963b` | Updates `next_work.md` with the commit set and Phase 4 dependency gate. |
 
 The Phase 4 preflight found T026–T030 blocked because T022 and its Phase 3 prerequisites are incomplete. No Phase 4 code or tests were run. Historical verification outcomes remain in task-specific evidence; packaging and publication did not rerun those checks. The push changed only the current feature branch. No merge or update to `main` was made.
+
+## Feature 005 security and test-harness work — 16 November 2026
+
+This uncommitted working-tree unit records security coverage and related local
+safety hardening after the published commit set above. It has no commit ID or
+push attribution yet; Git authorship and publication time must be taken from a
+later commit if the team chooses to publish it.
+
+The security module adds ten synthetic, database-independent HTTP tests. Nine
+pass; the authentication test fails because unauthenticated `/api/cases` still
+returns 200. Sixty-two relevant existing API tests pass, for a combined focused
+result of **71 passed, 1 failed, 0 skipped**. The tests cover hostile preflight,
+SQL/XSS-shaped input, oversized and Unicode identifiers, encoded traversal,
+unexpected parameters, malformed JSON handling, and tracked secret-like
+filenames. No assertion was weakened and no authentication feature was added.
+
+The same working tree contains a fixed-loopback supported API launcher and an
+opt-in, loopback-only PostgreSQL fixture with unique database naming, advisory
+locking, collision and owner checks, and no role deletion. Non-destructive
+verification reported **14 passed, 20 skipped**: one launcher test and thirteen
+pure fixture guards passed; all live PostgreSQL cases skipped because the
+disposable-cluster flag was absent. Ruff passed across all related files. The
+new live PostgreSQL amount/text/identity/rollback/concurrency cases remain
+unexecuted and are not represented as passes.
+
+Evidence: [security test supplement](../security/feature-005-security-test-coverage-2026-11-16.md),
+[historical security audit](../security/feature-005-security-edge-case-audit-2026-11-16.md),
+[T002 inventory follow-up](feature-005-t002.md), and
+[T004 harness follow-up](feature-005-t004.md). This work does not complete T002,
+T022, T028, or Phase 4 and makes no deployment-security claim.
+
+### Security hardening follow-up
+
+Ten further tests were added test-first: six HTTP/secret-history, two showcase
+DOM/CSP, and two PostgreSQL fault cases. Final status is **9 passed, 0 failed, 1
+skipped/not testable**. Confirmed gaps were fixed with API security/privacy
+headers, a 1 MiB declared-body limit, CSP metadata for both browser entry points,
+and credential-redacting PostgreSQL test connections. The online locked Python
+audit found no known vulnerabilities or adverse statuses in 49 packages.
+
+The retained authentication regression still fails, so the focused backend
+result is **77 passed, 1 failed**. Showcase is 11 passed, frontend is 174 passed,
+both builds/typechecks pass, and Ruff passes. The live lock-timeout case skipped
+because Docker was unavailable; the bounded loopback-outage case passed. A test
+setup traceback disclosed the ignored local PostgreSQL credential before the
+redaction fix, so that credential must be rotated before reuse. No value is
+recorded in repository evidence. This working tree remains uncommitted and has
+no publication attribution.
+
+## Security hardening commit attribution — 16 November 2026
+
+The security and test-harness changes were committed on `feature/005-real-time-fraud-detection-mlops-spec`. Git records Isidora Popovic (`popovicisidora17@gmail.com`) as author of both implementation commits at 16:25:43 and 16:25:53 +01:00 respectively. This is commit-account attribution; it does not claim exclusive manual authorship or measure work duration.
+
+| Commit | Description and contribution |
+|---|---|
+| `827779db3c1ef049acd1ddf401a4aafbc1615848` | `test(security): harden local API and PostgreSQL fixtures` — adds the supported loopback-only launcher, PostgreSQL fixture isolation and credential-redacting connection helper, pure fixture safety checks, and live database boundary/fault tests. |
+| `5ea0c4c01ef717b6f7b99b98f11c19a202b62d2e` | `fix(security): add API protections and browser CSP checks` — adds API response security/privacy headers and declared-body cap, restrictive CSP metadata, and focused API and DOM/CSP tests. |
+
+The ten follow-up security tests report **9 passed, 0 failed, 1 skipped/not testable**. The retained unauthenticated API test separately fails. Commands, vulnerabilities found, fixes, limitations, and remaining gaps are recorded in the linked security audit and task evidence. Docker and the disposable database were unavailable for live lock-timeout verification. Authentication remains not implemented; no deployment security claim is made. These commits are local at this ledger entry; origin publication will be recorded after remote verification.
+

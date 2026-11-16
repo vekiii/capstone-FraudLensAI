@@ -1,5 +1,73 @@
 # Next work - FraudLens AI
 
+## Feature 005 security hardening verified — 2026-11-16
+
+Added ten security tests: six FastAPI/secret-history checks, two showcase
+DOM/CSP checks, and two PostgreSQL fault checks. Final new-test status is **9
+passed, 0 failed, 1 skipped/not testable** because Docker and the disposable
+PostgreSQL service were unavailable for the lock-timeout case. Minimal fixes add
+API security/privacy headers, a declared-body limit of 1 MiB, CSP metadata to
+both browser entry points, and credential-redacting PostgreSQL test connections.
+The test-first run revealed that a failed fixture connection printed the ignored
+local database credential; the traceback path is fixed and verified sanitized,
+but the credential must be rotated before reuse.
+
+Focused backend regression is **77 passed, 1 failed**; the only failure is the
+pre-existing unauthenticated `/api/cases` RED test. Showcase tests are 11 passed,
+frontend tests 174 passed, both builds/typechecks pass, test-harness regression
+is 15 passed/2 skipped, Ruff passes, and the approved online `uv audit` found no
+known vulnerabilities or adverse statuses in 49 packages. Authentication and
+authorization remain NOT IMPLEMENTED and block shared exposure. Detailed
+commands, fixes, limitations, and remaining gaps are in
+`evidence/security/feature-005-security-edge-case-audit-2026-11-16.md`.
+
+One concrete next security step: rotate the disclosed local PostgreSQL
+credential before reuse, then start an approved disposable loopback service and
+run the skipped lock-timeout plus existing live database regression. T028
+authentication remains sequenced after T022/T027 and is not completed here.
+
+## Security and test-harness evidence reconciled — 2026-11-16
+
+Updated the historical security audit, focused security supplement, Feature 005
+T002/T004 evidence, project contribution ledger, original request record, and
+this handoff to cover the current security tests plus the pre-existing local API
+launcher and PostgreSQL fixture-safety changes. Non-destructive verification
+reported **14 passed, 20 skipped**: the loopback-launcher test and thirteen pure
+fixture guards passed; all live PostgreSQL cases skipped because the explicit
+disposable-cluster opt-in was absent. Ruff passed across all related files. The
+separate HTTP security result remains **9 passed, 1 failed**, and its 62 existing
+API regressions remain green; unauthenticated case access is still the retained
+RED finding. No live database, external network, real credential, production
+application behavior, task marker, commit, or push was changed by this evidence
+reconciliation.
+
+One concrete next security step: run the 20 live PostgreSQL cases only on an
+approved disposable loopback cluster, then record their actual outcomes. The
+authentication boundary remains a separate T028 implementation prerequisite for
+any shared deployment; the ordered Feature 005 core backlog still starts at
+T006.
+
+## Feature 005 focused security tests added — 2026-11-16
+
+Added ten deterministic, local security tests in
+`backend/tests/integration/test_security_boundaries.py` without changing
+production behavior. Nine pass and one remains intentionally RED: unauthenticated
+`GET /api/cases` returns 200 instead of the required 401/403 boundary. The 62
+closest existing API tests passed; the final combined run was 71 passed, 1
+failed, 0 skipped, and Ruff passed. Coverage now exercises hostile CORS
+preflight, injection-shaped identifiers, XSS reflection, oversized and Unicode
+identifiers, encoded traversal, unexpected query parameters, malformed JSON on
+the read-only boundary, and tracked secret-like filenames. TLS/WAF/MFA/RBAC,
+browser security, disposable-PostgreSQL fault/injection cases, content/history
+secret scanning, and Python advisory status remain NOT IMPLEMENTED or NOT
+TESTABLE as applicable. See
+`evidence/security/feature-005-security-test-coverage-2026-11-16.md`.
+
+One concrete next security step: implement the separately approved analyst
+authentication boundary under T028, then make the retained RED authentication
+test pass and add role-level allow/deny cases. The ordered core backlog still
+starts at T006; this test unit does not advance T022 or Phase 4.
+
 ## Feature 005 security and edge-case audit recorded - 2026-11-16
 
 Added [focused audit evidence](evidence/security/feature-005-security-edge-case-audit-2026-11-16.md) for the local implemented scope. The database-independent API/integration slice passed 102 tests; frontend tests (174), showcase tests (9), typechecks/builds and Ruff passed. The backend unit suite remains failing (418 passed, 71 failed, 4 errors), Python OSV audit was blocked by network policy, and PostgreSQL destructive-lifecycle integration tests and browser checks were not run. npm offline audits reported zero vulnerabilities. The evidence records one medium deployment-boundary finding: no authentication on the read-only API. No application behavior or task markers changed; T022 and Phase 4 remain blocked as recorded.
@@ -1185,3 +1253,7 @@ Preserve existing local changes and the Foundation v1 fixture checks.
 Prepared the final pretrained gate evidence/checklist reconciliation and updated the project contribution ledger with the fourteen commits from the Feature 002 baseline through `570b344`, including Git author, local commit time and work description. All fourteen are attributed by Git to Isidora Popovic; the ledger states that timestamps are publication times, not measured work hours. Original T029-T036 remain open. The T029 protocol JSON and two local validation scripts remain untracked drafts and are not being represented as a completed T029 freeze.
 
 One concrete next step: resolve the source-mapping and graph-state provenance gate, then make the pretrained loader tests GREEN before implementing transaction inference. No model inference or independent evaluation is claimed.
+
+## Git publication status — 2026-11-16
+
+Security and test-harness work is committed locally in `827779d` and `5ea0c4c`; security evidence and prompt records are being committed separately. The next step is to push these commits to `origin/feature/005-real-time-fraud-detection-mlops-spec` and verify the remote tip. No merge to `main` is intended.
