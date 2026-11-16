@@ -19,6 +19,16 @@ from fraudlens.settings import Settings, load_settings
 
 logger = logging.getLogger(__name__)
 
+_MAX_REQUEST_BYTES = 1_048_576
+_SECURITY_HEADERS = {
+    'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'",
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'Referrer-Policy': 'no-referrer',
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+    'Cache-Control': 'no-store',
+}
+
 _DATASET_ERRORS = {
     404: ('case_not_found', 'Case not found.'),
     409: ('stale_snapshot', 'Selected snapshot is no longer active.'),
@@ -69,6 +79,27 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -
     app = FastAPI(title='FraudLens AI')
     app.state.settings = settings if settings is not None else load_settings()
     app.state.scorer = scorer if scorer is not None else FixtureScorer()
+
+    @app.middleware('http')
+    async def security_boundary(request: Request, call_next):
+        raw_length = request.headers.get('content-length')
+        if raw_length is not None:
+            try:
+                content_length = int(raw_length)
+            except ValueError:
+                response = _error_response(400)
+            else:
+                if content_length < 0:
+                    response = _error_response(400)
+                elif content_length > _MAX_REQUEST_BYTES:
+                    response = _error_response(413)
+                else:
+                    response = await call_next(request)
+        else:
+            response = await call_next(request)
+        for name, value in _SECURITY_HEADERS.items():
+            response.headers[name] = value
+        return response
 
     @app.exception_handler(CaseNotFoundError)
     async def case_not_found(_request: Request, _exc: CaseNotFoundError) -> JSONResponse:
