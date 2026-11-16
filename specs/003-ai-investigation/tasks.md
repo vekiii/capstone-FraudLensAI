@@ -318,3 +318,15 @@ no old live batch replay or regrading, and no change to release gates.
 - [x] T082 Reproduce repair-context exhaustion through the actual SDK with authored continuation; add expanded-schema equivalence/negative and strict single-repair workflow checks. Preserve pre-change source/output hashes. RED4 failures/8 passes observed before implementation. (FR-013–020, FR-024.)
 - [x] T083 Share repeated Claim definitions in the provider schema, retaining every continuation/evidence byte and all validation/budget limits; verify the preserved failed repair offline through mocked SDK transport without real API calls. GREEN32; pending repair46,148<48,000 bytes, old invalid assertion still rejected. (Depends:T082; FR-015, FR-017–020.)
 - [x] T084 Run backend/Ruff and integrity checks; record original/current payload sizes, honest test limitations and one next step in evidence and next_work.md. Full882/Ruff/integrity PASS; separate actual synthetic capability2/2 HTTP200, not report-quality evidence. See evidence/tasks/feature-003-repair-v5.md. (Depends:T083; FR-024–028, SC-008.)
+
+## Phase 14: Live full-report/controlled repair check (2026-11-16)
+
+Scope: [live-repair-v6.md](live-repair-v6.md); production runtime4262193 unchanged.
+
+- [x] T085 Add intended RED/GREEN harness checks for one scoped invalid candidate with raw continuation preserved, diagnostic/primary denominator separation and calibration gating; freeze new inputs/references/protocol and max25 ledger. RED6 intended failures; GREEN11 new/42 related, frozen3 inputs and32 prior artifact hashes verified. (FR-013–020, FR-024–028.)
+- [x] T086 Run full regression and one frozen actual-model batch: two ordinary cases plus one controlled application-candidate repair, followed by at most one calibrated judge request. Preserve all failures and unknown usage; no intervening tuning or old replay. Full893 PASS; actual17/25 HTTP200, ordinary quality1/2, controlled repair/final report PASS, calibration3/3. (Depends:T085; FR-018, FR-025–028.)
+- [x] T087 Audit source/output/usage/citation/diagnostic bindings; record separate ordinary/diagnostic results, limitations and next concrete step in evidence/next_work. Audit PASS:13 cited IDs,32 prior hashes preserved; missing human-authority disclosure retained as failure. See evidence/tasks/feature-003-live-repair-v6.md. (Depends:T086; FR-024–028, SC-008.)
+
+## Remaining defect found by development-v6
+
+- [ ] T088 Reproduce omitted human-final-authority disclosure in no-guidance drafts with an authored RED regression; design/version a correction preserving original model outputs, immutable reports and all semantic quality requirements before a fresh separately scoped evaluation. DEV6-762 remains failed; no historical regrading. (Depends:T087; FR-013–017, FR-022–028.)

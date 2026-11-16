@@ -1,44 +1,51 @@
-# Current handoff - repair serialization v5 complete, 2026-11-16
+# Current handoff - live repair v6 complete, 2026-11-16
 
-Branch feature03-reliability-v2. Completed timeout-v3/coverage-v4 committed at
-eedbe72 per user request. Repair-v5 code/evidence included with this handoff;
-user explicitly requested commit/push on2026-11-16. Remote tip before publication
-verified at46a15ed. Use Git history/upstream to verify publication status.
-No .env/dependency/frontend changes.
+Branch feature03-reliability-v2. User authorized one new three-case evaluation,
+now complete, and explicitly requested commit/push on2026-11-16. T085-T087 complete;
+development-v6 pack, runner, tests, evidence and this handoff are included in that
+publication. Pre-publication HEAD/upstream4262193; verify Git for resulting tip.
+No runtime, prompt,
+.env, frontend or dependency changes. Preserve all work and old results.
 
-T082-T084 scoped maintenance complete. Provider schema shares one Claim definition
-instead of five copies:5,801 to2,024 bytes. Expanded schema EXACTLY equals previous
-provider projection. Original local/semantic/fact validation unchanged, including
-rejection of the unavailable eligible_count string "null" assertion.
-Entire ordered context/tools/evidence/provenance/invalid draft/private continuation
-preserved. No truncation or mid-conversation schema switching. Existing limits
-unchanged:8requests,12tools,30s/request,120s total,48k input,4096 output tokens,
-2MiB response, one repair and one transient retry. Lower ceilings still apply;
-larger histories can still fail before sending.
+Design specs/003-ai-investigation/live-repair-v6.md. Two ordinary quality cases,
+one separately labeled controlled application-candidate fault. Wrapper preserves
+original actual draft/private continuation and injects one invalid authored
+candidate for local validation only. This is not a natural model mistake.
+RED6 intended failures; GREEN11 new/42 related PASS; full backend893 PASS61.61s;
+Ruff/diff PASS. Requirements checklist16/16; no extension hooks.
 
-RED4fail/8pass; focused32 PASS; full backend882 PASS in49.53s; Ruff/diff PASS.
-Exact offline SDK replay of retained DEV4-742:49,925 to46,148 bytes,1,852 spare.
-Six mocked requests, zero actual calls; final diagnostic stub incomplete, no
-corrected live report claimed. Prior protocols/source snapshots/hashes checked;
-all30 old v2/v3/v4 JSON files unchanged. Pre-change v4 runtime now preserved at
-.cache/evidence-snapshots/coverage-v4/ (ignored). Run old audits at eedbe72 or their
-original verified snapshot; current provider hash intentionally differs.
+Actual17/25 transports:16generation+1same-model judge, allHTTP200 gpt-6-luna.
+Known86,684 tokens (73,054input+13,630output), unknown0, spend unknown. No timeout,
+quota/access error or transient retry. All3 valid needs_information <90/120s:
+761 ordinary27.194s,5requests/4tools/0repair;
+762 ordinary26.171s,5requests/4tools/0repair;
+763 controlled43.954s,6requests/4tools/1repair.
 
-Separate synthetic-only capability probe:2/2 actual HTTP200 gpt-6-luna, schema
-and tool accepted;1,573 reported tokens, unknown0, spend unknown. No case/reference
-or judge used. .cache/repair-v5-synthetic-probe/ contains exclusive freeze/ledger;
-DO NOT replay completed runner. No new live quality batch performed.
-Evidence: evidence/tasks/feature-003-repair-v5.md, repair-v5-results.json and
-repair-v5-probe-results.json. Local milan guide remains ignored,182 lines.
+Controlled intended exact_assertion_mismatch observed; one REAL repair transport
+37,169<48,000 bytes, valid real LLM report and separate machine quality PASS.
+All limits and full continuation retained. Controlled case excluded from primary
+quality denominator. Ordinary quality1/2:761PASS,762FAIL missing explicit human
+final authority. Both ordinary factual6/6 and essential19/19; procedure1/1, other
+N/A; no critical machine flags.762 covers other disclosures but omits human
+final authority; raw result retained unchanged. Narrow calibration3/3 PASS;
+no independent/human validation or comparable before/after/release claim.
 
-Prior development-v4 remains calibrated2/3,17/25 transports16HTTP200+1unknown;
-741 timeout RECOVERED65.404s,743 valid26.515s,742 failure35.218s retained. Earlier
-v2/v3/live-v1 raw outcomes and failed original targets unchanged. Do NOT replay
-completed batches or treat unused transport allowances as a new budget.
+Audit PASS: runtime/protocol/source/prompt/config hashes unchanged; all32 prior
+artifact hashes preserved,10 new raw/metadata hashes,13 cited IDs resolve. Actual
+injected candidate still fails local validation; original private items bound.
+Evidence evidence/tasks/feature-003-live-repair-v6.md and live-repair-v6-results.json.
+Raw outputs ignored evals/results/feature-003/development-v6/. DO NOT replay any
+completed batch/builder or reuse unused8 transports. Safe offline --audit only.
+Local milan guide updated, ignored,193 lines. No further API calls needed for v6.
 
-Next concrete step: freeze a fresh separately bounded development check exercising
-full-report repair after v5; keep failures in denominator, no replacement of742.
-T062 producer/consumer review pending;T063 authored guards partial;T064 actual
-dataset adapter unstarted. T066 real teammate reproduction/human review and T067
-full feature Converge pending. Original0/8 quality, retrieval0.50/0.50 and failed
-latency/outlier remain FAILED. Independent fresh holdout/reference review pending.
+Next concrete step: T088 authored RED reproduction of missing human-authority
+statement in no-guidance drafts, then separately design/version a correction
+preserving original model outputs, report immutability and semantic requirements.
+Do not weaken the disclosure or regrade DEV6-762 to pass. Not implemented yet.
+
+Prior v5 byte fix and synthetic2/2 capability remain published4262193; v4 quality
+2/3 and all original failed targets intact. T062 producer/consumer review pending;
+T063 authored guards partial;T064 actual dataset adapter unstarted. T066 actual
+teammate reproduction/human review and T067 full Converge pending. Original0/8
+quality, retrieval0.50/0.50 and failed latency/outlier remain FAILED. Fresh
+independent holdout/reference review still required for acceptance.
