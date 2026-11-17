@@ -1,5 +1,43 @@
 # Next work - FraudLens AI
 
+## Overview hero title weight adjustment — 2026-11-17
+
+Reduced the hero title weight from 600 to 500 per follow-up request. Details:
+[`prompts/development/overview-hero-title-weight-adjustment-2026-11-17.md`](prompts/development/overview-hero-title-weight-adjustment-2026-11-17.md)
+and [`evidence/tasks/overview-hero-title-weight-adjustment-2026-11-17.md`](evidence/tasks/overview-hero-title-weight-adjustment-2026-11-17.md).
+No build or browser check was run for this one-value CSS adjustment.
+
+One concrete next step: visually review the overview hero title weight at desktop and mobile widths.
+
+## Overview hero title weight — 2026-11-17
+
+Removed the ending period and increased the overview hero title weight to 600
+per request. Recorded the original prompt and result in
+[`prompts/development/overview-hero-title-weight-2026-11-17.md`](prompts/development/overview-hero-title-weight-2026-11-17.md)
+and [`evidence/tasks/overview-hero-title-weight-2026-11-17.md`](evidence/tasks/overview-hero-title-weight-2026-11-17.md).
+Web typecheck and build passed; visual browser review remains pending. The build
+retains the existing large Three.js chunk warning.
+
+One concrete next step: visually review the overview hero title at desktop and
+mobile widths.
+
+## Overview layout refinement — 2026-11-17
+
+Adjusted overview typography and composition in response to the supplied
+screenshots: the hero remains left aligned with a narrower, less oversized
+headline, the story headings use a calmer scale, and the intro section uses a
+tighter two-column layout that stacks cleanly on mobile. The original request
+and change summary are recorded in
+[`prompts/development/overview-layout-refinement-2026-11-17.md`](prompts/development/overview-layout-refinement-2026-11-17.md)
+and [`evidence/tasks/overview-layout-refinement-2026-11-17.md`](evidence/tasks/overview-layout-refinement-2026-11-17.md).
+
+Web typecheck and production build passed; `git diff --check` passed. Build
+retains the existing warning for the 742.80 kB Three.js chunk. Browser visual
+review remains pending. No behavior or page content changed.
+
+One concrete next step: visually review the overview at desktop and mobile
+widths, checking the hero headline line breaks and intro section balance.
+
 ## Feature 005 T002 infrastructure readiness — 2026-11-17
 
 Reconciled current infrastructure facts, secret handling, recovery/retention

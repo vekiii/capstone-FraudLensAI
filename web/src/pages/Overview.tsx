@@ -10,7 +10,7 @@ export function Overview() {
   return <>
     <section className="hero">
       <div className="hero-meta"><Eyebrow>AML INVESTIGATION · LOCAL SYNTHETIC DEMO</Eyebrow><span>FEATURE 005 / IN PROGRESS</span></div>
-      <Reveal className="hero-copy" preset="fadeUp"><h1>Catch fraud at the edge of the transaction.</h1><p>A model flags it. Evidence explains it.</p></Reveal>
+      <Reveal className="hero-copy" preset="fadeUp"><h1>Catch fraud at the edge of the transaction</h1><p>A model flags it. Evidence explains it.</p></Reveal>
       <a className="explore-link" href="#approach">EXPLORE <span aria-hidden="true">↓</span></a>
     </section>
     <div className="hero-spacer" aria-hidden="true" />
