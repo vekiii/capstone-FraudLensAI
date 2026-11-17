@@ -1,4 +1,15 @@
-# Current T095 v3 implementation — 2026-11-17
+# Current T095 development result — 2026-11-17
+
+Milan accepted the18-row development table/corpus and authorized continuation.
+One B3/C3 comparison executed: both Recall/MRR0.25/0.25 on12 answerable questions,
+6/6 correct no-answer; English0.75, sr-Latn/sr-Cyrl0. Baseline wins the declared
+tie-break but is not deployed. This is a new development sample, not a rerun or
+directly comparable estimate against the old0.50 held-out result. SC-002 UNMET,
+T095 OPEN. [Actual execution, metrics and next decision](feature-003-t095-development-selection-20261117.md).
+No cutoff relaxation, glossary change, held-out experiment or English-only scope
+decision. Final backend968/Ruff PASS; old results retained.
+
+# Previous T095 v3 implementation — 2026-11-17
 
 Milan Gavrić/milangavric2003 approved the v3 plan and new branch implementation;
 his old-held-out non-exposure statement is user-declared. Separate evaluator and

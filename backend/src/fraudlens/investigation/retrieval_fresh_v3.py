@@ -150,6 +150,15 @@ def _predict(store, corpus, configurations, inputs, split):
     return rows
 
 
+def _development_protocol(protocol):
+    """Pin development meaning without freezing later held-out author bookkeeping."""
+    return {key: protocol[key] for key in
+            ('version', 'corpus_manifest', 'corpus_version', 'glossary')} | {
+        'development_author': protocol.get('question_authors', {}).get(
+            'development', protocol.get('question_author')),
+    }
+
+
 def develop(pack, output):
     """Run only reviewed development questions; never open held-out files."""
     pack, output = Path(pack).resolve(), Path(output).resolve()
@@ -191,7 +200,8 @@ def develop(pack, output):
                   else 'ineligible', rows=rows, choices=choices, configurations=configs,
                   deployment=deployment, corpus_version=corpus, store=str(store_path),
                   source_hashes=_source_hashes(),
-                  artifacts={p: _hash(pack/p) for p in (*FILES['development'], 'protocol.json')},
+                  artifacts={p: _hash(pack/p) for p in FILES['development']},
+                  development_protocol=_development_protocol(protocol),
                   development_metadata=splits['development'], development_review=reviews['development'],
                   plan_review=reviews['plan'], corpus_sha256=digest(store.corpus(corpus)),
                   corpus_artifacts={str(p.resolve()): _hash(p) for p in (
@@ -211,6 +221,8 @@ def freeze(pack, development, output):
         raise ValueError('Both development configurations must be eligible')
     if selected['source_hashes'] != _source_hashes():
         raise ValueError('Development source changed')
+    if selected['development_protocol'] != _development_protocol(protocol):
+        raise ValueError('Development protocol changed')
     for path, expected in selected['corpus_artifacts'].items():
         if _hash(path) != expected:
             raise ValueError('Development corpus artifact hash mismatch')

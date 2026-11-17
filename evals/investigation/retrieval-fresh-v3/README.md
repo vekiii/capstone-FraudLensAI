@@ -1,17 +1,23 @@
 # Fresh retrieval v3 — development review packet
 
-Status: DRAFT REFERENCES; Milan approved the evaluation plan, **not these new
-questions/references**. No real development selection, freeze or held-out run.
-All18 questions are fresh AI-authored development proposals, not independently
-reviewed quality evidence. They cover en/sr-Latn/sr-Cyrl,4 answerable+2 no-answer
+Status: Milan accepted the presented18-row development table/references and
+authorized continuation on2026-11-17. One bounded development selection executed:
+both variants Recall/MRR0.25/0.25,6/6 correct no-answer; SC-002 remains UNMET.
+[Actual execution and limits](../../../evidence/tasks/feature-003-t095-development-selection-20261117.md).
+No freeze or held-out run. These18 AI-authored development questions cover
+en/sr-Latn/sr-Cyrl,4 answerable+2 no-answer
 per language, all six existing documents and unsupported topics with lexical
-overlap. Reference sets and novelty must be checked before scoring.
+overlap. Acceptance of the fresh authored packet does not claim comparison with
+unseen old questions or independent semantic duplicate auditing.
 
 Milan Gavrić (`milangavric2003`) confirmed the plan on2026-11-17 and subsequently
 stated that he had not seen the old held-out questions. This is his declaration,
 not an independent audit of prior exposure. No new held-out text was shown.
 
 ## Šta Milan sada pregleda
+
+Pregled ove razvojne tabele je sada prihvaćen na osnovu Milanove potvrde;
+uputstvo ispod ostaje objašnjenje šta pregled obuhvata, bez zahteva da ga ponavlja.
 
 Otvori [razvojna pitanja](inputs/development.json) i
 [predložene reference](reference/development.json). To su **razvojni** primeri,
@@ -52,8 +58,9 @@ using their content. No placeholder questions/answers or fabricated approvals.
 `splits.json` has an empty held_out inventory, so complete freeze/execution fails
 closed. Populate reviewed metadata only when a real separate pack exists. The
 implementer should receive its metadata/hashes rather than its textual answers.
-Set the actual held-out author in protocol.json before development selection;
-protocol changes after selection invalidate that selection. Both actual split
+The separate held-out author/status can be completed later in protocol.json;
+changes to development version/corpus/glossary/author still invalidate selection.
+The complete freeze pins the whole final protocol. Both actual split
 review records bind exact input/reference file hashes, author and reviewer.
 The review field `exposure` refers to prior exposure to the old evaluation
 holdout. It does not deny that an author/reviewer sees the new references while
@@ -64,7 +71,8 @@ authoring/reviewing them; that role must remain separate from candidate tuning.
 Use the existing .venv; no dependency installation/provider/.env is required.
 New module: `fraudlens.investigation.retrieval_fresh_v3`. It does not change the
 old CLI/freezes/results or default search configuration. Example commands below
-are gated instructions, **not executed evaluation history**:
+are gated instructions. The exact completed development execution is in the
+linked evidence above; do not replay it or reuse its output directory:
 
 ```powershell
 $env:PYTHONPATH = 'backend/src'

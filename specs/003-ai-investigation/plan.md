@@ -18,8 +18,9 @@ T095 continuation2026-11-17: Milan approved
 module `backend/src/fraudlens/investigation/retrieval_fresh_v3.py` implements
 reviewed development selection, a version-bound freeze, explicitly authorized
 input-only prediction and sealed private reference joining. The new pack root is
-`evals/investigation/retrieval-fresh-v3/`; development reference proposals await
-human review, and held-out authoring remains separate. This does not change the
+`evals/investigation/retrieval-fresh-v3/`; Milan subsequently accepted the18-row
+development references and one comparison ran below targets (both0.25/0.25,
+6/6 no-answer). Held-out authoring remains separate. This does not change the
 original evaluator/CLI, runtime defaults or historical results. SC-002 is unmet.
 
 Maintenance follow-up (2026-11-16): [reliability-v2.md](reliability-v2.md) defines

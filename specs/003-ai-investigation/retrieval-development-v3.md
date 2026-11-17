@@ -1,8 +1,16 @@
 # T095 retrieval development design v3 — 2026-11-17
 
 Status: **plan approved by Milan Gavrić / milangavric2003 on 2026-11-17;
-question/reference review pending; fresh acceptance execution NOT AUTHORIZED / NOT RUN**.
+18-row development reference table accepted by Milan; development selection
+executed below targets; fresh acceptance execution NOT AUTHORIZED / NOT RUN**.
 T095 remains partial/open. SC-002 remains unmet.
+
+Latest actual result: [development selection evidence](../../evidence/tasks/feature-003-t095-development-selection-20261117.md).
+One comparison on18 reviewed development questions: both configurations
+Recall/MRR0.25/0.25,6/6 correct no-answer, baseline preselected on a tie. Actual
+default unchanged. Separate held-out authoring/review/freeze/authorization absent.
+No further tuning of this candidate from these results; review a new version or
+an explicitly decided language-scope amendment. English-only remains discussion.
 
 Actual decision: user explicitly confirmed this plan and authorized implementation
 on a new branch from feature03. This is contributor plan approval, not a claim of
@@ -57,9 +65,10 @@ Implementation update2026-11-17: the separate offline runner and18 development
 questions/reference proposals now exist. See the
 [concrete review packet](../../evals/investigation/retrieval-fresh-v3/README.md).
 New held-out text remains unauthored in this implementation context. Its separate
-authoring/review and the concrete development reference review remain pending.
-No real development selection or acceptance run has occurred. The future steps
-below retain the approved design; they are not completion claims.
+authoring/review remains pending. The concrete development table was subsequently
+accepted and one development selection executed; see the latest result above.
+No acceptance run occurred. The process steps below retain the approved design;
+they are not acceptance completion claims.
 
 A teammate other than the new question/reference author must review questions,
 relevant-passage sets, no-answer judgments, split separation and provenance.
@@ -135,8 +144,8 @@ sets, split counts and no-answer labels may not change after seeing predictions.
    and result hashes. Missing rows fail completeness rather than disappearing.
 
 The T095 plan/implementation approval authorizes preparation and runner work,
-not step 6. The runner is implemented and tested on synthetic packs; actual pack
-review, development selection and freeze remain pending. These numbered steps
+not step 6. The runner is implemented/tested; reviewed development selection is
+complete. Acceptance-pack review and freeze remain pending. These numbered steps
 describe the evaluation process, not completed experiment commands.
 
 ## Metrics, decisions and completion boundary
@@ -162,14 +171,15 @@ faithfulness, live timing, independent T094 review or full producer assembly.
 |---|---|
 | Scope/contract/metric/preservation technical review | AI self-review completed in this unit; see execution evidence |
 | Plan decision | APPROVED by Milan Gavrić / milangavric2003,2026-11-17; contributor review |
-| Concrete question/reference/novelty review | PENDING; not inferred from plan approval |
+| Concrete development reference review | ACCEPTED by Milan's subsequent table/corpus approval; no old-question semantic duplicate audit claimed |
 | Fresh runner | IMPLEMENTED; synthetic RED/GREEN evidence recorded separately |
 | Fresh pack |18 development proposals authored; separate held-out authoring pending |
-| Actual development selection and freeze | NOT RUN; concrete references unreviewed |
+| Actual development selection | EXECUTED ONCE, both Recall/MRR0.25/0.25; baseline tie-break; not acceptance |
+| Fresh freeze and separate held-out reference review | NOT RUN / PENDING |
 | User authorization for sealed fresh acceptance experiment | NOT REQUESTED; concrete freeze not yet available |
 | Fresh acceptance evidence / SC-002 | NOT RUN / UNMET |
 
-Next concrete step: Milan reviews the18 development question/reference rows in
-the linked packet, reporting actual findings/decision. His statement that he had
-not seen the old held-out questions is a user declaration, not an audited claim.
-Separate held-out authoring must preserve the implementation/tuning boundary.
+Next concrete step: team reviews the development failure and records a separately
+versioned retrieval design or explicit language-scope decision. His old-held-out
+non-exposure remains a user declaration, not an audited claim. Separate held-out
+authoring must preserve the implementation/tuning boundary; do not tune on it.

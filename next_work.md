@@ -1,4 +1,37 @@
-# Current handoff — T095 evaluator built; concrete development review next, 2026-11-17
+# Current handoff — T095 development result below target; next design decision, 2026-11-17
+
+On feature03-retrieval-v3 from clean cc712513d3a30286c23a9f1059aaffaa5dbae79e.
+Milan Gavrić/milangavric2003 accepted the18-row development table/corpus and
+authorized continuation. Review scope recorded honestly; no claim of comparison
+against unseen old questions/semantic duplicate audit or held-out acceptance.
+
+Ran one bounded development selection:18 questions x2 variants,36 local searches,
+zero provider calls. B3/C3 both Recall/MRR0.25/0.25 on12 answerable;6/6 no-answer;
+en0.75, sr-Latn0, sr-Cyrl0. Cutoffs8.863342357405378/9.745718240901956 are NEW
+development outputs only. Baseline wins development tie; default not changed.
+Old held-out0.50/0.50 and4/4 no-answer preserved; different samples, no direct
+degradation claim. English-only discussed, NOT authorized/implemented.
+
+Bookkeeping fix before real searches: pin development protocol meaning so later
+held-out author/status metadata does not force replay; glossary/corpus/development
+author changes still reject; full freeze pins whole final protocol. RED1/28pass,
+GREEN29; final backend968 PASS56.61s/Ruff PASS. No .env/service/store interaction
+outside new ignored development store; no live/fresh hold-out execution.
+Integrity PASS:511 original files byte-identical;100 markers/79 links; raw seal,
+source/projection/review/metric bindings and whitespace PASS. Old artifacts kept.
+
+[Original request and discussion scope](prompts/development/003-t095-development-selection-20261117.md).
+[Actual commands/decision/metrics/limits](evidence/tasks/feature-003-t095-development-selection-20261117.md).
+[Per-question ranks and development metrics](evidence/tasks/feature-003-t095-development-results-20261117.json).
+T095 remains OPEN, SC-002 UNMET. No further tuning of this same candidate from
+these results, fresh acceptance authorization, push/merge or other feature work.
+
+**One concrete next step:** team reviews this development failure and records a
+separately versioned next retrieval design or an explicit language-scope decision.
+Do not consume fresh held-out questions to tune this failure; current multilingual
+requirements remain until an actual amendment. Existing review need not repeat.
+
+# Previous handoff — T095 evaluator built; concrete development review next, 2026-11-17
 
 Milan Gavrić/milangavric2003 explicitly approved v3 plan/implementation and a new
 branch. Verified clean feature03 HEAD18e930ab4ad86e75f6f908b4a40a0a87def20e5b;

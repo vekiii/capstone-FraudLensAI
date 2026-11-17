@@ -153,6 +153,29 @@ def test_freeze_requires_new_reference_review_and_never_overwrites(pack, tmp_pat
         v3.freeze(pack, tmp_path/'dev/selection.json', tmp_path/'freeze.json')
 
 
+def test_heldout_author_metadata_can_arrive_after_development_without_replay(pack, tmp_path):
+    v3.develop(pack, tmp_path/'dev')
+    protocol = read(pack/'protocol.json')
+    protocol['question_authors'] = dict(development='SYNTHETIC AUTHOR',
+                                        held_out='SEPARATE SYNTHETIC HELDOUT AUTHOR')
+    protocol['status'] = 'complete_pack_reviewed'
+    write(pack/'protocol.json', protocol)
+    reviews = read(pack/'review.json')
+    reviews['held_out']['author'] = 'SEPARATE SYNTHETIC HELDOUT AUTHOR'
+    write(pack/'review.json', reviews)
+    result = v3.freeze(pack, tmp_path/'dev/selection.json', tmp_path/'freeze.json')
+    assert result['deployment'] == 'baseline'
+
+
+def test_development_glossary_change_still_invalidates_selection(pack, tmp_path):
+    v3.develop(pack, tmp_path/'dev')
+    protocol = read(pack/'protocol.json')
+    protocol['glossary']['terms']['newtranslation'] = ['money']
+    write(pack/'protocol.json', protocol)
+    with pytest.raises(ValueError, match='Development'):
+        v3.freeze(pack, tmp_path/'dev/selection.json', tmp_path/'blocked.json')
+
+
 @pytest.mark.parametrize('problem', ['missing', 'wrong_freeze', 'budget'])
 def test_acceptance_requires_exact_authorization_before_search(pack, tmp_path, problem):
     frozen = prepared(pack, tmp_path)

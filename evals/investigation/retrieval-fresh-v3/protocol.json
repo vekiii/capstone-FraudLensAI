@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "status": "development_draft_pending_reference_review",
+  "status": "development_reviewed_holdout_pending",
   "corpus_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
   "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
   "question_authors": {
@@ -64,5 +64,5 @@
       ]
     }
   },
-  "author_provenance": "Fresh AI-authored development questions from the six curated sources; no original holdout content parsed. Novelty remains independently unreviewed."
+  "author_provenance": "Fresh AI-authored development questions from the six curated sources; no original holdout content parsed. Milan accepted the presented table/references. No comparison against unseen old test questions or independent semantic duplicate audit is claimed."
 }

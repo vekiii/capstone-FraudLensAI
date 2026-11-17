@@ -401,6 +401,12 @@ separate explicit scope/budget; these tasks do not authorize replay or regrading
   fresh held-out authoring remains separate. Evidence:
   `evidence/tasks/feature-003-t095-v3-implementation-20261117.md`.
 
+  Reviewed development continuation: Milan accepted the18-row table/references;
+  actual one-shot B3/C3 selection both Recall/MRR0.25/0.25,6/6 no-answer, baseline
+  wins tie; no default change. Bookkeeping RED1/28pass -> GREEN29; final backend
+  968 PASS/Ruff PASS. T095 OPEN/SC-002 UNMET; no held-out run or English-only change.
+  `evidence/tasks/feature-003-t095-development-selection-20261117.md`.
+
 - [ ] T096 After the independent T094 decision, implement/test any approved new rubric/control version and necessary grounded-report quality corrections in `backend/src/fraudlens/investigation/` with new authored development controls; define a separately reviewed validation path before any explicitly authorized new actual-provider evaluation. Preserve original 0/8 quality, raw v8 ratings, failed calibration/unavailable quality, critical-error requirements and support/coverage thresholds; no old replay/regrading or acceptance from structural PASS. HIGH per SC-003, FR-013–017, FR-025–028 (partial).
 - [ ] T097 Reconcile current workflow/provider deadline behavior with the preserved failed five-case live timing/outlier evidence, add meaningful offline regression for any demonstrated remaining cause, and document a fresh frozen five-case demonstration protocol in `specs/003-ai-investigation/` before requesting a separate execution budget; retain failures in denominators and original 90/120-second targets. Do not substitute three development examples or claim current timeout failure solely from an old outlier. HIGH per SC-006, FR-018–020, FR-028 (partial).
 - [ ] T098 Coordinate and exercise the existing reviewed adapter with actual published producer rules/model stores through investigation API and matching worker, bounded history/source-switch/archive checks and the agreed application assembly boundary; record actual producer/run/dataset/model identities and source hashes in `evidence/tasks/feature-003-context.md`. Preserve T062–T064 completed controlled scope; no ML training, producer schema changes, automatic merge, label access, fixture fallback or live-provider execution. Full population/model validation remains unrun until real stores and assembly are available. HIGH per SC-007, FR-001–004, FR-011, plan: producer integration (partial).

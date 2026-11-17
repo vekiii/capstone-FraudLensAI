@@ -1,6 +1,9 @@
 # T095 v3: development questions for human review
 
-AI-authored proposals only. No ranks/scores were used to author these references.
+AI-authored references accepted by Milan Gavrić/milangavric2003 on2026-11-17
+through his presented table/corpus approval. No row-specific objections reported;
+no independent comparison against unseen old test questions claimed.
+No ranks/scores were used to author these references.
 All six document IDs link to their exact source texts in README.md.
 Each referenced document has one passage in the unchanged corpus.
 Correct/change any row before approving reference hashes.
