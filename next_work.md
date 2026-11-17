@@ -31,6 +31,8 @@ was unavailable because the browser host could not connect. A reported unstyled
 dev page was traced to Vite style injection conflicting with the restrictive
 CSP; CSS now loads via same-origin links in `web/index.html`. Strict typecheck
 and production build pass; visual confirmation still awaits browser access.
+The fix and evidence were committed as `b480146` and pushed to the Feature 005
+branch; commit description and publication details are in the evidence ledger.
 Details:
 [`evidence/tasks/typescript-web-migration-finalization-2026-11-17.md`](evidence/tasks/typescript-web-migration-finalization-2026-11-17.md).
 
