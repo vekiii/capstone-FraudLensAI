@@ -1,4 +1,35 @@
-# Current handoff — T099/T100 complete; T094–T098 open, 2026-11-17
+# Current handoff — T095 design partial; independent review next, 2026-11-17
+
+Scoped speckit-implement only T095 on feature03, verified expected starting
+HEAD249a50baae8fa4d3b2b560777da6dae8efd2acd7; initial status/diffs clean.
+Prepared [separate v3 development design/fresh-evaluation review packet](specs/003-ai-investigation/retrieval-development-v3.md),
+using existing opt-in v2 mechanics and proposed fresh development-only cutoff
+selection. No new runtime implementation/configuration or threshold change.
+
+[Original request](prompts/development/003-t095-20261117.md).
+[Actual execution, diagnostic rows and limitations](evidence/tasks/feature-003-t095-20261117.md).
+Actual135 relevant regressions PASS12.65s;4/4 mechanical controls PASS across18
+local authored searches; Ruff PASS after one unused import correction. Full
+backend/frontend/browser/live acceptance NOT RUN for this design-only unit.
+No private .env read, provider calls or interaction with existing services/stores;
+no held-out question/reference content opened. Existing runtime/configs/glossary/
+packs/manual evidence preserved. Integrity PASS:503 tracked files byte-identical,
+100 task markers unchanged,49 local links resolve; diff/whitespace PASS.
+
+T095 remains UNCHECKED: independent teammate plan/novelty/reference review pending;
+fresh pack/runner/development selection/freeze and explicit acceptance execution
+authorization/evidence absent. Old frozen baseline/improved Recall/MRR0.50/0.50,
+16 answerable plus4 no-answer denominator and4/4 no-match retained. SC-002 UNMET;
+T094,T096–T098 and original failed quality/timing/full-assembly gates unchanged.
+T099/T100 completion retained. Local commit authorized; push/merge not requested.
+Earlier publication blocker is historical, not the next action for this task.
+
+**One concrete next step:** an independent teammate reviews the exact v3 packet
+and records actual identity/date, prior holdout exposure and approve/change/reject.
+Do not run the old freeze builder or any fresh acceptance experiment from this
+handoff; obtain a concrete new freeze and separate explicit run authorization.
+
+# Previous handoff — T099/T100 complete; T094–T098 open, 2026-11-17
 
 Only T099/T100 implemented with scoped speckit-implement on feature03, clean
 initial95b5eebe5e3a50583ffcf33b081d2c7e53755681. T099 separates historical-attempt

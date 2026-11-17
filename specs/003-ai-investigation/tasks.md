@@ -379,6 +379,15 @@ rubric decision still pending). New live/provider/evaluation execution requires
 separate explicit scope/budget; these tasks do not authorize replay or regrading.
 
 - [ ] T095 Address the unmet retrieval target with a separately versioned development-only improvement/design and reviewed fresh evaluation plan in `specs/003-ai-investigation/` and `evidence/tasks/feature-003-evaluation.md`; preserve frozen baseline/improved 0.50/0.50 results, thresholds, splits and no-answer denominators, never tune exposed held-out answers, and execute any fresh acceptance experiment only after explicit authorization. Keep SC-002 unmet until actual evidence satisfies it. HIGH per SC-002, FR-008, FR-025–028 (partial).
+
+  T095 partial progress (2026-11-17): versioned design/review packet
+  `retrieval-development-v3.md` prepared; existing v2 candidate reused, no runtime
+  change or new threshold. AI technical self-review only; independent teammate
+  plan/novelty/reference decision, fresh pack/runner/freeze and separately
+  authorized acceptance evidence remain pending.135 relevant regressions/4
+  mechanical controls/Ruff PASS; no old holdout replay/tuning. SC-002 UNMET.
+  Actual scope/results: `evidence/tasks/feature-003-t095-20261117.md`.
+
 - [ ] T096 After the independent T094 decision, implement/test any approved new rubric/control version and necessary grounded-report quality corrections in `backend/src/fraudlens/investigation/` with new authored development controls; define a separately reviewed validation path before any explicitly authorized new actual-provider evaluation. Preserve original 0/8 quality, raw v8 ratings, failed calibration/unavailable quality, critical-error requirements and support/coverage thresholds; no old replay/regrading or acceptance from structural PASS. HIGH per SC-003, FR-013–017, FR-025–028 (partial).
 - [ ] T097 Reconcile current workflow/provider deadline behavior with the preserved failed five-case live timing/outlier evidence, add meaningful offline regression for any demonstrated remaining cause, and document a fresh frozen five-case demonstration protocol in `specs/003-ai-investigation/` before requesting a separate execution budget; retain failures in denominators and original 90/120-second targets. Do not substitute three development examples or claim current timeout failure solely from an old outlier. HIGH per SC-006, FR-018–020, FR-028 (partial).
 - [ ] T098 Coordinate and exercise the existing reviewed adapter with actual published producer rules/model stores through investigation API and matching worker, bounded history/source-switch/archive checks and the agreed application assembly boundary; record actual producer/run/dataset/model identities and source hashes in `evidence/tasks/feature-003-context.md`. Preserve T062–T064 completed controlled scope; no ML training, producer schema changes, automatic merge, label access, fixture fallback or live-provider execution. Full population/model validation remains unrun until real stores and assembly are available. HIGH per SC-007, FR-001–004, FR-011, plan: producer integration (partial).

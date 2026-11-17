@@ -1,3 +1,22 @@
+# Current T095 partial handoff — 2026-11-17
+
+T095 remains **open**. Prepared a separately versioned
+[development design v3 and fresh-evaluation review packet](../../specs/003-ai-investigation/retrieval-development-v3.md),
+reusing the existing opt-in v2 script/glossary mechanics with proposed fresh
+development-only cutoff selection. Technical AI self-review completed; actual
+independent teammate plan/novelty/reference review remains pending. No new runtime
+config, fresh evaluation pack/runner/freeze or acceptance experiment executed.
+
+[Actual commands and limitations](feature-003-t095-20261117.md):135 relevant
+regressions PASS;4/4 authored mechanical diagnostic controls PASS across18 local
+searches, Ruff PASS after removing an unused script import. Diagnostic ranks/
+script equivalence are not relevance or acceptance metrics. Both old frozen
+configurations remain Recall@5=0.50/MRR@5=0.50 on16 answerable questions, with
+4/4 separate no-answer outcomes. Thresholds, splits, references and results are
+preserved. **SC-002 remains UNMET**. Next: independent teammate reviews the exact
+v3 packet and records identity/exposure/approve-change-reject; fresh acceptance
+waits for a sealed plan/pack and explicit execution authorization.
+
 # Current T059-T061 closure - 2026-11-15
 
 User-approved automated report-judging-v2 replaces both historical human rating
