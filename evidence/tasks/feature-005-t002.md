@@ -95,3 +95,86 @@ credential read or connection. Ruff passed for all related files. This verifies
 the guard logic and skip boundary only. It does not verify live database
 behavior, broker/CDC/dbt/MLflow/monitoring pins, retention settings, TLS, or host
 hardening. T002 remains **PARTIAL and unchecked**.
+
+## Readiness review — 2026-11-17
+
+**Disposition: T002 remains PARTIAL / BLOCKING and unchecked. T006 and later
+tasks were not started.** This follow-up reconciles prior T004 evidence with
+current tool availability and the security audit. It does not treat proposed
+policies as approved.
+
+### Version and compatibility facts
+
+| Component | Verified fact | Readiness |
+|---|---|---|
+| PostgreSQL | Image `postgres:16-alpine`, digest `sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777`, server 16.14 (amd64). Prior image inspection and T004 disposable-database integration/catalog checks are recorded above and in `feature-005-t004.md`. | Version/client compatibility is evidenced historically. Current service health could not be checked because Docker Engine is unavailable in this session. |
+| Python driver | `psycopg` and `psycopg-binary` 3.3.9 are locked in `uv.lock`; T004 tests passed against PostgreSQL 16.14. | Verified for implemented T004 path. |
+| Docker clients | Docker CLI 28.3.2; Compose v2.39.1-desktop.1. | Client versions observed 2026-11-17; Docker server not reachable. |
+| Broker, Debezium, dbt, MLflow, Prometheus, Grafana | No selected image/client versions in `versions.env`; distribution choice and compatibility tests are absent. | NOT VERIFIED. Do not infer a full-stack compatibility matrix from the PostgreSQL result. |
+
+### Current safe checks
+
+| Command/check | Result |
+|---|---|
+| `docker compose --env-file infra/compose/.env.local -p fraudlens-live -f infra/compose/compose.yaml config --quiet` | Exit 0. Compose syntax/interpolation valid. Docker warned that the user Docker config file was inaccessible; `--quiet` emitted no interpolated secret. No service started. |
+| `docker info --format '{{.ServerVersion}}'` (read-only) | BLOCKED: `dockerDesktopLinuxEngine` named pipe does not exist. No container health or current image reinspection possible. |
+| Docker CLI / Compose version; `docker context show` | 28.3.2 / v2.39.1-desktop.1; context `default`. |
+| Local secret path checks, without reading the file | `infra/compose/.env.local` exists, is ignored by `.gitignore`, and is not tracked. No value was read, echoed, parsed or copied into evidence. |
+| `Get-Command psql, pg_isready, initdb, pg_ctl` | No local PostgreSQL command-line/server tools found. |
+
+No SQL, connection, database mutation, migration, PostgreSQL test, or T006
+Compose service startup was attempted in this follow-up.
+
+### Credential exposure and disposition
+
+The [security audit](../security/feature-005-security-edge-case-audit-2026-11-16.md)
+identifies the `POSTGRES_PASSWORD` value in ignored
+`infra/compose/.env.local` as disclosed by pytest formatting a failed database
+connection. T002's 2026-11-16 follow-up says the then-current value was rotated
+after an earlier Compose config disclosure, but the later security traceback
+disclosed that replacement. Therefore the credential currently stored in that
+file must again be treated as compromised and rotated before reuse. Its value
+is intentionally neither inspected nor recorded.
+
+Rotation is **NOT PERFORMED / BLOCKED**. This session cannot reach Docker Engine
+to identify the database service and change the PostgreSQL role in coordination
+with the ignored local file. Editing only the file would desynchronize it from
+the database. Resume only after an approved isolated local database is running,
+its project/container/image/loopback binding are positively identified, and the
+rotation can update database and ignored file together without printing either
+old or new value. No disposable DB was available or used.
+
+### Policies: explicit proposal, approval still required
+
+- **Secrets:** keep `POSTGRES_PASSWORD` and all future service credentials only
+  in ignored local env files or secret mounts. Never print interpolated Compose
+  config, command-line values, DSNs or database connection kwargs. `.env.local`
+  ignore/untracked status is verified; secret rotation is pending as above.
+- **Recovery/retention rule:** WAL and broker event retention must cover an
+  owner-approved maximum outage plus replay duration; canonical facts must
+  cover the supported history/replay window or a reconstructible archive;
+  derived state must preserve generation lineage. A missing WAL/topic/archive
+  range is an explicit gap requiring operator-led reconciliation, never a silent
+  offset/watermark reset. The numeric outage/replay horizon, WAL capacity and
+  alert thresholds, broker retention, fact/archive duration and cleanup policy
+  remain unspecified and require owner approval/resource review. No settings
+  were applied.
+- **Role matrix:** T004 verified `NOLOGIN` role setup and catalog boundaries:
+  `live_producer` executes only the controlled ingest function (no update/delete),
+  and `cdc_connector`/`live_worker` can read canonical facts; tests verified no
+  label or API/registry fact reads. Future target boundaries are documented in
+  `infra/compose/README.md` and `backend/migrations/README.md`. Replication-slot
+  privileges and later state, label, registry and API view grants do not yet
+  exist. Owner confirmation of the full policy and exact future grants remains
+  open.
+
+### Gate and next action
+
+T002's task checkbox remains unchecked. It is **not complete** because the
+broker/connector/other image pins and compatibility are unverified; numeric
+retention/outage and full role policy need owner decisions; and the exposed
+credential remains unrotated. T006 is still blocked. One concrete next step:
+when Docker Engine is available, have the owner confirm the numeric recovery,
+retention and role policy, then rotate the credential against a positively
+identified approved isolated database; afterward pin and compatibility-test the
+chosen broker/CDC pair before marking T002 complete.

@@ -1,5 +1,25 @@
 # Next work - FraudLens AI
 
+## Feature 005 T002 infrastructure readiness — 2026-11-17
+
+Reconciled current infrastructure facts, secret handling, recovery/retention
+proposal, least-privilege role boundaries, and T002 status. PostgreSQL 16.14
+with the exact image digest and psycopg 3.3.9 have prior disposable-test evidence;
+Compose `config --quiet` passed and the ignored local credential path is
+untracked. Docker Engine is unavailable now. `POSTGRES_PASSWORD` in
+`infra/compose/.env.local` was exposed by the audited traceback and remains
+pending rotation; its value was not read. Broker/CDC/other image pins and
+numeric recovery/retention/access approvals remain unresolved. T002 stays
+unchecked and T006 is blocked. Evidence:
+[`evidence/tasks/feature-005-t002.md`](evidence/tasks/feature-005-t002.md).
+This status supersedes older 2026-11-16 next-step notes below that named T006;
+do not start T006 until T002 is complete.
+
+One concrete next step: after the owner confirms retention/outage and role
+policy and an approved isolated local PostgreSQL service is available, rotate
+the credential in the database and ignored file together, then verify the
+selected broker/CDC pins before closing T002.
+
 ## TypeScript web migration final review — 2026-11-17
 
 Reviewed commit `3da2510` and finalized lazy route loading plus asynchronous
