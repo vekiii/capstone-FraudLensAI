@@ -62,7 +62,7 @@ may be tracked, containing placeholders only. Never force-add sensitive files.
 Ignored data must also be checked before adding: ignore rules do not untrack a
 previously committed file.
 
-Keep uv.lock and frontend/package-lock.json, specifications, prompts, evidence,
+Keep uv.lock and web/package-lock.json, specifications, prompts, evidence,
 small reviewed fixtures, `.agents/skills/` and shared `.specify/` content in Git.
 Honor `.specify/.gitignore` for local feature.json, extension overrides and adapter
 package state. Do not blanket-ignore either shared directory. No commit, push,

@@ -1,5 +1,18 @@
 # Next work - FraudLens AI
 
+## TypeScript web migration final review — 2026-11-17
+
+Reviewed commit `3da2510` and finalized lazy route loading plus asynchronous
+motion/WebGL imports in the canonical `web/` app. The initial JS entry is now
+191.34 kB (gzip 63.40 kB), down from 893.52 kB; the separate Three.js chunk is
+742.80 kB and still triggers Vite's chunk warning. 163 web tests and 60 affected
+FastAPI API tests passed; strict typecheck/build passed. Browser visual review
+was unavailable because the browser host could not connect. Details:
+[`evidence/tasks/typescript-web-migration-finalization-2026-11-17.md`](evidence/tasks/typescript-web-migration-finalization-2026-11-17.md).
+
+One concrete next step: visually review all six routes at desktop/mobile widths
+when browser access is available; this review could not run interactive browser QA.
+
 ## TypeScript-first React app consolidated — 2026-11-17
 
 Consolidated the former `frontend/` dashboard and the Feature 005 showcase into

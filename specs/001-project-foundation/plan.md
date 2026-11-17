@@ -1,20 +1,22 @@
 # Implementation Plan: Project Foundation
 
-**Branch**: `initialization` | **Date**: 2026-11-11 | **Spec**: [spec.md](spec.md)
+**Branch**: `initialization` (original planning branch) | **Date**: 2026-11-11 | **Spec**: [spec.md](spec.md)
 **Input**: `specs/001-project-foundation/spec.md`
 **Status**: Implemented through T023; phase 6 verification recorded in ../../evidence/tasks/phase-06-handoff.md. Peer reproduction and human review pending.
 
 ## Summary
-Build a local read-only fixture journey with FastAPI and Vite vanilla TypeScript. Deliver
-case list/detail, explicit source labeling, replaceable scorer and reproducible development
-checks. Do not implement later ML, RAG or investigation features.
+Build a local read-only fixture journey with FastAPI and a strict TypeScript web application.
+The original implementation used a vanilla TypeScript/Vite frontend; the current canonical
+web application is React/TypeScript/Vite under `web/`, as recorded in the TypeScript-first
+migration evidence. Deliver case list/detail, explicit source labeling, replaceable scorer
+and reproducible development checks. Do not implement later ML, RAG or investigation features.
 
 ## Technical Context
 **Language/Version**: Python 3.14.x; TypeScript; Node.js 24.x.
 Record exact runtime patch versions in implementation, rather than inventing installed versions.
 **Primary Dependencies**: FastAPI/Pydantic, Uvicorn, pytest/httpx; Vite, TypeScript,
 Vitest with jsdom for DOM/fetch behavior tests. Resolve compatible versions and commit
-`uv.lock` and `frontend/package-lock.json` in setup; use locked installs afterward.
+`uv.lock` and `web/package-lock.json`; use locked installs afterward.
 **Storage**: In-memory fixture repository reading three small synthetic records. No database.
 **Testing**: pytest contract/integration/unit checks; Vitest UI boundary checks; TypeScript
 typecheck and Vite build; manual browser smoke with a second teammate.
@@ -62,12 +64,12 @@ backend/src/fraudlens/
   cases.py
   scoring.py
 backend/tests/{contracts,integration,unit}/
-frontend/
+web/ (current canonical TypeScript/React application; originally planned as frontend/)
   package.json
   package-lock.json
   index.html
-  src/{main.ts,api.ts,contracts.ts,views.ts,styles.css}
-  tests/{api.test.ts,views.test.ts}
+  src/{main.tsx,api.ts,contracts.ts,components/,pages/,styles/}
+  tests/{api.test.ts,cases-page.test.tsx,dataset-overview-page.test.tsx}
 data/fixtures/cases.json
 data/README.md
 prompts/{README.md,app/,development/}
