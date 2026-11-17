@@ -26,6 +26,13 @@ recovery harness constructor forwarding fix. User now authorizes normal commit/
 push of reviewed files (message style matching branch); no merge or force-push.
 Final publication result is verified separately; no automatic future publication.
 
+Publication verified: dab0fb424041aa1d4a4bbd6a89044ea8a418a981,
+`T066-T067 finished; remaining Feature 003 work documented`, normal push to
+origin/feature03 exit0. git ls-remote exact SHA matches HEAD; status clean after
+push.25 reviewed files only, no generated stores/raw archives/environment file.
+Initial sandbox index permission failure resolved with authorized escalation;
+no approval-review rejection. This publication note is a docs-only follow-up.
+
 Manual test app remains API8000/Vite5174, existing5173 preserved, no worker poll.
 Owned process ledger/helper/logs and synthetic store are ignored under
 .cache/t066-milan-20261117; API restarted with ledger PID27068. Do not delete the
