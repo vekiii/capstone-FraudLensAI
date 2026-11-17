@@ -13,6 +13,15 @@ is distinguished from unavailable full IBM/model validation.
 
 ## Summary
 
+T095 continuation2026-11-17: Milan approved
+[retrieval development v3](retrieval-development-v3.md). Its separate offline
+module `backend/src/fraudlens/investigation/retrieval_fresh_v3.py` implements
+reviewed development selection, a version-bound freeze, explicitly authorized
+input-only prediction and sealed private reference joining. The new pack root is
+`evals/investigation/retrieval-fresh-v3/`; development reference proposals await
+human review, and held-out authoring remains separate. This does not change the
+original evaluator/CLI, runtime defaults or historical results. SC-002 is unmet.
+
 Maintenance follow-up (2026-11-16): [reliability-v2.md](reliability-v2.md) defines
 the user-authorized post-evaluation development revision and preservation boundary.
 

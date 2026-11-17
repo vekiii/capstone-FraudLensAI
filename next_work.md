@@ -1,4 +1,36 @@
-# Current handoff — T095 design partial; independent review next, 2026-11-17
+# Current handoff — T095 evaluator built; concrete development review next, 2026-11-17
+
+Milan Gavrić/milangavric2003 explicitly approved v3 plan/implementation and a new
+branch. Verified clean feature03 HEAD18e930ab4ad86e75f6f908b4a40a0a87def20e5b;
+created feature03-retrieval-v3 there. Local commit permitted; no push/merge.
+His statement that he had not seen old held-out questions is a user declaration.
+No new question/reference review or fresh acceptance permission inferred.
+
+Implemented separate offline retrieval_fresh_v3 evaluator through RED/GREEN:
+reviewed development selection, immutable version-bound freeze, one-shot
+authorized input-only prediction and sealed private join; errors stay in counts.
+Old runtime/default search/evaluator/packs/results and services preserved.
+Prepared18 AI-authored development inputs/references with readable source/rationale
+table; no actual scoring or cutoff selection. Fresh held-out files absent to
+preserve implementation/tuning separation. T095 stays OPEN; SC-002 UNMET.
+
+[Original request](prompts/development/003-t095-v3-implementation-20261117.md).
+[Actual execution/results/limits](evidence/tasks/feature-003-t095-v3-implementation-20261117.md).
+[Concrete review packet and instructions](evals/investigation/retrieval-fresh-v3/README.md).
+Final backend966 PASS78.31s; focused27 PASS; Ruff/packet checks PASS.
+Real unreviewed development command
+refused with expected exit2 before output/search. No .env/provider/live call or
+legacy held-out text opened. Frontend/build/browser not rerun because unchanged;
+no new manual acceptance claimed. Integrity results in execution evidence.
+Integrity PASS:506 original files byte-identical;100 task markers unchanged;
+76 local links valid; only five progress/design edits and11 scoped additions.
+
+**One concrete next step:** Milan reviews the18 development rows and proposed
+source sets/rationales in the linked packet and reports actual row-level findings
+or scoped approval. Then arrange separate held-out authoring/reference review,
+development selection/freeze and explicit authorization of concrete acceptance.
+
+# Previous handoff — T095 design partial; independent review next, 2026-11-17
 
 Scoped speckit-implement only T095 on feature03, verified expected starting
 HEAD249a50baae8fa4d3b2b560777da6dae8efd2acd7; initial status/diffs clean.

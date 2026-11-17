@@ -1,8 +1,14 @@
 # T095 retrieval development design v3 — 2026-11-17
 
-Status: **design proposed; technical self-review completed; independent teammate
-review pending; fresh acceptance execution NOT AUTHORIZED / NOT RUN**.
+Status: **plan approved by Milan Gavrić / milangavric2003 on 2026-11-17;
+question/reference review pending; fresh acceptance execution NOT AUTHORIZED / NOT RUN**.
 T095 remains partial/open. SC-002 remains unmet.
+
+Actual decision: user explicitly confirmed this plan and authorized implementation
+on a new branch from feature03. This is contributor plan approval, not a claim of
+independent reference review or a declaration about prior held-out exposure.
+The approved plan snapshot is available at feature03 commit18e930a; implementation
+record: `evidence/tasks/feature-003-t095-v3-implementation-20261117.md`.
 
 This is a new design/protocol proposal, not a runtime configuration or an amendment
 to the historical frozen evaluation. It builds on the implemented, opt-in
@@ -45,7 +51,15 @@ known limitations. BM25 scores are not relevance probabilities. A lexical match
 does not establish that a complete question is answerable; no-answer controls
 must include unsupported topics sharing ordinary corpus vocabulary.
 
-## Fresh pack proposal: retrieval-fresh-v3 (not yet authored/frozen)
+## Fresh pack: retrieval-fresh-v3 (development draft authored; not frozen)
+
+Implementation update2026-11-17: the separate offline runner and18 development
+questions/reference proposals now exist. See the
+[concrete review packet](../../evals/investigation/retrieval-fresh-v3/README.md).
+New held-out text remains unauthored in this implementation context. Its separate
+authoring/review and the concrete development reference review remain pending.
+No real development selection or acceptance run has occurred. The future steps
+below retain the approved design; they are not completion claims.
 
 A teammate other than the new question/reference author must review questions,
 relevant-passage sets, no-answer judgments, split separation and provenance.
@@ -58,8 +72,9 @@ disclosed and can prevent an independent acceptance claim.
 Proposed separate root: `evals/investigation/retrieval-fresh-v3/`, with
 `inputs/development.json`, `inputs/held-out.json`, separate private
 `reference/development.json` and `reference/held-out.json`, `splits.json`,
-`protocol.json`, `review.json`, and an immutable freeze. These are proposed paths,
-not files created or a reviewed pack. Held-out references remain inaccessible to
+`protocol.json`, `review.json`, and an immutable freeze. Development files are now
+drafted; held-out files and the freeze remain absent. This is not a reviewed pack.
+Held-out references remain inaccessible to
 generation/retrieval; merely co-locating them in a combined JSON and filtering
 after parsing is insufficient for this new runner.
 
@@ -119,9 +134,10 @@ sets, split counts and no-answer labels may not change after seeing predictions.
    inputs. Keep all 20 predictions per config, failures, scores/ranks/passage IDs
    and result hashes. Missing rows fail completeness rather than disappearing.
 
-The current T095 request authorizes preparation and development diagnostics,
-not step 6. The protocol and runner work above remains pending; these numbered
-steps are a reviewable plan, not executed commands.
+The T095 plan/implementation approval authorizes preparation and runner work,
+not step 6. The runner is implemented and tested on synthetic packs; actual pack
+review, development selection and freeze remain pending. These numbered steps
+describe the evaluation process, not completed experiment commands.
 
 ## Metrics, decisions and completion boundary
 
@@ -145,10 +161,15 @@ faithfulness, live timing, independent T094 review or full producer assembly.
 | Review item | Actual status |
 |---|---|
 | Scope/contract/metric/preservation technical review | AI self-review completed in this unit; see execution evidence |
-| Plan/novelty/reference review by independent teammate | PENDING — no identity or approval supplied |
-| Fresh pack, runner, development selection and freeze | NOT IMPLEMENTED / NOT RUN |
+| Plan decision | APPROVED by Milan Gavrić / milangavric2003,2026-11-17; contributor review |
+| Concrete question/reference/novelty review | PENDING; not inferred from plan approval |
+| Fresh runner | IMPLEMENTED; synthetic RED/GREEN evidence recorded separately |
+| Fresh pack |18 development proposals authored; separate held-out authoring pending |
+| Actual development selection and freeze | NOT RUN; concrete references unreviewed |
 | User authorization for sealed fresh acceptance experiment | NOT REQUESTED; concrete freeze not yet available |
 | Fresh acceptance evidence / SC-002 | NOT RUN / UNMET |
 
-Next concrete step: an independent teammate reviews this exact v3 packet and
-records approve/change/reject with actual identity and exposure declaration.
+Next concrete step: Milan reviews the18 development question/reference rows in
+the linked packet, reporting actual findings/decision. His statement that he had
+not seen the old held-out questions is a user declaration, not an audited claim.
+Separate held-out authoring must preserve the implementation/tuning boundary.

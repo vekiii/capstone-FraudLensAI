@@ -1,0 +1,34 @@
+{
+  "plan": {
+    "decision": "approved",
+    "actor": "Milan Gavrić",
+    "display_name": "Milan Gavrić",
+    "github": "milangavric2003",
+    "date": "2026-11-17",
+    "scope": "Plan and implementation only; not unseen references or acceptance execution",
+    "approved_plan_commit": "18e930ab4ad86e75f6f908b4a40a0a87def20e5b",
+    "approved_plan_sha256": "6c4f6e602e8579f026f71bb100e34730732d82e276d49a7d2af4891f8bf6e41d",
+    "prior_old_holdout_exposure": "User declared not seen; no audit implied"
+  },
+  "development": {
+    "decision": "pending",
+    "actor": null,
+    "date": null,
+    "author": "Codex AI",
+    "exposure": null,
+    "novelty_confirmed": false,
+    "artifacts": {
+      "inputs/development.json": "52923c14af74c69e23ec3d023abc0f3cf5eb107092569c9f5b6d94e8e036ce33",
+      "reference/development.json": "bafa16a81d0b7213383eae3fd02828daf01428dc4ba928eb691ca2d691be31b5"
+    }
+  },
+  "held_out": {
+    "decision": "pending",
+    "actor": null,
+    "date": null,
+    "author": null,
+    "exposure": null,
+    "novelty_confirmed": false,
+    "artifacts": {}
+  }
+}

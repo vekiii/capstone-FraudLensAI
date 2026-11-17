@@ -1,0 +1,95 @@
+{
+  "development": [
+    {
+      "id": "V3-D01",
+      "language": "en",
+      "family_id": "dev-time-inference"
+    },
+    {
+      "id": "V3-D02",
+      "language": "en",
+      "family_id": "dev-citation-interpretation"
+    },
+    {
+      "id": "V3-D03",
+      "language": "en",
+      "family_id": "dev-conflicting-source-versions"
+    },
+    {
+      "id": "V3-D04",
+      "language": "en",
+      "family_id": "dev-affiliate-scope"
+    },
+    {
+      "id": "V3-D05",
+      "language": "en",
+      "family_id": "dev-serbian-filing-deadline"
+    },
+    {
+      "id": "V3-D06",
+      "language": "en",
+      "family_id": "dev-named-approver"
+    },
+    {
+      "id": "V3-D07",
+      "language": "sr-Latn",
+      "family_id": "dev-directional-money"
+    },
+    {
+      "id": "V3-D08",
+      "language": "sr-Latn",
+      "family_id": "dev-fact-procedure-evidence"
+    },
+    {
+      "id": "V3-D09",
+      "language": "sr-Latn",
+      "family_id": "dev-unavailable-vs-empty-history"
+    },
+    {
+      "id": "V3-D10",
+      "language": "sr-Latn",
+      "family_id": "dev-records-narrative-distinction"
+    },
+    {
+      "id": "V3-D11",
+      "language": "sr-Latn",
+      "family_id": "dev-account-blocking-api"
+    },
+    {
+      "id": "V3-D12",
+      "language": "sr-Latn",
+      "family_id": "dev-serbian-retention-years"
+    },
+    {
+      "id": "V3-D13",
+      "language": "sr-Cyrl",
+      "family_id": "dev-human-disposition"
+    },
+    {
+      "id": "V3-D14",
+      "language": "sr-Cyrl",
+      "family_id": "dev-no-invented-benign-story"
+    },
+    {
+      "id": "V3-D15",
+      "language": "sr-Cyrl",
+      "family_id": "dev-foreign-confidentiality-limits"
+    },
+    {
+      "id": "V3-D16",
+      "language": "sr-Cyrl",
+      "family_id": "dev-records-context-dependence"
+    },
+    {
+      "id": "V3-D17",
+      "language": "sr-Cyrl",
+      "family_id": "dev-customer-employer"
+    },
+    {
+      "id": "V3-D18",
+      "language": "sr-Cyrl",
+      "family_id": "dev-bank-loss-percentage"
+    }
+  ],
+  "held_out": []
+}

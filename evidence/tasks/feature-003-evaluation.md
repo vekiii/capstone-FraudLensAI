@@ -1,4 +1,15 @@
-# Current T095 partial handoff — 2026-11-17
+# Current T095 v3 implementation — 2026-11-17
+
+Milan Gavrić/milangavric2003 approved the v3 plan and new branch implementation;
+his old-held-out non-exposure statement is user-declared. Separate evaluator and
+[18-row concrete development review packet](../../evals/investigation/retrieval-fresh-v3/README.md)
+implemented on feature03-retrieval-v3 from18e930a. Actual question/reference
+review remains pending; fresh held-out authoring stays separate. No real new
+development selection, freeze or acceptance experiment occurred. T095 OPEN,
+SC-002 UNMET; old0.50/0.50 and4-of-4 no-answer results unchanged.
+[Actual execution/RED-GREEN/limits](feature-003-t095-v3-implementation-20261117.md).
+
+# Previous T095 partial handoff — 2026-11-17
 
 T095 remains **open**. Prepared a separately versioned
 [development design v3 and fresh-evaluation review packet](../../specs/003-ai-investigation/retrieval-development-v3.md),

@@ -1,0 +1,20 @@
+[
+  {"id":"V3-D01","family_id":"dev-time-inference","language":"en","query":"Does a raw transaction timestamp justify inferring the customer's timezone?"},
+  {"id":"V3-D02","family_id":"dev-citation-interpretation","language":"en","query":"Does a valid citation identifier establish that the analyst interpreted its text faithfully?"},
+  {"id":"V3-D03","family_id":"dev-conflicting-source-versions","language":"en","query":"How should an investigation describe conflicting sources and preserve their versions?"},
+  {"id":"V3-D04","family_id":"dev-affiliate-scope","language":"en","query":"Does the historical US affiliate guidance grant blanket permission to disclose reports?"},
+  {"id":"V3-D05","family_id":"dev-serbian-filing-deadline","language":"en","query":"What is the mandatory Serbian deadline for filing a suspicious activity report?"},
+  {"id":"V3-D06","family_id":"dev-named-approver","language":"en","query":"Which named employee approved this customer's source of funds?"},
+  {"id":"V3-D07","family_id":"dev-directional-money","language":"sr-Latn","query":"Kako vodič za sintetičke podatke nalaže čuvanje smera iznosa i oznaka valuta?"},
+  {"id":"V3-D08","family_id":"dev-fact-procedure-evidence","language":"sr-Latn","query":"Koje izvore treba citirati za činjenice slučaja, a koje za preporučene proceduralne provere?"},
+  {"id":"V3-D09","family_id":"dev-unavailable-vs-empty-history","language":"sr-Latn","query":"Da li nedostupnu istoriju smemo da prikažemo kao praznu istoriju bez ograničenja?"},
+  {"id":"V3-D10","family_id":"dev-records-narrative-distinction","language":"sr-Latn","query":"Da li istorijske smernice razlikuju prateću dokumentaciju od samog narativa izveštaja?"},
+  {"id":"V3-D11","family_id":"dev-account-blocking-api","language":"sr-Latn","query":"Koji konkretan API poziv blokira račun nakon eskalacije upozorenja?"},
+  {"id":"V3-D12","family_id":"dev-serbian-retention-years","language":"sr-Latn","query":"Koliko godina banka mora da čuva prateću dokumentaciju prema važećem propisu Srbije?"},
+  {"id":"V3-D13","family_id":"dev-human-disposition","language":"sr-Cyrl","query":"Ко доноси одлуку о затварању случаја и да ли је потребно образложење?"},
+  {"id":"V3-D14","family_id":"dev-no-invented-benign-story","language":"sr-Cyrl","query":"Како размотрити алтернативно објашњење без измишљања чињеница о клијенту?"},
+  {"id":"V3-D15","family_id":"dev-foreign-confidentiality-limits","language":"sr-Cyrl","query":"Да ли је америчка смерница о поверљивости у оквиру повезаних друштава правило Србије?"},
+  {"id":"V3-D16","family_id":"dev-records-context-dependence","language":"sr-Cyrl","query":"Од чега зависи шта се сматра пратећом документацијом у историјском извору?"},
+  {"id":"V3-D17","family_id":"dev-customer-employer","language":"sr-Cyrl","query":"Који је стварни послодавац клијента чији случај истражујемо?"},
+  {"id":"V3-D18","family_id":"dev-bank-loss-percentage","language":"sr-Cyrl","query":"Који проценат стварног губитка банке представља износ ове трансакције?"}
+]
