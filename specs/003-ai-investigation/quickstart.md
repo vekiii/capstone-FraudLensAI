@@ -1,5 +1,79 @@
 # Feature 003 validation quickstart
 
+## Integrated semantic v6 activation (2026-11-17)
+
+API/worker integration and separately calibrated blind LLM reference evaluation
+are implemented. Earlier statements below that routing is pending describe the
+pre-integration state. Existing GET source browsing stays deterministic/free.
+Use these overrides in BOTH API and worker terminals for NEW investigations:
+
+```powershell
+$env:INVESTIGATION_ENABLED = 'true'
+$env:INVESTIGATION_PROVIDER = 'openai'
+$env:INVESTIGATION_SEMANTIC_RETRIEVAL = 'true'
+$env:INVESTIGATION_MAX_SEMANTIC_REQUESTS = '10'
+# Use your existing configured OPENAI_MODEL/key; never print or commit the key.
+```
+
+If those terminals still have empty OPENAI_MODEL/key overrides from fixture tests,
+remove the two process overrides so the private root .env can supply them. Use the
+same INVESTIGATION_STORE/source in API/worker. Original attempts/retries keep their
+pinned mode; enabling this flag does not alter historical attempts. A normal
+grounded tool flow now uses5 rather than4 provider dispatches (semantic search
+shares the max8 budget), with the existing120s total/30s per-call upper bounds.
+
+Standalone semantic search is explicit POST, not an automatic paid GET:
+
+```powershell
+$semanticKey = [guid]::NewGuid().ToString()
+Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8000/api/knowledge/semantic-search' -ContentType 'application/json' -Headers @{'Idempotency-Key'=$semanticKey} -Body '{"query":"How should unknown account history be described?"}'
+Invoke-RestMethod -Uri 'http://127.0.0.1:8000/api/knowledge/semantic-search/status' -Headers @{'Idempotency-Key'=$semanticKey}
+```
+
+The POST above spends up to ONE new call; it is documentation, not permission to
+replay exhausted evaluation batches. To cancel a pending POST from a second
+terminal, POST semantic-search/cancel with same key and JSON{}. Replay/status/
+cancel never redispatch. The default10 standalone searches cap is lifetime per
+store; cancellation/errors remain counted. Worker dispatch budget is separate
+and never reset by this standalone cap.
+
+Public responses omit raw SDK bodies/private diagnostics; full model audit stays
+server-side. See contracts/semantic-search-v1.md and retrieval-v6-judge-decision.md.
+Both original evaluation scripts are exhausted and must NOT be rerun. T095 and
+merge await team acceptance; retrieval metrics do not establish report quality.
+
+## Semantic v6 candidate (explicit async port, not default route)
+
+`retrieval_semantic_adapter_v6.semantic_search(store, query, corpus, provider,
+reserve_dispatch)` returns a closed SearchResult plus model/citation audit. The
+caller must supply durable provider-dispatch reservation; absent reservation fails
+before any call. It requires an explicit configured OpenAI model, max1 request,
+zero SDK retries,30second bound,20 source passages/48k input/2048 output tokens.
+Rank weights are ordering scores, not relevance probabilities. Do not wrap this
+inside synchronous search or bypass existing investigation provider budgets.
+
+Existing HTTP/worker routes remain on their current search policy. V6 is a
+reviewable opt-in component; activating it requires explicit budget-aware async
+wiring and cancellation/failure tests in those adapters. Legacy configs stay valid.
+The diagnostic30-call batch is COMPLETED; do not rerun its live script. See
+evidence/tasks/feature-003-retrieval-v6-20261117.md for results and pending gates.
+
+## Opt-in English coverage candidate v5 (development, not accepted)
+
+V5 keeps old configurations unchanged and is available through the existing
+API/worker search path. Prepare a NEW store with the candidate configuration:
+
+```powershell
+.venv/Scripts/python.exe -m fraudlens.investigation.cli prepare-knowledge --manifest data/knowledge/fraudlens-aml-knowledge-v1/manifest.json --retrieval data/knowledge/fraudlens-aml-knowledge-v1/retrieval-development-v5.json --store data/processed/investigations-english-v5.sqlite
+```
+
+Point both API and worker INVESTIGATION_STORE to that same path. Use existing
+test-provider settings for offline checks. Supported procedure queries are English;
+this candidate does not translate or reliably detect other languages. UI/report
+language remains separate. Existing stores/configurations are not migrated.
+Candidate metrics are exposed-development diagnostics, not independent acceptance.
+T095 and SC-002 remain open pending fresh reference review/freeze/evaluation.
+
 ## Reviewed dataset adapter (T062-T064, 2026-11-16)
 
 Final review update 2026-11-17: T066 contributor reproduction/review and T067

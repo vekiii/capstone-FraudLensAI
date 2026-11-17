@@ -1,4 +1,136 @@
-# Current handoff — English-only retrieval scope approved; next design, 2026-11-17
+# Current handoff - T095 reviewed and complete, 2026-11-17
+
+User explicitly confirmed reviewing the delivered v6 integration/evaluation and
+requested checking T095. T095 is now checked in specs/003-ai-investigation/tasks.md.
+[Acceptance and evidence](evidence/tasks/feature-003-v6-integration-judge-20261117.md).
+Offline archived evaluation verifier freshly PASS, zero provider calls:
+Recall.864583/MRR.9375 on16 answerable,4/4 no-answer,4/4 judge controls; failed020
+retained. Same-model blind judge limitations and post-eval infrastructure lineage
+unchanged; no independent-human/model or zero-overfit claim.
+
+Only completion documentation changed in this unit. Existing uncommitted work
+preserved on feature03-retrieval-v4. No commit/push/merge or additional API spend.
+T094,T096-T098 remain open; T095 does not close report quality/timing/real-data gates.
+**Next concrete step:** address T094 report-quality calibration/rubric review before
+new report evaluation, preserving old failures and using a separately scoped budget.
+Merge remains a separate user decision; exhausted live scripts must not be replayed.
+
+# Previous handoff - v6 integrated; blind-judge retrieval gate PASS, 2026-11-17
+
+User authorized API/worker wiring and separate LLM-as-judge evaluation for T095.
+Work remains UNCOMMITTED on feature03-retrieval-v4 from68aa027. No merge/push.
+[Actual evidence](evidence/tasks/feature-003-v6-integration-judge-20261117.md),
+[approved automated method](specs/003-ai-investigation/retrieval-v6-judge-decision.md),
+[HTTP contract](specs/003-ai-investigation/contracts/semantic-search-v1.md).
+
+Opt-in INVESTIGATION_SEMANTIC_RETRIEVAL=true with explicit OpenAI settings in API
+and worker activates NEW attempts. Old/retried bindings preserve original mode.
+Worker semantic dispatch shares existing8-call/12-tool/120s limits; context/corpus/
+model/runtime pins, cancellation, timeout and late-result guards tested. Typical
+flow5 calls vs4. Standalone paid POST has same-origin/UUID idempotency, max1 call/
+key, default10 lifetime jobs/store. GET status/cancel/replay free; deterministic
+source-browsing GET unchanged. Public SDK bodies redacted; backend raw audit kept
+before strict validation, including future invalid/late responses. English query
+addendum only on new semantic bindings. No existing services/.env altered.
+
+Actual44 new intents:4 judge calibrations PASS,20 blind reference labels frozen
+BEFORE20 candidate API requests. Same gpt-6-luna in separate stateless contexts,
+NOT independent model/human review. Candidate10 EN5-020 returned503 and remains
+failure/unknown usage. Initial partial report preserved. Explicit continuation
+ran only10 UNDISPATCHED inputs under SAME freeze, no retry;19 HTTP200/1 failed.
+Complete16+4 metrics Recall.864583/MRR.9375 and4/4 no-answer PASS unchanged gates.
+V5 on same20/frozen blind refs .614583/.6875,4/4. Judge source-set differences2
+published, not silently dropped. Known62777tokens+1 unknown, monetary cost unknown.
+ALL44 allowance consumed; prior30 diagnostic allowance separately exhausted.
+No automatic new API calls/probes/replay. Report/full-IBM/performance quality
+criteria are separate and unchanged; no zero-overfit or production-ready claim.
+
+Final full backend1008 PASS72.26s before one further test-only raw-audit case;
+final34 focused PASS3.91s. Frontend193/typecheck/build PASS, Ruff/diff PASS.
+Offline archived-metric/code-ledger verifier PASS, zero calls. Current HTTP read
+of all20 archived jobs preserves statuses/results, omits raw SDK, zero provider
+creation; an initial helper probe used wrong Windows decoding, corrected UTF-8.
+
+Executed runtime/code/input/gold/outputs are archived BEFORE post-eval public
+redaction/raw-audit/worker-English infrastructure fixes. Semantic selector core/
+prompt/model/corpus/ranking unchanged. Final runtime offline tested; no live rerun
+or pretend hash identity after corrections. See post-evaluation-lineage JSON.
+Numeric retrieval gate is met under USER-APPROVED automated judge method. T095
+checkbox intentionally UNCHANGED for reserved team acceptance/merge decision.
+T094,T096-T098 and historical quality/timing/assembly limitations remain open.
+
+**Next concrete step:** review the integrated code and actual evidence, then user
+chooses acceptance/commit/merge. Offline reproduction without credentials:
+PYTHONPATH=backend/src; python -m fraudlens.investigation.verify_semantic_evaluation.
+Do not rerun either exhausted live script. Restart API/worker with explicit opt-in
+only when ready to activate; current running services were not hot-switched.
+
+# Previous handoff - semantic v6 diagnostics pass, runtime acceptance pending, 2026-11-17
+
+User requested robust RAG after v5 generalization failure and explicitly approved
+up to30 public-data OpenAI calls with no retries. Implemented/tested v6 on existing
+feature03-retrieval-v4 branch; no merge, commit or push. V6 selects semantically
+supported sources with exact validated quotes, or insufficient, from whole small
+corpus (<=20/48k). Explicit async port, not another lexical threshold/denylist.
+
+Actual one-shot30 calls all completed, gpt-6-luna, zero retries,43259 input+3817
+output=47076tokens. On30 author-controlled challenge probes: Recall/MRR1/1 for15
+answerable,15/15 correct insufficient. Same30 local v5 comparison .5333/.50 and
+5/15 no-answer. No runtime/prompt tuning during/after batch; exact live core and
+prompt freeze hashes preserved. Earlier v4/v5 success/failure files unchanged.
+These are diagnostics NOT independent held-out acceptance; AI references, tiny
+six-source corpus, model nondeterminism and limited adversarial coverage remain.
+
+[Execution/limitations](evidence/tasks/feature-003-retrieval-v6-20261117.md).
+[Raw outputs/usage](evidence/tasks/feature-003-retrieval-v6-live-20261117.json).
+Public frozen inputs/references/passages/ledger in
+ evals/investigation/retrieval-semantic-v6-diagnostic/.
+Final focused CORE/ADAPTER19 PASS0.42s; full backend992 PASS83.49s before
+final adapter tests. Ruff/diff PASS. Frontend unchanged/no rerun. All30 authorized
+calls consumed: no automatic replay or further provider calls. Private settings
+read for authorized client only; keys never logged, no customer/label data sent.
+
+Async retrieval_semantic_adapter_v6 requires caller-owned durable reservation.
+Existing synchronous API/worker routes are NOT automatically switched; budget-aware
+async routing/cancellation/source-pin integration still needed before deployment.
+No hidden extra LLM requests in legacy tools. T095 and SC-002 stay open pending
+that integration plus independently reviewed fresh English reference/freeze and
+acceptance. No zero-overfit/general robustness or report-quality guarantee.
+
+**Next concrete step:** review v6 boundary and design budget-accounted async
+activation in owning API/worker, then test reservation/failure/cancellation/pinning
+without more live spend. Review fresh English references separately before new
+acceptance. Do not close T095 or merge based on diagnostic success alone.
+
+# Previous handoff - English v5 development improvement, acceptance pending, 2026-11-17
+
+User requested RAG improvement with measurement before merge/T095 closure.
+New branch feature03-retrieval-v4 from68aa027; no merge, commit or push. Runtime
+now supports opt-in english_coverage_v4/v5. V4 stopword/coverage variant tied v3;
+v5 light inflection normalization improves exposed English development Recall/MRR
+.75/.75 to1/1, retaining2/2 no-answer. Six-row development sample only, NOT fresh
+acceptance, general quality or SC-002 evidence. Defaults/legacy configs preserved.
+
+[Design](specs/003-ai-investigation/retrieval-development-v4.md),
+[actual execution/limits](evidence/tasks/feature-003-retrieval-v5-20261117.md).
+Full backend974 PASS77.50s; final16 related tests PASS1.74s after adding HTTP
+search/passage/no-match coverage. Ruff/diff PASS. Frontend unchanged, no rerun.
+No private .env/provider/live calls; earlier frozen artifacts/results unchanged.
+Candidate config and actual opt-in API/worker setup documented in quickstart.
+
+Proposed30-question English packet in evals/investigation/retrieval-english-v5-proposed
+is AI-authored, NOT human-reviewed/frozen/executed. Semantic novelty/source
+completeness/split review and passage reference resolution pending; existing v3
+runner assumes multilingual counts and needs explicit English adaptation. Candidate
+hashes recorded before packet authoring. Do not claim proposed questions independent
+merely because wording is new, or tune on held-out execution. T095/T094/T096-T098
+and quality/full assembly gates remain open. No automatic acceptance batch.
+
+**Next concrete step:** review the proposed English reference packet and execution
+design, then adapt/test the existing safe runner for English counts and freeze
+reviewed inputs before one-shot acceptance. User reserves merge/T095 decision.
+
+# Previous handoff — English-only retrieval scope approved; next design, 2026-11-17
 
 Milan Gavrić/milangavric2003 explicitly approved moving the initial MVP procedure
 retrieval to English. [Decision](specs/003-ai-investigation/retrieval-english-mvp-decision.md).

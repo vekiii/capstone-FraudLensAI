@@ -1,5 +1,12 @@
 # Investigation and knowledge API v1 (planned)
 
+2026-11-17 additive implementation: explicit paid semantic POST/status/cancel
+contract is in [semantic-search-v1.md](semantic-search-v1.md). Existing GET paths
+remain free. Semantic worker stages use original attempt budgets, with pinned
+semantic policy/runtime hashes in binding audit in addition to the base lexical
+retrieval version. Semantic mode is opt-in for new attempts, preserved on retry.
+Only safe model/request/usage metadata is public; raw SDK bodies stay in local audit.
+
 Status (2026-11-15): knowledge, create/list/attempt/evidence, retry/cancel and Phase 6 review/amendment routes implemented offline. Human acceptance remains pending. Local same-origin FastAPI routes under `/api/investigation` and `/api/knowledge`; existing feature 001/002 endpoints and errors unchanged. [schemas.json](schemas.json) defines closed request/response bodies. GETs never cause provider requests. All responses are JSON with explicit `contract_version=1`; no raw exception/provider body or path is returned.
 
 ## Request identity and local access

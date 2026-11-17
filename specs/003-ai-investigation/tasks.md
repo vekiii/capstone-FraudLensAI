@@ -378,7 +378,7 @@ work, not full acceptance. T094 stays open (raw archive now verified; independen
 rubric decision still pending). New live/provider/evaluation execution requires
 separate explicit scope/budget; these tasks do not authorize replay or regrading.
 
-- [ ] T095 Address the unmet retrieval target with a separately versioned development-only improvement/design and reviewed fresh evaluation plan in `specs/003-ai-investigation/` and `evidence/tasks/feature-003-evaluation.md`; preserve frozen baseline/improved 0.50/0.50 results, thresholds, splits and no-answer denominators, never tune exposed held-out answers, and execute any fresh acceptance experiment only after explicit authorization. Keep SC-002 unmet until actual evidence satisfies it. HIGH per SC-002, FR-008, FR-025–028 (partial).
+- [x] T095 Address the unmet retrieval target with a separately versioned development-only improvement/design and reviewed fresh evaluation plan in `specs/003-ai-investigation/` and `evidence/tasks/feature-003-evaluation.md`; preserve frozen baseline/improved 0.50/0.50 results, thresholds, splits and no-answer denominators, never tune exposed held-out answers, and execute any fresh acceptance experiment only after explicit authorization. Keep SC-002 unmet until actual evidence satisfies it. HIGH per SC-002, FR-008, FR-025–028 (partial).
 
   T095 partial progress (2026-11-17): versioned design/review packet
   `retrieval-development-v3.md` prepared; existing v2 candidate reused, no runtime
@@ -425,3 +425,55 @@ T099/T100 completion evidence (2026-11-17):
 GREEN/refactor16 passes; final frontend193/backend939/typecheck/build/Ruff PASS;
 schema/pin/example/API documentation checks PASS. T094–T098 remain open; no live
 call/evaluation, historical result change or full producer assembly acceptance.
+
+
+## T095 implementation update - 2026-11-17, English v4/v5 candidate
+
+T095 remains unchecked. On feature03-retrieval-v4 from68aa027, implemented opt-in
+runtime English coverage/inflection variants using RED/GREEN; default and old
+config meanings retained. Exposed English development Recall/MRR.75/.75 ->1/1
+with2/2 no-answer maintained. Full backend974 PASS; final16 API/candidate tests
+PASS. See evidence/tasks/feature-003-retrieval-v5-20261117.md. Concrete proposed
+10+20 English reference packet NOT reviewed/frozen/executed; English-count runner
+adaptation and actual fresh acceptance remain. No whole-RAG quality or SC-002 pass,
+merge/commit/push or task closure inferred from small development improvement.
+
+
+## T095 semantic v6 update - 2026-11-17
+
+T095 remains unchecked. Explicit bounded async semantic answerability core and
+reservation adapter implemented through RED/GREEN; authorized30-call gpt-6-luna
+challenge diagnostics achieved1/1 Recall/MRR and15/15 insufficient; no errors/
+retries. See evidence/tasks/feature-003-retrieval-v6-20261117.md. Author-proposed
+labels/tiny corpus are not independent acceptance. Runtime/prompt frozen before
+calls; prior v5 failure preserved; no post-result policy tuning. Full992 backend
+PASS plus final19 focused core/adapter PASS. Existing API/worker NOT switched to
+paid search: budget-aware async integration and cancellation/source pinning remain,
+along with reviewed fresh English acceptance. No merge/commit/push or T095 closure.
+
+
+## T095 integrated runtime + approved automated judge outcome, 2026-11-17
+
+API/worker integration COMPLETE and numeric retrieval gate PASS under user-approved
+blind LLM reference-review method:4/4 calibrations,20 previously unexecuted inputs,
+16answerable+4no-answer, Recall.864583/MRR.9375/all4 no-answer. Exactly44 intents,
+zero retries; failedEN5-020 retained, continuation only10 undispatched rows. Same
+model/context-separated judge is not human/model-independent review. Detailed
+execution and limits: evidence/tasks/feature-003-v6-integration-judge-20261117.md;
+method: retrieval-v6-judge-decision.md. Default mode still opt-in; free GET unchanged.
+Full1008 backend+final34 related tests/193 frontend/typecheck/build/Ruff PASS.
+Post-eval privacy/audit/language corrections offline verified, executed snapshot
+preserved, semantic classifier policy unchanged. No live report-quality/full-data
+acceptance inferred. T095 marker remains unchecked for user's reserved acceptance
+and merge decision; other convergence tasks unchanged. No merge/commit/push.
+
+
+## T095 user review and completion - 2026-11-17
+
+User explicitly stated they reviewed the work and requested checking T095.
+T095 now complete under the approved automated blind-judge retrieval method.
+Evidence: evidence/tasks/feature-003-v6-integration-judge-20261117.md and frozen
+complete evaluation; Recall.864583/MRR.9375,4/4 no-answer,4/4 calibrations, retained
+503failure, offline verifier PASS. No independent-human/model or zero-overfit claim.
+Historical pending notes above describe prior states. Other task markers unchanged.
+This approval is for T095 completion only; no commit/push/merge or further API spend.

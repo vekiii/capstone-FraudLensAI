@@ -1,0 +1,875 @@
+{
+  "scope": "AI-authored challenge audit, not independently reviewed acceptance; candidate fixed before these queries; no runtime retuning",
+  "runtime_sha256": "97f70d13c01a88c8386a24c1181504c1d45922b31d59f04831bb79caaac827f3",
+  "cases": [
+    {
+      "id": 1,
+      "query": "Must amounts sent and received keep their own currencies?",
+      "proposed_relevant_document": "ibm-guide"
+    },
+    {
+      "id": 2,
+      "query": "Is the data license identical to the repository license?",
+      "proposed_relevant_document": "ibm-guide"
+    },
+    {
+      "id": 3,
+      "query": "How do I check that a citation really supports an interpretation?",
+      "proposed_relevant_document": "sim-citation"
+    },
+    {
+      "id": 4,
+      "query": "Where should observed facts get their evidence?",
+      "proposed_relevant_document": "sim-citation"
+    },
+    {
+      "id": 5,
+      "query": "What should I say when the account history cannot be obtained?",
+      "proposed_relevant_document": "sim-missing"
+    },
+    {
+      "id": 6,
+      "query": "How do I document disagreement between different source versions?",
+      "proposed_relevant_document": "sim-missing"
+    },
+    {
+      "id": 7,
+      "query": "Can an automated score decide to freeze a bank account?",
+      "proposed_relevant_document": "sim-review"
+    },
+    {
+      "id": 8,
+      "query": "What written justification is needed when an analyst closes an alert?",
+      "proposed_relevant_document": "sim-review"
+    },
+    {
+      "id": 9,
+      "query": "What is considered supporting documentation for a filing?",
+      "proposed_relevant_document": "us-records"
+    },
+    {
+      "id": 10,
+      "query": "Does this excerpt describe every retention procedure?",
+      "proposed_relevant_document": "us-records"
+    },
+    {
+      "id": 11,
+      "query": "Is permission to share reports with affiliates unlimited?",
+      "proposed_relevant_document": "us-confidentiality"
+    },
+    {
+      "id": 12,
+      "query": "Does this historical discussion establish Serbian legal requirements?",
+      "proposed_relevant_document": "us-confidentiality"
+    },
+    {
+      "id": 13,
+      "query": "What is the exact source of funds for this customer?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 14,
+      "query": "Which device produced this transaction evidence?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 15,
+      "query": "What is the exact retention period for supporting documentation?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 16,
+      "query": "Which analyst made the decision on this transaction?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 17,
+      "query": "What are the actual amounts and currencies in this customer case?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 18,
+      "query": "When was this customer report shared with affiliates?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 19,
+      "query": "What exact calibrated probability does this transaction score imply?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 20,
+      "query": "What is the transaction timestamp for this account?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 21,
+      "query": "Which applicable Serbian law requires supporting records?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 22,
+      "query": "Which supporting documents were attached to this specific filing?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 23,
+      "query": "What is the customer occupation recorded in this report?",
+      "proposed_relevant_document": null
+    },
+    {
+      "id": 24,
+      "query": "What is the exact current legal deadline for this regulatory filing?",
+      "proposed_relevant_document": null
+    }
+  ],
+  "summary": {
+    "demo": {
+      "recall_at5": 0.9166666666666666,
+      "mrr_at5": 0.8194444444444445,
+      "answerable": 12,
+      "no_answer_correct": 0,
+      "no_answer_total": 12,
+      "false_answer_ids": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "missed_answerable_ids": [
+        1
+      ]
+    },
+    "v3_selected": {
+      "recall_at5": 0.0,
+      "mrr_at5": 0.0,
+      "answerable": 12,
+      "no_answer_correct": 12,
+      "no_answer_total": 12,
+      "false_answer_ids": [],
+      "missed_answerable_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    "v5": {
+      "recall_at5": 0.5833333333333334,
+      "mrr_at5": 0.5416666666666666,
+      "answerable": 12,
+      "no_answer_correct": 2,
+      "no_answer_total": 12,
+      "false_answer_ids": [
+        13,
+        14,
+        15,
+        16,
+        18,
+        19,
+        20,
+        22,
+        23,
+        24
+      ],
+      "missed_answerable_ids": [
+        1,
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  },
+  "rows": [
+    {
+      "configuration": "demo",
+      "id": 1,
+      "query": "Must amounts sent and received keep their own currencies?",
+      "status": "matched",
+      "hits": [
+        "sim-citation",
+        "sim-missing"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 2,
+      "query": "Is the data license identical to the repository license?",
+      "status": "matched",
+      "hits": [
+        "ibm-guide",
+        "us-confidentiality",
+        "sim-citation",
+        "sim-review"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 3,
+      "query": "How do I check that a citation really supports an interpretation?",
+      "status": "matched",
+      "hits": [
+        "sim-citation",
+        "sim-missing",
+        "sim-review",
+        "ibm-guide"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 4,
+      "query": "Where should observed facts get their evidence?",
+      "status": "matched",
+      "hits": [
+        "sim-missing",
+        "sim-review",
+        "sim-citation",
+        "us-records"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 5,
+      "query": "What should I say when the account history cannot be obtained?",
+      "status": "matched",
+      "hits": [
+        "sim-missing",
+        "us-records",
+        "sim-review"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 6,
+      "query": "How do I document disagreement between different source versions?",
+      "status": "matched",
+      "hits": [
+        "sim-missing",
+        "ibm-guide"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 7,
+      "query": "Can an automated score decide to freeze a bank account?",
+      "status": "matched",
+      "hits": [
+        "sim-review",
+        "us-confidentiality",
+        "sim-missing",
+        "sim-citation",
+        "ibm-guide"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 8,
+      "query": "What written justification is needed when an analyst closes an alert?",
+      "status": "matched",
+      "hits": [
+        "sim-missing",
+        "sim-review",
+        "us-records",
+        "sim-citation"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 9,
+      "query": "What is considered supporting documentation for a filing?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "sim-review",
+        "sim-citation",
+        "ibm-guide",
+        "us-confidentiality"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 10,
+      "query": "Does this excerpt describe every retention procedure?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "us-confidentiality",
+        "sim-citation",
+        "sim-missing",
+        "sim-review"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 11,
+      "query": "Is permission to share reports with affiliates unlimited?",
+      "status": "matched",
+      "hits": [
+        "us-confidentiality",
+        "sim-missing"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 12,
+      "query": "Does this historical discussion establish Serbian legal requirements?",
+      "status": "matched",
+      "hits": [
+        "us-confidentiality",
+        "us-records",
+        "ibm-guide",
+        "sim-citation"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 13,
+      "query": "What is the exact source of funds for this customer?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "sim-review",
+        "sim-missing",
+        "sim-citation",
+        "us-confidentiality"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 14,
+      "query": "Which device produced this transaction evidence?",
+      "status": "matched",
+      "hits": [
+        "sim-missing",
+        "sim-review",
+        "us-confidentiality",
+        "sim-citation",
+        "us-records"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 15,
+      "query": "What is the exact retention period for supporting documentation?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "sim-citation",
+        "sim-review",
+        "ibm-guide",
+        "us-confidentiality"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 16,
+      "query": "Which analyst made the decision on this transaction?",
+      "status": "matched",
+      "hits": [
+        "sim-review",
+        "us-records",
+        "sim-citation",
+        "us-confidentiality",
+        "ibm-guide"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 17,
+      "query": "What are the actual amounts and currencies in this customer case?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "ibm-guide",
+        "sim-citation",
+        "sim-review",
+        "us-confidentiality"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 18,
+      "query": "When was this customer report shared with affiliates?",
+      "status": "matched",
+      "hits": [
+        "sim-missing",
+        "us-confidentiality",
+        "us-records",
+        "sim-review",
+        "ibm-guide"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 19,
+      "query": "What exact calibrated probability does this transaction score imply?",
+      "status": "matched",
+      "hits": [
+        "sim-review",
+        "us-records",
+        "ibm-guide",
+        "sim-citation",
+        "us-confidentiality"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 20,
+      "query": "What is the transaction timestamp for this account?",
+      "status": "matched",
+      "hits": [
+        "sim-review",
+        "us-records",
+        "sim-citation",
+        "us-confidentiality",
+        "ibm-guide"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 21,
+      "query": "Which applicable Serbian law requires supporting records?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "us-confidentiality",
+        "sim-review",
+        "sim-citation"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 22,
+      "query": "Which supporting documents were attached to this specific filing?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "us-confidentiality",
+        "sim-review",
+        "ibm-guide"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 23,
+      "query": "What is the customer occupation recorded in this report?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "ibm-guide",
+        "us-confidentiality",
+        "sim-review",
+        "sim-missing"
+      ]
+    },
+    {
+      "configuration": "demo",
+      "id": 24,
+      "query": "What is the exact current legal deadline for this regulatory filing?",
+      "status": "matched",
+      "hits": [
+        "sim-review",
+        "us-records",
+        "us-confidentiality",
+        "sim-citation",
+        "ibm-guide"
+      ]
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 1,
+      "query": "Must amounts sent and received keep their own currencies?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 2,
+      "query": "Is the data license identical to the repository license?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 3,
+      "query": "How do I check that a citation really supports an interpretation?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 4,
+      "query": "Where should observed facts get their evidence?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 5,
+      "query": "What should I say when the account history cannot be obtained?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 6,
+      "query": "How do I document disagreement between different source versions?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 7,
+      "query": "Can an automated score decide to freeze a bank account?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 8,
+      "query": "What written justification is needed when an analyst closes an alert?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 9,
+      "query": "What is considered supporting documentation for a filing?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 10,
+      "query": "Does this excerpt describe every retention procedure?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 11,
+      "query": "Is permission to share reports with affiliates unlimited?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 12,
+      "query": "Does this historical discussion establish Serbian legal requirements?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 13,
+      "query": "What is the exact source of funds for this customer?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 14,
+      "query": "Which device produced this transaction evidence?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 15,
+      "query": "What is the exact retention period for supporting documentation?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 16,
+      "query": "Which analyst made the decision on this transaction?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 17,
+      "query": "What are the actual amounts and currencies in this customer case?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 18,
+      "query": "When was this customer report shared with affiliates?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 19,
+      "query": "What exact calibrated probability does this transaction score imply?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 20,
+      "query": "What is the transaction timestamp for this account?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 21,
+      "query": "Which applicable Serbian law requires supporting records?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 22,
+      "query": "Which supporting documents were attached to this specific filing?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 23,
+      "query": "What is the customer occupation recorded in this report?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v3_selected",
+      "id": 24,
+      "query": "What is the exact current legal deadline for this regulatory filing?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v5",
+      "id": 1,
+      "query": "Must amounts sent and received keep their own currencies?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v5",
+      "id": 2,
+      "query": "Is the data license identical to the repository license?",
+      "status": "matched",
+      "hits": [
+        "ibm-guide"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 3,
+      "query": "How do I check that a citation really supports an interpretation?",
+      "status": "matched",
+      "hits": [
+        "sim-citation"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 4,
+      "query": "Where should observed facts get their evidence?",
+      "status": "matched",
+      "hits": [
+        "sim-review",
+        "sim-citation"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 5,
+      "query": "What should I say when the account history cannot be obtained?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v5",
+      "id": 6,
+      "query": "How do I document disagreement between different source versions?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v5",
+      "id": 7,
+      "query": "Can an automated score decide to freeze a bank account?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v5",
+      "id": 8,
+      "query": "What written justification is needed when an analyst closes an alert?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v5",
+      "id": 9,
+      "query": "What is considered supporting documentation for a filing?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "sim-review"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 10,
+      "query": "Does this excerpt describe every retention procedure?",
+      "status": "matched",
+      "hits": [
+        "us-records"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 11,
+      "query": "Is permission to share reports with affiliates unlimited?",
+      "status": "matched",
+      "hits": [
+        "us-confidentiality"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 12,
+      "query": "Does this historical discussion establish Serbian legal requirements?",
+      "status": "matched",
+      "hits": [
+        "us-confidentiality"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 13,
+      "query": "What is the exact source of funds for this customer?",
+      "status": "matched",
+      "hits": [
+        "sim-missing",
+        "sim-review",
+        "us-records"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 14,
+      "query": "Which device produced this transaction evidence?",
+      "status": "matched",
+      "hits": [
+        "sim-missing",
+        "sim-review"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 15,
+      "query": "What is the exact retention period for supporting documentation?",
+      "status": "matched",
+      "hits": [
+        "us-records"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 16,
+      "query": "Which analyst made the decision on this transaction?",
+      "status": "matched",
+      "hits": [
+        "sim-review"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 17,
+      "query": "What are the actual amounts and currencies in this customer case?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v5",
+      "id": 18,
+      "query": "When was this customer report shared with affiliates?",
+      "status": "matched",
+      "hits": [
+        "us-confidentiality"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 19,
+      "query": "What exact calibrated probability does this transaction score imply?",
+      "status": "matched",
+      "hits": [
+        "ibm-guide",
+        "sim-review"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 20,
+      "query": "What is the transaction timestamp for this account?",
+      "status": "matched",
+      "hits": [
+        "sim-review"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 21,
+      "query": "Which applicable Serbian law requires supporting records?",
+      "status": "no_match",
+      "hits": []
+    },
+    {
+      "configuration": "v5",
+      "id": 22,
+      "query": "Which supporting documents were attached to this specific filing?",
+      "status": "matched",
+      "hits": [
+        "us-records"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 23,
+      "query": "What is the customer occupation recorded in this report?",
+      "status": "matched",
+      "hits": [
+        "us-records",
+        "sim-review"
+      ]
+    },
+    {
+      "configuration": "v5",
+      "id": 24,
+      "query": "What is the exact current legal deadline for this regulatory filing?",
+      "status": "matched",
+      "hits": [
+        "sim-review"
+      ]
+    }
+  ],
+  "provider_calls": 0,
+  "proposed_acceptance_pack_used": false
+}

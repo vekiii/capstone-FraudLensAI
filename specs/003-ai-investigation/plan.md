@@ -1,5 +1,12 @@
 # Implementation Plan: Evidence-backed AI Investigation
 
+2026-11-17 T095 semantic integration/evaluation addendum:
+[runtime/evaluation design](retrieval-v6-integration.md),
+[actual user-approved LLM review method](retrieval-v6-judge-decision.md).
+Explicit paid POST and budget-accounted worker stage preserve deterministic GET
+browsing and legacy attempts. Retrieval acceptance evidence is separate from
+unchanged failed/unconfirmed report-quality/performance/full-data criteria.
+
 2026-11-16 T062-T064 implementation addendum:
 [accepted producer/consumer boundary and version2 design](dataset-adapter-agreement-v2.md).
 History is implemented by the feature003 read-only adapter over reviewed existing

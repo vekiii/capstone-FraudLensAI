@@ -140,8 +140,8 @@ class ToolExecutor:
             body['events'].pop()
             body['truncated'] = True
 
-    def _search(self, query):
-        found = search(self.knowledge, query, self.corpus, self.retrieval)
+    def _search(self, query, found=None):
+        found = search(self.knowledge, query, self.corpus, self.retrieval) if found is None else found
         if not found['hits']:
             return [], self._result([], 0, 0, False, 'no_match')
         items, truncated = [], found.truncated
@@ -194,3 +194,33 @@ class ToolExecutor:
         self.repo.finish_tool(self.attempt_id, self.owner, sequence, items, 'completed',
                               int((time.monotonic() - started) * 1000))
         return result
+
+    async def execute_semantic(self, call_id, arguments, search_callback):
+        """Reserve/validate the tool BEFORE the callback may reserve provider spend."""
+        name = 'search_procedures'
+        try:
+            if not isinstance(call_id, str) or not 1 <= len(call_id) <= 200:
+                raise ValueError('invalid_tool_arguments')
+            arguments = validate('SearchArguments', arguments)
+            if UNSAFE_QUERY.search(arguments['query']):
+                raise ValueError('invalid_tool_arguments')
+            sequence = self.repo.reserve_tool(self.attempt_id, self.owner, name, arguments, call_id)
+        except ValueError:
+            self.repo.reject_tool(self.attempt_id, name, 'invalid_arguments_or_scope')
+            raise ValueError('invalid_tool_arguments') from None
+        started = time.monotonic()
+        try:
+            found = await search_callback(arguments['query'])
+            items, result = self._search(arguments['query'], found)
+            if len(canonical(result)) > MAX_BYTES:
+                raise ValueError('tool_result_too_large')
+            self.repo.finish_tool(self.attempt_id, self.owner, sequence, items, 'completed',
+                                  int((time.monotonic() - started) * 1000))
+            return result
+        except Exception:
+            try:
+                self.repo.finish_tool(self.attempt_id, self.owner, sequence, [], 'failed',
+                                      int((time.monotonic() - started) * 1000), 'context_unavailable')
+            except ValueError:
+                pass  # cancellation/stale ownership already prevents publication
+            raise

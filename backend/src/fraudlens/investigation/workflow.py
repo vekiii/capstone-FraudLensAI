@@ -73,6 +73,7 @@ class InvestigationService:
         self.context_reader = CaseContextReader(dataset_reader=dataset_reader)
         self.history_reader = history_reader or (HistoryReader(dataset_reader=dataset_reader)
                                                  if dataset_reader is not None else None)
+        self.semantic_selector = None
 
     def _provider(self, binding):
         if binding['provider_mode'] == 'test':
@@ -115,6 +116,8 @@ class InvestigationService:
             raise ValueError('provider_unavailable')
         from fraudlens.investigation.models import ROOT
         prompt = (ROOT / 'prompts/application/investigation-v4.md').read_text(encoding='utf-8')
+        if self.settings.semantic_retrieval:
+            prompt += '\n\n' + (ROOT / 'prompts/application/semantic-worker-addendum-v1.md').read_text(encoding='utf-8')
         limits = {key: getattr(self.settings, key) for key in (
             'max_provider_requests', 'max_tool_calls', 'total_timeout_seconds', 'request_timeout_seconds',
             'max_input_bytes', 'max_output_tokens', 'max_response_bytes')}
@@ -124,6 +127,16 @@ class InvestigationService:
                            self.settings.model.get_secret_value() if self.settings.provider == 'openai' else None),
                        test_scenario=getattr(self.settings, 'test_scenario', 'grounded'),
                        report_policy=HUMAN_AUTHORITY_POLICY)
+        if self.settings.semantic_retrieval:
+            from fraudlens.investigation.retrieval_semantic_v6 import (
+                policy_identity,
+                request_payload,
+            )
+            passages = self.knowledge.passages(corpus)
+            request_payload('Validate semantic source pool', passages, binding['requested_model'])
+            binding['semantic_policy_version'] = policy_identity(binding['requested_model'], passages)
+            from fraudlens.investigation.semantic_runtime import runtime_revision
+            binding['semantic_runtime_revision'] = runtime_revision()
         row = self.repo.create(context, actor, 'create', request_key, request, binding=binding)
         # Repository keeps the original creation row, even after worker progress.
         return self._project(row, context, [self.binding(row['attempt_id'])], [])
@@ -244,6 +257,16 @@ class InvestigationService:
         self.knowledge.configuration(retrieval)
         if reuse and (corpus != binding['corpus_version'] or retrieval != binding['retrieval_version']):
             raise ValueError('stale_snapshot')
+        if binding.get('semantic_policy_version'):
+            from fraudlens.investigation.retrieval_semantic_v6 import policy_identity
+            policy = policy_identity(binding['requested_model'], self.knowledge.passages(corpus))
+            if reuse and policy != binding['semantic_policy_version']:
+                raise ValueError('stale_snapshot')
+            binding['semantic_policy_version'] = policy
+            from fraudlens.investigation.semantic_runtime import runtime_revision
+            if reuse and binding.get('semantic_runtime_revision') != runtime_revision():
+                raise ValueError('stale_snapshot')
+            binding['semantic_runtime_revision'] = runtime_revision()
         items = self.evidence(attempt_id) if reuse else []
         # Recompute facts/history and resolve exact archived passages; digest alone is insufficient.
         executor = ToolExecutor(self.repo, attempt_id, '', context, self.knowledge, corpus, retrieval)
@@ -296,6 +319,74 @@ class InvestigationService:
 
     def _claim(self, attempt_id, owner, seconds):
         return self.repo.claim(attempt_id, owner, seconds)
+
+    async def _semantic_find(self, attempt_id, owner, binding, provider, query, deadline):
+        from fraudlens.investigation.provider import Turn
+        from fraudlens.investigation.retrieval_semantic_v6 import (
+            policy_identity,
+            project_selection,
+            request_payload,
+        )
+        limits = binding['limits']
+        remaining = min(deadline - time.monotonic(), limits['request_timeout_seconds'], 30)
+        if remaining <= 0 or self.read(attempt_id)['budget']['provider_requests'] >= limits['max_provider_requests']:
+            raise ProviderError('budget_exhausted')
+        passages = self.knowledge.passages(binding['corpus_version'])
+        if self.knowledge.latest('corpus') != binding['corpus_version']:
+            raise ProviderError('stale_snapshot')
+        from fraudlens.investigation.semantic_runtime import runtime_revision
+        if binding.get('semantic_runtime_revision') != runtime_revision():
+            raise ProviderError('stale_snapshot')
+        policy = policy_identity(binding['requested_model'], passages)
+        if policy != binding['semantic_policy_version'] or provider.model != binding['requested_model']:
+            raise ProviderError('stale_snapshot')
+        payload = request_payload(query, passages, binding['requested_model'])
+        if len(canonical(payload)) > limits['max_input_bytes'] or limits['max_output_tokens'] < 2048:
+            raise ProviderError('budget_exhausted')
+        sequence = self.repo.reserve_dispatch(attempt_id, owner)
+        try:
+            if hasattr(provider, 'transport'):
+                provider.transport.input_limit = limits['max_input_bytes']
+                provider.transport.limit = limits['max_response_bytes']
+            async with asyncio.timeout(remaining):
+                if self.semantic_selector is not None:
+                    selection, audit = await self.semantic_selector(provider, query, passages)
+                else:
+                    from fraudlens.investigation.semantic_response_audit import audited_selection
+                    def capture(raw):
+                        with self.repo.transaction() as db:
+                            state = db.execute('SELECT state FROM attempts WHERE attempt_id=?', (attempt_id,)).fetchone()
+                            event(db, attempt_id, 'semantic_raw_response', sequence=sequence,
+                                  late=not state or state[0] not in ACTIVE, raw_response=raw)
+                    selection, audit = await audited_selection(provider, query, passages, capture)
+            original = self.context(attempt_id)
+            current_context = self.context_reader.resolve(original['case_id'], original['source_mode'], original['snapshot_ref'])
+            if current_context['context_revision'] != original['context_revision']:
+                raise ProviderError('stale_snapshot')
+            if self.knowledge.latest('corpus') != binding['corpus_version']:
+                raise ProviderError('stale_snapshot')
+            if binding['semantic_runtime_revision'] != runtime_revision():
+                raise ProviderError('stale_snapshot')
+            if time.monotonic() >= deadline:
+                raise ProviderError('budget_exhausted')
+            result = project_selection(query, passages, selection, binding['corpus_version'], policy)
+            turn = Turn('draft', returned_model=audit.get('returned_model'), request_id=audit.get('request_id'),
+                        usage=audit.get('usage'))
+            self._dispatch_result(attempt_id, sequence, 'completed', turn, owner)
+            with self.repo.transaction() as db:
+                event(db, attempt_id, 'semantic_selection', sequence=sequence, policy_version=policy,
+                      selection=selection)
+            return result
+        except asyncio.CancelledError:
+            raise
+        except Exception as exc:
+            try:
+                self._dispatch_result(attempt_id, sequence, 'unknown', owner=owner)
+            except ValueError:
+                pass
+            code = ('budget_exhausted' if isinstance(exc, TimeoutError) else
+                    exc.code if isinstance(exc, ProviderError) else 'context_unavailable')
+            raise ProviderError(code, outcome_unknown=True) from None
 
     def _dispatch_result(self, attempt_id, sequence, outcome, turn=None, owner=None, diagnostic=None):
         with self.repo.transaction() as db:
@@ -402,7 +493,12 @@ class InvestigationService:
                         if time.monotonic() >= deadline:
                             raise ProviderError('budget_exhausted')
                         try:
-                            result = executor.execute(call['call_id'], call['name'], call['arguments'])
+                            if call['name'] == 'search_procedures' and binding.get('semantic_policy_version'):
+                                async def semantic_query(query):
+                                    return await self._semantic_find(attempt_id, owner, binding, provider, query, deadline)
+                                result = await executor.execute_semantic(call['call_id'], call['arguments'], semantic_query)
+                            else:
+                                result = executor.execute(call['call_id'], call['name'], call['arguments'])
                         except ValueError as exc:
                             if 'budget' in str(exc):
                                 raise ProviderError('budget_exhausted') from None

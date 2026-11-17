@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[4]
 class InvestigationSettings(BaseModel):
     model_config = ConfigDict(frozen=True, extra='forbid', hide_input_in_errors=True)
     enabled: bool = False
+    semantic_retrieval: bool = False
+    max_semantic_requests: int = Field(default=10, ge=1, le=30)
     provider: Literal['test', 'openai'] = 'test'
     test_scenario: Literal['grounded', 'needs_information', 'invalid_citation', 'refusal', 'incomplete'] = 'grounded'
     source: Literal['fixture', 'dataset'] = 'fixture'
@@ -49,6 +51,8 @@ class InvestigationSettings(BaseModel):
     def explicit_model(self):
         if self.provider == 'openai' and not self.model.get_secret_value().strip():
             raise ValueError('OpenAI provider requires an explicit model identifier')
+        if self.semantic_retrieval and self.provider != 'openai':
+            raise ValueError('Semantic retrieval requires explicit OpenAI configuration')
         return self
 
 
@@ -71,7 +75,7 @@ def load_settings() -> InvestigationSettings:
                 if not raw.isascii() or not raw.isdecimal():
                     raise ValueError('Invalid investigation limit configuration')
                 raw = int(raw)
-            elif name == 'enabled':
+            elif name in ('enabled', 'semantic_retrieval'):
                 if raw.lower() not in ('true', 'false'):
                     raise ValueError('INVESTIGATION_ENABLED must be true or false')
                 raw = raw.lower() == 'true'

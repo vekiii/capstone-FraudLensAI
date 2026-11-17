@@ -7,6 +7,12 @@ from collections import Counter
 from fraudlens.investigation.knowledge import KnowledgeUnavailable
 from fraudlens.investigation.models import validate
 
+ENGLISH_FUNCTION_WORDS = frozenset('''a an the and or but of in on at to from for
+with without by as is are was were be been being do does did can could may might
+must should would will shall what which who whom whose when where why how this
+that these those it its they their them we our you your i me my not no than then
+about into through within each any all both only also have has had'''.split())
+
 SERBIAN_LATIN = str.maketrans(dict(zip(
     'абвгдђежзијклљмнњопрстћуфхцчџш',
     ('a', 'b', 'v', 'g', 'd', 'đ', 'e', 'ž', 'z', 'i', 'j', 'k', 'l', 'lj',
@@ -18,6 +24,19 @@ SERBIAN_LATIN = str.maketrans(dict(zip(
 def tokens(text):
     text = unicodedata.normalize('NFKC', text).casefold()
     return re.findall(r'[^\W_]+', text, flags=re.UNICODE)
+
+
+def english_light_stem(term):
+    """Versioned lexical heuristic, not a complete morphological analyzer."""
+    if len(term) > 5 and term.endswith('ly'):
+        term = term[:-2]
+    if len(term) > 5 and term.endswith(('ing', 'ed')):
+        term = term[:-3] if term.endswith('ing') else term[:-2]
+        if len(term) > 3 and term[-1] == term[-2] and term[-1] not in 'aeiou':
+            term = term[:-1]
+    if len(term) > 4 and term.endswith('s') and not term.endswith(('ss', 'us', 'is')):
+        term = term[:-1]
+    return term
 
 
 class SearchResult(dict):
@@ -38,14 +57,22 @@ def search(store, query, corpus, retrieval):
             or config.get('b') != .75 or config.get('maximum_results') != 5):
         raise KnowledgeUnavailable('Retrieval configuration unavailable')
     passages = store.passages(corpus)
-    counts = [Counter(tokens(p['text'])) for p in passages]
+    variant = config.get('variant','baseline')
+    coverage_variant = variant in ('english_coverage_v4', 'english_coverage_v5')
+    if variant not in ('baseline','title_glossary', 'english_coverage_v4', 'english_coverage_v5'):
+        raise KnowledgeUnavailable('Unknown retrieval variant')
+    def tokenize(text):
+        terms = tokens(text)
+        if coverage_variant:
+            terms = [term for term in terms if term not in ENGLISH_FUNCTION_WORDS]
+        if variant == 'english_coverage_v5':
+            terms = [english_light_stem(term) for term in terms if len(term) > 1]
+        return terms
+    counts = [Counter(tokenize(p['text'])) for p in passages]
     average = sum(sum(count.values()) for count in counts) / len(counts) if counts else 0
     if average == 0:
         raise KnowledgeUnavailable('Empty corpus')
-    variant = config.get('variant','baseline')
-    if variant not in ('baseline','title_glossary'):
-        raise KnowledgeUnavailable('Unknown retrieval variant')
-    weights = {term:1.0 for term in tokens(query)}
+    weights = {term:1.0 for term in tokenize(query)}
     if policy == 'sr_cyrillic_to_latin_v1':
         # Only script conversion for lookup, no new concepts or inferred synonyms.
         # Without this explicit configuration old hashes/scores keep old semantics.
@@ -68,6 +95,10 @@ def search(store, query, corpus, retrieval):
                             for count,title in zip(counts,titles)) for term in terms}
     ranked = []
     for passage, count, title in zip(passages, counts, titles):
+        if coverage_variant and (
+            not terms or sum(term in count for term in terms) / len(terms) < .5
+        ):
+            continue
         length = sum(count.values())
         score = 0.0
         for term in terms:

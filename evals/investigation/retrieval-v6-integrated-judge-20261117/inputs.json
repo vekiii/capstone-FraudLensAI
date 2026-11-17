@@ -1,0 +1,102 @@
+[
+  {
+    "id": "EN5-011",
+    "language": "en",
+    "query": "How do synthetic training targets differ from legal conclusions?"
+  },
+  {
+    "id": "EN5-012",
+    "language": "en",
+    "query": "Which original direction-specific amount representations must survive field mapping?"
+  },
+  {
+    "id": "EN5-013",
+    "language": "en",
+    "query": "Can generated fixture fields establish a calibrated fraud likelihood?"
+  },
+  {
+    "id": "EN5-014",
+    "language": "en",
+    "query": "Which source text should an analyst inspect to assess faithful interpretation?"
+  },
+  {
+    "id": "EN5-015",
+    "language": "en",
+    "query": "How should a narrative separate observed events and tentative explanations?"
+  },
+  {
+    "id": "EN5-016",
+    "language": "en",
+    "query": "What should support a recommendation to perform a procedural check?"
+  },
+  {
+    "id": "EN5-017",
+    "language": "en",
+    "query": "What conclusion about guilt follows when customer evidence is absent?"
+  },
+  {
+    "id": "EN5-018",
+    "language": "en",
+    "query": "When sources conflict, what identifying information should be retained?"
+  },
+  {
+    "id": "EN5-019",
+    "language": "en",
+    "query": "What next step is appropriate when a grounded conclusion is impossible?"
+  },
+  {
+    "id": "EN5-020",
+    "language": "en",
+    "query": "Does a high score authorize an automatic intervention on an account?"
+  },
+  {
+    "id": "EN5-021",
+    "language": "en",
+    "query": "What is required before choosing escalation or closure?"
+  },
+  {
+    "id": "EN5-022",
+    "language": "en",
+    "query": "How should alternative explanations respect the available customer facts?"
+  },
+  {
+    "id": "EN5-023",
+    "language": "en",
+    "query": "Does the retained supporting-records passage establish present compliance duties?"
+  },
+  {
+    "id": "EN5-024",
+    "language": "en",
+    "query": "Does the excerpt reproduce all of the historical supporting-documentation guidance?"
+  },
+  {
+    "id": "EN5-025",
+    "language": "en",
+    "query": "Does historical affiliate guidance address every other federal or state law?"
+  },
+  {
+    "id": "EN5-026",
+    "language": "en",
+    "query": "Is sharing between affiliates described as unrestricted report disclosure?"
+  },
+  {
+    "id": "EN5-027",
+    "language": "en",
+    "query": "What is the current password for the transaction review database?"
+  },
+  {
+    "id": "EN5-028",
+    "language": "en",
+    "query": "What is the present annual interest rate on this customer account?"
+  },
+  {
+    "id": "EN5-029",
+    "language": "en",
+    "query": "Which named investigator personally interviewed this sender yesterday?"
+  },
+  {
+    "id": "EN5-030",
+    "language": "en",
+    "query": "What is the current stock price of the recipient bank?"
+  }
+]

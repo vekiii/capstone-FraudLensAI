@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "query": "Must amounts sent and received keep their own currencies?",
+    "proposed_relevant_document": "ibm-guide"
+  },
+  {
+    "id": 2,
+    "query": "Is the data license identical to the repository license?",
+    "proposed_relevant_document": "ibm-guide"
+  },
+  {
+    "id": 3,
+    "query": "How do I check that a citation really supports an interpretation?",
+    "proposed_relevant_document": "sim-citation"
+  },
+  {
+    "id": 4,
+    "query": "Where should observed facts get their evidence?",
+    "proposed_relevant_document": "sim-citation"
+  },
+  {
+    "id": 5,
+    "query": "What should I say when the account history cannot be obtained?",
+    "proposed_relevant_document": "sim-missing"
+  },
+  {
+    "id": 6,
+    "query": "How do I document disagreement between different source versions?",
+    "proposed_relevant_document": "sim-missing"
+  },
+  {
+    "id": 7,
+    "query": "Can an automated score decide to freeze a bank account?",
+    "proposed_relevant_document": "sim-review"
+  },
+  {
+    "id": 8,
+    "query": "What written justification is needed when an analyst closes an alert?",
+    "proposed_relevant_document": "sim-review"
+  },
+  {
+    "id": 9,
+    "query": "What is considered supporting documentation for a filing?",
+    "proposed_relevant_document": "us-records"
+  },
+  {
+    "id": 10,
+    "query": "Does this excerpt describe every retention procedure?",
+    "proposed_relevant_document": "us-records"
+  },
+  {
+    "id": 11,
+    "query": "Is permission to share reports with affiliates unlimited?",
+    "proposed_relevant_document": "us-confidentiality"
+  },
+  {
+    "id": 12,
+    "query": "Does this historical discussion establish Serbian legal requirements?",
+    "proposed_relevant_document": "us-confidentiality"
+  },
+  {
+    "id": 13,
+    "query": "What is the exact source of funds for this customer?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 14,
+    "query": "Which device produced this transaction evidence?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 15,
+    "query": "What is the exact retention period for supporting documentation?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 16,
+    "query": "Which analyst made the decision on this transaction?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 17,
+    "query": "What are the actual amounts and currencies in this customer case?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 18,
+    "query": "When was this customer report shared with affiliates?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 19,
+    "query": "What exact calibrated probability does this transaction score imply?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 20,
+    "query": "What is the transaction timestamp for this account?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 21,
+    "query": "Which applicable Serbian law requires supporting records?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 22,
+    "query": "Which supporting documents were attached to this specific filing?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 23,
+    "query": "What is the customer occupation recorded in this report?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 24,
+    "query": "What is the exact current legal deadline for this regulatory filing?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 25,
+    "query": "Should a narrative claim wrongdoing merely because a score is high?",
+    "proposed_relevant_document": "sim-review"
+  },
+  {
+    "id": 26,
+    "query": "If sources disagree, is their version information dispensable?",
+    "proposed_relevant_document": "sim-missing"
+  },
+  {
+    "id": 27,
+    "query": "Does a source identifier alone certify a correct interpretation?",
+    "proposed_relevant_document": "sim-citation"
+  },
+  {
+    "id": 28,
+    "query": "In which country was this sender born?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 29,
+    "query": "What exact article of current EU law requires these records?",
+    "proposed_relevant_document": null
+  },
+  {
+    "id": 30,
+    "query": "How many supporting documents were uploaded in this case?",
+    "proposed_relevant_document": null
+  }
+]

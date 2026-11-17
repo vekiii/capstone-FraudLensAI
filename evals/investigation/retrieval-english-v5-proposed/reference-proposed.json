@@ -1,0 +1,260 @@
+[
+  {
+    "id": "EN5-001",
+    "input_sha256": "02d2c7af1bde03dc037c4d0e391ec8c06cec2a8bf9ab212a298202e946e30207",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-002",
+    "input_sha256": "d6b37c2eb1edb88f032cc5c6fad22af93f90b8c4b092769be1965e5f86e2f32e",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-missing"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-003",
+    "input_sha256": "5d9397bb2671c7debfcfec739058c93d238eacfea2da174d752166dc315b3b37",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-review"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-004",
+    "input_sha256": "0f0519e9cb7991cb689efe1a04b3ae74b827856ffd8399d633d6de71933a9d05",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "ibm-guide"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-005",
+    "input_sha256": "c5dc2c8181d1437fd1062baba5d304aef84850b8e0a2de92433afb84040d9566",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "us-records"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-006",
+    "input_sha256": "87b0fb4d618b072801c9a84113dadbc91a1105f09cfeca445466f64d743b0d2b",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "us-confidentiality"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-007",
+    "input_sha256": "13111e9c5ece593cfffb77cebe00ad64b97439144fb8e8990d6caade480e1e8e",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-008",
+    "input_sha256": "13310f24a3d9cf650bdc5968a5907b4024f03e765ca6b0eb98a3898d2dce6598",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-review"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-009",
+    "input_sha256": "8b15db7fb5713b88a8d6974c6421c2d832c2bcbee153feda2c613cae68c9b8cd",
+    "answerability": "no_answer",
+    "relevant_document_ids": [],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-010",
+    "input_sha256": "5eccf9bc9ccc05e4627abf68262a9ea019fa8076b0e98cf19a474362f9b215dc",
+    "answerability": "no_answer",
+    "relevant_document_ids": [],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-011",
+    "input_sha256": "d26296bb7104a98eb8c5990981c2e54e8a207d146b3ff5ff7dff5b921cac7c6c",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "ibm-guide"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-012",
+    "input_sha256": "ebf8b83485d20b4c03b65b19b9ac65f40b810231efedf9cd692d2c43701be5b6",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "ibm-guide"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-013",
+    "input_sha256": "d6e651ccb3d433dcca4d4fe6d1da12e10d807b93000d3e8441bab891c5445a32",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "ibm-guide"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-014",
+    "input_sha256": "7ac58bdac33950e6a1b9fcf2a114214d555cbae17321fee3ef2a84e4d7145798",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-015",
+    "input_sha256": "4a917e711bc803681d1b295581c37e2eaa5e5d595bd9aac80fe9bc1c08aa23de",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-016",
+    "input_sha256": "bb300bf6949be2bcc98d16c30f8cd085be8c7ee6f54a9965df64a542b85cbc72",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-citation"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-017",
+    "input_sha256": "06bbfa449df7d3d00093e7eb7a8b7e03b928c3b31e7f3208a6d1e7429d3b1cdf",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-missing"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-018",
+    "input_sha256": "ccfb8f706fca4419cf620520f75646d3b8073ec8839daac9ca9d1448c88a5cb3",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-missing"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-019",
+    "input_sha256": "30021d91eb65b15593889b3ad7df83e55f4ed254528195dd9608db7297e05727",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-missing"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-020",
+    "input_sha256": "3b8da0231a253ecd6416b9981733bd0cf7af76500cc2d9e4b1b6c5b3863960de",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-review"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-021",
+    "input_sha256": "f184cbe61224d94e997a7c9df6ce7285ed9f7fb8b3ad2fa15af29a9767034df0",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-review"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-022",
+    "input_sha256": "0e3372afc14d9451bfb477a70f952bdee0db993d90f552354a3664411b652914",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "sim-review"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-023",
+    "input_sha256": "e22632bcdd28d3e890a707b3bbe3cfc14f1f1aa57724dd6a00b106c4ec950dbb",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "us-records"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-024",
+    "input_sha256": "8631c67be1c18b4948c1efb4ff8a018683331184f67dea32a94b8f7fc9e2cb8d",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "us-records"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-025",
+    "input_sha256": "ab4d4697a5cdbe0d729da0545494cb1efe0e82d945887d4ad024100b55292909",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "us-confidentiality"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-026",
+    "input_sha256": "0484d8715c86246ab69d52ec26fb5613899ed0b715a9057144a92cd04c74354c",
+    "answerability": "answerable",
+    "relevant_document_ids": [
+      "us-confidentiality"
+    ],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-027",
+    "input_sha256": "14e4c5d4c3f8f9cbd4a8d23a5698611638198befec5fe5f06a4b211cec2512e7",
+    "answerability": "no_answer",
+    "relevant_document_ids": [],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-028",
+    "input_sha256": "d67248d6eb6c53aa0d51f8ed6803183ed8c94cb01cef569c257b0985a129e55d",
+    "answerability": "no_answer",
+    "relevant_document_ids": [],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-029",
+    "input_sha256": "ea7db186a0992eb7e438de39f82c89f4773997e1e10ee1842fa57b962f795adf",
+    "answerability": "no_answer",
+    "relevant_document_ids": [],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  },
+  {
+    "id": "EN5-030",
+    "input_sha256": "9ed14a4ffed771d4b7fde00edfedc2d131011bb5e4e762c716dcd6aaad3cc583",
+    "answerability": "no_answer",
+    "relevant_document_ids": [],
+    "author": "Codex AI; proposed, human relevance/completeness/novelty review pending"
+  }
+]

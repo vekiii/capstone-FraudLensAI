@@ -1,0 +1,164 @@
+[
+  {
+    "content_sha256": "489a060d3a511e4d737c4ecc88888479d200187fb19e47b101dcde3712d98a3c",
+    "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+    "document": {
+      "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations.",
+      "content_sha256": "6e5ee8f44a5a9653dac71b431b4c7cec704a30e99d1f09db38598fff33e138b4",
+      "doc_id": "sim-missing",
+      "included_sections": [
+        "Missingness"
+      ],
+      "jurisdiction": "SIMULATED - educational; not bank policy",
+      "origin_kind": "simulated",
+      "published_at": "2026-11-14",
+      "retrieved_at": "2026-11-14T00:00:00Z",
+      "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
+      "reviewed_at": "2026-11-14T10:20:01Z",
+      "reviewed_by": "Milan Gavrić",
+      "source_uri": "local:fraudlens/sim-missing",
+      "title": "Simulated missing and conflicting facts",
+      "unknown_date_reason": null,
+      "version": "authored-v1-2026-11-14"
+    },
+    "ordinal": 0,
+    "passage_id": "4d95734de826db86c16c0490d2f152b24aaf1a0de898f86dde9b416e833e7093",
+    "section": "Missingness",
+    "text": "SIMULATED educational procedure. Missing occupation, source of funds or device evidence stays missing. Conflicting sources must be described with their identities and versions. Absence of evidence proves neither legitimacy nor guilt. Request additional information when a useful grounded conclusion is impossible. Preserve limitations and do not replace unknown history with an empty history claim.\n"
+  },
+  {
+    "content_sha256": "56087680909627a9cd1421be5442d7a55a5a163eb8d7b90e204e250a9773e288",
+    "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+    "document": {
+      "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations.",
+      "content_sha256": "f9c01b0d842287cc3b797e01ac3a23085b699edcceec46d432295132ac7f2ff4",
+      "doc_id": "ibm-guide",
+      "included_sections": [
+        "Field limitations"
+      ],
+      "jurisdiction": "Synthetic benchmark - no real-customer claim",
+      "origin_kind": "dataset_guide",
+      "published_at": null,
+      "retrieved_at": "2026-11-14T00:00:00Z",
+      "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
+      "reviewed_at": "2026-11-14T10:20:01Z",
+      "reviewed_by": "Milan Gavrić",
+      "source_uri": "https://github.com/IBM/AML-Data/blob/main/README.md",
+      "title": "IBM synthetic data field limitations",
+      "unknown_date_reason": "Repository source has no publication date declared in the inspected README.",
+      "version": "authored-v1-2026-11-14"
+    },
+    "ordinal": 0,
+    "passage_id": "5999900a56556a89910859e95eb2d624aa119222f85eea4ac48425f7d8f0b1ad",
+    "section": "Field limitations",
+    "text": "Authored guide, not copied IBM documentation. IBM AML-Data describes generated transactions and identifies the actual data license as CDLA-Sharing-1.0, distinct from the repository Apache-2.0 license. Synthetic labels are training/evaluation targets, not legal findings; exclude them from runtime context. Field handling in this project follows the pinned producer contract: retain directional amount/currency strings, raw time and explicit time-basis assumptions. Do not infer occupation, timezone, real bank loss or calibrated probability from fixture fields. No raw data or IBM source text is redistributed here.\n"
+  },
+  {
+    "content_sha256": "187ba3a6efa34da0c8df9a339fccb062fce23feb23f0f4feff2836612f141c86",
+    "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+    "document": {
+      "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations.",
+      "content_sha256": "4a18944611dc634b6f4a099ebdcaf649b405a1243917443086d2f8853e3b07ae",
+      "doc_id": "sim-review",
+      "included_sections": [
+        "Review"
+      ],
+      "jurisdiction": "SIMULATED - educational; not bank policy",
+      "origin_kind": "simulated",
+      "published_at": "2026-11-14",
+      "retrieved_at": "2026-11-14T00:00:00Z",
+      "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
+      "reviewed_at": "2026-11-14T10:13:38Z",
+      "reviewed_by": "Milan Gavrić",
+      "source_uri": "local:fraudlens/sim-review",
+      "title": "Simulated review and escalation",
+      "unknown_date_reason": null,
+      "version": "authored-v1-2026-11-14"
+    },
+    "ordinal": 0,
+    "passage_id": "8d167c603b9634f1411a8203239863ba4b82af22c290f6900010701404ff060d",
+    "section": "Review",
+    "text": "SIMULATED educational procedure. Review the selected case and exact transaction, score source and limitations. A score is not proof of wrongdoing. Record missing evidence and consider alternative explanations without inventing customer facts. Escalation, closure or a request for more information requires an explicit analyst decision and rationale. No automatic account intervention or regulatory filing.\n"
+  },
+  {
+    "content_sha256": "fa1db4f54b464035c12a640fbec1b59585e39d8013350d8cd8471ae81d048319",
+    "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+    "document": {
+      "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations.",
+      "content_sha256": "7285d239e0a34b3868559035e5e64479af1d83ae505f0886528117d48a1f9044",
+      "doc_id": "sim-citation",
+      "included_sections": [
+        "Narrative"
+      ],
+      "jurisdiction": "SIMULATED - educational; not bank policy",
+      "origin_kind": "simulated",
+      "published_at": "2026-11-14",
+      "retrieved_at": "2026-11-14T00:00:00Z",
+      "reuse_terms": "Original authored educational prose; no third-party bulk text reproduced.",
+      "reviewed_at": "2026-11-14T10:15:33Z",
+      "reviewed_by": "Milan Gavrić",
+      "source_uri": "local:fraudlens/sim-citation",
+      "title": "Simulated narrative and citation",
+      "unknown_date_reason": null,
+      "version": "authored-v1-2026-11-14"
+    },
+    "ordinal": 0,
+    "passage_id": "aef75299edaabfe2bd0de463c374d9b1a381fdacbbe9cc87313e80c6f433ce95",
+    "section": "Narrative",
+    "text": "SIMULATED educational procedure. Separate observations, procedural guidance and tentative hypotheses. Cite the exact case evidence for facts and applicable procedure passages for recommended checks. Preserve exact money, currencies, time assumptions and score meaning. A valid citation identifier does not establish that its interpretation is faithful. The analyst must inspect the cited text and record defects.\n"
+  },
+  {
+    "content_sha256": "54b1250b03d287fcb9f1a1432ac6c04e364be83cbe885737bf05bf6a23972e6d",
+    "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+    "document": {
+      "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations.",
+      "content_sha256": "f0787d7c21d1df278081a5c70dd996a60f3d86d12a601e6e9d46e30874d9e866",
+      "doc_id": "us-confidentiality",
+      "included_sections": [
+        "Scope"
+      ],
+      "jurisdiction": "United States - historical 2010 guidance, not Serbian law",
+      "origin_kind": "official",
+      "published_at": "2010-11-23",
+      "retrieved_at": "2026-11-14T00:00:00Z",
+      "reuse_terms": "Short attributed excerpt (under 25 quoted words per source) plus original authored summary, not full-text reproduction or an invented license. Human reuse/applicability review recorded in review metadata; no website-wide license claimed.",
+      "reviewed_at": "2026-11-14T10:20:01Z",
+      "reviewed_by": "Milan Gavrić",
+      "source_uri": "https://www.fincen.gov/resources/statutes-regulations/guidance/sharing-suspicious-activity-reports-depository-institutions",
+      "title": "US affiliate confidentiality",
+      "unknown_date_reason": null,
+      "version": "authored-v1-2026-11-14"
+    },
+    "ordinal": 0,
+    "passage_id": "b2bc999647cc73d569326c095ea76ea740c1ebae8b4877770bb033dafafeb988",
+    "section": "Scope",
+    "text": "Historical FinCEN FIN-2010-G006, scope paragraph and confidentiality discussion. Short exact excerpt: \"This guidance does not address the applicability of any other Federal or state laws.\" Authored educational summary: the guidance concerns sharing within specified US affiliate relationships and preserving confidentiality. This is not blanket permission to disclose reports, a current-law assessment or a Serbian rule. No report or private client content is reproduced.\n"
+  },
+  {
+    "content_sha256": "dd1b9dc5c68a64c4f9abef141ea981f40cf255e5420587122a0ead75faede03f",
+    "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+    "document": {
+      "applicability_notes": "Human-reviewed educational source. Historical US sources are not Serbian law. Authored summaries are not original source quotations.",
+      "content_sha256": "971fb8be66ebd2795982b46bca9173713ceb9578a06307be3dcd41fff1ef2f6b",
+      "doc_id": "us-records",
+      "included_sections": [
+        "Supporting documentation"
+      ],
+      "jurisdiction": "United States - historical 2007 guidance, not Serbian law",
+      "origin_kind": "official",
+      "published_at": "2007-06-13",
+      "retrieved_at": "2026-11-14T00:00:00Z",
+      "reuse_terms": "Short attributed excerpt (under 25 quoted words per source) plus original authored summary, not full-text reproduction or an invented license. Human reuse/applicability review recorded in review metadata; no website-wide license claimed.",
+      "reviewed_at": "2026-11-14T10:20:01Z",
+      "reviewed_by": "Milan Gavrić",
+      "source_uri": "https://www.fincen.gov/resources/statutes-regulations/guidance/suspicious-activity-report-supporting-documentation",
+      "title": "US supporting records: historical guidance",
+      "unknown_date_reason": null,
+      "version": "authored-v1-2026-11-14"
+    },
+    "ordinal": 0,
+    "passage_id": "bf065cc99c914cfb4c32da8b832bf8f77f56eca15e17df5684c480cf42f20b2c",
+    "section": "Supporting documentation",
+    "text": "Historical FinCEN FIN-2007-G003, section (2). Short exact excerpt: \"What qualifies as supporting documentation depends on the facts and circumstances of each filing.\" Authored educational summary: the source distinguishes supporting records from a narrative and discusses institution-specific retention procedures. This limited excerpt/summary does not reproduce the full guidance or establish present compliance obligations. No customer records are included.\n"
+  }
+]

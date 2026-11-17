@@ -95,6 +95,11 @@ def passage(request: Request, passage_id: str):
     return respond(request, 'passage', passage_id)
 
 
+from fraudlens.investigation.semantic_api import router as semantic_router  # noqa: E402
+
+router.include_router(semantic_router)
+
+
 @router.get('/{unknown:path}')
 def unknown(request: Request, unknown: str):
     return error(404, 'evidence_not_found')
