@@ -641,3 +641,16 @@ The commits `827779d`, `5ea0c4c`, and `4b41608` were pushed to `origin/feature/0
 ## Final branch status reconciliation — 16 November 2026
 
 This entry supersedes the preceding pending/local publication wording. Implementation commits `827779d` and `5ea0c4c`, the evidence commit `4b41608`, and the publication-receipt commit `e7ae0ec` are pushed to the requested feature branch. Remote verification after `e7ae0ec` reported `e7ae0ece89ff00c6103880b4cd59b80a20e3bc8c`, matching local `HEAD` at that check. The final reconciliation of this ledger and `next_work.md` is committed and pushed immediately after this entry. Git attribution/times for the implementation are listed above; the subsequent documentation commits carry the complete evidence and publication record.
+
+## TypeScript web consolidation and style restoration — 17 November 2026
+
+The following commits were made on `feature/005-real-time-fraud-detection-mlops-spec` and pushed to origin:
+
+| Commit | Description and contribution |
+|---|---|
+| `3da25106b86c69210c0ac44c134cd78ed56e488e` | `feat(web): consolidate app in React TypeScript` — consolidates the canonical frontend in `web/` as a React/TypeScript app and removes the parallel `frontend/` implementation. |
+| `0802adb517bccb0fd9089dc7c5ed51e7a47a94b1` | `perf(web): lazy load routes and motion dependencies` — adds route-level lazy loading and asynchronous motion/WebGL imports; reduces the initial JS entry from 893.52 kB to 191.34 kB. |
+| `a2d2101b93ce08e2a4596aa765ce8845dc5730e0` | `docs(feature-005): reconcile T002 infrastructure readiness` — records verified infrastructure evidence, policies and the remaining T002 blockers. |
+| Resolve after commit | `fix(web): restore styles under development CSP` — loads existing token and site styles through same-origin stylesheet links, compatible with the restrictive `style-src 'self'` policy; removes duplicate CSS imports from the TSX entry. No visual rules or backend code changed. Strict TypeScript check and Vite production build passed; interactive browser verification was unavailable. Details and limitation: [web migration evidence](typescript-web-migration-finalization-2026-11-17.md). |
+
+The style restoration and its evidence are committed locally; the full hash and push receipt will be added after publication verification. These records describe repository commit attribution and change scope, not exclusive manual authorship or tracked work time.

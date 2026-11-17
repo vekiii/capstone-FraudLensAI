@@ -59,3 +59,17 @@ The Three.js chunk remains large and the motion/WebGL presentation has not had
 interactive desktop/mobile review. Once browser access is available, review all
 six routes at desktop and mobile widths, including keyboard navigation and
 reduced-motion fallback.
+
+## Follow-up: unstyled Vite development page
+
+The reported browser screenshot showed the current Overview route content with
+browser-default styles. The app's CSP allows same-origin external stylesheets
+(`style-src 'self'`), while Vite development CSS imports are injected through
+style elements. Moved the two existing stylesheet references to explicit
+same-origin `<link rel="stylesheet">` entries in `web/index.html` and removed
+the duplicate TypeScript imports. No CSS rules or route behavior changed.
+
+Validation: `npm.cmd run build` in `web/` passed strict `tsc --noEmit` and the
+Vite production build; Vite emitted the CSS as a same-origin asset. Interactive
+visual verification remains unavailable because the browser access host is
+unavailable in this session, so reload the dev page and confirm styles render.

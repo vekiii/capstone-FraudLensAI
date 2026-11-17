@@ -2,8 +2,6 @@ import { lazy, StrictMode, Suspense, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { SiteFrame } from "./components/SiteFrame";
-import "./styles/tokens.css";
-import "./styles/site.css";
 
 const Overview = lazy(() => import("./pages/Overview").then(({ Overview }) => ({ default: Overview })));
 const DataPage = lazy(() => import("./pages/Data").then(({ DataPage }) => ({ default: DataPage })));
