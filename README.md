@@ -12,9 +12,10 @@ The selected threshold is `no_alert`; a real model run can correctly display
 zero alerts. The earlier notebook exposed the current test period, so the
 IBM benchmark is exploratory rather than an independent performance claim.
 
-Educational AML prototype. Foundation phases 1-5 are implemented: local synthetic
-cases, strict contracts, replaceable scoring and list/detail UI. Phase 6 verifies
-coverage and delivery; independent peer reproduction and human review are pending.
+Educational AML prototype. The single React/TypeScript web application in `web/`
+contains the local synthetic case browser, typed fixture/dataset API clients, the
+dataset and model overview, and the Feature 005 showcase pages. Python/FastAPI
+services and model code remain in `backend/`.
 T019's final continuation records 16 headless Chrome scenarios plus Enter and
 390px viewport checks. This is automated browser evidence, not human review.
 
@@ -27,7 +28,7 @@ For an existing checkout, install the committed locked dependencies:
 ```powershell
 $env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'
 uv sync --locked --group dev
-npm.cmd --prefix frontend ci
+npm.cmd --prefix web ci
 ```
 The workspace-local uv cache avoids machine-cache access restrictions. npm.cmd
 avoids npm.ps1 execution-policy restrictions without changing system policy.
@@ -36,8 +37,8 @@ need no provider key, model, RAG corpus, dataset or external AI service.
 No .env file or fixture data file is needed for health.
 
 Lockfile creation was performed during initial setup with `uv lock` and
-`npm.cmd --prefix frontend install`; those resolve dependencies and generate
-uv.lock / frontend/package-lock.json. Do not repeat them for routine installs or
+`npm.cmd --prefix web install`; those resolve dependencies and generate
+uv.lock / web/package-lock.json. Do not repeat them for routine installs or
 hand-edit lockfile hashes. Use locked installs above; intentional dependency
 changes require review and genuine lockfile regeneration.
 
@@ -48,9 +49,10 @@ uv run --locked uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.
 ```
 In terminal 2, from repository root:
 ```powershell
-npm.cmd --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort
+npm.cmd --prefix web run dev
 ```
-Open http://127.0.0.1:5173 for the synthetic case inspection UI. Vite forwards relative
+Open http://127.0.0.1:5173. The app routes include `/cases` for case inspection
+and `/dataset-overview` for published dataset aggregates. Vite forwards relative
 /api requests to http://127.0.0.1:8000. Both services bind to loopback only;
 this is a local demo, with no production multi-user security or ML-ready claim.
 Stop your own foreground servers with Ctrl+C.
@@ -81,16 +83,19 @@ and health do not open it. T014's three synthetic cases are stored there without
 uv run --locked pytest backend/tests/integration/test_startup.py
 uv run --locked pytest backend/tests
 uv run --locked ruff check backend
-npm.cmd --prefix frontend run test -- --run
-npm.cmd --prefix frontend run typecheck
-npm.cmd --prefix frontend run build
+npm.cmd --prefix web run test -- --run
+npm.cmd --prefix web run typecheck
+npm.cmd --prefix web run build
 git diff --check
 ```
 All 310 backend tests pass (phase 6, 2026-11-12), including the unchanged 49 T012 API/scorer tests and
 8 additional framework/logging checks (rerun successfully in T019).
-The frontend has 151 passing tests, including all 82 original API and 19 DOM tests.
-T019 typecheck/build/Ruff pass. See T012–T019 evidence for actual results and limits.
-Build output frontend/dist/ is local and ignored; it is not a deployment.
+The historical foundation run had 151 passing frontend tests. The current
+consolidated React app has 163 passing tests; the latest typecheck/build and
+backend UI-contract regression are recorded in the
+[TypeScript-first migration evidence](evidence/tasks/typescript-first-web-app-migration-2026-11-17.md).
+See T012–T019 evidence for the original foundation results and limits.
+Build output web/dist/ is local and ignored; it is not a deployment.
 
 The [fixture scoring rule](docs/decisions/fixture-scoring.md) rotates illustrative
 constants by transaction ID and copies transaction time into scored_at. Results

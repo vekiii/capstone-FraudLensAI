@@ -39,7 +39,7 @@ afterEach(() => {
 async function apiClient(): Promise<CaseApi> {
   const load = apiModules['../src/api.ts'];
   // Glob discovery keeps collection valid while T017 is intentionally absent.
-  expect(load, 'Missing frontend fetch/decoding boundary (T017)').toBeTypeOf('function');
+  expect(load, 'Missing typed fetch/decoding boundary (T017)').toBeTypeOf('function');
   const api = await load();
   expect(api.getCases, 'Missing getCases request boundary').toBeTypeOf('function');
   expect(api.getCase, 'Missing getCase request boundary').toBeTypeOf('function');

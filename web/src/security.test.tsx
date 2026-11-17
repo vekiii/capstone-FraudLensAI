@@ -6,13 +6,10 @@ import { LivePage } from "./pages/Live";
 import { SiteDataContext, loadShowcaseData } from "./site-data";
 
 describe("showcase security boundary", () => {
-  it("declares a restrictive CSP in both browser entry points", async () => {
-    const [showcase, frontend] = await Promise.all([
-      readFile("index.html", "utf8"),
-      readFile("../frontend/index.html", "utf8"),
-    ]);
+  it("declares a restrictive CSP on the sole browser entry point", async () => {
+    const showcase = await readFile("index.html", "utf8");
 
-    for (const html of [showcase, frontend]) {
+    for (const html of [showcase]) {
       expect(html).toContain('http-equiv="Content-Security-Policy"');
       expect(html).toContain("default-src 'self'");
       expect(html).toContain("object-src 'none'");

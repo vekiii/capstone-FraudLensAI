@@ -11,6 +11,12 @@ Vite supports vanilla-ts. User-approved runtime update: choose Python 3.14 and
 Node 24; verify patch releases and dependency resolution when creating lockfiles.
 Sources: [Vite](https://vite.dev/guide/), [FastAPI](https://fastapi.tiangolo.com/).
 
+**Architecture follow-up (2026-11-17):** the requester authorized using React
+and consolidating the foundation dashboard with the existing Feature 005
+showcase. The single app lives in `web/`; the historical stack decision above
+records the original foundation approval and is superseded for current runtime
+instructions. Backend and model services remain Python/FastAPI.
+
 ## 2. Tests and reproducibility
 **Decision**: pytest/TestClient/httpx, focused Vitest DOM tests, typecheck/build and browser smoke.
 **Rationale**: Test actual contracts and failure states without an external model. Use uv.lock,

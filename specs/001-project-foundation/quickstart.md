@@ -14,9 +14,9 @@ setup. Spec-kit 1.4.0 is already initialized. Preserve existing initialization b
 From repository root:
 ```powershell
 uv sync --locked --group dev
-npm.cmd --prefix frontend ci
+npm.cmd --prefix web ci
 ```
-For the first implementation only, resolve dependencies with uv lock and npm install in frontend;
+For the first implementation only, resolve dependencies with uv lock and npm install in web;
 review and commit resulting lockfiles before using locked installs. Do not handwrite hashes.
 
 ## Run in two terminals
@@ -26,18 +26,18 @@ uv run --locked uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.
 ```
 Repository root, terminal 2:
 ```powershell
-npm.cmd --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort
+npm.cmd --prefix web run dev
 ```
-Open http://127.0.0.1:5173. Expect three explicitly synthetic cases. No key entry is required.
-The frontend development proxy forwards /api to 127.0.0.1:8000.
+Open http://127.0.0.1:5173/cases. Expect three explicitly synthetic cases. No key entry is required.
+The Vite development proxy forwards /api to 127.0.0.1:8000.
 
 ## Automated checks
 ```powershell
 uv run --locked pytest backend/tests
 uv run --locked ruff check backend
-npm.cmd --prefix frontend run test -- --run
-npm.cmd --prefix frontend run typecheck
-npm.cmd --prefix frontend run build
+npm.cmd --prefix web run test -- --run
+npm.cmd --prefix web run typecheck
+npm.cmd --prefix web run build
 ```
 These scripts and development dependencies are implemented. Backend pytest config
 sets pythonpath=backend/src. A generated dist directory is not committed or a public deployment.

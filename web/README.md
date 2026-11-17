@@ -1,12 +1,67 @@
-# FraudLens showcase
+# FraudLens AI web application
 
-Local-only showcase work for Feature 005 T057 and the data-independent part of T058. Start it with `npm.cmd --prefix web run dev`; Vite binds to `127.0.0.1:5174` (`--strictPort`). Four local routes are `/`, `/data`, `/rag` and `/live`.
+`web/` is the repository's only web application. It combines the case and
+dataset dashboard with the Feature 005 showcase in one React 18, TypeScript and
+Vite app. Application code and components use `.ts` or `.tsx`; `index.html` is
+only the CSP-protected entry point. Styling lives in CSS. Python/FastAPI and ML
+services stay in `backend/`.
 
-The site only consumes JSON files under `public/data/`. Metric, EDA, explanation, corpus and RAG evaluation values are explicitly `Not yet measured`. The live route uses illustrative examples, each labelled `ILLUSTRATIVE, not model output`, and retains that fallback when the read-only API is unavailable. A reachable API is not consumed until T055 supplies an approved adapter. No external LLM or real data call is made.
+## Routes
+
+| Route | Purpose |
+|---|---|
+| `/` | Showcase overview and current evidence status |
+| `/data` | Dataset, features and evaluation limits |
+| `/rag` | Advisory RAG design and status |
+| `/live` | Clearly labelled illustrative sample states and API availability |
+| `/cases` | Fixture v1 or published dataset v2 case browser |
+| `/dataset-overview` | Read-only aggregates from the active dataset/model run |
+
+Case and overview API values are decoded from `unknown` using the existing
+closed TypeScript contracts before rendering. Set `VITE_APP_MODE=dataset` when
+starting Vite to request dataset v2; fixture mode is the default. The client
+keeps snapshot identity for dataset detail requests and handles stale snapshots
+as an explicit recovery state. The showcase's illustrative files remain
+labelled and separate from measured API output.
+
+## Start locally
+
+Install the locked dependencies with `npm.cmd --prefix web ci`. Start FastAPI
+from the repository root in one terminal:
+
+```powershell
+uv run --locked uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
+```
+
+Start the web application in another terminal:
+
+```powershell
+npm.cmd --prefix web run dev
+```
+
+Vite binds to `127.0.0.1:5173` and proxies `/api` requests to FastAPI on port
+8000. Open `http://127.0.0.1:5173/`.
+
+For a published dataset run, set `APP_MODE=dataset`, `APP_SCORER`,
+`APP_RUN_STORE`, and `VITE_APP_MODE=dataset` in the server environments. The
+backend remains read-only for browser requests; scoring and activation are not
+performed by the web application.
+
+## Typecheck, tests and build
+
+TypeScript uses `strict`, `noUnusedLocals` and `noUnusedParameters`; typechecking
+covers application source, tests and Vite configuration.
+
+```powershell
+npm.cmd --prefix web run test -- --run
+npm.cmd --prefix web run typecheck
+npm.cmd --prefix web run build
+```
+
+All direct dependency versions and licences are recorded below and locked in
+`package-lock.json`.
 
 ## Dependencies and licences
-
-Exact direct versions are pinned in `package.json` and `package-lock.json`.
 
 | Package | Version | Licence |
 |---|---:|---|
@@ -24,12 +79,6 @@ Exact direct versions are pinned in `package.json` and `package-lock.json`.
 | `@types/three` | 0.187.0 | MIT |
 | `@types/node` | 24.19.2 | MIT |
 
-Typography uses local system fallback stacks naming Inter Tight, Instrument Sans and Space Mono. No font files or remote font requests are included. GSAP SplitText is not used.
-
-## Checks
-
-```powershell
-npm.cmd --prefix web run test -- --run
-npm.cmd --prefix web run typecheck
-npm.cmd --prefix web run build
-```
+Typography uses local system fallback stacks; there are no remote font requests.
+GSAP SplitText is not used. The showcase makes no external LLM calls or real
+data requests.

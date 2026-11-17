@@ -41,8 +41,8 @@ The live path has **one ordered topic partition and one active worker** in v1. P
 | `backend/src/fraudlens/data_store.py` | `backend/src/fraudlens/live_store.py`, `backend/migrations/` | PostgreSQL immutable facts, buffer, state, checkpoints, predictions, alerts and labels with separate roles. |
 | `backend/src/fraudlens/pipeline_cli.py` | `backend/src/fraudlens/live_worker.py`, `live_reconcile.py` | Connector event handling, ordered finalization, retries and explicit repair. Existing offline CLI stays. |
 | `backend/src/fraudlens/main.py` and `settings.py` | additive live router/settings | Read-only live API; fixture and batch modes unchanged. |
-| `frontend/src/` | additive live API types/view and mode selection | Display versioned live evidence; no browser model execution. |
-| `uv.lock`, `frontend/package-lock.json` | reviewed lockfile updates | Pin only dependencies actually introduced by implementation tasks. |
+| `web/src/` | additive live API types/view and mode selection | Display versioned live evidence; no browser model execution. |
+| `uv.lock`, `web/package-lock.json` | reviewed lockfile updates | Pin only dependencies actually introduced by implementation tasks. |
 | No infrastructure or MLOps directories | `infra/compose/`, `dbt/`, `backend/src/fraudlens/mlops/`, `observability/` | Local services, offline ELT, tracking and metrics; all proposed. |
 
 The [current v2 request](../../backend/src/fraudlens/data_contracts.py) requires a canonical CSV-derived transaction, matching `dv_...` dataset version, `history-v1` snapshot/digest and run identity. [ModelScorer.input_row](../../backend/src/fraudlens/model_scoring.py) enforces the trained dataset version. A live PostgreSQL row has no CSV ordinal or that dataset lineage. The proposed `LiveModelAdapter` must **not** forge a `dv_` identity or disable these validators. It loads a reviewed local artifact using the existing `load_trusted_artifact` and the artifact's approved *training* dataset/protocol identity; then it validates a separate `LiveScoreRequestV1`, ordered feature names/values, preprocessing signature and serving-compatibility digest before calling the pipeline. It returns a `LivePredictionV1` with distinct live source lineage, deployment digest, feature digest, score and explanation. The old scorer and batch tests remain as regression gates.
@@ -96,7 +96,7 @@ flowchart LR
 |---|---|---|
 | `backend/src/fraudlens/live_store.py` (proposed in T004) and `backend/migrations/` | `backend/migrations/007_knowledge_base.sql`, `008_verification.sql` | Knowledge-base versions and verification config/runs tables, separate from predictions and alert decisions. |
 | `backend/src/fraudlens/live_api.py` (proposed in T027) | additive fields in the same module; `contracts/live-alert-api.md` update | `verification` and `review_priority_suggestion` on alert detail; verdict and status on the list. No request-time LLM call. |
-| `frontend/src/live/` (proposed in T029) and no existing site | `frontend/src/live/verification/`, `backend/src/fraudlens/rag/`, `web/` (location per decision (j)) | Dashboard evidence panel; knowledge-base build, query builder, verifier, citation validator; four-route showcase site. |
+| `web/src/pages/Cases.tsx` (T029) | `web/src/pages/`, `backend/src/fraudlens/rag/` | Dashboard evidence panel; knowledge-base build, query builder, verifier, citation validator; showcase pages in the same React app. |
 
 ## 3. Verification layer (proposed)
 

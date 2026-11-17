@@ -31,4 +31,13 @@ The team should record an attributed approve/reject/defer decision and decide:
 
 **Showcase decision:** APPROVE local implementation of a separate `web/` showcase, as requested by the current requester and attributed by them to prior team discussion and agreement. **Original decision date:** not supplied. **Named participants/reviewers:** not supplied. **Recorded:** 2026-11-16. **Conditions for this implementation:** synthetic data only; no external LLM calls; no real-world quality claims. This record describes the user's report; it does not invent names or the original meeting date.
 
+**Architecture follow-up (2026-11-17):** the requester explicitly authorized
+consolidating the showcase and existing dashboard into the single React/Vite app
+in `web/`. Benefit: one TypeScript/React application and dependency/build path
+while retaining case browsing, dataset aggregates, and showcase routes. Schedule
+impact: one bounded migration and regression-check unit; backend services remain
+Python/FastAPI. This follow-up supersedes the former separate-app placement only;
+it does not authorize the pending RAG, corpus, provider, hosting, or live-scoring
+decisions.
+
 **RAG decision details:** not decided by the current showcase request. Vector store, embedding model, LLM provider/model, corpus owner/licence/review process, and production hosting remain open. No RAG backend, external provider call, or hosted deployment is authorized by the site-only decision. T047 stays unchecked until its full decision record is complete.

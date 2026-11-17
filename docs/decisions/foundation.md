@@ -61,7 +61,7 @@ Do not introduce a competing root contract copy. Current replaceable boundaries:
 
 | Boundary | Current implementation and injection | Consumer obligation |
 |---|---|---|
-| Transaction and assessment | Pydantic models in `backend/src/fraudlens/contracts.py`; JSON Schema in the feature; runtime decoders in `frontend/src/contracts.ts` | Closed objects, finite score in [0,1], explicit source/version/time, matching transaction identity; no labels in delivery |
+| Transaction and assessment | Pydantic models in `backend/src/fraudlens/contracts.py`; JSON Schema in the feature; runtime decoders in `web/src/contracts.ts` | Closed objects, finite score in [0,1], explicit source/version/time, matching transaction identity; no labels in delivery |
 | Scoring | Structural `Scorer.score(Transaction) -> RiskAssessment` in `scoring.py`; `FixtureScorer` is the default | Supply an adapter to `CaseService(fixture_path, scorer)` or `create_app(settings=..., scorer=...)`; do not modify service/routes to select a particular model |
 | Case delivery | `cases.py`: `load_cases`, `score_case`, `CaseService`; `main.py` translates errors to HTTP | Preserve case/transaction identity, ordering and generic failures; validate upstream results and reject input mutation, never silently clamp or substitute a score |
 | Fixture repository | `Settings.fixture_path` supplies a local JSON path; loaded lazily | Keep shipped data synthetic, small and label-free; tests may inject a temporary file without write/debug API routes |
@@ -100,6 +100,14 @@ that anyone has reviewed the current changes.
 | B: knowledge and RAG | 003 — knowledge ingestion and retrieval | Curated source manifest, ingestion/index, retrieval/citations and retrieval evaluation | Source provenance and a reviewed retrieval contract; does not depend on a trained scorer |
 | C: AI investigation | 004 — case investigation and analyst review | Provider adapter, controlled evidence tools, stateful workflow, cited report, human disposition and audit | Case/scoring facts from A and procedures from B through reviewed contracts; clearly marked synthetic adapters can support development before live integrations |
 | D: priorities and simulation | 005 — priority queue and simulation | Deterministic ranking/capacity, historical replay and comparisons under explicit simulation assumptions | Versioned scoring/case inputs and capacity assumptions; holdout labels remain outside operational inputs |
+
+## TypeScript/React consolidation (2026-11-17)
+
+The requester authorized consolidating the former `frontend/` dashboard and
+Feature 005 `web/` showcase into one React/TypeScript/Vite app at `web/`.
+Typed v1/v2 API decoders and the read-only case and dataset-overview views are
+maintained there. Python/FastAPI and ML remain unchanged. This supersedes the
+former vanilla TypeScript runtime structure while preserving its API contracts.
 
 Only `001-project-foundation` currently exists in specs/. The names/IDs above are
 handoff targets, not generated specifications or implemented features. Start by

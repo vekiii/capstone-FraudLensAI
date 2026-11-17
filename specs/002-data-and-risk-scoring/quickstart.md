@@ -116,7 +116,7 @@ without IBM data. Record each new run's actual result separately.
     UV_CACHE_DIR="$PWD/.cache/uv" uv sync --locked --group dev
     UV_CACHE_DIR="$PWD/.cache/uv" PYTHONPATH=.:backend/src uv run --locked pytest backend/tests --ignore=backend/tests/unit/test_pretrained_loader.py --ignore=backend/tests/unit/test_pretrained_ibm_inference.py
     UV_CACHE_DIR="$PWD/.cache/uv" uv run --locked ruff check backend
-    cd frontend
+    cd web
     npm ci
     npm test -- --run
     npm run typecheck
@@ -133,10 +133,10 @@ Fixture v1 needs no IBM database or model file. Run these in separate terminals:
 
 ```sh
 APP_MODE=fixture PYTHONPATH=backend/src .venv/bin/uvicorn fraudlens.main:app --host 127.0.0.1 --port 8000
-VITE_APP_MODE=fixture npm --prefix frontend run dev -- --host 127.0.0.1
+VITE_APP_MODE=fixture npm --prefix web run dev
 ```
 
-Open `http://127.0.0.1:5173/`; the fixture list has `CASE-001`–`CASE-003`.
+Open `http://127.0.0.1:5173/cases`; the fixture list has `CASE-001`–`CASE-003`.
 For v2, score and activate a completed run first, then restart the servers with
 `APP_MODE=dataset APP_SCORER=rules` or `APP_SCORER=model`,
 `APP_RUN_STORE=data/artifacts/feature-002-runs.sqlite`, and
@@ -147,7 +147,7 @@ an old reference returns 409 `stale_snapshot`. HTTP never scores or activates.
 
 ```sh
 APP_MODE=dataset APP_SCORER=rules APP_RUN_STORE=data/artifacts/feature-002-runs.sqlite PYTHONPATH=backend/src .venv/bin/uvicorn fraudlens.main:app --host 127.0.0.1 --port 8000
-VITE_APP_MODE=dataset npm --prefix frontend run dev -- --host 127.0.0.1
+VITE_APP_MODE=dataset npm --prefix web run dev
 ```
 
 PowerShell uses `$env:APP_MODE`, `$env:APP_SCORER`, `$env:APP_RUN_STORE`,

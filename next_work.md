@@ -1,5 +1,24 @@
 # Next work - FraudLens AI
 
+## TypeScript-first React app consolidated — 2026-11-17
+
+Consolidated the former `frontend/` dashboard and the Feature 005 showcase into
+the single React/TypeScript/Vite app in `web/`. Existing v1/v2 API decoders,
+case browsing, and read-only dataset overview now run as React routes alongside
+the four showcase pages. Updated active setup/architecture docs and removed the
+23 tracked files that formed the duplicate frontend. Backend and ML code were
+not changed. Details and exact check outcomes are in
+[`evidence/tasks/typescript-first-web-app-migration-2026-11-17.md`](evidence/tasks/typescript-first-web-app-migration-2026-11-17.md).
+
+Checks: 12 web test files / 163 tests passed; strict TypeScript typecheck and
+production build passed; 60 relevant backend API tests passed. Vite still warns
+that the main minified chunk is 893.52 kB. Interactive visual QA was not run.
+`git diff --check` passed; the scoped migration was committed on the requested
+branch. No push was made.
+
+One concrete next step: visually review the six routes on desktop and mobile;
+this implementation unit did not perform interactive browser QA.
+
 ## Feature 005 security hardening verified — 2026-11-16
 
 Added ten security tests: six FastAPI/secret-history checks, two showcase

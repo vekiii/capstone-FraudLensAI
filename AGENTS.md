@@ -21,7 +21,9 @@ record the proposal, benefit, schedule impact and actual decision in the relevan
 feature or decision record. Routine decisions within approved work need no renewed
 approval. Do not silently widen contracts or weaken requirements to pass checks.
 
-The foundation uses FastAPI and vanilla TypeScript/Vite with local synthetic data.
+The backend uses FastAPI and Python; the single web application uses React,
+TypeScript and Vite with local synthetic data. Do not create a second frontend
+or add JavaScript application code.
 ML training, RAG, LLM integration, real datasets and later product features belong
 to subsequent specifications. GNNs, transformer training, multi-agent product
 orchestration, open-web investigation and graph databases need team scope approval.

@@ -307,7 +307,7 @@ Do trećeg dana obezbediti stvarno dostupan LLM provider. Ako petog dana nema ko
 ## 14. Tehnologije i odbrana
 
 - Backend: **Python i FastAPI**.
-- Frontend: **Vite i TypeScript**, jednostavan interfejs.
+- Frontend: **React, Vite i TypeScript**, jednostavan interfejs.
 - Jedna aplikaciona baza; konkretan izbor zaključati u tehničkom planu.
 - Lokalni retrieval indeks i verzionisani model.
 - Jednostavan eksplicitni workflow i jedan dostupan LLM provider iza adaptera.

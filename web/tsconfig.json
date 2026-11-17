@@ -12,9 +12,10 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "strict": true,
+    "verbatimModuleSyntax": true,
     "types": ["node"],
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["src"]
+  "include": ["src", "tests", "vite.config.ts"]
 }
