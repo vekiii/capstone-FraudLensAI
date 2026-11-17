@@ -1,5 +1,17 @@
 # FraudLens AI
 
+Final review update (2026-11-17): T066 human contributor review and T067 Converge
+execution are complete. Six remaining tasks T095–T100 were appended; T094 stays
+open. Quality, live timing and full dataset/model acceptance remain incomplete.
+See [actual findings and next steps](evidence/tasks/feature-003-convergence.md).
+
+Current Feature 003 review (2026-11-17): T062–T064 delivered the reviewed read-only
+dataset adapter and controlled producer-store compatibility checks. Full IBM/model
+integration remains unverified. T061 audit is complete with failed quality;
+T066 human reproduction/review and T094 rubric decision remain open, followed by
+T067. See the [current reproduction record](evidence/tasks/feature-003-reproduction.md).
+Earlier dated results below retain their historical scope.
+
 Coverage/calibration development v4 (2026-11-16, local): **870 backend tests PASS**;
 new prompt clarifies transaction IDs and mandatory source disclosures. Judge
 calibration3/3, actual development reports2/3 pass, including one recovered request

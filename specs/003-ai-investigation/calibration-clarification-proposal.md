@@ -1,6 +1,7 @@
 # T094 - Missingness and contradiction clarification proposal
 
-Date: 2026-11-16. Status: technical agent review and proposed next protocol;
+Date: 2026-11-16; archive verification update 2026-11-17 below.
+Status: technical agent review and proposed next protocol;
 actual independent human review/decision remains pending. No execution authorized
 by this document; no new provider call, frozen label edit or historical regrading.
 
@@ -81,5 +82,51 @@ intended, check the three proposed predicates and each new control, and record
 identity/date/findings/decision. The agent's analysis is not that human decision.
 Raw v8 judge-response/source-hash verification remains pending archive delivery.
 Implement nothing and dispatch no further API batch solely on this proposal.
-T094 remains partial/open; T062/T064 producer integration and T066 second-person
-reproduction remain separate gates. No full feature acceptance is implied.
+T094 remains partial/open. Historical integration/reproduction status in this
+proposal is superseded by the dated current record below. No full feature
+acceptance is implied.
+
+## Current verification and decision packet — 2026-11-17
+
+AI read-only verification now finds the ignored v8 raw archive in this checkout.
+All ten archived JSON files listed in the committed v8 audit match their original
+LF-normalized SHA256 values. The raw judge-response payload seal also matches
+with explicit UTF-8 decoding and the original canonical serialization. No batch,
+builder, evaluator or rating aggregation was rerun. See
+[current technical evidence](../../evidence/tasks/feature-003-t066-review-20261117.md).
+The 2026-11-16 archive-absence statement above remains a historical observation.
+
+Directly inspected CAL8-B raw rating: its claim is `unsupported` with
+`critical_error=true`; report-level `critical_error=true`, but
+`missingness_correct=true`. The saved reason interprets missingness as disclosure
+completeness despite the invented allegation. The frozen expectation remains
+`missingness_correct=false`. Original calibration 2/3 FAILED and unavailable
+quality are unchanged; no new evaluation is inferred from file integrity.
+
+**Decision for a human reviewer:** approve, request changes to, or reject the
+three-predicate definition for a **new separately versioned protocol**. The
+recommended definition requires complete disclosures AND no invented missing
+values AND no contradictions. A correct disclaimer cannot cancel an unsupported
+critical claim. Review each of the six proposed controls and its expected labels;
+record reviewer identity, date, implementation involvement/independence, findings
+and the actual decision. Milan's contributor self-review does not itself satisfy
+the independent quality review requirement. Reviewer assignment is not approval.
+
+The proposed matrix assumes all other required disclosures remain present in
+rows marked complete. A false contradiction label requires explicit conflicting
+case evidence or report disclosures: for the invented-origin rows, retain the
+source's explicit unavailable-origin statement; for the identity row, retain
+explicit unknown-identity evidence/disclosure. Absence of support alone must not
+be relabeled a contradiction without that comparison. These are conditions for
+authoring the new controls, not frozen new cases or changed v8 labels.
+
+Approval would authorize documenting the new rubric/control design only. Schema,
+prompt and aggregation implementation would still require versioning and tests;
+any future live run needs its own explicit scope/budget. Preserve support >=90%,
+coverage >=80%, all disclosures, zero critical unsupported claims, calibration
+gate, failure denominators and old ratings/results. Rejection or requested changes
+leave T094 open without a new evaluation. **Actual human decision: pending.**
+
+T062–T064 adapter work is complete in its documented controlled scope. Full
+IBM/model integration, T066 remaining human checks and quality acceptance remain
+separate; none follows from this clarification.

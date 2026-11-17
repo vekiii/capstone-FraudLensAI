@@ -65,7 +65,9 @@ development-selected baseline/improved cutoffs in
 are distinct from ordinary demo preparation. T056 measured both at Recall/MRR
 0.50, below target. Do not adjust corpus/glossary/cutoff using exposed held-out
 answers or overwrite frozen outputs. No accuracy claim follows from fixture
-search success. Actual producer/history review remains independent and pending.
+search success. The separate producer/history agreement and read-only adapter
+were completed in T062–T064 on 2026-11-16; full IBM/model integration remains
+unverified. These compatibility checks do not establish retrieval/report quality.
 See [quickstart](../../specs/003-ai-investigation/quickstart.md),
 [regression](../../evidence/tasks/feature-003-regression.md) and
 [reproduction protocol](../../evidence/tasks/feature-003-reproduction.md).

@@ -15,9 +15,13 @@ read private root .env; explicit process settings override it. Deterministic
 reproduction forces provider=test, source=fixture and empty process key/model.
 The worker is a separate backend terminal; a queued attempt does not run until
 the worker claims it. No browser action implicitly authorizes analyst review.
-Actual dataset adapter/producer review remains pending. Phase 7 automated report-judging-v2 is complete with failed
-quality targets; human code/producer review remains separate. [Reproduction packet](../evidence/tasks/feature-003-reproduction.md)
-does not claim a second teammate already ran it. Historical foundation details
+The T062–T064 producer agreement/read-only adapter and controlled compatibility
+checks are complete; full IBM/model integration and dataset case UI depend on
+actual producer integration. Phase 7 automated report-judging-v2 is complete with
+failed quality targets. Milan owns the remaining T066 human checks; his review
+is contributor self-review, with AI checks and prior user observations recorded
+separately in the [reproduction packet](../evidence/tasks/feature-003-reproduction.md).
+Historical foundation details
 and counts below refer only to their cited delivery.
 
 Vanilla TypeScript/Vite frontend with T017's typed API boundary and T018's complete

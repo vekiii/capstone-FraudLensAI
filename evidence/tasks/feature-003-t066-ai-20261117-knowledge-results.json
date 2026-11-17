@@ -1,0 +1,24 @@
+{
+  "mode": "automated headless Chrome; six human-reviewed source texts; isolated TEST replacement only for historical-version check",
+  "work": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-smoke-8e77c03c-f2d1-4b64-8dc1-5c5fe6fdc20d",
+  "checks": [
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:8000",
+      "status": "PASS"
+    },
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:5173",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "retrieval_version": "071f1a593fa17471295860bb5abc3a0064261a7e159bdf3d530494881001bccb",
+  "chrome_stderr": "[6116:13056:1117/012235.332:ERROR:components\\os_crypt\\async\\browser\\os_crypt_win.cc:63] Failed to encrypt: The system cannot find the file specified. (0x2)\r\n[6116:12024:1117/012235.360:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n[6116:9424:1117/012235.408:ERROR:components\\password_manager\\core\\browser\\password_store\\login_database_async_helper.cc:100] Encryption is not available.\r\n[6116:24892:1117/012235.409:ERROR:components\\password_manager\\core\\browser\\password_store\\login_database_async_helper.cc:100] Encryption is not available.\r\n\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/cad47da0-cb8a-419c-b113-f497ea3e7ff4\r\n[6116:13056:1117/012235.479:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[6116:20368:1117/012235.480:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-smoke-8e77c03c-f2d1-4b64-8dc1-5c5fe6fdc20d\\chrome-profile\\GPUPersistentCache\\DawnGraphiteCache\\23IMHJGI2WIIJ3PDLCHAHUJAGHTLTEBB\", error: 0: The process cannot access the file because it is being used by another process. (0x20)\r\n[6116:13056:1117/012235.507:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[6116:13056:1117/012235.517:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[6116:8472:1117/012235.518:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-smoke-8e77c03c-f2d1-4b64-8dc1-5c5fe6fdc20d\\chrome-profile\\GPUPersistentCache\\DawnGraphiteCache\\23IMHJGI2WIIJ3PDLCHAHUJAGHTLTEBB\", error: 0: The process cannot access the file because it is being used by another process. (0x20)\r\n[6116:23680:1117/012235.525:ERROR:services\\device\\public\\cpp\\geolocation\\system_geolocation_source_win.cc:124] Failed to create IAppCapability: Access is denied. (0x80070005)\r\n[6116:13056:1117/012235.539:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[6116:13056:1117/012235.548:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[6116:7888:1117/012235.549:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-smoke-8e77c03c-f2d1-4b64-8dc1-5c5fe6fdc20d\\chrome-profile\\GPUPersistentCache\\DawnGraphiteCache\\23IMHJGI2WIIJ3PDLCHAHUJAGHTLTEBB\", error: 0: The process cannot access the file because it is being used by another process. (0x20)\r\n[6116:13056:1117/012235.565:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[6116:13056:1117/012235.565:FATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:385] GPU process isn't usable. Goodbye.\r\n",
+  "browser": "Chrome/157.0.8103.79",
+  "status": "FAIL",
+  "failure": "Error: CDP timeout: Page.enable\n    at Timeout._onTimeout (file:///C:/Users/gm220391d/Carrier/AIBootcamp2026/capstone/capstone-FraudLensAI/.cache/phase08-browser-631979ab078546b88eac80fbabc320d7/feature-003-knowledge-smoke.mjs:31:241)\n    at listOnTimeout (node:internal/timers:685:17)\n    at process.processTimers (node:internal/timers:618:7)",
+  "cleanup_error": "Error: listen EADDRINUSE: address already in use 127.0.0.1:8000"
+}

@@ -1,0 +1,166 @@
+{
+  "mode": "Phase 5 automated Chrome/API/proxy/recovery CLI; authored fixture/test provider; no LLM quality claim",
+  "work": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-recovery-browser-2a18928a-04de-483e-ae98-2b05b508462b",
+  "checks": [
+    {
+      "name": "Queued navigation and reopen preserve correct case/context with zero spend",
+      "detail": "att_c327a6672e5045899f998c49970223b0",
+      "status": "PASS"
+    },
+    {
+      "name": "Explicit browser cancel via same-origin proxy, persisted ETag/CAS state",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Explicit child retry, read refresh during delayed reply and bounded worker completion",
+      "detail": {
+        "parent": "att_c327a6672e5045899f998c49970223b0",
+        "child": "att_82368ec21d0d4de49f942e0712952bc7"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "Actual killed worker, failed navigation/reopen and explicit retry preserve old counters and bound evidence",
+      "detail": {
+        "parent": "att_69788cb3ba524b3c83f52eaa77b3c88a",
+        "child": "att_32121fddeb3c42cf883ad2b5bdbe6595",
+        "old_requests": 2,
+        "new_requests": 4
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "Child reopens its saved parent through a read-only action, then refresh restores latest attempt",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Controlled same-case snapshot switch: stale reads/retries 409, historical report/citation preserved, new context distinct",
+      "detail": {
+        "old_context": "638b33ff1bbacff12e11cf0b81cda68ed133bd6a7d66c7c432ad873a9e60a9a3",
+        "new_context": "e7d5233ed84eb00b29cad2ad3f602e59ecd81120badcd38e5ba5cd9bd314936d"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "Original fixture three-case list/detail/back and API/proxy 404/422 with feature disabled",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Missing-key actual API/proxy 503 and browser controlled creation error; zero dispatch",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Missing-model actual API/proxy 503 and browser controlled unavailable; foundation still 200",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "No uncaught browser exceptions",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-002",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/attempts/att_c327a6672e5045899f998c49970223b0/cancel",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/attempts/att_c327a6672e5045899f998c49970223b0/retry",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/attempts/att_82368ec21d0d4de49f942e0712952bc7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/attempts/att_69788cb3ba524b3c83f52eaa77b3c88a",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-002",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/attempts/att_69788cb3ba524b3c83f52eaa77b3c88a/retry",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/attempts/att_32121fddeb3c42cf883ad2b5bdbe6595",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/attempts/att_69788cb3ba524b3c83f52eaa77b3c88a",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/attempts/att_32121fddeb3c42cf883ad2b5bdbe6595/evidence/ev_e185036a63244a4ea7842edf1f8455f3",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/attempts/att_4eb5f81b03cb4a7a872ca145882d872a/cancel",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs",
+      "status": 503
+    },
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-001",
+      "status": 503
+    }
+  ],
+  "chrome_stderr": "\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/7f6e2c93-9e0a-4696-8b5f-8c743f32ab21\r\n",
+  "browser": "Chrome/157.0.8103.79",
+  "status": "PASS",
+  "owned_process_cleanup": "PASS"
+}

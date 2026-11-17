@@ -1,0 +1,35 @@
+{
+  "mode": "Automated local browser/process regression, no human review or real provider calls",
+  "status": "PASS",
+  "real_provider_calls": 0,
+  "results": [
+    {
+      "source": "feature-003-t057-recovery-browser.mjs",
+      "source_sha256": "504bd87f07b31c822438cecf262ec05789bdeddbc0ec1108751865cc23fbe947",
+      "generated_sha256": "6c3d4f72bff7763f9377cdb8aea7d392028e4966ef5e12c0fe0af2e412bc8776",
+      "command": [
+        "node",
+        "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\phase08-browser-4ecdd6913d2b464481f45609023132ce\\feature-003-t057-recovery-browser.mjs"
+      ],
+      "exit_code": 0,
+      "result": "feature-003-t066-ai-20261117-fixed-recovery-results.json",
+      "status": "PASS",
+      "checks": 10,
+      "log": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\phase08-browser-4ecdd6913d2b464481f45609023132ce\\recovery.log"
+    },
+    {
+      "source": "feature-003-t057-process.py",
+      "source_sha256": "bc0bd340b03a6d869ccbbdc0619045c66d63d1be5b159c3018e1a5ef139ffda6",
+      "generated_sha256": "5cf2557ceb03861432e360103d215f7e70c5c614c9f98c4411c3eba88b23a69a",
+      "command": [
+        "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\phase08-browser-4ecdd6913d2b464481f45609023132ce\\feature-003-t057-process.py"
+      ],
+      "exit_code": 0,
+      "result": "feature-003-t066-ai-20261117-fixed-process-results.json",
+      "status": "PASS",
+      "checks": 6,
+      "log": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\phase08-browser-4ecdd6913d2b464481f45609023132ce\\process.log"
+    }
+  ]
+}

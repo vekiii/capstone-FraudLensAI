@@ -1,0 +1,18 @@
+{
+  "mode": "Phase 5 automated Chrome/API/proxy/recovery CLI; authored fixture/test provider; no LLM quality claim",
+  "work": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-recovery-browser-1d7e95be-7f01-40b4-b5f4-e62af82652ef",
+  "checks": [],
+  "errors": [],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:5174/api/investigation/runs?case_id=CASE-001",
+      "status": 500
+    }
+  ],
+  "chrome_stderr": "\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/6db8086f-0643-45e0-8e9c-3dff3d671a02\r\n",
+  "browser": "Chrome/157.0.8103.79",
+  "status": "FAIL",
+  "failure": "Error: Browser timeout: !!document.querySelector('[data-run-state]') || !!document.querySelector('[data-start]:not(:disabled)')\n    at wait (file:///C:/Users/gm220391d/Carrier/AIBootcamp2026/capstone/capstone-FraudLensAI/.cache/phase08-browser-fd5bce68dc1245af9fc71bb2c72c93bf/feature-003-t057-recovery-browser.mjs:52:135)\n    at async openCase (file:///C:/Users/gm220391d/Carrier/AIBootcamp2026/capstone/capstone-FraudLensAI/.cache/phase08-browser-fd5bce68dc1245af9fc71bb2c72c93bf/feature-003-t057-recovery-browser.mjs:54:194)\n    at async file:///C:/Users/gm220391d/Carrier/AIBootcamp2026/capstone/capstone-FraudLensAI/.cache/phase08-browser-fd5bce68dc1245af9fc71bb2c72c93bf/feature-003-t057-recovery-browser.mjs:61:3",
+  "last_ui": "SlučajeviIzvori i pretraga\n\nLOKALNA DEMONSTRACIJA\n\nFraudLens AI\n\nPregled sintetičkih transakcija i ilustrativnih skorova.\n\nDemonstracioni podaci — sintetički skor, bez ML predikcije\n\nPodaci su izmišljeni. Rezultati služe isključivo za ilustraciju.\n\nSlučajevi\nCASE-001\nTX-001\nSkor 0.75 / 1 · fixture\nCASE-002\nTX-002\nSkor 0.4 / 1 · fixture\nCASE-003\nTX-003\nSkor 0.1 / 1 · fixture\n← Nazad na listu\nSlučaj CASE-001\nTransakcija\nID transakcije\nTX-001\nVreme transakcije (UTC)\n2026-01-05T09:15:00Z\nPošiljalac — demo račun\nDEMO-BANK-A:SYN-ACCOUNT-001\nPrimalac — demo račun\nDEMO-BANK-B:SYN-ACCOUNT-002\nIznos\n1250.00 EUR\nIlustrativna procena\n\n0.75 / 1\n\nDemonstracioni skor nije verovatnoća prevare.\n\nIzvor skora\nfixture — sintetički primer\nVerzija\nfixture-v1\nVreme ocenjivanja (UTC)\n2026-01-05T09:15:00Z\nObjašnjenje\n\nIllustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility.\n\nAI istraga\n\nSintetički fixture podaci, bez ML predikcije. Skor nije verovatnoća prevare. AI nacrt podržava ljudsku odluku.\n\nPokreni novu istraguOsveži sačuvano stanje\n\nIstraga nije spremna ili odgovor nije ispravan (internal_error). Osvežite stanje.",
+  "owned_process_cleanup": "PASS"
+}

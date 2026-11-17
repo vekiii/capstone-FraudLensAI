@@ -1,4 +1,157 @@
-# Current handoff - Milan owns remaining T066 review, 2026-11-16
+# Current handoff — T066/T067 complete; six convergence tasks open, 2026-11-17
+
+Milan/milangavric2003 completed guided manual reproduction and reviewed the
+supplied code/contracts/evidence files, reporting no objections and explicitly
+authorizing T066 closure plus commit/push to feature03. Contributor self-review,
+not independent reproduction/quality evaluation. Baseline2469aec; original user,
+Vedran and AI results remain separately attributed in the detailed records.
+
+[Human decisions / complete chat work record](evidence/tasks/feature-003-reproduction.md).
+[AI commands, regression, issues and limits](evidence/tasks/feature-003-t066-review-20261117.md).
+[Actual T067 Converge inventory/findings](evidence/tasks/feature-003-convergence.md).
+T066 and T067 checked as executed; NOT full feature acceptance. Converge outcome
+tasks_appended, Phase16 T095–T100. T062–T064 remain complete in controlled scope.
+
+Open: T094 independent rubric/control decision; T095 retrieval target; T096
+report quality after T094; T097 required live timing validation; T098 actual full
+producer/population/model assembly; T099 same-context parent label; T100 current
+API context-v2/pin addendum. Old0/8 quality,0.50/0.50 retrieval, failed latency,
+v8 calibration2/3 FAILED/unavailable quality and unrun full integration preserved.
+No new live calls/evaluation/regrading, runtime implementation or ML merge.
+
+Checks inherited from this unchanged runtime session:939 backend/186 frontend,
+typecheck/build/Ruff PASS;29 actual browser/API/proxy+6 process checks PASS across
+separate components; failures preserved. Only executable edit is the tested
+recovery harness constructor forwarding fix. User now authorizes normal commit/
+push of reviewed files (message style matching branch); no merge or force-push.
+Final publication result is verified separately; no automatic future publication.
+
+Manual test app remains API8000/Vite5174, existing5173 preserved, no worker poll.
+Owned process ledger/helper/logs and synthetic store are ignored under
+.cache/t066-milan-20261117; API restarted with ledger PID27068. Do not delete the
+manual review records or kill unrelated services. No actual .env/secret read.
+
+**One concrete next step:** use speckit-implement for T099 (offline same-context
+history-label RED/GREEN correction), then T100 API documentation; independent
+human T094 review can proceed separately. Do not launch T095–098 experiments or
+full integration without their reviewed access/protocol and explicit run scope.
+
+# Previous handoff — T066 manual continuation / T094 decision, 2026-11-17
+
+Branch feature03, reviewed baseline2469aec0b146c5c26cb5c0eea70cb96bb9c559e3,
+initially clean. Current user identifies as Milan / milangavric2003; Git history
+shows investigation/recovery/review implementation involvement, so contributor
+self-review, not independence. Milan supplied current TEST report/procedural
+evidence and saved the initial diagnostic decision; no T066 sign-off yet. Preserve earlier unspecified
+user observations and Vedran/Veki authorship separately.
+
+[Actual AI checks, findings and commands](evidence/tasks/feature-003-t066-review-20261117.md):
+backend939 PASS57.83s, frontend186/typecheck/build/Ruff PASS; 29 browser/API/proxy
+and6 process checks PASS across separate components. Failed sandbox/port/helper
+attempts retained. Fixed only recovery verification helper's old constructor
+signature; application runtime/contracts/prompts/locks unchanged. Controlled
+producer smoke PASS in a distinct new output, no source DB writes/labels/provider.
+T062–T064 implementation remains complete in documented scope; no full IBM/model
+validation, new evaluation, live API, commit/push/merge.
+
+Old user review-chain IDs absent from this local store; previous D: store is
+unavailable. Mismatch unresolved; fresh manual chain is allowed by checklist,
+not reconstruction of missing events. AI prepared manual fixture/test app on
+http://127.0.0.1:5174 with API8000, absent ENV_FILE, empty key/model, analyst
+milangavric2003 and separate .cache/t066-milan-20261117/manual.sqlite. Existing
+5173 preserved. Owned hidden service PIDs/logs/run.py are in that cache directory;
+AI setup is not a human check. Matching worker helper is `run.py worker`. AI
+subsequently observed newly created att_4c34755d3e0a4b8694ae02489bfa4b3e and
+ran that test worker: ready_for_review/revision4, four scripted turns/three tools,
+zero live calls and no human review. Exact report/citation IDs in evidence.
+Milan subsequently supplied ready_for_review/TEST/report/limitations and opened
+the simulated Missingness procedure with exact version/corpus metadata. AI GET
+confirmed cited procedure binding and revision4/review=null before the decision.
+Milan now reports request_more_information review rev_40f8c34cf0464ced9ef449bb941e42db,
+actor milangavric2003, UTC2026-11-17T00:50:57.922620Z, rationale
+"T066 — test čuvanja odluke; nedostaju dodatni podaci." AI GET confirms reviewed/
+revision5, supersedes=null, same report/draft/citations/budget. Milan now supplies
+first-tab reload preserving that decision and second-tab revision4 error exactly
+"revision_conflict. Osvežite sačuvano stanje pre nove radnje." AI GET confirms
+original review/revision5/draft/budget unchanged. Milan now supplies linked close
+correction rev_b30f69e52fc74628b112ebe27d7a2e0f at UTC2026-11-17T00:59:09.046218Z,
+superseding rev_40f8c34cf0464ced9ef449bb941e42db. AI GET confirms revision6;
+read-only SQLite confirms both reviews, initial review unchanged, original draft/
+citations/budget retained. Fresh chain/conflict/reopen checks observed; old absent
+chain remains unresolved. Milan supplies CASE-002 before/after queue/cancel
+screenshots: created/waiting→cancelled,0 requests/tools. AI GET matches timestamp/
+context to att_01d1d0cf537d4b18a8714f7f81cd0c5c, cancelled/revision2, no report/
+review. Milan next supplies queued-child/cancelled-history screenshot. API/audit
+confirm child att_69a521e11cf74702a40969eff93dea4f → immediate cancelled parent
+att_b68477162299435589cf83417014b6b2 in same run/context. That parent is a separate
+base created01:02:38Z, not original cancelled att_01d1d0...; original retained.
+Exact IDs/limits in evidence. AI verifies only linked child queued, runs matching
+test worker once →ready_for_review. Human child-reopen/recovery/navigation and
+actual code/contracts/evidence sign-off remain pending. Source metadata
+"reviewed by Milan" is prior corpus review, not current case/T066 approval.
+
+[Current human checklist and attribution](evidence/tasks/feature-003-reproduction.md).
+T061 audit is executed with FAILED quality; historical "full T061 pending" is
+not a new execution dependency. T066 remains open pending real manual findings
+and explicit code/contracts/evidence decision. T067/converge NOT RUN, as requested
+until T066 conditions are met. Tasks completed do not imply acceptance criteria.
+
+T094: raw ignored v8 archive now available, all10 original artifact hashes and
+raw payload seal verified read-only. CAL8-B unsupported/critical=true but
+missingness=true confirmed directly; frozen expectation false, calibration2/3
+FAILED and quality unavailable preserved. [Human decision packet](specs/003-ai-investigation/calibration-clarification-proposal.md)
+asks approve/change/reject three-predicate rubric plus six controls for a new
+version only; independent reviewer/decision pending, no rerun budget inferred.
+Old0/8 quality, retrieval0.50/0.50 and timing failures remain. No gate waiver.
+
+History-label finding confirmed by requested minimal CASE-003 replay: one base
+att_363daf9e442841ff8221068119c346d3 → child att_550de71019924ae4a76fe2b5d5c91816,
+same run/case/context/snapshot/corpus/retrieval; Milan's parent-view screenshot
+still says "prethodni kontekst izvora". Extra CASE-002 cancellation is not needed
+to reproduce it. Binding correct; wording defect tracked for T067/FR-021/FR-002,
+no task append/runtime fix yet. AI then verifies only CASE-003 child queued and
+runs matching test worker once →ready_for_review, no live call/evaluation.
+
+Milan now supplies guided CASE-003 reopen screenshot: ready_for_review and exact
+parent att_363daf... confirmed. This covers saved-child reopen; no extra CASE-002
+reopen observation invented. AI has deliberately stopped manual API8000 for
+recovery test: exact helper command matched PIDs20672/26052, initial Stop-Process
+failed (health remained200), then verified .NET Kill succeeded (curl exit7).
+Frontend5174 remains200, Vite26472 and existing5173 preserved. Store untouched.
+
+Milan supplies expected outage screenshot: invalid_response/refresh guidance,
+saved ready item retained, creation disabled. AI restarts same helper/store/config
+hidden PID27068 (ledger updated); direct/proxy health200 and saved child/parent/
+CASE-001 correction states/counters retained. API is now UP. No worker/live call.
+Fresh AI direct/proxy CASE-999404/CASE-1422 checks also pass; distinct from human.
+
+Milan explicitly confirms restored same-panel ready_for_review/report and4/8
+requests,3/12 tools in text; no screenshot required/claimed. Manual recovery unit
+complete, preserving separate AI API/404/422 results and human observations.
+
+Milan confirms rapid switching; screenshot ends correct CASE-003/TX-003,
+18420.50 EUR/score0.1, no mixed case data reported. Panel collapsed in screenshot;
+do not claim unseen report inspection. Guided manual UI units now recorded.
+Remaining human checkout/diff/environment inspection and code/contracts/evidence
+review have a four-group packet at end of reproduction.md; no sign-off inferred.
+
+Milan replies "pregledao sam, deluje u redu" to linked review.py submit/store.py
+append_review review step: actual group1 code inspected, no objection reported.
+No broader approval or separate API-contract/environment/diff review inferred.
+
+Milan confirms group2 dataset.py/accepted-boundary review "okej je, dalje", no
+objections, and requests more files per step. Batch remaining review; do not
+keep splitting it into tiny file groups. T066 final decision still unreported.
+
+**One concrete next step:** Milan reviews combined UI controller/views, API
+contract, recovery helper diff, working status/diff, reproduction/technical
+evidence and T061/v8 quality limits. Packet at reproduction.md end. Report actual
+reviewed scope/environment, explicit scoped T066 decision/findings/unreviewed
+parts; optional T094 feedback separately, not inferred independent approval.
+Once T066 conditions met run feature003 Converge; preserve open T094 and failed
+quality/full-integration criteria. No new live/evaluation/commit/push/merge.
+
+# Previous handoff - Milan owns remaining T066 review, 2026-11-16
 
 User explicitly handed remaining T066 review to Milan. T066 and T067 stay open;
 Milan execution/approval is not yet reported. User already observed successful

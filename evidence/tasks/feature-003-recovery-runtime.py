@@ -26,8 +26,9 @@ metadata = work / 'metadata.json'
 original_reader = CaseContextReader.__init__
 
 
-def isolated_reader(self, fixture_path=None, metadata_path=None):
-    original_reader(self, fixture_path, metadata if metadata.exists() else metadata_path)
+def isolated_reader(self, fixture_path=None, metadata_path=None, dataset_reader=None):
+    original_reader(self, fixture_path, metadata if metadata.exists() else metadata_path,
+                    dataset_reader=dataset_reader)
 
 
 CaseContextReader.__init__ = isolated_reader

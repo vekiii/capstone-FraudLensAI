@@ -2,6 +2,12 @@
 
 ## Reviewed dataset adapter (T062-T064, 2026-11-16)
 
+Final review update 2026-11-17: T066 contributor reproduction/review and T067
+Converge execution are complete. Converge appended T095–T100; T094 remains open.
+Full quality/live timing and full IBM/model integration acceptance are still
+unmet. See [actual convergence](../../evidence/tasks/feature-003-convergence.md).
+Earlier dated status paragraphs remain history, not current gate claims.
+
 See [accepted boundary](dataset-adapter-agreement-v2.md). The API and worker must
 use the same trusted server configuration and existing completed/active producer
 stores. Replace the example paths with the actual producer stores; investigation
@@ -44,7 +50,13 @@ The isolated new check is `.venv/Scripts/python.exe -X utf8 evidence/tasks/featu
 Use `--retrieval data/knowledge/fraudlens-aml-knowledge-v1/retrieval-development-v2.json`
 with prepare-knowledge and a separate store to explicitly try the candidate.
 
-Status (2026-11-15): reviewed six-document search, fixture investigation, durable
+Current status (2026-11-17): T062–T064 are complete for the reviewed adapter and
+controlled producer-store compatibility scope; full IBM/model execution remains
+unverified. T061 is a completed audit with failed quality targets, not quality
+acceptance. T066 human checks and T094 rubric review remain open; T067 follows
+T066. See the [current reproduction record](../../evidence/tasks/feature-003-reproduction.md).
+
+Historical status (2026-11-15): reviewed six-document search, fixture investigation, durable
 worker/recovery and analyst review are implemented; T051 human confirmation and
 T033 synthetic provider capability check are complete. T054–T058 were executed,
 including the saved live batch. T059-T061 automated report-judging-v2 execution, aggregation and audit are complete
@@ -284,10 +296,11 @@ Preserve all failed cases, raw disagreements and existing outputs; no new genera
 
 ## Dataset integration and regressions
 
-First reconcile the latest feature 002 producer contract and record the actual
-producer/consumer review. Verify strict history/time/currency/score meanings
-against the pinned snapshot. Missing real producer/history remains unavailable,
-not fake empty. Do not merge model branches just to make adapter tests import.
+The reviewed producer/consumer agreement and implemented adapter are described
+at the top of this guide. Use the pinned source and strict history/time/currency/
+score meanings; a later source revision requires its own review. Missing real
+producer/history remains unavailable, not fake empty. Do not merge model branches
+just to make adapter tests import.
 
 ```powershell
 $testRoot = Join-Path $PWD ('.cache/regression-' + [guid]::NewGuid().ToString('N'))
@@ -306,11 +319,14 @@ exercise the original three-case list/detail/retry/404/422 journey unchanged.
 Fresh Phase 8 results and their scope are in
 [regression evidence](../../evidence/tasks/feature-003-regression.md). Source SHA,
 schema change and bounded history review packet are in
-[context review](../../evidence/tasks/feature-003-context-review.md). There is no
-actual dataset adapter enabled in this checkout; dataset mode fails explicitly.
+[context review](../../evidence/tasks/feature-003-context-review.md), including its
+superseding 2026-11-16 approval. Dataset mode uses the implemented read-only adapter
+when configured with valid published producer stores; absent stores fail explicitly.
 
-Another teammate follows the concrete
-[reproduction protocol](../../evidence/tasks/feature-003-reproduction.md), records
-their own commands/observations and performs code/contracts/evidence review.
-T066 stays partial until actual evidence and T061 exist. T067 Converge is not
-part of this execution; it does not automatically accept pending quality gates.
+Milan owns the remaining human checks in the concrete
+[reproduction protocol](../../evidence/tasks/feature-003-reproduction.md). The team
+accepted contributor self-review for T066; record actual commands/observations,
+participation and code/contracts/evidence decision separately from AI checks and
+prior user observations. T061 audit is complete; quality acceptance is still
+unmet. T066 stays partial until its remaining human evidence exists. T067
+Converge follows T066 and does not automatically accept pending quality gates.
