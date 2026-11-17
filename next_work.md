@@ -1,4 +1,31 @@
-# Current handoff — T066/T067 complete; six convergence tasks open, 2026-11-17
+# Current handoff — T099/T100 complete; T094–T098 open, 2026-11-17
+
+Only T099/T100 implemented with scoped speckit-implement on feature03, clean
+initial95b5eebe5e3a50583ffcf33b081d2c7e53755681. T099 separates historical-attempt
+labels/read-only display from real source-context changes. Cancelled same-context
+parents no longer claim an old source or existing report; citations/access/stale
+reply guards retained. Intended RED2 failures/14 passes; GREEN/refactor16 passes.
+T100 adds current context-v2/reviewed-producer API documentation while preserving
+old context1/schema/example/report meanings and public HTTP envelope1.
+
+Actual final checks:backend939 PASS60.71s; frontend193 PASS; typecheck/build/Ruff/
+whitespace PASS; four schema meta-checks/both LF pins/exact producer method delta/
+eight examples/derived context2 rules boundary/16 local links PASS. Initial backend
+temp-parent and probe-import errors corrected in commands, separately preserved.
+[Full execution evidence](evidence/tasks/feature-003-t099-t100-20261117.md).
+[Original prompt](prompts/development/003-t099-t100-20261117.md).
+
+Only these two tasks closed. No T062–T067 repetition, T094–T098 work, live API or
+evaluation; old results/thresholds and existing manual evidence/services preserved.
+No new human/browser acceptance claimed. Full IBM/model/app assembly unrun;
+quality/retrieval/timing and independent T094 gates remain. Commit/normal push only
+to feature03 authorized for this change; verify final session Git publication
+outputs for its exact SHA/result. No automatic future publication or merge.
+
+**One concrete next step:** obtain the independent human T094 rubric/control
+decision from the existing clarification packet before future T096 work.
+
+# Previous handoff — T066/T067 complete; six convergence tasks open, 2026-11-17
 
 Milan/milangavric2003 completed guided manual reproduction and reviewed the
 supplied code/contracts/evidence files, reporting no objections and explicitly

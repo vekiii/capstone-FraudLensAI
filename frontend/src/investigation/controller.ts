@@ -13,6 +13,7 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
   let timer: ReturnType<typeof setTimeout> | undefined;
   let snapshot = '', revision = '', selected: Run | undefined;
   let saved: Run[] = [];
+  const isListedAttempt = (run: Run) => saved.some(item => item.attempt_id === run.attempt_id);
   let totalCount = 0;
   let createKey: string | undefined;
   const actionKeys = new Map<string, string>();
@@ -27,7 +28,10 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
   function show(run: Run, token: number) {
     saved = saved.map(item => item.attempt_id === run.attempt_id ? run : item);
     view.saved(saved, totalCount, totalCount > 20);
-    selected = run; view.run(run, run.context_revision !== revision || !saved.some(item => item.attempt_id === run.attempt_id));
+    selected = run; view.run(run, {
+      historicalAttempt: !isListedAttempt(run),
+      sourceContextChanged: run.context_revision !== revision,
+    });
     if (run.report) history.set(run.attempt_id, run);
     view.historical([...history.values()].filter(item => item.context_revision !== revision));
     if (blocked) view.recoveryError(blocked, true);
@@ -103,7 +107,7 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
   }
   async function review(body: ReviewInput) {
     const run = selected;
-    if (!run?.report || disposed || blocked || run.context_revision !== revision || !saved.some(item => item.attempt_id === run.attempt_id)) return;
+    if (!run?.report || disposed || blocked || run.context_revision !== revision || !isListedAttempt(run)) return;
     const token = begin(); view.loading();
     const identity = `${run.attempt_id}:${run.revision}:review:${JSON.stringify(body)}`;
     let key = actionKeys.get(identity); if (!key) { key = crypto.randomUUID(); actionKeys.set(identity, key); }

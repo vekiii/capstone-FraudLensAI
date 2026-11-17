@@ -70,13 +70,15 @@ export function createReportView(root: HTMLElement, actions: { start(): void; re
     empty() { panel.replaceChildren(node('p', 'Nema sačuvane istrage. Pokretanje je izričita radnja.')); },
     historical(runs: Run[]) { history.replaceChildren(); for (const run of runs) { const button = node('button', `Istorijski izveštaj | ${run.created_at}`); button.dataset.history = run.attempt_id; button.addEventListener('click', () => actions.select(run.attempt_id)); history.append(button); } },
     recoveryError(code: string, blocked = false) { const alert = node('p', `${code}. ${blocked ? 'Osvežite sačuvano stanje pre nove radnje.' : 'Ishod radnje nije potvrđen; ponovite istu radnju ili osvežite stanje.'}`); alert.setAttribute('role', 'alert'); panel.append(alert); if (blocked) { start.disabled = true; panel.querySelectorAll<HTMLButtonElement>('button[data-retry],button[data-cancel],button[data-review-submit]').forEach(button => { button.disabled = true; }); } },
-    run(run: Run, historical = false) {
+    run(run: Run, { historicalAttempt = false, sourceContextChanged = false } = {}) {
+      const readOnly = historicalAttempt || sourceContextChanged;
       panel.replaceChildren(); source.replaceChildren(); start.disabled = ['created', 'gathering_evidence', 'drafting'].includes(run.state);
       const status = node('p', run.state === 'created' ? 'Posao je sačuvan i čeka worker.' : `Stanje: ${run.state}`); status.dataset.runState = run.state; panel.append(status);
-      if (historical) panel.append(node('p', 'Istorijski izveštaj — vezan za prethodni kontekst izvora.'));
+      if (readOnly) panel.append(node('p', 'Istorijski pokušaj — samo za čitanje.'));
+      if (sourceContextChanged) panel.append(node('p', 'Sačuvani pokušaj je vezan za prethodni kontekst izvora.'));
       if (run.parent_attempt_id) { panel.append(node('p', `Ponovljeni pokušaj; prethodni: ${run.parent_attempt_id}. Prethodni zahtevi mogu imati nepoznat ishod i potrošnju.`)); const parent = node('button', 'Prikaži prethodni pokušaj'); parent.dataset.parent = ''; parent.addEventListener('click', actions.parent); panel.append(parent); }
-      if (!historical && ['created', 'gathering_evidence', 'drafting'].includes(run.state)) { const cancel = node('button', 'Otkaži pokušaj'); cancel.dataset.cancel = ''; cancel.addEventListener('click', actions.cancel); panel.append(cancel); }
-      if (!historical && ['failed', 'cancelled', 'needs_information'].includes(run.state)) {
+      if (!readOnly && ['created', 'gathering_evidence', 'drafting'].includes(run.state)) { const cancel = node('button', 'Otkaži pokušaj'); cancel.dataset.cancel = ''; cancel.addEventListener('click', actions.cancel); panel.append(cancel); }
+      if (!readOnly && ['failed', 'cancelled', 'needs_information'].includes(run.state)) {
         panel.append(node('p', 'Novi pokušaj može izazvati dodatnu potrošnju; prethodni zahtev nije nužno bio besplatan.'));
         const label = node('label', 'Ponovo koristi proverene dokaze '); const reuse = node('input'); reuse.type = 'checkbox'; reuse.checked = true; reuse.dataset.reuse = ''; label.append(reuse);
         const retry = node('button', 'Pokreni novi pokušaj'); retry.dataset.retry = ''; retry.addEventListener('click', () => actions.retry(reuse.checked)); panel.append(label, retry);
@@ -108,7 +110,7 @@ export function createReportView(root: HTMLElement, actions: { start(): void; re
         if (review.supersedes_review_id) panel.append(node('p', `Korekcija prethodne odluke: ${review.supersedes_review_id}. Prethodni zapis je sačuvan.`));
         panel.append(node('p', 'Lokalni zapis odluke; nije ocena kvaliteta LLM-a niti potpis nezavisnog evaluatora.'));
       }
-      if (!historical && ['ready_for_review', 'needs_information', 'reviewed'].includes(run.state)) reviewForm(run);
+      if (!readOnly && ['ready_for_review', 'needs_information', 'reviewed'].includes(run.state)) reviewForm(run);
     },
     restoreReview(body: ReviewInput) {
       const select = panel.querySelector<HTMLSelectElement>('[data-disposition]'), reason = panel.querySelector<HTMLTextAreaElement>('[data-rationale]'), note = panel.querySelector<HTMLTextAreaElement>('[data-correction-note]');

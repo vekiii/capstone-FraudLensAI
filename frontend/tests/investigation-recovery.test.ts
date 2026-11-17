@@ -70,6 +70,8 @@ it('keeps a selected historical report when refresh finds a new source snapshot'
   el.querySelector<HTMLButtonElement>('[data-history]')!.click(); await tick();
   expect(el.querySelector('[data-run-state=ready_for_review]')).not.toBeNull();
   expect(el.textContent).toContain('Istorijski');
+  expect(el.textContent).toContain('prethodni kontekst izvora');
+  expect(el.querySelector('[data-review-form],[data-retry],[data-cancel]')).toBeNull();
   expect(el.querySelector('[data-evidence]')).not.toBeNull();
 });
 
@@ -82,4 +84,53 @@ it('reopens the saved parent draft from a child without starting a new attempt',
   expect(c.attempt.mock.calls[0].slice(0, 3)).toEqual([parent.attempt_id, parent.case_id, parent.context_revision]);
   expect(el.querySelector('[data-run-state=needs_information]')).not.toBeNull();
   expect(el.textContent).toContain('Istorijski'); expect(c.retry).not.toHaveBeenCalled();
+  expect(el.textContent).not.toContain('prethodni kontekst izvora');
+  expect(el.querySelector('[data-review-form],[data-retry],[data-cancel]')).toBeNull();
+  expect(el.querySelector('[data-evidence]')).not.toBeNull();
+});
+
+it('shows a same-context cancelled parent as a read-only attempt without claiming a report or changed source', async () => {
+  const c = client(), el = root(), parent = { ...ended(), state: 'cancelled', failure: null };
+  const child = { ...ready(), attempt_id: 'att_' + 'd'.repeat(32), parent_attempt_id: parent.attempt_id };
+  child.report = { ...child.report, attempt_id: child.attempt_id };
+  c.list.mockResolvedValue(list(child)); c.attempt.mockResolvedValue(parent);
+  dispose = mountReports(el, 'CASE-001', c); await tick();
+  el.querySelector<HTMLButtonElement>('[data-parent]')!.click(); await tick();
+  expect(el.querySelector('[data-run-state=cancelled]')).not.toBeNull();
+  expect(el.textContent).toContain('Istorijski pokušaj');
+  expect(el.textContent).not.toContain('prethodni kontekst izvora');
+  expect(el.textContent).not.toContain('Istorijski izveštaj');
+  expect(el.querySelector('[data-review-form],[data-retry],[data-cancel],[data-evidence]')).toBeNull();
+  expect(c.retry).not.toHaveBeenCalled(); expect(c.cancel).not.toHaveBeenCalled(); expect(c.review).not.toHaveBeenCalled(); expect(c.create).not.toHaveBeenCalled();
+  el.querySelector<HTMLButtonElement>('[data-attempt]')!.click(); await tick();
+  expect(el.querySelector('[data-run-state=ready_for_review]')).not.toBeNull();
+  expect(el.textContent).not.toContain('Istorijski pokušaj');
+  expect(el.querySelector('[data-review-form]')).not.toBeNull();
+});
+
+it.each(['attempt_id', 'run_id', 'case_id', 'context_revision', 'snapshot_ref'])('rejects a parent with mismatched %s', async field => {
+  const c = client(), el = root(), parent = ended();
+  const child = { ...ended(), attempt_id: 'att_' + 'd'.repeat(32), parent_attempt_id: parent.attempt_id };
+  const other = { ...parent, attempt_id: 'att_' + 'e'.repeat(32), run_id: 'inv_' + 'e'.repeat(32), case_id: 'CASE-002', context_revision: 'e'.repeat(64), snapshot_ref: 'fixture_' + 'e'.repeat(64) };
+  c.list.mockResolvedValue(list(child)); c.attempt.mockResolvedValue({ ...parent, [field]: other[field as keyof typeof other] });
+  dispose = mountReports(el, 'CASE-001', c); await tick();
+  el.querySelector<HTMLButtonElement>('[data-parent]')!.click(); await tick();
+  expect(el.textContent).toContain('invalid_response');
+  expect(el.querySelector('[data-run-state]')).toBeNull();
+  expect(c.retry).not.toHaveBeenCalled(); expect(c.review).not.toHaveBeenCalled();
+});
+
+it('ignores a late parent response after refreshing to a new source context', async () => {
+  const c = client(), el = root(), parent = ended(); let finish: (v: unknown) => void = () => {};
+  const child = { ...ended(), attempt_id: 'att_' + 'd'.repeat(32), parent_attempt_id: parent.attempt_id };
+  c.list.mockResolvedValue(list(child)); c.attempt.mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+  dispose = mountReports(el, 'CASE-001', c); await tick();
+  el.querySelector<HTMLButtonElement>('[data-parent]')!.click(); await tick();
+  const changed = { ...ended(), state: 'cancelled', context_revision: 'e'.repeat(64), snapshot_ref: 'fixture_' + 'e'.repeat(64) };
+  c.list.mockResolvedValue(list(changed));
+  el.querySelector<HTMLButtonElement>('[data-refresh]')!.click(); await tick();
+  finish(parent); await tick();
+  expect(el.textContent).toContain(changed.context_revision);
+  expect(el.querySelector('[data-run-state=cancelled]')).not.toBeNull();
+  expect(el.querySelector('[data-run-state=failed]')).toBeNull();
 });
