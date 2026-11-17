@@ -1,4 +1,39 @@
-# Current handoff - T094 accepted / T096 complete, 2026-11-17
+# Current handoff - T097 offline scope complete, 2026-11-17
+
+T097 checked: historical worker-only demo2/5/outlier7496.290s reconciled with
+current deadline/SDK/cleanup guards; no remaining runtime defect demonstrated.
+New [timing protocol](specs/003-ai-investigation/timing-v1-protocol.md) defines five
+fresh ordinary cases +20local searches, source/model/code/machine freeze, external
+POST-to-visible-terminal measurement, watchdog and unchanged90/120/2s targets.
+New offline timing_evaluation module preserves5/20 denominators, errors, nearest
+rank19 p95, exclusive outputs. This is tooling, NOT new live SC-006 acceptance.
+
+[Actual evidence](evidence/tasks/feature-003-t097-20261117.md):17RED->17GREEN new
+arithmetic tests +2 current-behavior deadline regressions; targeted102PASS47.64s,
+full1067PASS169.97s, Ruff/format/diff PASS. All58 protected history/runtime hashes
+unchanged. No frontend rerun; runtime unchanged. ZERO provider calls, no old
+replay, new report generation, commit/push/merge. Work on feature03-retrieval-v4.
+
+T094/T095/T096/T097/T099/T100 complete in their recorded scopes. T098 remains.
+**Next concrete step:** inspect actual producer stores/assembly availability for
+T098. Fresh live performance remains separate: materialize/review the protocol's
+five actual inputs+20queries and freeze BEFORE requesting bounded budget. Proposed
+40-provider-request timing cap is NOT approved; old exhausted budgets cannot be
+reused. No timing acceptance from three development examples or fixture tests.
+
+# Previous handoff - T097 verification in progress, 2026-11-17
+
+T097 protocol and offline timing evaluator implemented;17 intended RED failures
+->17PASS, plus2 current-deadline characterization tests. Targeted102PASS47.64s;
+full backend still running, task not yet checked. New protocol:
+[external timing design](specs/003-ai-investigation/timing-v1-protocol.md).
+
+Old demo remains2/5 with7496.290s outlier; old runner timed worker only, not UI.
+No new runtime cause established; workflow/provider unchanged. ZERO provider calls,
+no old batch replay or new live timing acceptance. Await full suite before closing
+T097/evidence. Existing T094/T096 results unchanged. No commit/push/merge.
+
+# Previous handoff - T094 accepted / T096 complete, 2026-11-17
 
 User explicitly accepted corrected protocol: "Okej, prihvatam, sada implementiraj
 T096". T094 and T096 checked. This is team acceptance, not a rewrite of four paid

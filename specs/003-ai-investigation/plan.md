@@ -1,5 +1,10 @@
 # Implementation Plan: Evidence-backed AI Investigation
 
+2026-11-17 T097: [timing-v1 protocol](timing-v1-protocol.md) reconciles original
+failed five-case worker timings with current deadline/cleanup guards and defines
+fresh external visible-terminal measurement. Separate offline timing_evaluation
+arithmetic and regression checks do not execute/accept a new live performance run.
+
 2026-11-17 T094/T096 addendum: user accepted the corrected
 [successor rubric](report-quality-v4-plan.md) and
 [validation path](report-quality-v4-validation.md). The separate

@@ -237,3 +237,10 @@ User accepted corrected v4 protocol; T096 offline schema/prompt/controls/aggrega
 implemented. [Actual evidence](feature-003-t096-20261117.md). Thirty-nine new
 software tests and71 related checks PASS; six authored controls verified, not
 model calibration. Zero new provider calls; old quality results unchanged.
+
+## T097 offline timing follow-up, 2026-11-17
+
+[Evidence](feature-003-t097-20261117.md): timing protocol/tooling complete,
+full1067 tests PASS. Original five-case demo2/5 and7496.290s worker outlier preserved.
+No new actual-provider/UI-visible timing or local-search measurement; SC-006 not
+accepted. Separate frozen five-case+20search execution/budget still required.

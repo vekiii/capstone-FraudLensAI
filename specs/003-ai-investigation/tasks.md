@@ -372,10 +372,11 @@ Scope: [final-live-check.md](final-live-check.md). User requires waiting before 
 
 ## Phase 16: Convergence
 
-**Current status after user acceptance2026-11-17:** T094/T095/T096/T099/T100 complete.
+**Current status after user acceptance2026-11-17:** T094/T095/T096/T097/T099/T100 complete.
 T094 resolved by explicit team acceptance of corrected protocol; T096 implemented
 and tested offline. Evidence: `evidence/tasks/feature-003-t096-20261117.md`.
-Open: T097 (deadline/reproduction protocol), T098 (actual producer assembly). Detailed dated progress below is
+T097 offline reconciliation/protocol complete; no live SC-006 acceptance implied.
+Open: T098 (actual producer assembly). Detailed dated progress below is
 historical; earlier T095-open statements are superseded by its acceptance.
 
 Recommended order: T094 -> T096; T097 can proceed in parallel without changing
@@ -433,7 +434,15 @@ separate explicit scope/budget; these tasks do not authorize replay or regrading
   Zero provider calls, no actual model calibration/report quality or SC-003 claim.
   Evidence: `evidence/tasks/feature-003-t096-20261117.md`.
 
-- [ ] T097 Reconcile current workflow/provider deadline behavior with the preserved failed five-case live timing/outlier evidence, add meaningful offline regression for any demonstrated remaining cause, and document a fresh frozen five-case demonstration protocol in `specs/003-ai-investigation/` before requesting a separate execution budget; retain failures in denominators and original 90/120-second targets. Do not substitute three development examples or claim current timeout failure solely from an old outlier. HIGH per SC-006, FR-018–020, FR-028 (partial).
+- [x] T097 Reconcile current workflow/provider deadline behavior with the preserved failed five-case live timing/outlier evidence, add meaningful offline regression for any demonstrated remaining cause, and document a fresh frozen five-case demonstration protocol in `specs/003-ai-investigation/` before requesting a separate execution budget; retain failures in denominators and original 90/120-second targets. Do not substitute three development examples or claim current timeout failure solely from an old outlier. HIGH per SC-006, FR-018–020, FR-028 (partial).
+  T097 completion2026-11-17: historical demo2/5/outlier7496.290s preserved;
+  worker-only old timing distinguished from future UI-visible measurement.
+  Current timeout/cleanup guards reconciled, no new runtime defect demonstrated.
+  New `timing-v1-protocol.md` + offline fixed5/20 timing evaluator;19new tests,
+  targeted102/full1067 PASS;58 historical/source hashes unchanged. Zero API calls;
+  no new actual-provider performance result or SC-006 claim. Evidence:
+  `evidence/tasks/feature-003-t097-20261117.md`.
+
 - [ ] T098 Coordinate and exercise the existing reviewed adapter with actual published producer rules/model stores through investigation API and matching worker, bounded history/source-switch/archive checks and the agreed application assembly boundary; record actual producer/run/dataset/model identities and source hashes in `evidence/tasks/feature-003-context.md`. Preserve T062–T064 completed controlled scope; no ML training, producer schema changes, automatic merge, label access, fixture fallback or live-provider execution. Full population/model validation remains unrun until real stores and assembly are available. HIGH per SC-007, FR-001–004, FR-011, plan: producer integration (partial).
 - [x] T099 Separate historical-attempt display from changed-source-context display in `frontend/src/investigation/controller.ts` and `views.ts`; reproduce same-context retry-parent labeling with an intended RED regression, retain read-only historical actions and actual source-switch warnings, then verify GREEN plus relevant stale-navigation/recovery checks. Same-context cancelled parents must not claim a previous source context or an existing report. MEDIUM per FR-002, FR-021, US3/AC1, plan: historical evidence (partial).
 - [x] T100 Add an explicit current context-v2/reviewed-producer addendum to `specs/003-ai-investigation/contracts/api.md`, linking `dataset-adapter-agreement-v2.md`, both historical/current snapshot identities and actual implemented read-only composition; preserve old v1 report/schema meanings and distinguish fixture UI from unrun full producer assembly. Check documentation/schema/example consistency without rewriting historical contracts or results. LOW per FR-001–003, FR-028, plan: versioned boundaries (partial).
