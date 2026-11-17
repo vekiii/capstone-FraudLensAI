@@ -1,0 +1,126 @@
+{
+  "calls": 4,
+  "limit": 4,
+  "retries": 0,
+  "reviews": [
+    {
+      "stage": "t094",
+      "accepted": false,
+      "status": "incomplete",
+      "decision": null,
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 2378,
+        "input_tokens_details": {
+          "cache_write_tokens": 2375,
+          "cached_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 2375
+          }
+        },
+        "output_tokens": 2048,
+        "output_tokens_details": {
+          "reasoning_tokens": 1552
+        },
+        "total_tokens": 4426
+      },
+      "file": "evidence/tasks/feature-003-t094-llm-review-20261117.json"
+    },
+    {
+      "stage": "t094-revised",
+      "accepted": false,
+      "status": "completed",
+      "decision": "request_changes",
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 1890,
+        "input_tokens_details": {
+          "cache_write_tokens": 1887,
+          "cached_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 1887
+          }
+        },
+        "output_tokens": 1527,
+        "output_tokens_details": {
+          "reasoning_tokens": 1254
+        },
+        "total_tokens": 3417
+      },
+      "file": "evidence/tasks/feature-003-t094-revised-llm-review-20261117.json"
+    },
+    {
+      "stage": "t094-neutral",
+      "accepted": false,
+      "status": "completed",
+      "decision": "request_changes",
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 2097,
+        "input_tokens_details": {
+          "cache_write_tokens": 2094,
+          "cached_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 2094
+          }
+        },
+        "output_tokens": 2018,
+        "output_tokens_details": {
+          "reasoning_tokens": 1722
+        },
+        "total_tokens": 4115
+      },
+      "file": "evidence/tasks/feature-003-t094-neutral-llm-review-20261117.json"
+    },
+    {
+      "stage": "t094-final",
+      "accepted": false,
+      "status": "completed",
+      "decision": "request_changes",
+      "model": "gpt-6-luna",
+      "usage": {
+        "input_tokens": 2546,
+        "input_tokens_details": {
+          "cache_write_tokens": 2543,
+          "cached_tokens": 0,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 2543
+          }
+        },
+        "output_tokens": 2321,
+        "output_tokens_details": {
+          "reasoning_tokens": 2063
+        },
+        "total_tokens": 4867
+      },
+      "file": "evidence/tasks/feature-003-t094-final-llm-review-20261117.json"
+    }
+  ],
+  "protected_files_unchanged": {
+    "evals\\investigation\\development-v8\\calibrations.json": true,
+    "evals\\investigation\\development-v8\\inputs.json": true,
+    "evals\\investigation\\development-v8\\protocol.json": true,
+    "evals\\investigation\\development-v8\\reference.json": true,
+    "evals\\investigation\\amendments\\report-judging-v2.json": true,
+    "backend\\src\\fraudlens\\investigation\\judging.py": true,
+    "backend\\src\\fraudlens\\investigation\\judge_calibration.py": true,
+    "backend\\src\\fraudlens\\investigation\\workflow.py": true,
+    "backend\\src\\fraudlens\\investigation\\validation.py": true,
+    "backend\\src\\fraudlens\\investigation\\report_policy.py": true,
+    "prompts\\evaluation\\report-judge-v2.md": true,
+    "prompts\\evaluation\\report-judge-v3.md": true,
+    "prompts\\application\\investigation-v4.md": true,
+    "evidence\\tasks\\feature-003-final-live-v8-results.json": true
+  },
+  "all_protected_unchanged": true,
+  "raw_v8_archive_available_now": false,
+  "t094_complete": false,
+  "t096_implemented": false,
+  "tests": "No business-code changes; no business tests run",
+  "ruff": "check and format PASS",
+  "diff_check": "PASS"
+}

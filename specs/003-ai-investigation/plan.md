@@ -1,5 +1,12 @@
 # Implementation Plan: Evidence-backed AI Investigation
 
+2026-11-17 T094/T096 addendum: user accepted the corrected
+[successor rubric](report-quality-v4-plan.md) and
+[validation path](report-quality-v4-validation.md). The separate
+[offline v4 contract](contracts/report-quality-v4.md) is implemented/tested.
+This is prospective evaluation tooling, not new report-quality acceptance;
+old v8/SC-003 results and runtime behavior remain unchanged.
+
 2026-11-17 T095 semantic integration/evaluation addendum:
 [runtime/evaluation design](retrieval-v6-integration.md),
 [actual user-approved LLM review method](retrieval-v6-judge-decision.md).

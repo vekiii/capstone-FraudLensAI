@@ -218,3 +218,22 @@ Final backend 759 PASS, Ruff PASS. T059 actual judgments deliberately absent
 See [current complete handoff](feature-003-t058-t061-handoff.md),
 [actual execution summary](feature-003-live-results.json),
 [available audit](feature-003-live-audit-results.json).
+
+
+## Superseding T095 status - user accepted2026-11-17
+
+Semantic v6 retrieval integration and approved blind automated reference review
+completed. Frozen20 English questions: Recall.864583/MRR.9375,4/4 no-answer and
+4/4 judge calibration. Failed020 kept;44 intents, zero retries. Same-model blind
+judge is not independent human/model review. Actual evidence and post-evaluation
+code lineage: feature-003-v6-integration-judge-20261117.md. User reviewed and
+requested closing T095; checked. Earlier failed .50/.50 and v4/v5 diagnostics
+remain historical, not overwritten. Report-quality/T094/T096, timing/T097 and
+actual-data assembly/T098 remain separate open work. No new provider calls here.
+
+## T094/T096 successor, 2026-11-17
+
+User accepted corrected v4 protocol; T096 offline schema/prompt/controls/aggregation
+implemented. [Actual evidence](feature-003-t096-20261117.md). Thirty-nine new
+software tests and71 related checks PASS; six authored controls verified, not
+model calibration. Zero new provider calls; old quality results unchanged.

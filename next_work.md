@@ -1,4 +1,65 @@
-# Current handoff - T095 reviewed and complete, 2026-11-17
+# Current handoff - T094 accepted / T096 complete, 2026-11-17
+
+User explicitly accepted corrected protocol: "Okej, prihvatam, sada implementiraj
+T096". T094 and T096 checked. This is team acceptance, not a rewrite of four paid
+LLM reviews (incomplete +3request_changes). [Implementation evidence](evidence/tasks/feature-003-t096-20261117.md).
+
+New OFFLINE judging_v4 module, strict schema/prompt, six versioned authored controls,
+private expected labels, packet/quote bindings, exact6/6 gate, paired8+5 aggregation
+and exclusive output CLI. [Instructions](evals/investigation/report-quality-v4/README.md).
+Software fixture checks are NOT actual model calibration or report evaluation.
+Final39new/71related regression PASS; full1043 before final bridge correction,
+Ruff/diff PASS; all14 protected historical/runtime hashes unchanged. No frontend
+rerun (offline-only). Preserve old0/8,failed2/3/unavailable-quality outcomes.
+
+ZERO provider calls this implementation; previous FOUR-call design allowance remains
+exhausted. No new report generation/regrading, runtime changes, commit/push/merge.
+Prior dirty documentation preserved. Work remains on feature03-retrieval-v4.
+Raw ignored v8 archive absent now; no fresh raw-archive inspection claimed.
+
+**Next concrete step:** T097 offline deadline/timing evidence review and fresh frozen
+five-case protocol. T098 needs actual producer stores/assembly. A future quality
+run needs fresh reviewed inputs and separate explicit budget; do not reuse authored
+ratings as real calibration or replay old reports. T096 completes tooling, not SC-003.
+
+# Previous handoff - T094 review corrections, budget exhausted, 2026-11-17
+
+User requested T094 LLM decision then T096; approved original2 plus at most2 extra
+OpenAI design-review calls. Actual FOUR consumed, zero retries: incomplete then
+three request_changes. No final approval. T094/T096 remain UNCHECKED; T096 not
+implemented. [Evidence](evidence/tasks/feature-003-t094-t096-review-20261117.md).
+
+New [plan](specs/003-ai-investigation/report-quality-v4-plan.md) and
+[validation path](specs/003-ai-investigation/report-quality-v4-validation.md)
+address neutral fields/no private missingness leakage, exact6-control labels and
+explicit disclosure/guidance pass gates. Last correction not re-reviewed. Preserve
+historical 0/8, failed2/3/unavailable quality; all14 protected file hashes unchanged.
+Ruff/diff PASS; no business-code changes/tests. Raw ignored v8 archive absent now.
+No runtime change, report generation/regrading, merge, commit or push. Do not rerun
+exhausted live review script; no additional provider allowance remains.
+
+**Next concrete step:** review/accept the corrected final T094 pass equation and
+control labels, then T096 RED/GREEN implementation. Additional external-model
+review needs a new explicitly bounded authorization; human acceptance may instead
+resolve the pending design decision. T097 independent offline work remains available.
+
+# Previous handoff - task map aligned with accepted v6, 2026-11-17
+
+T095 completion row now describes actual semantic v6 API/worker integration,
+44-call blind-judge experiment, numeric results, user acceptance and limitations.
+Phase16 has a current-status/dependency summary; old dated v3/v4/v5/open notes
+remain historical. Evaluation overview links the superseding accepted evidence.
+No code, task markers beyond already accepted T095, API calls, commits or merges
+changed in this docs-only unit. Prior uncommitted work preserved.
+
+Open: T094 rubric decision -> T096 report-quality implementation; T097 deadline/
+reproduction protocol may proceed independently; T098 needs real producer stores.
+**Next concrete step:** review T094 clarification proposal and record an actual
+review decision before T096. T097 is available for independent offline work.
+Existing retrieval judge approval is not a report-evaluation budget or regrading
+permission. Earlier handoffs below retain actual execution detail and caveats.
+
+# Previous handoff - T095 reviewed and complete, 2026-11-17
 
 User explicitly confirmed reviewing the delivered v6 integration/evaluation and
 requested checking T095. T095 is now checked in specs/003-ai-investigation/tasks.md.

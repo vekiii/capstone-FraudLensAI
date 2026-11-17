@@ -368,9 +368,21 @@ Scope: [final-live-check.md](final-live-check.md). User requires waiting before 
 - [x] T092 Execute one bounded unchanged actual-model batch and calibrated judge; audit ordinary/diagnostic results, bindings, usage, citations and old artifact preservation. Actual18HTTP200,3 valid reports and real notice repair; calibration2/3 FAILED, quality unavailable, raw ratings retained. Integrity PASS44 prior hashes/13 cited IDs. (Depends:T091; FR-018, FR-025–028.)
 - [x] T093 Review branch diff and target ancestry/merge preview; run backend/frontend regression, record remaining feature gates, commit evidence/handoff and WAIT for user's merge decision. Source919/frontend186/build PASS; conflict-free preview, focused agent review complete; full quality/human/producer gates remain open. This is not T067/full acceptance or human sign-off. (Depends:T092; FR-028, SC-004–008.)
 
-- [ ] T094 Review the CAL8-B missingness/contradiction rubric disagreement and design any new calibration protocol before fresh quality evaluation; preserve frozen v8 labels/ratings and unavailable quality result. Technical review and proposed predicate/control matrix prepared in `specs/003-ai-investigation/calibration-clarification-proposal.md`, with actual evidence in `evidence/tasks/feature-003-offline-review-20261116.md`. Human/independent review remains pending; raw v8 judge archive absent locally; no automatic rerun or regrading. (FR-025–028.)
+- [x] T094 Review the CAL8-B missingness/contradiction rubric disagreement and design any new calibration protocol before fresh quality evaluation; preserve frozen v8 labels/ratings and unavailable quality result. Technical review and proposed predicate/control matrix prepared in `specs/003-ai-investigation/calibration-clarification-proposal.md`, with actual evidence in `evidence/tasks/feature-003-offline-review-20261116.md`. User delegated this decision to LLM review on 2026-11-17: four bounded calls produced one incomplete and three request_changes; corrected successor plan/validation explicitly accepted by user on 2026-11-17 ("Okej, prihvatam, sada implementiraj T096"). Team acceptance resolves T094; it is not external-model approval. See `evidence/tasks/feature-003-t094-t096-review-20261117.md`. Raw v8 judge archive absent locally; no replay/regrading. (FR-025–028.)
 
 ## Phase 16: Convergence
+
+**Current status after user acceptance2026-11-17:** T094/T095/T096/T099/T100 complete.
+T094 resolved by explicit team acceptance of corrected protocol; T096 implemented
+and tested offline. Evidence: `evidence/tasks/feature-003-t096-20261117.md`.
+Open: T097 (deadline/reproduction protocol), T098 (actual producer assembly). Detailed dated progress below is
+historical; earlier T095-open statements are superseded by its acceptance.
+
+Recommended order: T094 -> T096; T097 can proceed in parallel without changing
+quality labels or spending on a new live batch. T098 requires the real producer
+stores/artifacts; successful controlled fixtures are insufficient. Retrieval LLM
+judge approval does NOT authorize report regrading or another paid experiment.
+
 
 Actual assessment 2026-11-17: see `evidence/tasks/feature-003-convergence.md`.
 T066 reproduction/contributor review is complete; this assessment records remaining
@@ -378,7 +390,7 @@ work, not full acceptance. T094 stays open (raw archive now verified; independen
 rubric decision still pending). New live/provider/evaluation execution requires
 separate explicit scope/budget; these tasks do not authorize replay or regrading.
 
-- [x] T095 Address the unmet retrieval target with a separately versioned development-only improvement/design and reviewed fresh evaluation plan in `specs/003-ai-investigation/` and `evidence/tasks/feature-003-evaluation.md`; preserve frozen baseline/improved 0.50/0.50 results, thresholds, splits and no-answer denominators, never tune exposed held-out answers, and execute any fresh acceptance experiment only after explicit authorization. Keep SC-002 unmet until actual evidence satisfies it. HIGH per SC-002, FR-008, FR-025–028 (partial).
+- [x] T095 Implement and evaluate the separately versioned retrieval improvement per SC-002, FR-008, FR-025?028. Completed semantic v6 core/API/worker integration with pinned policies, shared dispatch budgets, cancellation/source guards and approved blind LLM reference review. Frozen20-question evaluation (16 answerable+4 no-answer): Recall@5 .864583, MRR@5 .9375, no-answer4/4, calibration4/4; failed503 retained, zero retries,44-call cap. User reviewed and accepted2026-11-17. Preserve original .50/.50 results and all v4/v5 failures. Evidence: `evidence/tasks/feature-003-v6-integration-judge-20261117.md`; method/limits: `retrieval-v6-judge-decision.md`. Does not close report-quality, timing or real-data gates.
 
   T095 partial progress (2026-11-17): versioned design/review packet
   `retrieval-development-v3.md` prepared; existing v2 candidate reused, no runtime
@@ -414,7 +426,13 @@ separate explicit scope/budget; these tasks do not authorize replay or regrading
   and SC-002 thresholds/counts. Planning recorded only, no runtime change or
   acceptance experiment; T095 remains OPEN.
 
-- [ ] T096 After the independent T094 decision, implement/test any approved new rubric/control version and necessary grounded-report quality corrections in `backend/src/fraudlens/investigation/` with new authored development controls; define a separately reviewed validation path before any explicitly authorized new actual-provider evaluation. Preserve original 0/8 quality, raw v8 ratings, failed calibration/unavailable quality, critical-error requirements and support/coverage thresholds; no old replay/regrading or acceptance from structural PASS. HIGH per SC-003, FR-013–017, FR-025–028 (partial).
+- [x] T096 After the T094 decision (corrected protocol explicitly accepted by user2026-11-17), implement/test any approved new rubric/control version and necessary grounded-report quality corrections in `backend/src/fraudlens/investigation/` with new authored development controls; define a separately reviewed validation path before any explicitly authorized new actual-provider evaluation. Preserve original 0/8 quality, raw v8 ratings, failed calibration/unavailable quality, critical-error requirements and support/coverage thresholds; no old replay/regrading or acceptance from structural PASS. HIGH per SC-003, FR-013–017, FR-025–028 (partial).
+  T096 completion: separate offline rubric/prompt/schema/6 authored controls, exact calibration gate,
+  packet/witness binding, paired8+5 aggregation and exclusive CLI. Final39 new tests/71 related
+  regression PASS; full1043 before final bridge correction;14 protected hashes unchanged.
+  Zero provider calls, no actual model calibration/report quality or SC-003 claim.
+  Evidence: `evidence/tasks/feature-003-t096-20261117.md`.
+
 - [ ] T097 Reconcile current workflow/provider deadline behavior with the preserved failed five-case live timing/outlier evidence, add meaningful offline regression for any demonstrated remaining cause, and document a fresh frozen five-case demonstration protocol in `specs/003-ai-investigation/` before requesting a separate execution budget; retain failures in denominators and original 90/120-second targets. Do not substitute three development examples or claim current timeout failure solely from an old outlier. HIGH per SC-006, FR-018–020, FR-028 (partial).
 - [ ] T098 Coordinate and exercise the existing reviewed adapter with actual published producer rules/model stores through investigation API and matching worker, bounded history/source-switch/archive checks and the agreed application assembly boundary; record actual producer/run/dataset/model identities and source hashes in `evidence/tasks/feature-003-context.md`. Preserve T062–T064 completed controlled scope; no ML training, producer schema changes, automatic merge, label access, fixture fallback or live-provider execution. Full population/model validation remains unrun until real stores and assembly are available. HIGH per SC-007, FR-001–004, FR-011, plan: producer integration (partial).
 - [x] T099 Separate historical-attempt display from changed-source-context display in `frontend/src/investigation/controller.ts` and `views.ts`; reproduce same-context retry-parent labeling with an intended RED regression, retain read-only historical actions and actual source-switch warnings, then verify GREEN plus relevant stale-navigation/recovery checks. Same-context cancelled parents must not claim a previous source context or an existing report. MEDIUM per FR-002, FR-021, US3/AC1, plan: historical evidence (partial).

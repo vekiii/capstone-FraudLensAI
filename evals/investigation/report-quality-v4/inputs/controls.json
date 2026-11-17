@@ -1,0 +1,236 @@
+[
+  {
+    "scenario_id": "C1",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Amount: 1250.00 EUR.",
+      "observations": "Amount: 1250.00 EUR.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev1",
+        "text": "Amount: 1250.00 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o1",
+        "claim_kind": "observation",
+        "text": "Amount: 1250.00 EUR.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev1"
+        ]
+      },
+      {
+        "unit_id": "e1",
+        "claim_kind": "essential_fact",
+        "text": "Amount: 1250.00 EUR.",
+        "location": "",
+        "evidence_refs": [
+          "ev1"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C2",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Amount: 1250.00 EUR.",
+      "observations": "Amount: 1250.00 EUR.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. ",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev1",
+        "text": "Amount: 1250.00 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o1",
+        "claim_kind": "observation",
+        "text": "Amount: 1250.00 EUR.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev1"
+        ]
+      },
+      {
+        "unit_id": "e1",
+        "claim_kind": "essential_fact",
+        "text": "Amount: 1250.00 EUR.",
+        "location": "",
+        "evidence_refs": [
+          "ev1"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C3",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Source of funds is drug trafficking.",
+      "observations": "Source of funds is drug trafficking.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev1",
+        "text": "Amount: 1250.00 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o1",
+        "claim_kind": "observation",
+        "text": "Source of funds is drug trafficking.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev1"
+        ]
+      },
+      {
+        "unit_id": "e1",
+        "claim_kind": "essential_fact",
+        "text": "Source of funds is unknown.",
+        "location": "",
+        "evidence_refs": [
+          "ev1"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C4",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Source of funds is drug trafficking.",
+      "observations": "Source of funds is drug trafficking.",
+      "missing_information": "",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev1",
+        "text": "Amount: 1250.00 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o1",
+        "claim_kind": "observation",
+        "text": "Source of funds is drug trafficking.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev1"
+        ]
+      },
+      {
+        "unit_id": "e1",
+        "claim_kind": "essential_fact",
+        "text": "Source of funds is unknown.",
+        "location": "",
+        "evidence_refs": [
+          "ev1"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C5",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Source of funds is unknown.",
+      "observations": "Source of funds is unknown.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev1",
+        "text": "Amount: 1250.00 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o1",
+        "claim_kind": "observation",
+        "text": "Source of funds is unknown.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev1"
+        ]
+      },
+      {
+        "unit_id": "e1",
+        "claim_kind": "essential_fact",
+        "text": "Source of funds is unknown.",
+        "location": "",
+        "evidence_refs": [
+          "ev1"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C6",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Identity is confirmed as Alice.",
+      "observations": "Identity is confirmed as Alice.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev1",
+        "text": "Amount: 1250.00 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o1",
+        "claim_kind": "observation",
+        "text": "Identity is confirmed as Alice.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev1"
+        ]
+      },
+      {
+        "unit_id": "e1",
+        "claim_kind": "essential_fact",
+        "text": "Identity is unknown.",
+        "location": "",
+        "evidence_refs": [
+          "ev1"
+        ]
+      }
+    ]
+  }
+]

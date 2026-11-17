@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "kind": "authored_software_controls_not_model_evaluation",
+  "files_sha256_lf": {
+    "inputs/controls.json": "2acae23fb6ac992d24a16dbf4609926ca3fbd275ff5272948875ce64dfed10f5",
+    "reference/expectations.json": "7108a77b4a468869d40ec59b80fb2f9e8f73542f6e24b559e5ba34952d4db4b9",
+    "reference/authored-ratings.json": "0ebb9f2ce6913ad7333df1b6e771e1c2c6c4a3c68b32e9b81190c3cdc68805e6",
+    "rating-schema.json": "a507a7e4fd044decd8cde5bc5063b36f5320f36eb2bb20b3e13374bed9d76ccc"
+  },
+  "prompt_sha256_lf": "e27031f5665f0f46cd4c8317b4adf5383e0b080220ab4a22b2c3f2a67208e30a",
+  "implementation_sha256_lf": "b42864354d2fa3ca753a004b4f0302cb0eb2076fc14c1e383c74a9c32ad30986",
+  "team_protocol_accepted_on": "2026-11-17",
+  "label_policy": "Private expected labels and authored ratings never enter public judge packets or runtime.",
+  "future_live_status": "not_authorized_not_run"
+}

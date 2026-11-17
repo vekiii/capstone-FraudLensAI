@@ -404,3 +404,14 @@ participation and code/contracts/evidence decision separately from AI checks and
 prior user observations. T061 audit is complete; quality acceptance is still
 unmet. T066 stays partial until its remaining human evidence exists. T067
 Converge follows T066 and does not automatically accept pending quality gates.
+
+## T096 offline rubric v4 (no model calls)
+
+```powershell
+$env:PYTHONPATH = Join-Path $PWD 'backend/src'
+.venv/Scripts/python.exe -m fraudlens.investigation.judging_v4 --verify-controls evals/investigation/report-quality-v4
+```
+
+Expected software_controls_pass=true, model_quality_evaluated=false.
+[Control pack and offline aggregation instructions](../../evals/investigation/report-quality-v4/README.md).
+No actual report-quality run is authorized by this command.
