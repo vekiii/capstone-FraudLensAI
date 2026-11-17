@@ -10,6 +10,19 @@ Freeze content/config hashes, splits and expected relevance before tuning. If a 
 
 ## Retrieval
 
+**Current prospective scope amendment,2026-11-17:** Milan approved
+[English-only procedure retrieval](retrieval-english-mvp-decision.md). The
+successor retrieval pack uses English questions only, at least10 development and
+20 fresh held-out, with at least4 no-answer held-out; existing Recall0.80/MRR0.70
+thresholds and separate no-answer denominator remain. Keep reviewed references,
+both configurations, input isolation, freeze and separate execution authorization.
+This is not a passing result. Do not reuse only old English rows as a fresh test.
+
+The multilingual decision and pack description below are **historical** and remain
+applicable to the preserved original/v3 results; they do not govern language
+coverage of the prospective English-only successor. Metric definitions and
+preservation rules still apply. Report evaluation language is a separate scope.
+
 Team decision, Vedran 2026-11-15: retain English, Serbian Latin and Serbian
 Cyrillic questions. Report retrieval metrics both overall and separately for
 `en`, `sr-Latn` and `sr-Cyrl`, separately within each split. Each group reports

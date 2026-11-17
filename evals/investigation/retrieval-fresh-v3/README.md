@@ -1,5 +1,10 @@
 # Fresh retrieval v3 — development review packet
 
+Prospective successor: Milan approved
+[English-only retrieval MVP](../../../specs/003-ai-investigation/retrieval-english-mvp-decision.md).
+This v3 pack remains multilingual historical development evidence. Do not delete
+Serbian rows, change its protocol/counts or replay it as English-only acceptance.
+
 Status: Milan accepted the presented18-row development table/references and
 authorized continuation on2026-11-17. One bounded development selection executed:
 both variants Recall/MRR0.25/0.25,6/6 correct no-answer; SC-002 remains UNMET.

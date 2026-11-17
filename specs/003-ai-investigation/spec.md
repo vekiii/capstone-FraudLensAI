@@ -12,6 +12,14 @@
 
 ## User Scenarios & Testing *(mandatory)*
 
+2026-11-17 approved scope amendment: [English-only retrieval MVP](retrieval-english-mvp-decision.md).
+Supported procedure-search queries and the next retrieval evaluation are English
+only. This prospectively supersedes the earlier cross-language retrieval
+requirement; Serbian UI/report language remains separate. SC-002 keeps its
+thresholds/counts and remains unmet until new reviewed English-only evidence.
+Historical multilingual results/packs remain unchanged; this amendment is not
+implemented behavior or acceptance.
+
 ### User Story 1 - Find and inspect procedures (Priority: P1)
 
 An analyst searches the curated knowledge collection and inspects exact source passages, versions, jurisdiction and simulation status.
@@ -176,7 +184,7 @@ These are release targets, not observed results. Missed targets MUST remain visi
 ### Scope
 
 - This local educational AML prototype stays within Bootcamp modules 1-9 and the four approved screens. This feature delivers knowledge, investigation and explicit human review. ML development, priority optimization and Simulation Lab remain separate. No autonomous account actions, regulatory submissions, open-web investigation, graph database or multiple autonomous agents.
-- Default UI/report language is Serbian; English sources retain original cited text. Exact amounts, currencies, names and identifiers do not become new facts through translation. Include cross-language questions in the frozen evaluation pack.
+- Default UI/report language is Serbian; English sources retain original cited text. Exact amounts, currencies, names and identifiers do not become new facts through translation. Under the approved2026-11-17 [English-only retrieval decision](retrieval-english-mvp-decision.md), initial MVP procedure queries and successor retrieval evaluation are English-only; Serbian retrieval is deferred. Earlier cross-language packs/results remain historical evidence.
 - Corpus preparation is local team work, not a public upload/scraping platform. Versioned evidence is retained for the lifetime of the demonstration; real-customer retention policies are outside this synthetic-only scope.
 
 ### Parallel work and integration

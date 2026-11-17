@@ -1,5 +1,10 @@
 # T095 retrieval development design v3 — 2026-11-17
 
+Prospective successor decision: [English-only retrieval MVP](retrieval-english-mvp-decision.md)
+approved by Milan on2026-11-17. The v3 design/results below are preserved history;
+do not rewrite its language counts or rerun it as an English-only test. Prepare
+a separate versioned English-only design. T095 remains open, SC-002 unmet.
+
 Status: **plan approved by Milan Gavrić / milangavric2003 on 2026-11-17;
 18-row development reference table accepted by Milan; development selection
 executed below targets; fresh acceptance execution NOT AUTHORIZED / NOT RUN**.

@@ -1,4 +1,27 @@
-# Current handoff — T095 development result below target; next design decision, 2026-11-17
+# Current handoff — English-only retrieval scope approved; next design, 2026-11-17
+
+Milan Gavrić/milangavric2003 explicitly approved moving the initial MVP procedure
+retrieval to English. [Decision](specs/003-ai-investigation/retrieval-english-mvp-decision.md).
+Serbian retrieval deferred; UI/report language remains separate. Current spec,
+plan and evaluation addenda aligned prospectively. This unit changes docs only;
+runtime/v3 pack and all previous results/thresholds retained. No new evaluation.
+
+Branch feature03-retrieval-v3, starting clean HEADa2b35caaab5ccd46293945315c4d1dfee8d08b14.
+[Prompt](prompts/development/003-english-retrieval-decision-20261117.md).
+[Actual scope/checks](evidence/tasks/feature-003-english-retrieval-decision-20261117.md).
+T095 OPEN, SC-002 UNMET. English-only supported-query behavior is not implemented
+or accepted merely by this amendment; no automatic translation or broad UI rewrite.
+Original0.50/0.50 and v3 development0.25/0.25 remain with original denominators;
+old English successes are not a fresh acceptance result. No task markers changed.
+Docs checks PASS:517 prior files byte-identical,100 markers unchanged,74 valid
+local links, whitespace PASS. No backend/frontend tests run for this docs-only unit.
+
+**One concrete next step:** prepare a separate T095 English-only development
+design, defining analyst/worker query language, one bounded relevance/no-answer
+improvement and new reviewed evaluation pack. Keep20 fresh held-out and at least4
+no-answer, unchanged0.80/0.70 targets and separate run authorization. No old replay.
+
+# Previous handoff — T095 development result below target; next design decision, 2026-11-17
 
 On feature03-retrieval-v3 from clean cc712513d3a30286c23a9f1059aaffaa5dbae79e.
 Milan Gavrić/milangavric2003 accepted the18-row development table/corpus and

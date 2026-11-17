@@ -13,6 +13,13 @@ is distinguished from unavailable full IBM/model validation.
 
 ## Summary
 
+Current language scope, approved2026-11-17 by Milan:
+[English-only procedure retrieval MVP](retrieval-english-mvp-decision.md).
+Prepare a separate T095 English-only development design/pack and analyst/worker
+query contract; Serbian retrieval is deferred. UI/report language remains
+separate. Existing v3 language counts/runner and past results are historical;
+no code adaptation or new acceptance execution is claimed by this plan update.
+
 T095 continuation2026-11-17: Milan approved
 [retrieval development v3](retrieval-development-v3.md). Its separate offline
 module `backend/src/fraudlens/investigation/retrieval_fresh_v3.py` implements

@@ -12,6 +12,12 @@ Status: design research, 2026-11-13. No credentials/model probe or application c
 
 ## R2 - Small offline retrieval and one controlled improvement
 
+Prospective update2026-11-17: [approved English-only retrieval scope](retrieval-english-mvp-decision.md)
+defers Serbian retrieval for the first MVP. The bilingual design below documents
+the original comparison; preserve it with its results. A separate English-only
+development design must define the next bounded improvement and no-answer checks.
+This decision selects no new algorithm/provider/dependency or passing result.
+
 **Decision**: standard-library BM25 (`k1=1.2`, `b=0.75`) over section passages for baseline. Improved configuration uses the same body scores plus title/section term weight 2 and a reviewed Serbian-English concept glossary; original terms weight 1, added synonyms 0.5. Deduplicate terms and retain maximum per-term weight. Deterministic passage-ID tie break. Tune no-match cutoffs on 10 development questions only, then freeze both configurations and thresholds before held-out execution. Tokenizer/glossary versions are part of configuration hash.
 
 **Rationale**: Six thematic documents do not require a vector service; lexical retrieval is inspectable, offline, inexpensive and measurable. The improvement addresses Serbian questions against English guidance without sending the corpus to an external service. An unchanged/worse result is valid evidence and must be reported.
