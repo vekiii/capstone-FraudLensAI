@@ -1,3 +1,18 @@
+# Current handoff - Feature 004 US1 RED tasks complete, 2026-11-18
+
+T005/T006/T007 checked as written/executed RED tests only. Phase3 incomplete;
+T008-T011 unstarted. Replay9:8 intentional failures/1 pass, API26:25 failures/
+1 pass, frontend8:8 failures. No collection errors; 41 intended REDs remain.
+Only minimal empty replay/no-op frontend mount import boundaries added; no
+routes/algorithm/client/decoder/UI/main navigation. Existing contracts/startup
+64 PASS, frontend API82 PASS, Ruff/typecheck/diff PASS. Full suites/browser not
+run. Existing Starlette/httpx warning. Phase2 fixture/hash/models/catalog,
+Cases/app/main/locks/shared instructions unchanged. Human review pending.
+Evidence: [US1 RED](evidence/tasks/feature-004-us1.md),
+[handoff](evidence/tasks/feature-004-phase-03-handoff.md).
+Next: separately authorize T008-T010, starting with replay T008. No GREEN yet.
+Earlier handoffs below historical.
+
 # Current handoff - Feature 004 Phase 2 complete, 2026-11-18
 
 T002/T003/T004 checked; stop before T005. Bundled A-E facts and separate private
