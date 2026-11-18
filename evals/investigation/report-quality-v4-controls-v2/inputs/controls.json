@@ -1,0 +1,695 @@
+[
+  {
+    "scenario_id": "C1",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Amount: 2361.47 EUR.",
+      "observations": "Amount: 2361.47 EUR.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev_control_v2_c1",
+        "text": "Amount: 2361.47 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o_amount",
+        "claim_kind": "observation",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      },
+      {
+        "unit_id": "o_repeat",
+        "claim_kind": "observation",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "/observations",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      },
+      {
+        "unit_id": "o_missing_0",
+        "claim_kind": "observation",
+        "text": "Source of funds is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      },
+      {
+        "unit_id": "o_missing_1",
+        "claim_kind": "observation",
+        "text": "Identity is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      },
+      {
+        "unit_id": "o_missing_2",
+        "claim_kind": "observation",
+        "text": "Occupation and device are unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      },
+      {
+        "unit_id": "o_missing_3",
+        "claim_kind": "observation",
+        "text": "History is unavailable.",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      },
+      {
+        "unit_id": "o_limit_0",
+        "claim_kind": "observation",
+        "text": "Synthetic example",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      },
+      {
+        "unit_id": "o_limit_1",
+        "claim_kind": "observation",
+        "text": "score is not a calibrated probability",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      },
+      {
+        "unit_id": "o_limit_2",
+        "claim_kind": "observation",
+        "text": "Only the human analyst decides the final disposition.",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      },
+      {
+        "unit_id": "e_amount",
+        "claim_kind": "essential_fact",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c1"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C2",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Amount: 2361.47 EUR.",
+      "observations": "Amount: 2361.47 EUR.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. ",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev_control_v2_c2",
+        "text": "Amount: 2361.47 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o_amount",
+        "claim_kind": "observation",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c2"
+        ]
+      },
+      {
+        "unit_id": "o_repeat",
+        "claim_kind": "observation",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "/observations",
+        "evidence_refs": [
+          "ev_control_v2_c2"
+        ]
+      },
+      {
+        "unit_id": "o_missing_0",
+        "claim_kind": "observation",
+        "text": "Source of funds is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c2"
+        ]
+      },
+      {
+        "unit_id": "o_missing_1",
+        "claim_kind": "observation",
+        "text": "Identity is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c2"
+        ]
+      },
+      {
+        "unit_id": "o_missing_2",
+        "claim_kind": "observation",
+        "text": "Occupation and device are unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c2"
+        ]
+      },
+      {
+        "unit_id": "o_missing_3",
+        "claim_kind": "observation",
+        "text": "History is unavailable.",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c2"
+        ]
+      },
+      {
+        "unit_id": "o_limit_0",
+        "claim_kind": "observation",
+        "text": "Synthetic example",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c2"
+        ]
+      },
+      {
+        "unit_id": "o_limit_1",
+        "claim_kind": "observation",
+        "text": "score is not a calibrated probability",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c2"
+        ]
+      },
+      {
+        "unit_id": "e_amount",
+        "claim_kind": "essential_fact",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c2"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C3",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Amount: 2361.47 EUR. Source of funds is drug trafficking.",
+      "observations": "Source of funds is drug trafficking.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev_control_v2_c3",
+        "text": "Amount: 2361.47 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o_amount",
+        "claim_kind": "observation",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "o_tested",
+        "claim_kind": "observation",
+        "text": "Source of funds is drug trafficking.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "o_repeat",
+        "claim_kind": "observation",
+        "text": "Source of funds is drug trafficking.",
+        "location": "/observations",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "o_missing_0",
+        "claim_kind": "observation",
+        "text": "Source of funds is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "o_missing_1",
+        "claim_kind": "observation",
+        "text": "Identity is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "o_missing_2",
+        "claim_kind": "observation",
+        "text": "Occupation and device are unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "o_missing_3",
+        "claim_kind": "observation",
+        "text": "History is unavailable.",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "o_limit_0",
+        "claim_kind": "observation",
+        "text": "Synthetic example",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "o_limit_1",
+        "claim_kind": "observation",
+        "text": "score is not a calibrated probability",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "o_limit_2",
+        "claim_kind": "observation",
+        "text": "Only the human analyst decides the final disposition.",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "e_amount",
+        "claim_kind": "essential_fact",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      },
+      {
+        "unit_id": "e_unknown",
+        "claim_kind": "essential_fact",
+        "text": "Source of funds is unknown.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c3"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C4",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Amount: 2361.47 EUR. Source of funds is drug trafficking.",
+      "observations": "Source of funds is drug trafficking.",
+      "missing_information": "",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev_control_v2_c4",
+        "text": "Amount: 2361.47 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o_amount",
+        "claim_kind": "observation",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c4"
+        ]
+      },
+      {
+        "unit_id": "o_tested",
+        "claim_kind": "observation",
+        "text": "Source of funds is drug trafficking.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c4"
+        ]
+      },
+      {
+        "unit_id": "o_repeat",
+        "claim_kind": "observation",
+        "text": "Source of funds is drug trafficking.",
+        "location": "/observations",
+        "evidence_refs": [
+          "ev_control_v2_c4"
+        ]
+      },
+      {
+        "unit_id": "o_limit_0",
+        "claim_kind": "observation",
+        "text": "Synthetic example",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c4"
+        ]
+      },
+      {
+        "unit_id": "o_limit_1",
+        "claim_kind": "observation",
+        "text": "score is not a calibrated probability",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c4"
+        ]
+      },
+      {
+        "unit_id": "o_limit_2",
+        "claim_kind": "observation",
+        "text": "Only the human analyst decides the final disposition.",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c4"
+        ]
+      },
+      {
+        "unit_id": "e_amount",
+        "claim_kind": "essential_fact",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c4"
+        ]
+      },
+      {
+        "unit_id": "e_unknown",
+        "claim_kind": "essential_fact",
+        "text": "Source of funds is unknown.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c4"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C5",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Amount: 2361.47 EUR. Source of funds is unknown.",
+      "observations": "Source of funds is unknown.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev_control_v2_c5",
+        "text": "Amount: 2361.47 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o_amount",
+        "claim_kind": "observation",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "o_tested",
+        "claim_kind": "observation",
+        "text": "Source of funds is unknown.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "o_repeat",
+        "claim_kind": "observation",
+        "text": "Source of funds is unknown.",
+        "location": "/observations",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "o_missing_0",
+        "claim_kind": "observation",
+        "text": "Source of funds is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "o_missing_1",
+        "claim_kind": "observation",
+        "text": "Identity is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "o_missing_2",
+        "claim_kind": "observation",
+        "text": "Occupation and device are unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "o_missing_3",
+        "claim_kind": "observation",
+        "text": "History is unavailable.",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "o_limit_0",
+        "claim_kind": "observation",
+        "text": "Synthetic example",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "o_limit_1",
+        "claim_kind": "observation",
+        "text": "score is not a calibrated probability",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "o_limit_2",
+        "claim_kind": "observation",
+        "text": "Only the human analyst decides the final disposition.",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "e_amount",
+        "claim_kind": "essential_fact",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      },
+      {
+        "unit_id": "e_unknown",
+        "claim_kind": "essential_fact",
+        "text": "Source of funds is unknown.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c5"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario_id": "C6",
+    "role": "calibration",
+    "failed": false,
+    "report": {
+      "summary": "Amount: 2361.47 EUR. Identity is confirmed as Nora.",
+      "observations": "Identity is confirmed as Nora.",
+      "missing_information": "Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable.",
+      "limitations": "Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition.",
+      "recommended_checks": "",
+      "alternative_explanations": ""
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev_control_v2_c6",
+        "text": "Amount: 2361.47 EUR. Source of funds is unknown. Identity is unknown. Occupation and device are unknown. History is unavailable. Synthetic example; score is not a calibrated probability. Only the human analyst decides the final disposition."
+      }
+    ],
+    "units": [
+      {
+        "unit_id": "o_amount",
+        "claim_kind": "observation",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "o_tested",
+        "claim_kind": "observation",
+        "text": "Identity is confirmed as Nora.",
+        "location": "/summary",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "o_repeat",
+        "claim_kind": "observation",
+        "text": "Identity is confirmed as Nora.",
+        "location": "/observations",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "o_missing_0",
+        "claim_kind": "observation",
+        "text": "Source of funds is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "o_missing_1",
+        "claim_kind": "observation",
+        "text": "Identity is unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "o_missing_2",
+        "claim_kind": "observation",
+        "text": "Occupation and device are unknown",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "o_missing_3",
+        "claim_kind": "observation",
+        "text": "History is unavailable.",
+        "location": "/missing_information",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "o_limit_0",
+        "claim_kind": "observation",
+        "text": "Synthetic example",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "o_limit_1",
+        "claim_kind": "observation",
+        "text": "score is not a calibrated probability",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "o_limit_2",
+        "claim_kind": "observation",
+        "text": "Only the human analyst decides the final disposition.",
+        "location": "/limitations",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "e_amount",
+        "claim_kind": "essential_fact",
+        "text": "Amount: 2361.47 EUR.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      },
+      {
+        "unit_id": "e_unknown",
+        "claim_kind": "essential_fact",
+        "text": "Identity is unknown.",
+        "location": "",
+        "evidence_refs": [
+          "ev_control_v2_c6"
+        ]
+      }
+    ]
+  }
+]

@@ -81,8 +81,10 @@ class InvestigationService:
         if binding['provider_mode'] == 'test':
             return ScriptedProvider(binding.get('test_scenario', 'grounded'))
         from fraudlens.investigation.provider import OpenAIProvider
+        cap_args = {'request_timeout_cap': 45} if (binding.get('semantic_profile') == 'v7'
+            and binding.get('limits', {}).get('request_timeout_seconds', 30) > 30) else {}
         return OpenAIProvider(self.settings.api_key.get_secret_value(), binding['requested_model'],
-                              prompt=binding['prompt'])
+                              prompt=binding['prompt'], **cap_args)
 
     def events(self, attempt_id):
         with self.repo.connection() as db:
@@ -135,8 +137,11 @@ class InvestigationService:
                 request_payload,
             )
             passages = self.knowledge.passages(corpus)
-            request_payload('Validate semantic source pool', passages, binding['requested_model'])
-            binding['semantic_policy_version'] = policy_identity(binding['requested_model'], passages)
+            profile_args = {'profile': self.settings.semantic_profile} if self.settings.semantic_profile != 'v6' else {}
+            request_payload('Validate semantic source pool', passages, binding['requested_model'], **profile_args)
+            binding['semantic_policy_version'] = policy_identity(binding['requested_model'], passages, **profile_args)
+            if profile_args:
+                binding['semantic_profile'] = self.settings.semantic_profile
             from fraudlens.investigation.semantic_runtime import runtime_revision
             binding['semantic_runtime_revision'] = runtime_revision()
         row = self.repo.create(context, actor, 'create', request_key, request, binding=binding)
@@ -261,7 +266,8 @@ class InvestigationService:
             raise ValueError('stale_snapshot')
         if binding.get('semantic_policy_version'):
             from fraudlens.investigation.retrieval_semantic_v6 import policy_identity
-            policy = policy_identity(binding['requested_model'], self.knowledge.passages(corpus))
+            profile_args = {'profile': binding['semantic_profile']} if binding.get('semantic_profile', 'v6') != 'v6' else {}
+            policy = policy_identity(binding['requested_model'], self.knowledge.passages(corpus), **profile_args)
             if reuse and policy != binding['semantic_policy_version']:
                 raise ValueError('stale_snapshot')
             binding['semantic_policy_version'] = policy
@@ -339,10 +345,11 @@ class InvestigationService:
         from fraudlens.investigation.semantic_runtime import runtime_revision
         if binding.get('semantic_runtime_revision') != runtime_revision():
             raise ProviderError('stale_snapshot')
-        policy = policy_identity(binding['requested_model'], passages)
+        profile_args = {'profile': binding['semantic_profile']} if binding.get('semantic_profile', 'v6') != 'v6' else {}
+        policy = policy_identity(binding['requested_model'], passages, **profile_args)
         if policy != binding['semantic_policy_version'] or provider.model != binding['requested_model']:
             raise ProviderError('stale_snapshot')
-        payload = request_payload(query, passages, binding['requested_model'])
+        payload = request_payload(query, passages, binding['requested_model'], **profile_args)
         if len(canonical(payload)) > limits['max_input_bytes'] or limits['max_output_tokens'] < 2048:
             raise ProviderError('budget_exhausted')
         sequence = self.repo.reserve_dispatch(attempt_id, owner)
@@ -360,7 +367,7 @@ class InvestigationService:
                             state = db.execute('SELECT state FROM attempts WHERE attempt_id=?', (attempt_id,)).fetchone()
                             event(db, attempt_id, 'semantic_raw_response', sequence=sequence,
                                   late=not state or state[0] not in ACTIVE, raw_response=raw)
-                    selection, audit = await audited_selection(provider, query, passages, capture)
+                    selection, audit = await audited_selection(provider, query, passages, capture, **profile_args)
             original = self.context(attempt_id)
             current_context = self.context_reader.resolve(original['case_id'], original['source_mode'], original['snapshot_ref'])
             if current_context['context_revision'] != original['context_revision']:
@@ -455,7 +462,8 @@ class InvestigationService:
                 if view['budget']['provider_requests'] >= limits['max_provider_requests']:
                     raise ProviderError('budget_exhausted')
                 sequence = self.repo.reserve_dispatch(attempt_id, owner)
-                request_limits = dict(request_timeout=min(30, limits['request_timeout_seconds'], remaining),
+                cap = 45 if binding.get('semantic_profile') == 'v7' else 30
+                request_limits = dict(request_timeout=min(cap, limits['request_timeout_seconds'], remaining),
                     max_input_bytes=limits['max_input_bytes'], max_output_tokens=limits['max_output_tokens'],
                     max_response_bytes=limits['max_response_bytes'])
                 if repairs or sequence == limits['max_provider_requests']:

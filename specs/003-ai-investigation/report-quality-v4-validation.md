@@ -1,5 +1,14 @@
 # V4 validation path - protocol, NOT execution authorization
 
+2026-11-18 execution addendum: user approved155 requests and later operational
+retries, then the concrete corrective controls/selector proposal. Original v4
+actual2/6 is retained. Reviewed controls-v2 (explicit known amount/all repeated
+claims enumerated) achieved actual exact6/6 with unchanged judge prompt/local
+rubric. No old expectation/rating was relabeled. New generator v7/request45 does
+not change the judge's60s/8192/full-v4 grading method. Defaults and past bindings
+remain30. Fresh RUN3 quality8/timing-first5 have frozen roles and source obligations;
+old RUN2 timeout retained. Report generation/judging acceptance remains pending.
+
 ## Access boundaries and custody
 
 A trusted OFFLINE evaluator/custodian (actual identity/automation version recorded

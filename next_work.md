@@ -1,4 +1,160 @@
-# Current handoff - T098 actual integration PASS; live gates remain, 2026-11-18
+# Current handoff - reviewed v7/request45 ready; RUN3 acceptance pending, 2026-11-18
+
+feature03, baseline5431299; validated local code checkpoint, no push/merge/new tasks.
+T101/T102 remain OPEN. User accepted corrective controls/selector proposal and
+explicit new45s profile; operational retries/waits allowed within original155.
+No renewed approval needed for an ordinary interrupted-call retry. No semantic
+rating cherry-picking, ledger resets, hidden budget increase or old-slot erasure.
+
+Actual original v1:56attempts(54HTTP200,1schema400,1unknown), cal2/6 invalid,
+timing2/5 useful/all5terminal<=120, local20p95.0032897s. Preserved all raw results.
+Reviewed controls-v2 actual **6/6PASS**, six fresh contexts/same v4 judge method.
+Explicit v7 unique-ID/verbatim-whitespace clarification; default v6/policy hash
+unchanged, T095 numeric claim stays bound to v6. Strict validators not relaxed.
+
+Actual RUN2-01 used v7/request30: valid semantic sources then
+30s report timeout, visible failed53.9078s/6actual calls(last unknown). Other7not_run.
+**Overall actual68of155**, two unknown deliveries counted; no429 observed.
+User then chose "Da, novi profil sa 45s". Implemented opt-in v7/provider45 only;
+legacy/default30, semantic30, total120/useful90/request8/tool12 unchanged.
+Before/after exact source snapshots preserve all earlier run bytes.
+
+TDD v7 RED8/characterization1 ->9PASS; request45 RED3/legacy1 ->4PASS; offline
+materializer RED5 ->5PASS. Full backend **1135PASS106.70s**, Ruff/diff PASS;
+frontend unchanged/not rerun. Judge payload parity with all6 actual qualified
+controls proven after generator45 change; no grading-prompt/rubric/control change.
+[Corrective evidence](evidence/tasks/feature-003-t101-t102-corrective-profile-20261118.md),
+[initial actual results](evidence/tasks/feature-003-t101-t102-live-v1-20261118-results.json).
+
+Fresh RUN3 CASE961..968/public inputs/PRIVATE source obligations/roles/20English
+queries ready in evals/investigation/acceptance-v3-20261118. Timing is FIRST5 of
+quality8, fixed before outputs, paired secondary positions2/3/4/6/8. Overlap disclosed.
+Both stages need freeze at validated code checkpoint before dispatch. Newgen64max
++13judges gives145total<=155;10reserved for bounded operational retries. No double
+generation for timing/quality; source fixture timing not full producer/ML performance.
+
+**One concrete next step:** freeze RUN3 first-five/tail-three using v3-freeze helper,
+run actual matching API/worker/external observer under v7/45, then materialize/review
+all actual prose/atomic units and freeze8+paired5 judge packets. Preserve old failures;
+do not check tasks or close feature003 before actual quality/performance criteria.
+
+# Previous handoff - T101 continuation done; calibration wire fix, 2026-11-18
+
+feature03/HEAD5431299; work UNCOMMITTED. No new tasks/markers, commit/push/merge or
+training. User approved only3undispatched development cases ("u redu radi tako");
+executed DEVQ1-02/03/04 through frozen API/worker/observer, same prompts/model/
+limits, max24. First DEVQ1-01 failure/prior6calls retained, never replayed/reset.
+
+Continuation actual16HTTP200,0new unknown transport outcomes,44526known tokens.
+DEVQ1-02 failed14.057581s: duplicate passage IDs; DEVQ1-03 failed10.4805587s:
+non-verbatim third quote. Both correctly rejected by unchanged semantic validator.
+DEVQ1-04 needs_information21.9249093s, locally validated, actual insufficient/no
+Portugal deadline/no recommended procedures. Development total22calls/4slots,
+1locally valid report; original unknown usage retained.68+runtime/source pins
+unchanged. This is NOT held-out report-quality or five-case timing acceptance.
+
+Original155-call approval also covered6calibration controls. Actual first C1 call
+HTTP400 invalid_json_schema: judge runner incorrectly sent unsupported uniqueItems.
+Stopped automatically after1call,0ratings,5controls unstarted. Offline6slot gate
+invalid, not evidence of six model misjudgments. **Overall actual23calls**, including
+original unknown and400. No held-out8/paired5/T102 live dispatch.
+
+Fixed judge API schema projection OFFLINE: omit uniqueItems on wire, unchanged
+full v4 local uniqueness/schema/binding checks. Original executed driver bytes,
+raw400/freeze/assessment retained. RED1failure+4PASS ->GREEN5; combined75PASS3.67s;
+Ruff/format/diff PASS. Runtime untouched; earlier full1112PASS not rerun. No real
+provider retest of fixed schema yet; no judging-prompt/control/rubric change.
+[Evidence](evidence/tasks/feature-003-t101-continuation-20261118.md),
+[actual results](evidence/tasks/feature-003-t101-continuation-20261118-results.json).
+
+**T101/T102 OPEN; feature003 NOT ready. One concrete next step:** obtain a decision
+on a new frozen6-call calibration after the400 stop, keeping failed call counted
+(calibration7total; one call reallocated from unused development, fullscope146<=155).
+Proposal is in ignored acceptance-live-20261118/calibration-wire-fix-proposal.json;
+actual corrected calibration-wire-v2 freeze06160f12 ready, source pins verified,
+0dispatches/no approval; calibration-wire-fix-ready.json binds exact proposal.
+NO new approval/dispatch after400. Discuss strict selector failures before fresh
+holdout; no automatic policy/prompt change, replay, new budget or new task.
+
+# Previous handoff - T101 authorized live batch stopped; unknown outcome, 2026-11-18
+
+Actual branch feature03/HEAD5431299; work UNCOMMITTED, no commit/push/merge/new tasks.
+User approved the reviewed packet/same-model isolated judge method and **155 new
+calls maximum** (115T101+40T102): "potvrdjujem, mozes da nastavis".
+[Decision](specs/003-ai-investigation/acceptance-v1-approval-20261118.md).
+Earlier approval-pending statements below are historical; the approved unknown-
+outcome stop remains binding. No task markers changed; T101/T102 OPEN.
+
+Executed first fresh live development via matching separate HTTP API/worker and
+external observer. **DEVQ1-01 failed at45.6584685s**, no report. Four tools completed
+(facts, both histories, semantic procedures),5provider HTTP200/gpt-6-luna then6th
+report request timed out at30s. **6actual calls:5completed+1unknown**; known13912
+tokens, unknown usage not zero. Application7reservations includes a blocked retry
+that sent NO actual request. Meter stopped batch; DEVQ1-02/03/04 not_run. No paid
+calibration/held-out reports/judges/T102 started. Exact68source pins unchanged.
+
+Raw immutable logs/ledger/archive in ignored
+evals/results/feature-003/acceptance-preparation-20261118/development-proposal/.
+Do NOT replay/reset it or infer remote cancellation. Supervisor cleaned up its
+API/worker after recording failure. Actual no-report failure is not a report-
+quality measurement or proof of provider-side root cause/runtime defect.
+[Evidence](evidence/tasks/feature-003-t101-live-development-20261118.md),
+[actual observations](evidence/tasks/feature-003-t101-live-development-20261118-results.json).
+
+Separate future v4 judge driver prepared, static/no-approval guard checked; no
+judge calls.31helper/guard tests pass; runtime unchanged from full1112PASS.
+Historical results and source/model stores preserved. Feature003 NOT ready to close.
+
+**One concrete next step:** ask user to choose continuation of ONLY the3undispatched
+development slots (retain first failure, max24new, prior6 accounted, total scope
+max153<=155, no timer/model/prompt changes) or investigate timeout first. Frozen
+input/proposal files in evals/results/feature-003/acceptance-live-20261118/;
+NO continuation approval/dispatch yet. Do not bypass the explicit unknown-outcome
+stop or add tasks independently.
+
+# Previous handoff - T101/T102 offline preparation; approval pending, 2026-11-18
+
+Actual branch **feature03**, HEAD **5431299** (`T098 finished; producer integration
+and history index verified`), user-committed/merged before this unit. Current
+T101/T102 work UNCOMMITTED; no agent commit/push/merge. User explicitly forbids
+independently adding tasks: **no task added, no task marker changed**.
+
+Applied speckit-implement with explicit specs/003-ai-investigation selection.
+Checklist16/16. New authored packet:4development+8quality+fixed5paired+5timing+
+20English local queries; private source obligations separate, no old-context/case
+overlap among27historical contexts. Team source/reference/method review pending.
+[Reviewable packet and cap](evals/investigation/acceptance-v1-20261118/README.md).
+
+Opt-in strict fresh context/history readers, durable transport meter, hash-bound
+approval/source/cap/model/batch-directory gate, external POST-to-GET observer and
+parent OS watchdog prepared. Existing API/worker/default composition/contracts/
+prompts/thresholds unchanged. Real local HTTP API + separate worker exercised all
+5 fresh timing inputs with explicit TEST provider:5saved/locally validated reports,
+**not live quality/performance**. Unapproved OpenAI worker actually blocked exit2;
+ledger0dispatches. No live authorization record, new provider calls **0**.
+
+RED8observer+RED8reader/ledger ->31new helper tests. Full backend **1112PASS117.95s**;
+Ruff/format/diff checks pass; frontend unchanged/not rerun. Local20search diagnostic
+0errors/p95.0030024s, explicitly unreviewed preparation, not SC-006 acceptance.
+Current machine/source versions recorded; historical evidence/stores preserved.
+[Actual evidence](evidence/tasks/feature-003-t101-t102-preparation-20261118.md),
+[observations](evidence/tasks/feature-003-t101-t102-preparation-20261118-results.json).
+
+**T101 and T102 OPEN; feature03 NOT ready to close.** Remaining actual six-control
+calibration/eight+paired-five quality and external live5+20 timing gates. Development
+outputs must precede final held-out freeze; materialize/review actual report units
+only once new reports exist. No fixture, historical report or old budget substitute.
+Proposed separate maximum **115 T101 +40 T102 =155 new provider requests**, inclusive
+of semantic/retry/repair; same-model isolated judging proposed, not approved for
+T101 by earlier T095 acceptance. Preserve old0/8/failed-quality/2of5/outlier results.
+
+**One concrete next step:** obtain user review of the packet/private obligations,
+judge method and bounded new budget; after actual approval, first execute ONLY the
+fresh four-case development stage through the prepared metered API/worker path.
+Record real approval before creating its hash-bound authorization; no automatic
+dispatch, new tasks or holdout tuning. Alternatives need user discussion first.
+
+# Previous handoff - T098 actual integration PASS; live gates remain, 2026-11-18
 
 Branch feature03-retrieval-v4, baseline/HEAD038f728; UNCOMMITTED, no push/merge.
 **T098 checked** for actual bounded20-model-row publications + full canonical/

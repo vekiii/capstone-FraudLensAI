@@ -1,0 +1,16 @@
+{
+  "algorithm": "SHA256 exact working-tree bytes; input/corpus identities use canonical JSON",
+  "files_sha256": {
+    "protocol.json": "db10c824930583703681a3fa11da223e0cbe4bfb212209e57943701e62d290ab",
+    "inputs/development.json": "acb01a5fe055ba91de9d64ee5ba9a0849a30b18a25ffe9873cf1b8a523b3aed5",
+    "inputs/quality.json": "892f3a9b23c42e006d838c4857e4aaf127f568726868dd2de3c4bf7b825d1b72",
+    "inputs/search.json": "abba32b213db174280d6e1437cb14fdab9b1f1e537df2267eaed921eca7036b6",
+    "inputs/timing.json": "b38f64d9a515ef7567217fd07d744a65a14509a82d574d64fb214ed0c02b6150",
+    "reference/development.json": "063caf6a79899c2b65fa9c2bab36fedb8cd87753b8f20ee92f4a9aef1c4785ac",
+    "reference/quality.json": "bf6ce0bfedd40e80f628f94e05180dede0003de375f793d836e162a6af281cdf",
+    "reference/roles.json": "3f02e1637e2a5d70dde95a9a75708ad0b7b44f547ec91199731f40c44b8c5b3d",
+    "reference/timing.json": "f31982dad60b4a04480e8dfafd82808bfed4972d7c55f43f8a184d7c759f7b5e"
+  },
+  "machine_freeze_sha256": "6427eaed9ec22915250f3c4aba57759a8a32e25b32f0159e5b400aac94700c3b",
+  "execution_ready": false
+}

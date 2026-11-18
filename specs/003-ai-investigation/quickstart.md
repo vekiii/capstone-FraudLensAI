@@ -1,5 +1,24 @@
 # Feature 003 validation quickstart
 
+## Explicit corrective v7 / request45 profile (2026-11-18)
+
+For NEW attempts only, in BOTH matching API and worker terminals:
+
+```powershell
+$env:INVESTIGATION_SEMANTIC_RETRIEVAL = 'true'
+$env:INVESTIGATION_SEMANTIC_PROFILE = 'v7'
+$env:INVESTIGATION_REQUEST_TIMEOUT_SECONDS = '45'
+```
+
+Keep the existing enabled/provider/model/source/store configuration. This does
+not dispatch by itself. Default semantic profile remains v6 and default request
+cap30; old bindings keep their own profile/limits. A cap above30 requires explicit
+OpenAI semantic v7. Semantic selection remains30; total120/useful90/request8/tool12
+limits are unchanged. New v7 source-format instructions retain strict validation.
+The accepted T095 numeric result remains bound to v6, not a new v7 retrieval score.
+Reviewed controls-v2 exact6/6 is actual calibration, not eight-report acceptance.
+See next_work for actual run status before claiming quality/performance success.
+
 ## Integrated semantic v6 activation (2026-11-17)
 
 API/worker integration and separately calibrated blind LLM reference evaluation

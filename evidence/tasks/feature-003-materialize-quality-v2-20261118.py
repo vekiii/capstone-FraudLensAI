@@ -1,0 +1,151 @@
+"""Offline report/unit materialization. Custodian review required before judging."""
+
+import re
+
+from fraudlens.investigation.context import HistoryReader, outbound_context
+from fraudlens.investigation.evaluation import input_only
+from fraudlens.investigation.judging_v4 import POLICY, SECTIONS, project_packet
+from fraudlens.investigation.models import canonical, digest, validate
+
+
+def clauses(text):
+    # Exact spans retained; a custodian must inspect compound/shared predicates
+    # and recommendations in free-text sections before freezing the final pack.
+    return [
+        v.strip() for v in re.split(r"(?<=;)\s+|(?<=[.!?])\s+(?=[A-ZČĆŠŽĐ])", text) if v.strip()
+    ]
+
+
+def materialize(archive, item, source_obligations, role="primary"):
+    item = input_only(item)
+    context = item["context"]
+    if archive["context"] != context:
+        raise ValueError("Changed source context")
+    report = {key: "" for key in SECTIONS}
+    units, inventory = [], []
+    fields = (
+        "kind",
+        "text",
+        "facts",
+        "availability",
+        "coverage",
+        "lookback_days",
+        "cutoff",
+        "start",
+        "eligible_count",
+        "returned_count",
+        "totals",
+        "truncated",
+        "document",
+        "source",
+        "jurisdiction",
+        "version",
+        "published_at",
+        "provenance",
+        "applicability_notice",
+    )
+    evidence = [
+        dict(
+            evidence_id=e["evidence_id"],
+            text=canonical({key: e[key] for key in fields if key in e}).decode(),
+        )
+        for e in archive["evidence"]
+    ]
+    source_id = "source_" + context["context_revision"][:16]
+    reader = HistoryReader(**item["history_fixture"])
+    histories = {}
+    for side in ("sender", "receiver"):
+        history = reader.read(context, side)
+        histories[side] = {key: value for key, value in history.items() if key != "events"}
+        histories[side]["events"] = [
+            {
+                key: value
+                for key, value in event.items()
+                if key in ("transaction_id", "occurred_at", "amount", "currency")
+            }
+            for event in history["events"]
+        ]
+    snapshot = dict(
+        context=outbound_context(context, archive["view"]["run_id"]),
+        history=histories,
+        policy=POLICY,
+    )
+    evidence.append(dict(evidence_id=source_id, text=canonical(snapshot).decode()))
+    runtime_report = archive["view"].get("report")
+    draft = runtime_report["draft"] if runtime_report else None
+    if draft is not None:
+        validate("ReportDraft", draft)
+        mapping = (
+            "summary",
+            "observed_facts",
+            "risk_indicators",
+            "alternative_explanations",
+            "missing_information",
+            "limitations",
+            "recommended_checks",
+        )
+        for field in mapping:
+            target = "observations" if field in ("observed_facts", "risk_indicators") else field
+            for index, raw in enumerate(draft[field]):
+                claim = (
+                    raw
+                    if isinstance(raw, dict)
+                    else dict(text=raw, kind="observation", evidence_refs=[source_id])
+                )
+                text = claim["text"]
+                report[target] += ("\n" if report[target] else "") + text
+                kind = (
+                    "procedure"
+                    if field == "recommended_checks" or claim["kind"] == "procedure"
+                    else "observation"
+                )
+                for atom in clauses(text):
+                    identity = f"u{len(units) + 1:03}"
+                    units.append(
+                        dict(
+                            unit_id=identity,
+                            claim_kind=kind,
+                            text=atom,
+                            location="/" + target,
+                            evidence_refs=claim["evidence_refs"],
+                        )
+                    )
+                    inventory.append(
+                        dict(
+                            unit_id=identity,
+                            original_field=field,
+                            original_index=index,
+                            original_kind=claim["kind"],
+                            source_text=text,
+                        )
+                    )
+    for index, obligation in enumerate(source_obligations, 1):
+        if not isinstance(obligation, str) or not obligation.strip():
+            raise ValueError("Predeclared source obligation required")
+        units.append(
+            dict(
+                unit_id=f"e{index:03}",
+                claim_kind="essential_fact",
+                text=obligation,
+                location="",
+                evidence_refs=[source_id],
+            )
+        )
+    packet = project_packet(
+        dict(
+            scenario_id=item["id"],
+            role=role,
+            failed=draft is None,
+            report=report,
+            evidence=evidence,
+            units=units,
+        )
+    )
+    return dict(
+        packet=packet,
+        review_required=True,
+        inventory=inventory,
+        original_draft_sha256=digest(draft),
+        source_input_sha256=digest(item),
+        note="Exact prose/initial clause inventory only; no semantic truth or quality assessed",
+    )

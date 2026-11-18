@@ -111,9 +111,12 @@ def _bounded_transport(inner):
 
 
 class OpenAIProvider:
-    def __init__(self, api_key, model, prompt='', transport=None):
+    def __init__(self, api_key, model, prompt='', transport=None, *, request_timeout_cap=30):
         import httpx2
         from openai import AsyncOpenAI
+        if type(request_timeout_cap) is not int or request_timeout_cap not in (30, 45):
+            raise ProviderError('unsupported_capability')
+        self.request_timeout_cap = request_timeout_cap
         if not isinstance(model, str) or not model.strip() or len(model) > 200:
             raise ProviderError('unsupported_capability')
         if not api_key:
@@ -155,7 +158,7 @@ class OpenAIProvider:
                                   strict=True, schema=compile_report_schema())))
         if 'tool_choice' in remaining_limits:
             payload['tool_choice'] = remaining_limits['tool_choice']
-        timeout = min(30, remaining_limits['request_timeout'])
+        timeout = min(self.request_timeout_cap, remaining_limits['request_timeout'])
         if (timeout <= 0 or not 1 <= payload['max_output_tokens'] <= 4096
                 or len(canonical(payload)) > min(48000, remaining_limits['max_input_bytes'])):
             raise ProviderError('budget_exhausted')

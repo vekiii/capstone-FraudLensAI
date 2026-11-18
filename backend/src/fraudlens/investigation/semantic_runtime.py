@@ -75,11 +75,12 @@ class SemanticSearchService:
             raise ValueError('stale_snapshot')
         passages = self.knowledge.passages(corpus)
         model = self.settings.model.get_secret_value()
-        payload = request_payload(query, passages, model)
+        profile_args = {'profile': self.settings.semantic_profile} if self.settings.semantic_profile != 'v6' else {}
+        payload = request_payload(query, passages, model, **profile_args)
         if (len(json.dumps(payload, ensure_ascii=False).encode()) > self.settings.max_input_bytes
                 or self.settings.max_output_tokens < 2048):
             raise ValueError('semantic_budget_exhausted')
-        policy = policy_identity(model, passages)
+        policy = policy_identity(model, passages, **profile_args)
         revision = runtime_revision()
         key, request_hash = self._key(request_key), digest([query, corpus, policy, revision])
         now = time.time()
@@ -112,11 +113,11 @@ class SemanticSearchService:
                         with self.repo.transaction() as db:
                             db.execute('INSERT INTO semantic_search_dispatch_audit VALUES(?,?)',
                                        (key, json.dumps(raw)))
-                    selection, audit = await audited_selection(provider, query, passages, capture)
+                    selection, audit = await audited_selection(provider, query, passages, capture, **profile_args)
             projected = project_selection(query, passages, selection, corpus, policy)
             # Revalidate the active source before publishing; saved reads stay pinned.
             if (self.knowledge.latest('corpus') != corpus
-                    or policy_identity(model, self.knowledge.passages(corpus)) != policy
+                    or policy_identity(model, self.knowledge.passages(corpus), **profile_args) != policy
                     or runtime_revision() != revision):
                 raise ValueError('stale_snapshot')
             result.update(status='completed', result=projected, audit=audit)

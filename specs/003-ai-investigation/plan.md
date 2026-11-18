@@ -1,5 +1,15 @@
 # Implementation Plan: Evidence-backed AI Investigation
 
+2026-11-18 T101/T102 reviewed corrective implementation: preserve default semantic
+v6/policy identity; explicit private semantic_profile=v7 strengthens output format
+instructions only. Strict unique-ID/verbatim-citation checks unchanged. Actual
+original calibration2/6/timing2/5 retained; reviewed controls-v2 calibrated exact6/6.
+User accepted a separately bound45s drafting cap for new v7 attempts after repeated
+30s report timeouts. Legacy/default30, semantic30, useful90/total120 remain.
+Fresh shared8/5 RUN3 cohort and fixed paired-five roles reduce duplicate generation
+inside155 total; no independent-sample claim. No new tasks or marker changes.
+Actual new quality/performance acceptance is still pending in next_work/evidence.
+
 2026-11-18 T098: [optional consumer history index](history-index-v1.md) addresses
 the demonstrated five-second scan interruption on actual partial IBM data.
 Explicit offline preparation and hash-pinned read-only activation preserve producer

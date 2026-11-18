@@ -1,5 +1,14 @@
 # T097 prospective five-case timing protocol, 2026-11-17
 
+2026-11-18 successor addendum: actual initial fresh TIME1 batch is2/5 useful,
+all5 visibly terminal<=120 and local20p95.0032897s; failure retained. User then
+accepted corrective v7 formatting and an explicit45s drafting cap for NEW fresh
+cases after a second30s drafting timeout. Default/legacy30, semantic30, total120,
+useful90 and8/12 remain. RUN3 prospective timing sample is the FIRST five of
+eight quality reports, selected before dispatch with overlapping-sample disclosure.
+All first outcomes retained; no best-of-retry replacement. No new task/budget.
+Check next_work for successor execution; this addendum alone is not timing PASS.
+
 Status: protocol/tooling only. NO live execution or new provider budget authorized.
 Original SC-006 unchanged: at least4of5 validated ready_for_review/needs_information
 within90 seconds; ALL5 visibly terminal within120; local20-search p95<=2 seconds.

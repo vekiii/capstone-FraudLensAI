@@ -35,7 +35,13 @@ def validate_selection(value, passages):
         raise ValueError('Invalid semantic selection') from None
 
 
-def request_payload(query, passages, model):
+def profile_prompt(profile='v6'):
+    if profile not in ('v6', 'v7'):
+        raise ValueError('Unknown semantic profile')
+    return (ROOT / f'prompts/application/retrieval-answerability-{profile}.md').read_text(encoding='utf-8')
+
+
+def request_payload(query, passages, model, *, profile='v6'):
     query = validate('SearchArguments', dict(query=query))['query']
     if not isinstance(model, str) or not model.strip() or len(model) > 200:
         raise ValueError('Explicit semantic model required')
@@ -44,7 +50,7 @@ def request_payload(query, passages, model):
     sources = [dict(passage_id=p['passage_id'], text=p['text'],
                     title=p['document']['title'], jurisdiction=p['document']['jurisdiction'],
                     version=p['document']['version'], published_at=p['document']['published_at']) for p in passages]
-    prompt = (ROOT / 'prompts/application/retrieval-answerability-v6.md').read_text(encoding='utf-8')
+    prompt = profile_prompt(profile)
     payload = dict(model=model, store=False, max_output_tokens=2048,
                    instructions=prompt, input=canonical(dict(question=query, passages=sources)).decode(),
                    text=dict(format=dict(type='json_schema', name='answerability_v6', strict=True, schema=SCHEMA)))
@@ -53,9 +59,9 @@ def request_payload(query, passages, model):
     return payload
 
 
-async def select_with_provider(provider, query, passages):
+async def select_with_provider(provider, query, passages, *, profile='v6'):
     """Caller MUST reserve dispatch in its ledger before invoking; zero retries."""
-    payload = request_payload(query, passages, provider.model)
+    payload = request_payload(query, passages, provider.model, profile=profile)
     async with asyncio.timeout(30):
         response = await provider.client.responses.create(**payload, timeout=30)
     raw = response.model_dump(mode='json')
@@ -84,8 +90,8 @@ def project_selection(query, passages, selection, corpus, policy_version):
     return result
 
 
-def policy_identity(model, passages):
-    return digest(dict(version='semantic_answerability_v6', model=model, schema=SCHEMA,
-        prompt=(ROOT / 'prompts/application/retrieval-answerability-v6.md').read_text(encoding='utf-8'),
+def policy_identity(model, passages, *, profile='v6'):
+    return digest(dict(version='semantic_answerability_' + profile, model=model, schema=SCHEMA,
+        prompt=profile_prompt(profile),
         passages=digest(passages), max_requests_per_search=1, sdk_retries=0,
         timeout_seconds=30, input_bytes=48000, output_tokens=2048))

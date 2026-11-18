@@ -1,0 +1,10 @@
+{
+  "status": "proposed_after_unblinding_NOT_approved_NOT_executed",
+  "method": "Same v4 checks/rubric; known facts explicit; all repeated claims enumerated",
+  "limitations": "Author-proposed corrective draft, not independent calibration/holdout",
+  "software_checks": "6 public projector checks; private unit inventories bound",
+  "original_expectations_unchanged": true,
+  "actual_provider_calls": 0,
+  "input_sha256": "112aaeae4bd7e76d001ad892da09dffc8e78f767be21fc3e3d37ba5fd58eec58",
+  "private_expectations_sha256": "4ce5f585fa73f286603001c0cbb89875da4db7f4609d00b0e2dd263dfa4423b6"
+}

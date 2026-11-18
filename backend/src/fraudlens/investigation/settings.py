@@ -13,6 +13,7 @@ class InvestigationSettings(BaseModel):
     model_config = ConfigDict(frozen=True, extra='forbid', hide_input_in_errors=True)
     enabled: bool = False
     semantic_retrieval: bool = False
+    semantic_profile: Literal['v6', 'v7'] = 'v6'
     max_semantic_requests: int = Field(default=10, ge=1, le=30)
     provider: Literal['test', 'openai'] = 'test'
     test_scenario: Literal['grounded', 'needs_information', 'invalid_citation', 'refusal', 'incomplete'] = 'grounded'
@@ -29,7 +30,7 @@ class InvestigationSettings(BaseModel):
     max_provider_requests: int = Field(default=8, ge=1, le=8)
     max_tool_calls: int = Field(default=12, ge=1, le=12)
     total_timeout_seconds: int = Field(default=120, ge=1, le=120)
-    request_timeout_seconds: int = Field(default=30, ge=1, le=30)
+    request_timeout_seconds: int = Field(default=30, ge=1, le=45)
     max_input_bytes: int = Field(default=48000, ge=1, le=48000)
     max_output_tokens: int = Field(default=4096, ge=1, le=4096)
     max_response_bytes: int = Field(default=2097152, ge=1, le=2097152)
@@ -53,6 +54,9 @@ class InvestigationSettings(BaseModel):
 
     @model_validator(mode='after')
     def explicit_model(self):
+        if self.request_timeout_seconds > 30 and (
+                not self.semantic_retrieval or self.semantic_profile != 'v7' or self.provider != 'openai'):
+            raise ValueError('Request limits above30 require the explicit OpenAI semantic v7 profile')
         if ((self.dataset_history_index is None) != (self.dataset_history_index_sha256 is None)
                 or self.dataset_history_index is not None and self.source != 'dataset'):
             raise ValueError('History index requires dataset mode and an explicit digest')
