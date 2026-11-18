@@ -6,6 +6,14 @@ from fraudlens.investigation.context import HistoryReader, outbound_context
 from fraudlens.investigation.evaluation import input_only
 from fraudlens.investigation.judging_v4 import POLICY, SECTIONS, project_packet
 from fraudlens.investigation.models import canonical, digest, validate
+from fraudlens.investigation.tools import provider_evidence
+
+HISTORY_POLICY = (
+    "Available history uses the recorded cutoff minus seven days as an inclusive start; "
+    "the focal minute is an exclusive upper bound. The focal transaction, same-minute "
+    "and future events are excluded. Totals are computed separately per currency. "
+    "Unavailable history does not establish that no events occurred."
+)
 
 
 def clauses(text):
@@ -23,31 +31,10 @@ def materialize(archive, item, source_obligations, role="primary"):
         raise ValueError("Changed source context")
     report = {key: "" for key in SECTIONS}
     units, inventory = [], []
-    fields = (
-        "kind",
-        "text",
-        "facts",
-        "availability",
-        "coverage",
-        "lookback_days",
-        "cutoff",
-        "start",
-        "eligible_count",
-        "returned_count",
-        "totals",
-        "truncated",
-        "document",
-        "source",
-        "jurisdiction",
-        "version",
-        "published_at",
-        "provenance",
-        "applicability_notice",
-    )
     evidence = [
         dict(
             evidence_id=e["evidence_id"],
-            text=canonical({key: e[key] for key in fields if key in e}).decode(),
+            text=canonical(provider_evidence(e)).decode(),
         )
         for e in archive["evidence"]
     ]
@@ -68,7 +55,9 @@ def materialize(archive, item, source_obligations, role="primary"):
     snapshot = dict(
         context=outbound_context(context, archive["view"]["run_id"]),
         history=histories,
+        history_policy=HISTORY_POLICY,
         policy=POLICY,
+        tool_trace=archive["view"].get("trace", []),
     )
     evidence.append(dict(evidence_id=source_id, text=canonical(snapshot).decode()))
     runtime_report = archive["view"].get("report")

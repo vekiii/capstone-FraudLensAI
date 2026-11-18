@@ -13,7 +13,7 @@ from fraudlens.investigation.retrieval_semantic_v6 import (
 
 
 def runtime_revision():
-    files = ('retrieval_semantic_v6.py', 'semantic_runtime.py', 'semantic_api.py',
+    files = ('retrieval_semantic_v6.py', 'retrieval_source_map_v8.py', 'semantic_runtime.py', 'semantic_api.py',
              'retrieval_semantic_adapter_v6.py', 'semantic_response_audit.py', 'settings.py', 'workflow.py', 'tools.py')
     return digest({name: hashlib.sha256((ROOT / 'backend/src/fraudlens/investigation' / name)
                   .read_bytes().replace(b'\r\n', b'\n')).hexdigest() for name in files})

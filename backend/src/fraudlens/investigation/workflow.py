@@ -81,7 +81,7 @@ class InvestigationService:
         if binding['provider_mode'] == 'test':
             return ScriptedProvider(binding.get('test_scenario', 'grounded'))
         from fraudlens.investigation.provider import OpenAIProvider
-        cap_args = {'request_timeout_cap': 45} if (binding.get('semantic_profile') == 'v7'
+        cap_args = {'request_timeout_cap': 45} if (binding.get('semantic_profile') in ('v7', 'v8')
             and binding.get('limits', {}).get('request_timeout_seconds', 30) > 30) else {}
         return OpenAIProvider(self.settings.api_key.get_secret_value(), binding['requested_model'],
                               prompt=binding['prompt'], **cap_args)
@@ -119,7 +119,7 @@ class InvestigationService:
         if self.settings.provider == 'openai' and not self.settings.api_key.get_secret_value():
             raise ValueError('provider_unavailable')
         from fraudlens.investigation.models import ROOT
-        prompt = (ROOT / 'prompts/application/investigation-v4.md').read_text(encoding='utf-8')
+        prompt = (ROOT / f'prompts/application/investigation-{self.settings.report_prompt}.md').read_text(encoding='utf-8')
         if self.settings.semantic_retrieval:
             prompt += '\n\n' + (ROOT / 'prompts/application/semantic-worker-addendum-v1.md').read_text(encoding='utf-8')
         limits = {key: getattr(self.settings, key) for key in (
@@ -462,7 +462,7 @@ class InvestigationService:
                 if view['budget']['provider_requests'] >= limits['max_provider_requests']:
                     raise ProviderError('budget_exhausted')
                 sequence = self.repo.reserve_dispatch(attempt_id, owner)
-                cap = 45 if binding.get('semantic_profile') == 'v7' else 30
+                cap = 45 if binding.get('semantic_profile') in ('v7', 'v8') else 30
                 request_limits = dict(request_timeout=min(cap, limits['request_timeout_seconds'], remaining),
                     max_input_bytes=limits['max_input_bytes'], max_output_tokens=limits['max_output_tokens'],
                     max_response_bytes=limits['max_response_bytes'])

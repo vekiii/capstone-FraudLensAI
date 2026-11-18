@@ -46,7 +46,18 @@ def example():
     archive = dict(
         context=item["context"],
         view=dict(run_id="inv_" + "a" * 32, state="needs_information", report=dict(draft=draft)),
-        evidence=[dict(evidence_id=evidence_id, text="Authorized source text.")],
+        evidence=[
+            dict(
+                evidence_id=evidence_id,
+                text="Authorized source text.",
+                kind="case_fact",
+                facts=[],
+                returned_count=1,
+                eligible_count=1,
+                truncated=False,
+                passage=None,
+            )
+        ],
     )
     return archive, item
 
@@ -95,3 +106,38 @@ def test_absent_report_retains_failed_slot_without_inventing_prose(module, examp
     packet = module.materialize(archive, item, ["Source obligation."])["packet"]
     assert packet["failed"] is True and all(not v for v in packet["report"].values())
     assert all(u["claim_kind"] == "essential_fact" for u in packet["units"])
+
+
+def test_procedure_scope_provenance_preserved_without_source_reviewer_notes(module, example):
+    archive, item = example
+    e = archive["evidence"][0]
+    e["kind"] = "procedure"
+    document = {
+        key: "test"
+        for key in (
+            "doc_id",
+            "title",
+            "origin_kind",
+            "source_uri",
+            "published_at",
+            "unknown_date_reason",
+            "retrieved_at",
+            "jurisdiction",
+            "version",
+            "content_sha256",
+            "applicability_notes",
+            "reuse_terms",
+        )
+    }
+    document.update(
+        jurisdiction="HISTORICAL TEST JURISDICTION",
+        version="scope-test-v1",
+        reviewed_by="PRIVATE_SOURCE_REVIEWER_CANARY",
+    )
+    e["passage"] = dict(
+        document=document, passage_id="p-test", section="Scope", corpus_version="corpus-test"
+    )
+    packet = module.materialize(archive, item, ["Source obligation."])["packet"]
+    text = json.dumps(packet)
+    assert "HISTORICAL TEST JURISDICTION" in text and "scope-test-v1" in text
+    assert "PRIVATE_SOURCE_REVIEWER_CANARY" not in text

@@ -1,5 +1,11 @@
 # V4 validation path - protocol, NOT execution authorization
 
+2026-11-18 completed RUN3: actual qualified controls6/6, quality valid but1/8PASS.
+All8 primary/same5 secondary dispatched;3failed generations/6empty-report rating
+errors retained. Full results in `evidence/tasks/feature-003-t101-t102-run3-20261118.md`.
+No old rating/obligation changed. Future v8/reportv5 candidate is offline only;
+new-version/fresh-source/budget review pending, original gates below unchanged.
+
 2026-11-18 execution addendum: user approved155 requests and later operational
 retries, then the concrete corrective controls/selector proposal. Original v4
 actual2/6 is retained. Reviewed controls-v2 (explicit known amount/all repeated

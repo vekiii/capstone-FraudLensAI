@@ -127,6 +127,7 @@ def setup(args):
         INVESTIGATION_STORE=str(args.batch / "runs.sqlite"),
         INVESTIGATION_SEMANTIC_RETRIEVAL=str(freeze["semantic_retrieval"]).lower(),
         INVESTIGATION_SEMANTIC_PROFILE=freeze.get("semantic_profile", "v6"),
+        INVESTIGATION_REPORT_PROMPT=freeze.get("report_prompt", "v4"),
         INVESTIGATION_REQUEST_TIMEOUT_SECONDS=str(freeze.get("request_timeout_seconds", 30)),
     )
     # A local T098 dataset index setting must not contaminate authored fixture mode.
@@ -139,6 +140,7 @@ def setup(args):
         provider=freeze["provider"],
         semantic_retrieval=freeze["semantic_retrieval"],
         semantic_profile=freeze.get("semantic_profile", "v6"),
+        report_prompt=freeze.get("report_prompt", "v4"),
         request_timeout_seconds=freeze.get("request_timeout_seconds", 30),
         store=args.batch / "runs.sqlite",
         api_key=private.api_key,

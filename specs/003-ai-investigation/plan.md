@@ -1,5 +1,13 @@
 # Implementation Plan: Evidence-backed AI Investigation
 
+2026-11-18 actual RUN3 addendum: v7/request45 completed, qualified calibration6/6,
+report quality1/8 and useful timing3/5 FAIL. Originals preserved. An explicit v8
+source-map/reportv5 candidate is offline implemented/tested (1150backend PASS),
+defaults/contracts unchanged; no live acceptance or automatic activation. New
+versions/source review and bounded execution decision remain pending in
+[the continuation proposal](t101-t102-source-map-v8-proposal-20261118.md).
+T101/T102 remain open; no new task or relaxed requirement.
+
 2026-11-18 T101/T102 reviewed corrective implementation: preserve default semantic
 v6/policy identity; explicit private semantic_profile=v7 strengthens output format
 instructions only. Strict unique-ID/verbatim-citation checks unchanged. Actual

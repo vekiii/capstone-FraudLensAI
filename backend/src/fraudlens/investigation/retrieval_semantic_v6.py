@@ -36,7 +36,7 @@ def validate_selection(value, passages):
 
 
 def profile_prompt(profile='v6'):
-    if profile not in ('v6', 'v7'):
+    if profile not in ('v6', 'v7', 'v8'):
         raise ValueError('Unknown semantic profile')
     return (ROOT / f'prompts/application/retrieval-answerability-{profile}.md').read_text(encoding='utf-8')
 
@@ -51,9 +51,14 @@ def request_payload(query, passages, model, *, profile='v6'):
                     title=p['document']['title'], jurisdiction=p['document']['jurisdiction'],
                     version=p['document']['version'], published_at=p['document']['published_at']) for p in passages]
     prompt = profile_prompt(profile)
+    schema = SCHEMA
+    if profile == 'v8':
+        from fraudlens.investigation.retrieval_source_map_v8 import source_schema
+        schema = source_schema(passages)
     payload = dict(model=model, store=False, max_output_tokens=2048,
                    instructions=prompt, input=canonical(dict(question=query, passages=sources)).decode(),
-                   text=dict(format=dict(type='json_schema', name='answerability_v6', strict=True, schema=SCHEMA)))
+                   text=dict(format=dict(type='json_schema', name='answerability_v8' if profile == 'v8' else 'answerability_v6',
+                                         strict=True, schema=schema)))
     if len(canonical(payload)) > 48000:
         raise ValueError('Semantic input exceeds byte budget')
     return payload
@@ -74,7 +79,11 @@ async def select_with_provider(provider, query, passages, *, profile='v6'):
     texts = [p['text'] for p in parts if p.get('type') == 'output_text']
     if len(texts) != 1:
         raise ValueError('Semantic response format unavailable')
-    selection = json.loads(texts[0])
+    if profile == 'v8':
+        from fraudlens.investigation.retrieval_source_map_v8 import decode_selection
+        selection = decode_selection(texts[0], passages)
+    else:
+        selection = json.loads(texts[0])
     validate_selection(selection, passages)
     return selection, dict(requested_model=provider.model, returned_model=raw.get('model'),
                             request_id=raw.get('id'), usage=raw.get('usage'), raw_response=raw)
@@ -91,7 +100,11 @@ def project_selection(query, passages, selection, corpus, policy_version):
 
 
 def policy_identity(model, passages, *, profile='v6'):
-    return digest(dict(version='semantic_answerability_' + profile, model=model, schema=SCHEMA,
+    schema = SCHEMA
+    if profile == 'v8':
+        from fraudlens.investigation.retrieval_source_map_v8 import source_schema
+        schema = source_schema(passages)
+    return digest(dict(version='semantic_answerability_' + profile, model=model, schema=schema,
         prompt=profile_prompt(profile),
         passages=digest(passages), max_requests_per_search=1, sdk_retries=0,
         timeout_seconds=30, input_bytes=48000, output_tokens=2048))

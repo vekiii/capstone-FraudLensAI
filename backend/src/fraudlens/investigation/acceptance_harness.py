@@ -219,7 +219,7 @@ def build_service(knowledge, inputs, settings, *, ledger=None):
 
             cap_args = (
                 {"request_timeout_cap": 45}
-                if binding.get("semantic_profile") == "v7"
+                if binding.get("semantic_profile") in ("v7", "v8")
                 and binding.get("limits", {}).get("request_timeout_seconds", 30) > 30
                 else {}
             )

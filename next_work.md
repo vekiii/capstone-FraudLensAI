@@ -1,4 +1,45 @@
-# Current handoff - reviewed v7/request45 ready; RUN3 acceptance pending, 2026-11-18
+# Current handoff - actual RUN3 failed; v8/v5 offline candidate ready, 2026-11-18
+
+feature03, checkpoint0786f83; subsequent offline candidate/results unit ready for
+local checkpoint. No push/merge/new tasks. T101/T102 remain the ONLY open tasks;
+feature003 is NOT ready to close. Previous pending statements below are historical.
+
+Actual RUN3/v7/reportv4/request45:8generation slots,5valid drafts/3duplicate-ID
+failures,45generation+13judging=58HTTP200/no429/no new timeout. Qualified controls
+exact6/6; actual quality valid but **1/8PASS**, with missing coverage/disclosures
+and one paired source-wording disagreement. Empty report/invalid ratings retained.
+No critical flags in5evaluable reports, not proof for all8. FIRST5 timing **3/5**
+useful<=90,all5terminal<=120;20local searches p95.003735800040885806s. Both acceptance
+gates FAIL. All originals and failed slots preserved; no regrading/replacements.
+
+Session actual **126/155**:123HTTP200,1HTTP400,2unknown,0observed429;449456known
+tokens plus unknown usage,spend unknown.29remain; no automatic extra live calls.
+[Actual evidence](evidence/tasks/feature-003-t101-t102-run3-20261118.md),
+[compact/hash-bound results](evidence/tasks/feature-003-t101-t102-run3-20261118-results.json).
+
+Archived exact45runtime/prompt/runner files before new OFFLINE candidate. Explicit
+semanticv8 uses closed per-source rank map and code-copied exact quotes; strict
+unknown/duplicate/overflow/verdict checks retained. Explicit reportv5 names actual
+score source and history exclusions. Defaults v6/v4/30 and original T095 hash remain;
+old reports/contracts unchanged, no.env activation/no livev8. Public history policy
+added to FUTURE source snapshots, no old judge packet changed. All6 qualified
+judge request bodies exactly equal after candidate; calibration method unchanged.
+V8 does not inherit oldv6 numeric acceptance. Full backend **1150PASS124.31s**;
+final formatted20PASS;Ruff/diff PASS, frontend unchanged/not rerun.
+
+**One concrete next step:** user reviews the
+[concrete prospective continuation](specs/003-ai-investigation/t101-t102-source-map-v8-proposal-20261118.md):
+new reviewed sources/versions, four development reports, new-profile retrieval
+regression, fresh8/shared-first5 +paired5 judging under unchanged targets.
+Maximum153NEW/279TOTAL proposed, NOT approved (126alreadyactual). This includes
+32development+44retrieval+64generation+13judging; no extra retry reserve or new task.
+Review/budget required because old holdout is exposed and155cap cannot fit a full
+successor. Keep this pending; do not manufacture approval, run a partial acceptance
+on remaining29 or reuse old cases as fresh. Stop at failed development/retrieval
+gates rather than automatically iterating. Existing ordinary retry/wait permission
+stands; this pending decision concerns a new candidate/evaluation budget.
+
+# Previous handoff - reviewed v7/request45 ready; RUN3 acceptance pending, 2026-11-18
 
 feature03, baseline5431299; validated local code checkpoint, no push/merge/new tasks.
 T101/T102 remain OPEN. User accepted corrective controls/selector proposal and
