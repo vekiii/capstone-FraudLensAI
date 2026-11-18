@@ -1,6 +1,6 @@
 # Quickstart: Simulation Lab and Decision Intelligence
 
-These are validation steps for the implementation phase. Simulation endpoints and the screen are planned. The existing foundation commands are available on this branch.
+Default bundled comparison (T008-T011) is implemented and verified through local API/proxy/automated Chrome. Start the existing backend/Vite commands below and select Simulation & Evaluation. Capacity/threshold editing and recipe export/reopen remain later tasks; the corresponding walkthrough steps below are future acceptance checks. Actual results: ../../evidence/tasks/feature-004-us1.md.
 
 ## Setup
 

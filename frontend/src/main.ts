@@ -3,6 +3,7 @@ import type { CaseDetail, CaseList, CaseSummary } from './contracts';
 import { createCaseView } from './views';
 import type { UiState } from './views';
 import './styles.css';
+import { mountSimulation } from './simulation';
 
 export interface CaseClient {
   getCases(options: { signal: AbortSignal }): Promise<CaseList>;
@@ -105,6 +106,15 @@ export function mountCaseApp(
 
 const root = document.querySelector<HTMLElement>('#app');
 if (root) {
-  const dispose = mountCaseApp(root);
+  const nav = document.createElement('nav');
+  nav.setAttribute('aria-label', 'Prikazi');
+  const cases = document.createElement('button'); cases.textContent = 'Cases';
+  const simulation = document.createElement('button'); simulation.textContent = 'Simulation & Evaluation';
+  const panel = document.createElement('section');
+  nav.append(cases, simulation); root.replaceChildren(nav, panel);
+  let disposeView = mountCaseApp(panel);
+  cases.addEventListener('click', () => { disposeView(); disposeView = mountCaseApp(panel); });
+  simulation.addEventListener('click', () => { disposeView(); disposeView = mountSimulation(panel); });
+  const dispose = () => { disposeView(); root.replaceChildren(); };
   import.meta.hot?.dispose(dispose);
 }

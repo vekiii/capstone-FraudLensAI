@@ -189,3 +189,87 @@ def fingerprint(scenario, outcomes):
         payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
     )
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def contract_version(value):
+    if value != 1:
+        raise ValueError("Unsupported contract version")
+    return value
+
+
+Version = Annotated[int, Field(strict=True), AfterValidator(contract_version)]
+Digest = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
+
+
+class ScenarioRef(Closed):
+    scenario_id: Id
+    scenario_version: Positive
+    content_sha256: Digest
+
+
+class StrategyVersions(Closed):
+    fifo: Positive
+    highest_score: Positive
+    weighted_score_per_minute: Positive
+
+
+class Recipe(Closed):
+    contract_version: Version
+    scenario: ScenarioRef
+    score_threshold: Score
+    budget_minutes_per_window: Nonnegative
+    strategy_versions: StrategyVersions
+
+
+class Metadata(ScenarioRef):
+    title: Text
+    source: Source
+    score_provenance: Provenance
+    assumptions: list[Assumption]
+    horizon: Horizon
+    window_starts: list[Instant]
+    defaults: Defaults
+    generation_seed: Nonnegative | None
+
+
+class CatalogResponse(Closed):
+    contract_version: Version
+    items: list[Metadata]
+
+
+class WindowResult(Closed):
+    starts_at: Instant
+    ranked_alert_ids: list[Id]
+    reviewed_alert_ids: list[Id]
+    used_minutes: Nonnegative
+
+
+class OutcomeCounts(Closed):
+    positives_found: Nonnegative
+    positives_missed: Nonnegative
+    positives_missed_threshold: Nonnegative
+    positives_missed_backlog: Nonnegative
+    reviewed_negatives: Nonnegative
+
+
+class Counts(Closed):
+    reviewed: Nonnegative
+    backlog: Nonnegative
+    unknown_in_horizon: Nonnegative
+    unknown_reviewed: Nonnegative
+    outcomes: OutcomeCounts | None
+
+
+class StrategyResult(Closed):
+    strategy_id: Literal["fifo", "highest_score", "weighted_score_per_minute"]
+    windows: list[WindowResult]
+    pending_alert_ids: list[Id]
+    counts: Counts
+
+
+class Comparison(Closed):
+    contract_version: Version
+    recipe: Recipe
+    scenario: Metadata
+    admitted_alerts: list[Alert]
+    strategies: list[StrategyResult]

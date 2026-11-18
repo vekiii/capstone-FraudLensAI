@@ -11,6 +11,7 @@ from fraudlens.cases import CaseNotFoundError, CaseScoringError, CaseService, Fi
 from fraudlens.contracts import CaseDetail, CaseId, CaseList, Error, ErrorBody, Health
 from fraudlens.scoring import FixtureScorer, Scorer
 from fraudlens.settings import Settings, load_settings
+from fraudlens.simulation.api import router as simulation_router
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +96,7 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -
                     service: Annotated[CaseService, Depends(get_case_service)]) -> CaseDetail:
         return service.get_case(case_id)
 
+    app.include_router(simulation_router)
     return app
 
 
