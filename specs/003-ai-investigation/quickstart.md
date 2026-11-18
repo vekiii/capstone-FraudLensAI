@@ -405,6 +405,80 @@ prior user observations. T061 audit is complete; quality acceptance is still
 unmet. T066 stays partial until its remaining human evidence exists. T067
 Converge follows T066 and does not automatically accept pending quality gates.
 
+## Optional indexed dataset history (T098)
+
+For a large producer dataset, explicitly prepare the separate consumer-owned
+history index described in [history-index-v1.md](history-index-v1.md). Use a
+completed, frozen, checkpointed producer source with no nonempty WAL. This command
+never modifies/checkpoints the source or reads private labels. Output must be new;
+preparation may take time and is never invoked automatically by API/worker.
+
+```powershell
+$env:PYTHONPATH = 'backend/src'
+$producerSource = 'data/processed/feature-003-t098-20261118/source.sqlite' # replace for another producer publication
+$historyIndex = Join-Path $PWD '.cache/history-index-new.sqlite'
+.venv/Scripts/python.exe -m fraudlens.investigation.cli prepare-history-index --source-store "$producerSource" --output "$historyIndex"
+```
+
+Record the returned source/index SHA-256, dataset ID and count. In BOTH API/worker
+terminals, alongside the existing dataset/run/store/source settings:
+
+```powershell
+$env:INVESTIGATION_DATASET_HISTORY_INDEX = $historyIndex
+$env:INVESTIGATION_DATASET_HISTORY_INDEX_SHA256 = (Get-FileHash -LiteralPath $historyIndex -Algorithm SHA256).Hash.ToLowerInvariant()
+```
+
+These are private trusted settings, never request/model arguments. Both are
+required together in dataset mode. First live context/history use validates exact
+index and source hashes; later reads check source/index signatures and WAL state.
+Changed pins/stores fail closed. Archive reads do not require the source/index.
+Runtime queries keep the five-second bound, original seven-day/cutoff/bank/account/
+direction/currency rules and unavailable-versus-empty distinction. No source or
+public context schema changes; fixture/default unindexed behavior is retained.
+For offline T098 work explicitly select provider=test, semantic_retrieval=false
+and empty OPENAI_API_KEY/OPENAI_MODEL; index preparation is not quality acceptance.
+
+### Actual T098 local stores, 2026-11-18
+
+This workstation now has the actual full canonical/history source and bounded20-row
+native model/rules publications under ignored
+`data/processed/feature-003-t098-20261118/`. Other machines must prepare/verify their
+own copies/index; these files are not in Git. Actual hashes/results:
+[T098 evidence](../../evidence/tasks/feature-003-t098-local-20261118.md).
+No need to move the supplied ZIP; verified artifact copies were used in an isolated
+producer export. No training or full-population model evaluation is claimed.
+
+From repository root, load the same existing local configuration in BOTH API and
+worker terminals. The JSON explicitly selects test provider, semantic retrieval off
+and empty process key/model; it changes no .env file. It points at the derived
+20-row model publication and prepared source/index/corpus store:
+
+```powershell
+$localConfig = Get-Content 'data/processed/feature-003-t098-20261118/runtime-env.json' -Raw | ConvertFrom-Json
+$localConfig.PSObject.Properties | ForEach-Object { [Environment]::SetEnvironmentVariable($_.Name, [string]$_.Value, 'Process') }
+```
+
+API terminal:
+
+```powershell
+.venv/Scripts/python.exe -m uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
+```
+
+Worker terminal (same JSON loaded first):
+
+```powershell
+.venv/Scripts/python.exe -m fraudlens.investigation.cli worker --store data/processed/feature-003-t098-20261118/investigation.sqlite --poll
+```
+
+This exposes existing investigation routes for actual dataset IDs; foundation
+`/api/cases` and its UI remain fixture composition. Use an actual case ID from
+the linked T098 results and snapshot_ref `run_t098_model_daily_bounded_20261118`
+in the existing create request. Dataset case-list/UI composition awaits the
+separate producer-feature merge. Existing saved attempts remain inspectable;
+the two completed T098 drafts are labeled TEST needs_information, not live AI.
+The frozen rules publication contains20 assessments and0 alerts under no_alert;
+do not change its threshold to make an example appear.
+
 ## T096 offline rubric v4 (no model calls)
 
 ```powershell

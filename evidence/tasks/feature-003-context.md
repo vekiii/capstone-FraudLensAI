@@ -129,3 +129,71 @@ Adapter now raises the existing CaseNotFoundError, preserving the public API
 envelope. Final command adds test_investigation_api.py to the two dataset files:
 **44 PASS,5.06s,exit0**. Ruff and final git diff --check PASS. This focused run
 is after the small404 exception correction; the936 full-suite result predates it.
+
+## T098 actual-publication availability check — 2026-11-18
+
+On feature03-retrieval-v4 at038f728, actual configured producer dataset/run
+paths are absent. Only local investigation/evaluation stores and cached controlled
+smoke/test files were found in the reachable workspace; the three producer-shaped
+smoke files exactly match historical authored-store hashes. Raw IBM CSV presence
+does not establish published rules/model output. Some old cache directories are
+inaccessible; no exhaustive claim about stores elsewhere. Default investigation
+configuration is disabled/fixture/test; foundation case API/UI remain fixture
+composition, and loopback8000 health/cases GETs were unavailable.
+
+Actual producer run/dataset/model identities/source hashes and real API/matching
+worker, bounded-history/source-switch/archive validation are **UNRUN**. T098
+stays unchecked; T062–T064 completed compatibility scope remains unchanged.
+Existing controlled adapter/context/API regression:44PASS7.68s,exit0; not actual
+producer validation. Missing-file DatasetReader probe failed unavailable without
+creating a file or fixture fallback. No live provider calls, labels, imports,
+training, producer writes, report generation, commit/push/merge or contract changes.
+
+[Full availability evidence and exact producer delivery/execution packet](feature-003-t098-20261118.md),
+[machine results](feature-003-t098-20261118-results.json).
+Next: obtain consistent published dataset + actual rules/model run snapshots,
+producer/model/version/hash/alert identities and compatible application launch
+boundary, then exercise the existing adapter/API/worker with test provider.
+SC-003 report quality and SC-006 live timing remain separate unmet criteria.
+
+### T098 private package follow-up — 2026-11-18
+
+Actual supplied ZIP verified:15/15 payload SHA-256 values PASS; its MANIFEST
+matches the published21ec67d0 identity. Model and five saved producer examples
+selectively extracted to ignored cache, no deserialization/inference. ZIP has
+zero SQLite stores; canonical/history dataset and actual published rules/model
+run databases remain unavailable. Sample JSONs do not replace them. Per user's
+explicit instruction, stop before local producer preparation and request a
+choice: ready-made store transfer or new isolated import/history/scoring using
+the verified CSV and transferred model, without training. No API/worker/live
+provider execution or T098 completion claimed. [Evidence/options](feature-003-t098-handoff-20261118.md)
+and [results](feature-003-t098-handoff-20261118-results.json).
+
+### T098 actual local producer integration complete — 2026-11-18
+
+User selected new isolated producer preparation from matching IBM CSV + transferred
+trained model, without training/merge. Actual5,078,345 canonical events/history-v1
+snapshots,3,963,424 scoreable/1,114,921 warm-up. Producer93d387e schemas unchanged
+versus reviewed487c427;20 genuine model inferences/publications, native score parity
+0.0 on already-exposed validation selection, separate daily-policy run,20 actual
+rules assessments with unchanged no_alert/0 published cases. Full-population ML
+prediction/utility and merged case UI remain separate Feature002 work.
+
+Actual5s full-source scan interruption required an opt-in separate consumer-owned
+history index (no source schema/bytes/labels change). RED7 -> full1081PASS; paired
+SHA settings/read-only guards, legacy behavior/archive reads retained. Independent
+all5,078,345-row oracle exactly matches10 real sender/receiver histories, including
+four >50 results with exact all-eligible direction/currency totals. Real investigation
+API ASGI + matching CLI worker across two actual model snapshots PASS; idempotency,
+409 source-switch, archive/evidence equality and404 no-alert rules boundary PASS.
+Actual missing source remains unavailable/null, not empty or fallback; archive200.
+Both reports are explicit scripted TEST needs_information, not live AI quality.
+
+Persistent ignored stores: data/processed/feature-003-t098-20261118. All five frozen
+source/run/index hashes unchanged across exercise;56 protected non-backend history
+artifacts unchanged, current optional-index runtime changes documented separately.
+T098 checked in this actual bounded-model/full-history scope; no training/live calls,
+benchmark/holdout evaluation, regrading, commit/push/merge or full feature acceptance.
+[Full execution](feature-003-t098-local-20261118.md),
+[IDs/hashes/checks](feature-003-t098-local-20261118-results.json),
+[index design](../../specs/003-ai-investigation/history-index-v1.md).

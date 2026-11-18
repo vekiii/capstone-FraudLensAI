@@ -69,7 +69,9 @@ class InvestigationService:
         if self.settings.source == 'dataset':
             from fraudlens.investigation.dataset import DatasetReader
             dataset_reader = DatasetReader(self.settings.dataset_run_store, self.settings.dataset_store,
-                                           self.settings.dataset_score_source)
+                                           self.settings.dataset_score_source,
+                                           history_index=self.settings.dataset_history_index,
+                                           history_index_sha256=self.settings.dataset_history_index_sha256)
         self.context_reader = CaseContextReader(dataset_reader=dataset_reader)
         self.history_reader = history_reader or (HistoryReader(dataset_reader=dataset_reader)
                                                  if dataset_reader is not None else None)

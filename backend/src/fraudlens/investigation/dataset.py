@@ -8,7 +8,7 @@ import json
 import math
 import sqlite3
 import time
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 from datetime import datetime, timedelta
 from decimal import Decimal, localcontext
 from pathlib import Path
@@ -36,11 +36,25 @@ def unavailable():
 
 
 class DatasetReader:
-    def __init__(self, run_store, dataset_store, score_source):
+    def __init__(self, run_store, dataset_store, score_source, *, history_index=None,
+                 history_index_sha256=None):
         self.run_store, self.dataset_store = Path(run_store), Path(dataset_store)
         if score_source not in ('rules', 'model'):
             raise ValueError('Invalid dataset score source')
         self.score_source = score_source
+        if (history_index is None) != (history_index_sha256 is None):
+            raise ValueError('History index requires an explicit digest')
+        self.history_index_path = Path(history_index) if history_index is not None else None
+        self.history_index_sha256, self._history_index = history_index_sha256, None
+
+    def _index(self):
+        from fraudlens.investigation.history_index import HistoryIndex
+        if self._history_index is None:
+            self._history_index = HistoryIndex(self.dataset_store, self.history_index_path,
+                                              self.history_index_sha256)
+        if self._history_index.source != self.dataset_store.resolve():
+            raise ValueError('stale_snapshot')
+        return self._history_index
 
     @contextmanager
     def connection(self, path):
@@ -82,8 +96,11 @@ class DatasetReader:
                     WHERE a.singleton=1 AND d.status='complete' ''').fetchone()
                 if row is None or row[0] != context['dataset_version']:
                     raise ValueError('stale_snapshot')
-                earliest = db.execute("SELECT MIN(json_extract(payload_json,'$.event_time_utc')) "
-                                      'FROM operational_events WHERE version=?', (row[0],)).fetchone()[0]
+                if self.history_index_path is not None:
+                    earliest = self._index().earliest(row[0])
+                else:
+                    earliest = db.execute("SELECT MIN(json_extract(payload_json,'$.event_time_utc')) "
+                                          'FROM operational_events WHERE version=?', (row[0],)).fetchone()[0]
                 if earliest is not None:
                     metadata.update(availability='available',
                                     coverage='full' if source_instant(earliest) <= start and row[1] == 0 else 'incomplete',
@@ -153,14 +170,19 @@ class DatasetReader:
         start = instant(history['cutoff']) - timedelta(days=7)
         events, totals, count = [], {}, 0
         try:
-            with self.connection(self.dataset_store) as db, localcontext() as decimal_context:
+            with self.connection(self.dataset_store) as db, localcontext() as decimal_context, ExitStack() as stack:
                 decimal_context.prec = 200  # exact permitted decimal strings + population sums
                 active = db.execute('SELECT version FROM active_dataset WHERE singleton=1').fetchone()
                 if active is None or active[0] != context['dataset_version']:
                     raise ValueError('stale_snapshot')
                 # Canonical source UTC strings are ISO; julianday compares offsets safely.
                 # Explicit projection prevents private fields from entering Python/tool inputs.
-                cursor = db.execute('''SELECT transaction_id,
+                if self.history_index_path is not None:
+                    cursor = stack.enter_context(self._index().rows(
+                        context['dataset_version'], identity, timestamp(start), timestamp(cutoff),
+                        tx['transaction_id']))
+                else:
+                    cursor = db.execute('''SELECT transaction_id,
                     json_extract(payload_json,'$.event_time_utc'),
                     json_extract(payload_json,'$.event_time_raw'),
                     json_extract(payload_json,'$.time_basis'),
@@ -174,8 +196,8 @@ class DatasetReader:
                     AND ((json_extract(payload_json,'$.sender_bank')=? AND json_extract(payload_json,'$.sender_account')=?)
                     OR (json_extract(payload_json,'$.receiver_bank')=? AND json_extract(payload_json,'$.receiver_account')=?))
                     ORDER BY julianday(json_extract(payload_json,'$.event_time_utc')),transaction_id''',
-                    (context['dataset_version'], tx['transaction_id'], timestamp(start), timestamp(cutoff),
-                     identity['bank'], identity['account'], identity['bank'], identity['account']))
+                        (context['dataset_version'], tx['transaction_id'], timestamp(start), timestamp(cutoff),
+                         identity['bank'], identity['account'], identity['bank'], identity['account']))
                 for row in cursor:
                     for direction, offset, money in [('outgoing', 4, 8), ('incoming', 6, 10)]:
                         if (row[offset], row[offset + 1]) != (identity['bank'], identity['account']):

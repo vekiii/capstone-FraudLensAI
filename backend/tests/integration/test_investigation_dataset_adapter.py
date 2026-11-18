@@ -263,3 +263,192 @@ def test_changed_producer_binding_does_not_fall_back(published, change):
             db.execute("UPDATE scored_runs SET score_source='model'")
     with pytest.raises(ValueError, match='stale_snapshot'):
         reader.resolve(ctx['case_id'], ctx['snapshot_ref'])
+
+
+def indexed_reader(published, tmp_path):
+    from fraudlens.investigation.dataset import DatasetReader
+    from fraudlens.investigation.history_index import prepare_history_index
+    path = tmp_path / 'history-index.sqlite'
+    result = prepare_history_index(published[2], path)
+    return DatasetReader(published[1], published[2], 'rules',
+                         history_index=path, history_index_sha256=result['index_sha256']), result, path
+
+
+def test_indexed_history_exact_parity_privacy_and_source_immutable(published, tmp_path):
+    ctx, _, source = published
+    add_event(published, 99, '2025-12-24T10:00:00+00:00')
+    add_event(published, 98, '2026-01-01T10:00:00+00:00')
+    add_event(published, 97, sender_bank='OTHER', receiver_bank='OTHER')
+    for number in range(1, 53):
+        add_event(published, number, hidden_label='PRIVATE_CANARY_DO_NOT_COPY')
+    add_event(published, 96, receiver_bank='SYNTH-BANK-A', receiver_account='001')
+    before = source.read_bytes()
+    legacy = adapter(published)
+    context = legacy.resolve(ctx['case_id'], ctx['snapshot_ref'])
+    reader, result, index = indexed_reader(published, tmp_path)
+    assert reader.resolve(ctx['case_id'], ctx['snapshot_ref']) == context
+    for side in ('sender', 'receiver'):
+        for limit in (1, 50):
+            assert reader.read(context, side, limit) == legacy.read(context, side, limit)
+    assert result['row_count'] == 56
+    assert source.read_bytes() == before
+    assert b'PRIVATE_CANARY' not in index.read_bytes()
+
+
+def test_indexed_available_empty_and_missing_source_are_distinct(published, tmp_path):
+    ctx, _, source = published
+    add_event(published, 99, '2025-12-24T10:00:00+00:00', sender_account='OTHER', receiver_account='OTHER')
+    reader, _, _ = indexed_reader(published, tmp_path)
+    context = reader.resolve(ctx['case_id'], ctx['snapshot_ref'])
+    history = reader.read(context, 'sender')
+    assert history['availability'] == 'available' and history['eligible_count'] == 0
+    reader.dataset_store = source.with_name('absent.sqlite')
+    history = reader.read(context, 'sender')
+    assert history['availability'] == 'unavailable' and history['eligible_count'] is None
+    assert not reader.dataset_store.exists()
+
+
+@pytest.mark.parametrize('change', ['source', 'index', 'index_hash'])
+def test_index_changed_binding_fails_closed(published, tmp_path, change):
+    from fraudlens.investigation.dataset import DatasetReader
+    ctx, runs, source = published
+    add_event(published, 1)
+    reader, result, index = indexed_reader(published, tmp_path)
+    context = reader.resolve(ctx['case_id'], ctx['snapshot_ref'])
+    if change == 'source':
+        add_event(published, 2)
+    elif change == 'index':
+        with index.open('ab') as out:
+            out.write(b'changed')
+    else:
+        with pytest.raises(ValueError):
+            bad = DatasetReader(runs, source, 'rules', history_index=index,
+                                history_index_sha256='f' * 64)
+            bad.resolve(ctx['case_id'], ctx['snapshot_ref'])
+        return
+    with pytest.raises(ValueError, match='stale_snapshot'):
+        reader.read(context, 'sender')
+    validate('InvestigationContext', context)
+
+
+def test_index_preparation_refuses_existing_output_and_incomplete_source(published, tmp_path):
+    from fraudlens.investigation.history_index import prepare_history_index
+    target = tmp_path / 'index.sqlite'
+    target.write_bytes(b'preserve existing')
+    with pytest.raises((ValueError, FileExistsError)):
+        prepare_history_index(published[2], target)
+    assert target.read_bytes() == b'preserve existing'
+    with sqlite3.connect(published[2]) as db:
+        db.execute("UPDATE dataset_versions SET status='staged'")
+    with pytest.raises(ValueError):
+        prepare_history_index(published[2], tmp_path / 'not-published.sqlite')
+
+
+@pytest.mark.parametrize('kwargs', [
+    {'dataset_history_index': 'index.sqlite'},
+    {'dataset_history_index_sha256': 'a' * 64},
+    {'dataset_history_index': 'index.sqlite', 'dataset_history_index_sha256': 'bad'},
+])
+def test_history_index_private_settings_require_pair(kwargs):
+    from fraudlens.investigation.settings import InvestigationSettings
+    with pytest.raises(ValueError):
+        InvestigationSettings(source='dataset', **kwargs)
+
+
+def test_history_index_private_settings_pair_is_supported(tmp_path):
+    from fraudlens.investigation.settings import InvestigationSettings
+    cfg = InvestigationSettings(source='dataset', dataset_history_index=tmp_path / 'index.sqlite',
+                                dataset_history_index_sha256='a' * 64)
+    assert cfg.dataset_history_index.is_absolute()
+
+
+def test_indexed_runtime_never_scans_operational_json(published, tmp_path, monkeypatch):
+    from contextlib import contextmanager
+    ctx, _, _ = published
+    add_event(published, 1)
+    reader, _, _ = indexed_reader(published, tmp_path)
+    original = reader.connection
+
+    @contextmanager
+    def no_operational_scan(path):
+        with original(path) as db:
+            db.set_authorizer(lambda action, table, *args:
+                              sqlite3.SQLITE_DENY if action == sqlite3.SQLITE_READ
+                              and table == 'operational_events' else sqlite3.SQLITE_OK)
+            yield db
+
+    monkeypatch.setattr(reader, 'connection', no_operational_scan)
+    context = reader.resolve(ctx['case_id'], ctx['snapshot_ref'])
+    assert reader.read(context, 'sender')['eligible_count'] == 1
+
+
+def test_index_is_read_only_and_wrong_dataset_pin_rejected(published, tmp_path):
+    from contextlib import closing
+
+    from fraudlens.investigation.dataset import DatasetReader
+    from fraudlens.investigation.history_index import file_digest, read_connection
+    ctx, runs, source = published
+    add_event(published, 1)
+    _, _, index = indexed_reader(published, tmp_path)
+    with read_connection(index, {'history_events'}) as db:
+        with pytest.raises(sqlite3.OperationalError):
+            db.execute('DELETE FROM history_events')
+    with closing(sqlite3.connect(index)) as db:
+        metadata = json.loads(db.execute('SELECT content FROM history_source').fetchone()[0])
+        metadata['dataset_version'] = 'dv_' + 'b' * 64
+        db.execute('UPDATE history_source SET content=?', (json.dumps(metadata),))
+        db.commit()
+    reader = DatasetReader(runs, source, 'rules', history_index=index,
+                           history_index_sha256=file_digest(index))
+    with pytest.raises(ValueError, match='stale_snapshot'):
+        reader.resolve(ctx['case_id'], ctx['snapshot_ref'])
+
+
+def test_history_index_cli_and_service_wiring(published, tmp_path):
+    from fraudlens.investigation.cli import main
+    from fraudlens.investigation.history_index import file_digest
+    from fraudlens.investigation.settings import InvestigationSettings
+    from fraudlens.investigation.workflow import InvestigationService
+    ctx, runs, source = published
+    add_event(published, 1)
+    index = tmp_path / 'cli-index.sqlite'
+    assert main(['prepare-history-index', '--source-store', str(source), '--output', str(index)]) == 0
+    settings = InvestigationSettings(source='dataset', dataset_run_store=runs,
+                                     dataset_store=source, dataset_history_index=index,
+                                     dataset_history_index_sha256=file_digest(index))
+    service = InvestigationService(None, None, settings)
+    context = service.context_reader.resolve(ctx['case_id'], 'dataset', ctx['snapshot_ref'])
+    assert service.history_reader.read(context, 'sender')['eligible_count'] == 1
+    before = index.read_bytes()
+    assert main(['prepare-history-index', '--source-store', str(source), '--output', str(index)]) == 2
+    assert index.read_bytes() == before
+
+
+def test_archived_attempt_read_does_not_require_source_or_index(published, tmp_path, knowledge_factory):
+    from uuid import uuid4
+
+    from fraudlens.investigation.knowledge import KnowledgeStore
+    from fraudlens.investigation.settings import InvestigationSettings
+    from fraudlens.investigation.workflow import InvestigationService
+    ctx, runs, source = published
+    add_event(published, 1)
+    _, result, index = indexed_reader(published, tmp_path)
+    knowledge = KnowledgeStore(tmp_path / 'investigations.sqlite')
+    knowledge.publish(knowledge_factory())
+    knowledge.save_configuration(json.loads(
+        (ROOT / 'data/knowledge/fraudlens-aml-knowledge-v1/retrieval.json').read_text()))
+    settings = InvestigationSettings(source='dataset', dataset_run_store=runs, dataset_store=source,
+                                     dataset_history_index=index,
+                                     dataset_history_index_sha256=result['index_sha256'])
+    service = InvestigationService(knowledge.repository, knowledge, settings)
+    created = service.create({key: ctx[key] for key in ('case_id', 'source_mode', 'snapshot_ref')},
+                             'test-analyst', str(uuid4()))
+    archived = service.context(created['attempt_id'])
+    missing = InvestigationSettings(source='dataset', dataset_run_store=tmp_path / 'absent-run.sqlite',
+                                    dataset_store=tmp_path / 'absent-source.sqlite',
+                                    dataset_history_index=tmp_path / 'absent-index.sqlite',
+                                    dataset_history_index_sha256=result['index_sha256'])
+    reopened = InvestigationService(knowledge.repository, knowledge, missing)
+    assert reopened.read(created['attempt_id']) == created
+    assert reopened.context(created['attempt_id']) == archived
+    assert not missing.dataset_store.exists() and not missing.dataset_history_index.exists()

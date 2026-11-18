@@ -443,7 +443,30 @@ separate explicit scope/budget; these tasks do not authorize replay or regrading
   no new actual-provider performance result or SC-006 claim. Evidence:
   `evidence/tasks/feature-003-t097-20261117.md`.
 
-- [ ] T098 Coordinate and exercise the existing reviewed adapter with actual published producer rules/model stores through investigation API and matching worker, bounded history/source-switch/archive checks and the agreed application assembly boundary; record actual producer/run/dataset/model identities and source hashes in `evidence/tasks/feature-003-context.md`. Preserve T062–T064 completed controlled scope; no ML training, producer schema changes, automatic merge, label access, fixture fallback or live-provider execution. Full population/model validation remains unrun until real stores and assembly are available. HIGH per SC-007, FR-001–004, FR-011, plan: producer integration (partial).
+- [x] T098 Coordinate and exercise the existing reviewed adapter with actual published producer rules/model stores through investigation API and matching worker, bounded history/source-switch/archive checks and the agreed application assembly boundary; record actual producer/run/dataset/model identities and source hashes in `evidence/tasks/feature-003-context.md`. Preserve T062–T064 completed controlled scope; no ML training, producer schema changes, automatic merge, label access, fixture fallback or live-provider execution. Full population/model validation remains unrun until real stores and assembly are available. HIGH per SC-007, FR-001–004, FR-011, plan: producer integration (partial).
+  T098 availability2026-11-18: configured dataset/scored-run paths absent; cached
+  producer-shaped files match historical authored-smoke hashes. Reachable local
+  investigation/evaluation stores are not producer publications; old cache scan
+  has explicit access limitations. Actual rules/model identities and API/worker
+  assembly remain unrun. Existing controlled regression44PASS does not close this
+  task. Exact required producer delivery/launch packet and evidence:
+  `evidence/tasks/feature-003-t098-20261118.md`. SC-003/SC-006 remain separate.
+  User-authorized local preparation continuation2026-11-18: exact CSV/model
+  verified, isolated producer93d387e exported with locked dependencies; full IBM
+  import/history preparation and actual bounded20-row inference planned/running.
+  Demonstrated5s partial-source metadata timeout led to optional consumer-owned
+  history-index design/implementation, RED7 -> full backend1081PASS. Actual
+  completed-source/index/API/matching-worker checks remain pending; keep OPEN.
+  `evidence/tasks/feature-003-t098-local-20261118.md` and `history-index-v1.md`.
+  Completion2026-11-18: actual full5,078,345-row canonical/history source; original
+  producer20 genuine model predictions/publications with0.0 saved-score difference,
+  separate policy run and20 real rule assessments at frozen no_alert. Full-population
+  ML evaluation/merged UI remain Feature002 scope. Optional read-only history index
+  solves demonstrated5s scan cap without modifying source/schema;1081backend PASS.
+  Independent full-source oracle10 histories EXACT; actual API/CLI-worker2 test-provider
+  attempts,409 switches/archive equality/404 rules/unavailable source PASS. All frozen
+  source/run/index hashes unchanged. T098 complete for this actual bounded-model/full-
+  history assembly; SC-003/SC-006 quality/performance remain separate and unmet.
 - [x] T099 Separate historical-attempt display from changed-source-context display in `frontend/src/investigation/controller.ts` and `views.ts`; reproduce same-context retry-parent labeling with an intended RED regression, retain read-only historical actions and actual source-switch warnings, then verify GREEN plus relevant stale-navigation/recovery checks. Same-context cancelled parents must not claim a previous source context or an existing report. MEDIUM per FR-002, FR-021, US3/AC1, plan: historical evidence (partial).
 - [x] T100 Add an explicit current context-v2/reviewed-producer addendum to `specs/003-ai-investigation/contracts/api.md`, linking `dataset-adapter-agreement-v2.md`, both historical/current snapshot identities and actual implemented read-only composition; preserve old v1 report/schema meanings and distinguish fixture UI from unrun full producer assembly. Check documentation/schema/example consistency without rewriting historical contracts or results. LOW per FR-001–003, FR-028, plan: versioned boundaries (partial).
 
@@ -504,3 +527,13 @@ complete evaluation; Recall.864583/MRR.9375,4/4 no-answer,4/4 calibrations, reta
 503failure, offline verifier PASS. No independent-human/model or zero-overfit claim.
 Historical pending notes above describe prior states. Other task markers unchanged.
 This approval is for T095 completion only; no commit/push/merge or further API spend.
+
+## Phase 17: Convergence
+
+2026-11-18 post-T098 assessment: actual bounded20-model-row/full5,078,345-row
+history integration passes; T094–T100 retain their recorded scopes. The following
+are existing pre-release acceptance gaps, not new product scope or permission to
+spend. Prior quality/timing outcomes remain unchanged. No new live budget exists.
+
+- [ ] T101 Prepare reviewed fresh report inputs/private references and an explicitly bounded, version-frozen execution path under `specs/003-ai-investigation/report-quality-v4-validation.md`; only after separate explicit provider/judge authorization execute actual six-control calibration (exact6/6), all8 primary reports and the same paired5 secondary reports, then aggregate with `backend/src/fraudlens/investigation/judging_v4.py` and record immutable outputs, usage/failures/disagreements and actual SC-003 results in `evidence/tasks/`. Retain support>=90%, coverage>=80%, >=7/8 pass, zero unsupported critical claims across all8 and no invented no-guidance procedures. Do not replay/regrade old outputs, use fixture calibration as model evidence, tune on unblinded holdout or reuse exhausted budgets. HIGH per SC-003, FR-013–017, FR-025–028, plan: mandatory actual report evaluation (partial).
+- [ ] T102 Materialize/review five fresh ordinary cases and20 local search queries under `specs/003-ai-investigation/timing-v1-protocol.md`, freeze actual source/model/corpus/dirty-code/machine/observer identities, and prepare the bounded external POST-to-visible-terminal observer/watchdog; only after separate explicit execution authorization run the frozen batch and assess with `backend/src/fraudlens/investigation/timing_evaluation.py`. Record all5/20 outcomes/errors, >=4/5 useful results<=90s, all5 visibly terminal<=120s and search p95<=2s in `evidence/tasks/`, preserving old2/5/outlier failures. No cached/scripted/three-case replacement, old batch replay or automatic provider spend; proposed40-request timing cap is not approved. HIGH per SC-006, FR-018–021, FR-028, plan: measured demonstration (partial).

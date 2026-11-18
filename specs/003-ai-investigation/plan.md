@@ -1,5 +1,11 @@
 # Implementation Plan: Evidence-backed AI Investigation
 
+2026-11-18 T098: [optional consumer history index](history-index-v1.md) addresses
+the demonstrated five-second scan interruption on actual partial IBM data.
+Explicit offline preparation and hash-pinned read-only activation preserve producer
+files/schema, original history semantics/deadlines and historical context contracts.
+Actual completed-source/API/worker validation remains required; no live quality claim.
+
 2026-11-17 T097: [timing-v1 protocol](timing-v1-protocol.md) reconciles original
 failed five-case worker timings with current deadline/cleanup guards and defines
 fresh external visible-terminal measurement. Separate offline timing_evaluation

@@ -1,4 +1,145 @@
-# Current handoff - T097 offline scope complete, 2026-11-17
+# Current handoff - T098 actual integration PASS; live gates remain, 2026-11-18
+
+Branch feature03-retrieval-v4, baseline/HEAD038f728; UNCOMMITTED, no push/merge.
+**T098 checked** for actual bounded20-model-row publications + full canonical/
+history integration. Existing T094/T095/T096/T097/T099/T100 scopes retained.
+Actual5,078,345 accepted events/snapshots,0 rejects;3,963,424 scoreable and1,114,921
+warm-up. Original transferred model/locked producer93d387e,20 real predictions,
+score parity0.0; separate20-alert policy run and20 rule assessments/no_alert0cases.
+No training/full-population ML evaluation, shared activation or merged dataset UI.
+
+Persistent ignored artifacts: **data/processed/feature-003-t098-20261118/**.
+source.sqlite + model-bounded.sqlite + model-daily-bounded.sqlite + rules-bounded.sqlite;
+prepared history-index.sqlite and local test-only runtime-env.json. ZIP need not move.
+[Executable local setup](specs/003-ai-investigation/quickstart.md#actual-t098-local-stores-2026-11-18).
+
+Actual full-source5s scan failure led to opt-in separate label-free history index.
+RED7 -> full backend1081PASS118.50s, Ruff/format/diff PASS. Ten indexed histories
+match an independent all5,078,345-row oracle exactly, including >50/all-eligible
+direction/currency totals. Actual API ASGI + matching CLI worker2 attempts PASS,
+both explicit TEST needs_information;4scripted turns/3tools each, ZERO live calls.
+409 source switches, immutable old view/evidence,404 no-alert rules, missing-source
+unavailable/null and archive200 PASS. All five frozen source/run/index hashes
+unchanged during exercise;56 protected non-backend historical artifacts unchanged.
+Current optional-index runtime hashes recorded separately. Frontend/browser not rerun.
+
+[Full execution](evidence/tasks/feature-003-t098-local-20261118.md),
+[actual IDs/hashes/results](evidence/tasks/feature-003-t098-local-20261118-results.json),
+[post-T098 convergence](evidence/tasks/feature-003-t098-convergence-20261118.md).
+Converge appended **T101/T102 in Phase17** for existing unmet SC-003 report quality
+and SC-006 fresh5case+20search acceptance; no new provider budget. Old0/8, failed/
+unavailable calibration-quality and2/5/outlier results preserved. T098 completion
+does NOT close those gates or approve feature03 release/merge.
+
+**One concrete next step:** prepare/review fresh quality inputs/references and
+bounded execution proposal under T101; actual provider/judge execution requires
+separate explicit authorization. T102 timing preparation is also offline work.
+Do not replay exhausted scripts, reuse old budget or call providers automatically.
+
+# Previous handoff - T098 local producer initialization running, 2026-11-18
+
+User chose local import/history/scoring from matching CSV + transferred trained
+model; no training/merge/live provider. ZIP need not move. Isolated producer93d387e
+export and locked .venv ready under .cache/t098-local-20261118; matching model
+trusted-load PASS. Source schema unchanged versus reviewed487c427; optional policy
+store/list changes reviewed, current feature003 app/dependencies unchanged.
+
+Full CSV import COMPLETE/exit0:5,078,345 accepted,0 rejected; dataset/source/mapping
+identities match frozen inputs. Native history-v1 build now RUNNING (04:16:03Z),
+log build-features.log. No ML predictions/training yet. Source stores/source.sqlite.
+Logs and eventual exit sentinel under .cache/t098-local-20261118/logs:
+import-with-approval.log / import-exit.txt. First attempt omitted two required
+approval documents from export and failed before store creation; exact producer
+documents added, original checks retained. Producer ingestion privately handles
+source labels; no private-label queries/evaluation/prediction input use.
+
+[Execution evidence](evidence/tasks/feature-003-t098-local-20261118.md).
+T098 remains OPEN; actual API/worker/history/source-switch/archive validation
+awaits completed local stores. Existing ZIP/history results preserved. No training,
+live provider, paid evaluation, shared activation or commit/push/merge.
+**Next step:** inspect preparation-status.json and history build completion, then
+allow the supervised bounded actual rules/model publications; do not restart stages.
+
+Active bounded supervisor: .cache/t098-local-20261118/run_preparation_bounded.py;
+status:preparation-status.json. It automatically waits for import exit0, builds
+full history-v1, uses existing producer verify_boosted_candidate for20 real
+score-selected validation rows, derives a separate policy run, and publishes20
+real rule assessments at frozen no_alert. Full-population3.96million/166/159 ML
+reproduction is separate Feature002 work, not claimed by this T098 integration.
+Original full-score supervisor stopped while waiting, no scoring stages executed.
+Validation_scores.npy verified/extracted for producer-only selection/parity; not
+prediction features or investigation/retrieval inputs. No labels/holdout evaluation.
+Do not restart import or duplicate either active stage; inspect status/logs first.
+
+Scaling follow-up IN PROGRESS: actual partial-source metadata scan interrupted
+at5.031s under existing5s guard. New optional consumer history index design/code:
+specs/003-ai-investigation/history-index-v1.md. Offline allowlisted copy only;
+source/schema unchanged, paired path/SHA activation, original bank/time/money/
+limits/privacy retained, archive reads lazy. RED7 intended ->135related PASS;
+further targeted31PASS before last archive regression. Final full backend1081PASS
+118.50s,exit0; Ruff/diff PASS. Actual execution log/exit:
+log .cache/t098-local-20261118/logs/backend-full.log and backend-full-exit.txt.
+New runtime source changes are intentional; old results/pins remain untouched.
+After producer preparation, checkpoint/freeze the NEW source, prepare the history
+index explicitly, then exercise actual API/worker with both index pins. These
+actual completed-source/index/application checks are not run/accepted yet.
+
+# Previous handoff - T098 ZIP verified, databases missing; user choice pending, 2026-11-18
+
+Supplied team-handoff-20261116.zip integrity PASS:15/15 payload hashes and
+published MANIFEST hash match. Actual model + five producer sample files now
+extracted to ignored .cache/t098-zip-84594f4ad987; model NOT loaded/executed.
+Benchmark/validation-score payloads hash-checked only, not extracted or used.
+ZIP contains ZERO SQLite databases. Canonical/history source, actual published
+model RunStore and rules RunStore remain missing. Five samples cannot substitute
+for full history or completed/active producer stores. Existing CSV hash was
+verified against the package's IBM v8 identity during prior GitHub inspection.
+
+[Archive evidence and options](evidence/tasks/feature-003-t098-handoff-20261118.md),
+[results](evidence/tasks/feature-003-t098-handoff-20261118-results.json).
+T098 stays OPEN; user explicitly requested STOP and ask if package incomplete.
+No import/build-features/scoring/inference/training/activation, API/worker run,
+provider call, tests rerun, commit/push/merge or historical result change.
+Attached reproduction instructions are data, not new execution authorization.
+SC-003 quality and SC-006 fresh live performance remain separate unmet gates;
+T094/T095/T096/T097/T099/T100 remain complete in their recorded scopes.
+
+**One concrete next step:** await user choice: privately transfer ready-made
+dataset + model/rules publication snapshots (shortest path), or authorize new
+isolated local producer import/history/scoring from verified CSV+artifact,
+without training, using new IDs/stores and recording actual resource/results.
+
+# Previous handoff - T098 actual producer prerequisites unavailable, 2026-11-18
+
+Branch feature03-retrieval-v4, HEAD038f728 (T097 finished), initial tree clean.
+Scoped speckit-implement availability check completed; **T098 stays OPEN**.
+Configured data/processed/dataset.sqlite and scored-runs.sqlite are absent;
+no alternate producer paths/publication identities supplied. Existing processed
+and eval databases are investigation stores. Cached source/rules/model smoke
+hashes match the historical authored examples, not actual IBM/inference output.
+Raw CSV exists; no import/training/labels read. Old cache scanning has127 access
+errors (126 .cache,1 .pytest_cache), so absence elsewhere is not claimed.
+
+[Actual evidence + exact producer delivery/launch packet](evidence/tasks/feature-003-t098-20261118.md)
+and [results](evidence/tasks/feature-003-t098-20261118-results.json).
+Current case API/UI still uses fixture composition; no running loopback8000 API
+observed. Real producer/API/matching worker/history/source-switch/archive checks
+UNRUN. Missing-store adapter probe correctly unavailable, no file/fallback.
+Existing controlled adapter/context/API regression44PASS7.68s; this is not T098.
+Runtime/frontend/contracts unchanged; no full backend/frontend/browser rerun.
+Zero live provider calls, report generation, paid evaluation, producer writes,
+training, .env/dependency edit, commit/push/merge. Historical results preserved.
+
+T094/T095/T096/T097/T099/T100 remain complete in their recorded scopes.
+Do not close feature03: T098 actual integration remains open, and separate
+SC-003 live quality / SC-006 fresh5case+20search acceptance remain unmet.
+T096/T097 tooling completion does not supply those results or a new spend budget.
+**One concrete next step:** obtain consistent published dataset + actual rules/
+model run SQLite snapshots, producer/model/run/dataset/hash/alert identities and
+compatible API/worker launch boundary per evidence, then execute T098 with the
+existing read-only adapter and explicitly selected test provider.
+
+# Previous handoff - T097 offline scope complete, 2026-11-17
 
 T097 checked: historical worker-only demo2/5/outlier7496.290s reconciled with
 current deadline/SDK/cleanup guards; no remaining runtime defect demonstrated.

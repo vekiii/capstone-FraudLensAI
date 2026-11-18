@@ -43,6 +43,9 @@ def main(argv=None):
     prepare.add_argument('--store', required=True)
     prepare.add_argument('--stage-only', action='store_true')
     prepare.add_argument('--retrieval')
+    history = commands.add_parser('prepare-history-index')
+    history.add_argument('--source-store', required=True)
+    history.add_argument('--output', required=True)
     probe = commands.add_parser('probe-provider')
     probe.add_argument('--synthetic-only', action='store_true')
     worker = commands.add_parser('worker')
@@ -52,6 +55,10 @@ def main(argv=None):
     mode.add_argument('--poll', action='store_true')
     args = parser.parse_args(argv)
     try:
+        if args.command == 'prepare-history-index':
+            from fraudlens.investigation.history_index import prepare_history_index
+            print(json.dumps(prepare_history_index(args.source_store, args.output)))
+            return 0
         if args.command in ('freeze-retrieval','evaluate-retrieval','join-retrieval','evaluate-reports','summarize-reviews'):
             from fraudlens.investigation import evaluation
             protocol = evaluation.verify_pack_inputs(args.protocol)
