@@ -1,0 +1,85 @@
+{
+  "scenario_id": "review-capacity-demo",
+  "scenario_version": 1,
+  "content_sha256": "894136f422d013cf0d1d52820acf26e3a3a95076a4b8ab044c4e24faf4105198",
+  "title": "Synthetic review capacity example",
+  "source": {
+    "kind": "bundled_synthetic",
+    "data_version": "authored-v1",
+    "time_basis": "Authored UTC instants; no observed customer data"
+  },
+  "score_provenance": {
+    "source": "fixture",
+    "score_kind": "illustrative_score",
+    "scorer_version": "illustrative-v1"
+  },
+  "assumptions": [
+    {
+      "id": "equal-weight",
+      "description": "Authored equal unit weights; no loss estimate"
+    },
+    {
+      "id": "duration",
+      "description": "Authored whole-minute review costs"
+    }
+  ],
+  "horizon": {
+    "starts_at": "2026-01-01T00:00:00Z",
+    "ends_at": "2026-01-01T01:00:00Z"
+  },
+  "window_starts": [
+    "2026-01-01T00:00:00Z"
+  ],
+  "defaults": {
+    "score_threshold": "0.30",
+    "budget_minutes_per_window": 2
+  },
+  "generation_seed": null,
+  "alerts": [
+    {
+      "alert_id": "A",
+      "available_at": "2026-01-01T00:00:00Z",
+      "score": "0.40",
+      "weight": "1",
+      "estimated_review_minutes": 2,
+      "weight_assumption_id": "equal-weight",
+      "duration_assumption_id": "duration"
+    },
+    {
+      "alert_id": "B",
+      "available_at": "2026-01-01T00:00:00Z",
+      "score": "0.90",
+      "weight": "1",
+      "estimated_review_minutes": 2,
+      "weight_assumption_id": "equal-weight",
+      "duration_assumption_id": "duration"
+    },
+    {
+      "alert_id": "C",
+      "available_at": "2026-01-01T00:00:00Z",
+      "score": "0.80",
+      "weight": "1",
+      "estimated_review_minutes": 1,
+      "weight_assumption_id": "equal-weight",
+      "duration_assumption_id": "duration"
+    },
+    {
+      "alert_id": "D",
+      "available_at": "2026-01-01T00:00:00Z",
+      "score": "0.20",
+      "weight": "1",
+      "estimated_review_minutes": 1,
+      "weight_assumption_id": "equal-weight",
+      "duration_assumption_id": "duration"
+    },
+    {
+      "alert_id": "E",
+      "available_at": "2026-01-01T00:00:00Z",
+      "score": "0.80",
+      "weight": "1",
+      "estimated_review_minutes": 1,
+      "weight_assumption_id": "equal-weight",
+      "duration_assumption_id": "duration"
+    }
+  ]
+}

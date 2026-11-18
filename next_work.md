@@ -1,3 +1,17 @@
+# Current handoff - Feature 004 Phase 2 complete, 2026-11-18
+
+T002/T003/T004 checked; stop before T005. Bundled A-E facts and separate private
+outcomes, strict models, canonical fingerprint and trusted local catalog done.
+Digest:894136f422d013cf0d1d52820acf26e3a3a95076a4b8ab044c4e24faf4105198.
+Actual load5 facts/5 outcomes, label-free metadata verified. RED53failed/1passed;
+final56 contracts +8 startup PASS, full backend366 PASS, Ruff/diff PASS. Existing
+Starlette/httpx warning remains. No blockers; human review/reproduction pending.
+No replay/API/UI, frontend/lock/shared/Cases changes, agents or Git publication.
+Evidence: [validation](evidence/tasks/feature-004-phase-02-validation.md),
+[handoff](evidence/tasks/feature-004-phase-02-handoff.md).
+Next: separately scoped Phase3 T005-T011, beginning with replay tests. Not started.
+Earlier handoffs below historical.
+
 # Current handoff - Feature 004 T001 complete, 2026-11-18
 
 Only Phase 1/T001 executed. Locked uv sync and npm ci PASS; startup8 PASS
