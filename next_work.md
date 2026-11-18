@@ -1,22 +1,31 @@
-# Next work - FraudLens AI
-Updated 2026-11-12 Europe/Belgrade. Branch initialization; HEAD 733bff2.
+# Next work — FraudLens AI
+
+Updated 2026-11-18 Europe/Budapest. Branch `feature/002-clean-start`; T201–T208 implementation and evidence are recorded below.
 
 ## Current state
-Feature 001-project-foundation completed/accepted in its local synthetic-demo scope:
-T001-T028 checked. Vedran Mitic confirms joint setup verification and human
-code/contracts/evidence review by all team members. No individual signatures or
-separate-machine installations claimed. Historical pending entries superseded.
-- Peer results: 310 backend passed (exit 0), 151 frontend passed, Ruff,
-  typecheck/build, health/UI/retry and 404/422 results recorded.
-- Project Python 3.14.3; system py 3.14.7; Node 24.20.0; npm 11.19.0; uv 0.10.9.
-- Prior temp permission errors resolved through unique workspace temp/cache paths.
-- Known Starlette/httpx warning remains, no outstanding failure reported.
-- Evidence: evidence/tasks/peer-reproduction.md, human-review.md,
-  phase-06-handoff.md and foundation-validation.md. Browser evidence remains the
-  historical T019 run; no new browser/test run during acceptance recording.
+
+Feature 001 foundation remains completed and accepted in its local synthetic-demo scope: T001–T028 are recorded complete. Team-reported peer setup and human review are documented without individual signatures or separate-machine installation claims. Historical checks include backend/frontend suites, Ruff, typecheck/build and browser/API scenarios; no new test/browser run was part of this task. Evidence is in `evidence/tasks/peer-reproduction.md`, `human-review.md`, `phase-06-handoff.md` and `foundation-validation.md`. The known Starlette/httpx warning remains recorded.
+
+Feature 002 specification package was committed locally in `df4dabf`; the commit record is in `evidence/tasks/session-commits-2026-11-12.md`. T204 adds the initial raw-source parser. No real dataset parsing/preparation or model work has been performed.
+
+T201 is complete. It preserves the original prompt, documents evidence/data output policy, adds `/artifacts/`, `/data/artifacts/` and `/data/eval/` ignore rules, and records verification in `evidence/tasks/T201.md`. Representative scratch, raw, processed, artifact and evaluation paths all match `.gitignore`; `git ls-files` reports no tracked generated data under those data/evaluation paths. Existing top-level `artifacts/` and `data/artifacts/` contents remain untouched; filenames only were reviewed.
+
+No application tests were run for T201, which was documentation and ignore-policy work. T203 has since verified the local source hash/header and scanned non-label field text, but upstream revision/license details and timezone documentation remain incomplete; no label distribution or model quality has been evaluated.
+
+T202 is complete in the current working diff. Synthetic duplicate-header tests assert the spec's zero-based sender/receiver map, preserve leading-zero identifiers, and reject changed/malformed headers. T204's focused GREEN run now verifies these mapping assertions; see `evidence/tasks/T202.md` and `evidence/tasks/T204.md`. No real source records or labels were read during implementation checks.
+
+T203 is partially verified. The local ignored `data/raw/HI-Small_Trans.csv` hash matches the spec reference and its header matches the expected 11-column sequence, confirming the duplicate Account positions. A streaming scan discarded the label field before parsing and recorded aggregate type/format observations for the other ten columns; no label values were inspected. IBM's README identifies CDLA-Sharing-1.0 for data (separate from Apache-2.0 repository code) and describes synthetic provenance. Kaggle version/current terms and authoritative field-type/timezone documentation remain unresolved because the listing and IBM Box PDF were unavailable to the fetcher; T203 remains unchecked. Details are in `evidence/tasks/T203.md` and `data/README.md`.
+
+T204 is complete. `backend/src/fraudlens/data/source.py` hashes raw bytes before parsing, fails closed on an exact-header or row-width mismatch, maps duplicate headers by verified positions, preserves source values as text, and derives deterministic transaction IDs from the full source hash plus 1-based row number. The focused synthetic suite passes (9 tests) and Ruff passes. The real CSV was not parsed by T204; timestamps remain raw text with timezone unresolved. Evidence is in `evidence/tasks/T204.md`.
+
+T205 is complete. `backend/tests/unit/test_dataset_validation.py` defines synthetic RED contracts for malformed/missing timestamps, identifiers, amounts and label encodings; decimal-text preservation; row count reconciliation; source-row references; and bounded, allowlisted reason codes that do not echo invalid values. The focused run collected 26 tests and all failed at the intentionally absent `fraudlens.data.validation` module for T206; Ruff passed. No production validator or real-data processing was added. See `evidence/tasks/T205.md`.
+
+T206 is complete for the T205 synthetic contract. `backend/src/fraudlens/data/validation.py` validates a bounded batch deterministically, preserves amount/timestamp source text, produces bank-qualified account-key tuples, and emits a rejection ledger with only source row number and fixed reason code. Source/accepted/rejected counts reconcile. The focused validation suite passes (26 tests) and Ruff passes; exact commands and limitations are in `evidence/tasks/T206.md`. No real records or labels were read; T203 remains a real-ingestion gate.
+
+T207 is complete as a RED-test unit. `backend/tests/unit/test_dataset_resume.py` contains four synthetic cases for interrupted processing, staged-chunk corruption on resume, disk exhaustion before input consumption/publication, and successful resume without duplicates. The focused suite has the intended RED result (4 failures at the absent `fraudlens.data.pipeline` boundary); Ruff passes. Tests specify the proposed `run_pipeline` contract for T208. Details are in `evidence/tasks/T207.md`; no real data or labels were used.
+
+T208 is complete for the synthetic T207 contract. `pipeline.py` stages deterministic bounded chunks with source/config/input/output hashes, verifies checkpoints and replayed prefixes on resume, checks disk reserve, and atomically publishes data files plus a checksummed manifest/`COMPLETE` marker. `manifest.py` validates snapshot outputs before use. The focused schema/validation/resume run passes (39 tests) and Ruff passes. The manifest leaves provenance and temporal fields explicitly incomplete; no real ingestion, benchmark, or timezone/warm-up processing was performed. See `evidence/tasks/T208.md`.
 
 ## One concrete next step
-Review and publish current documentation/status changes through the team's normal
-Git workflow (agent has not committed/pushed). Then separately request specification
-of 002-data-and-risk-scoring; no implementation of that feature started/authorized.
-Read AGENTS and this handoff before further work; preserve existing local changes.
+
+Begin T209: benchmark representative synthetic scale/skew and freeze memory, disk reserve, runtime, chunk, and checkpoint ceilings in `protocol.md` and `evidence/tasks/T209.md` before any real ingestion. T203's source/version/terms/timezone gaps remain unresolved, so do not ingest real data. T201–T208 implementation and evidence are scoped to `feature/002-clean-start`; generated data/artifacts remain ignored and must stay out of Git.

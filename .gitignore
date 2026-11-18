@@ -33,6 +33,9 @@ junit.xml
 !.env.example
 
 # Large/local data and generated evaluation output
+/artifacts/
 /data/raw/
 /data/processed/
+/data/artifacts/
+/data/eval/
 /evals/results/

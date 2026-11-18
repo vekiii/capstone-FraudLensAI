@@ -23,3 +23,10 @@ prompts belong in `prompts/app/`. Link them rather than conflating prompts with
 execution evidence. Sanitize secrets and sensitive data before recording anything;
 document redactions without preserving secret originals in Git. Keep logs small
 and reviewed; generated local evaluation artifacts follow data/README.md.
+
+For Feature 002, retain the original specification-generation prompt in
+`prompts/development/002-dataset-ml-eda.md`. Record source verification, restricted
+label-audit access, actual preparation/training commands, outputs, limitations and
+human review as separate task evidence. Do not place raw/processed rows, model
+artifacts, record-level labels, or holdout answers in this directory. Evidence for
+documentation or ignore-policy setup must state that no data/model checks were run.
