@@ -1,4 +1,64 @@
-# Current handoff - report v6 performance passed, final quality 4/8, 2026-11-18
+# Current handoff - T101 quality passed, 2026-11-18
+
+T101 is complete. Fresh sections-profile cohort 8/8 passed SC-003, calibration
+exact6/6, all 13 valid blind ratings, no critical flags or unresolved disagreements.
+The corrected profile requires nonempty case sections after verified case evidence
+and includes the exact projected search status in the judge packet. T102 remains
+complete under its earlier timing evidence. Full backend 1163 passed.
+
+Actual session count 419/433. The final stage inventory was16 development,
+6 calibration,32 final generation,13 ratings after352 prior. Older 6/8 and4/8
+results remain archived. No remaining evaluation task in the T101/T102 pair.
+[Final evidence](evidence/tasks/feature-003-t101-final-20261118.md) and machine JSON.
+No commit, push or merge. Next work is the team's review of the project branch
+and decision about publication.
+
+# Previous handoff - T101 final sections-profile ratings running, 2026-11-18
+
+User approved additional necessary requests and asked to complete T101. The
+successor cohort finished 6/8, with actual total 352. The correction requires
+nonempty case sections in the provider schema after bound evidence arrives and
+includes the exact projected search status in future judge evidence. Development
+4/4 passed in 16 calls, calibration exact6/6. Full backend 1163 PASS.
+
+Eight fresh SEC-FINAL reports are valid. Thirteen reviewed typed source-bound
+packets are running in the ignored report-v6-sections-20261118/judging batch.
+Use the existing ledger and aggregate. Ceiling 433, no replay of this stage.
+
+**Next:** wait for final ratings and validate the immutable aggregate. If it
+satisfies SC-003, record evidence and check T101. T102 was already complete.
+
+# Previous handoff - T101 sections cycle in progress, 2026-11-18
+
+Successor typed calibration matched exact6/6. Seven of eight drafts validated,
+all 13 ratings recorded, SC-003 quality 6/8. 352 total after this finished cycle.
+[Evidence](evidence/tasks/feature-003-t101-successor-20261118.md). One draft failed
+missing required sections; one paired check disputed no_match because the packet
+only contained the upstream insufficient selector verdict.
+
+Authorized additional cycle is bounded at 433 overall (352 +20 development,
+6 controls, 42 final generation,13 ratings). New opt-in provider shape requires
+nonempty summary/observed facts/citations only after bound case evidence arrives.
+Future packets include deterministic projected search status. RED2, then56 focused
+checks passed. New development and calibration are active under ignored
+report-v6-sections-20261118. T101 remains open until fresh final SC-003 passes.
+
+**Next:** inspect four development drafts and exact-six calibration, then fresh eight
+final reports and fixed 8+5 ratings using typed schema and runtime facts.
+
+# Previous handoff - T101 successor judging in progress, 2026-11-18
+
+User explicitly approved 361 total and additional necessary bounded work to close
+T101. Six typed controls matched exactly. New cohort generated 7 valid drafts out
+of 8 in 33 sends; NEXT-FINAL-01 failed local schema after one repair, preserved.
+Final quality judging started with 13 slots, budget before judging 339. Typed
+packet schemas and completed-selector evidence activated. The task stays open
+pending the actual aggregate. See ignored report-v6-successor-20261118 artifacts.
+
+**Next:** wait for current judge process and aggregate, preserve all 8/5 slots,
+then close T101 only if actual gates pass. Do not replay the one-shot batch.
+
+# Previous handoff - report v6 performance passed, final quality 4/8, 2026-11-18
 
 User authorized iterative recovery and the final evaluation. Development passed
 4/4 after explicit low reasoning and 60-second generation, within 120 seconds

@@ -24,7 +24,7 @@ def helper(filename, name):
     return module
 
 
-def prepare(batch=BATCH, pack=PACK, *, runtime_facts=False):
+def prepare(batch=BATCH, pack=PACK, *, runtime_facts=False, quality_only=False):
     driver = helper("feature-003-latency-judge-20261118.py", "driver")
     materializer = helper("feature-003-materialize-quality-v2-20261118.py", "materializer")
     final = batch / "final"
@@ -33,33 +33,36 @@ def prepare(batch=BATCH, pack=PACK, *, runtime_facts=False):
     order = protocol["quality_order"]
     assert order == freeze["input_order"]
     observations = driver.load(final / "observations.json")["observations"]
-    timing_ids = protocol["timing_order"]
-    timed = [
-        {k: o[k] for k in ("id", "seconds", "state", "report_validated")}
-        for o in observations
-        if o["id"] in timing_ids
-    ]
-    queries = driver.load(pack / "inputs/searches.json")
-    store = KnowledgeStore(final / "runs.sqlite", initialize=False)
-    corpus, retrieval = freeze["corpus_version"], freeze["local_retrieval_version"]
-    store.passages(corpus)
-    local = []
-    for row in queries:
-        before = time.perf_counter()
-        failed = False
-        try:
-            search(store, row["query"], corpus, retrieval)
-        except OSError, ValueError, LookupError:
-            failed = True
-        local.append(dict(id=row["id"], seconds=time.perf_counter() - before, error=failed))
-    demo = assess_demo(timing_ids, timed)
-    searches = assess_searches([q["id"] for q in queries], local)
-    driver.save(
-        batch / "timing-results.json",
-        dict(
-            demo=demo, local_search=searches, performance_pass=demo["passed"] and searches["passed"]
-        ),
-    )
+    if not quality_only:
+        timing_ids = protocol["timing_order"]
+        timed = [
+            {k: o[k] for k in ("id", "seconds", "state", "report_validated")}
+            for o in observations
+            if o["id"] in timing_ids
+        ]
+        queries = driver.load(pack / "inputs/searches.json")
+        store = KnowledgeStore(final / "runs.sqlite", initialize=False)
+        corpus, retrieval = freeze["corpus_version"], freeze["local_retrieval_version"]
+        store.passages(corpus)
+        local = []
+        for row in queries:
+            before = time.perf_counter()
+            failed = False
+            try:
+                search(store, row["query"], corpus, retrieval)
+            except OSError, ValueError, LookupError:
+                failed = True
+            local.append(dict(id=row["id"], seconds=time.perf_counter() - before, error=failed))
+        demo = assess_demo(timing_ids, timed)
+        searches = assess_searches([q["id"] for q in queries], local)
+        driver.save(
+            batch / "timing-results.json",
+            dict(
+                demo=demo,
+                local_search=searches,
+                performance_pass=demo["passed"] and searches["passed"],
+            ),
+        )
     refs = {r["id"]: r for r in driver.load(pack / "reference/source-obligations.json")}
     inputs = driver.load(final / "inputs.json")
     inventory, packets = [], []
@@ -118,8 +121,11 @@ if __name__ == "__main__":
     parser.add_argument("--pack", type=Path, default=PACK)
     parser.add_argument("--calibration", type=Path)
     parser.add_argument("--runtime-facts", action="store_true")
+    parser.add_argument("--quality-only", action="store_true")
     args = parser.parse_args()
     if args.command == "prepare":
-        prepare(args.batch, args.pack, runtime_facts=args.runtime_facts)
+        prepare(
+            args.batch, args.pack, runtime_facts=args.runtime_facts, quality_only=args.quality_only
+        )
     else:
         assess(args.batch, args.pack, args.calibration)

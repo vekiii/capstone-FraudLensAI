@@ -37,12 +37,16 @@ def runtime_source_facts(archive):
         if event["operation"] != "semantic_selection" or event["sequence"] not in completed:
             continue
         selection = event["selection"]
+        selected_ids = [row["passage_id"] for row in selection["selected"]]
+        # Same public status mapping as project_selection. The selector verdict
+        # and the application result have different names for an empty selection.
         selections.append(
             dict(
                 sequence=event["sequence"],
                 policy_version=event["policy_version"],
                 verdict=selection["verdict"],
-                selected_passage_ids=[row["passage_id"] for row in selection["selected"]],
+                selected_passage_ids=selected_ids,
+                projected_search_status="matched" if selected_ids else "no_match",
             )
         )
     return dict(

@@ -225,6 +225,8 @@ def build_service(knowledge, inputs, settings, *, ledger=None):
             )
             if binding.get('limits', {}).get('request_timeout_seconds', 30) > 45:
                 cap_args['request_timeout_cap'] = 60
+            if binding.get('report_strict_sections') is True:
+                cap_args['strict_case_sections'] = True
             if binding.get('report_parallel_tools') is True:
                 cap_args['parallel_tools'] = True
             if binding.get('report_reasoning_effort') is not None:

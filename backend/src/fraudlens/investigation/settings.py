@@ -16,6 +16,7 @@ class InvestigationSettings(BaseModel):
     semantic_profile: Literal['v6', 'v7', 'v8'] = 'v6'
     report_prompt: Literal['v4', 'v5', 'v6'] = 'v4'
     report_parallel_tools: bool = False
+    report_strict_sections: bool = False
     report_reasoning_effort: Literal['low'] | None = None
     max_semantic_requests: int = Field(default=10, ge=1, le=30)
     provider: Literal['test', 'openai'] = 'test'
@@ -58,7 +59,8 @@ class InvestigationSettings(BaseModel):
     @model_validator(mode='after')
     def explicit_model(self):
         if (self.max_output_tokens > 4096 or self.request_timeout_seconds > 45
-                or self.report_reasoning_effort is not None or self.report_parallel_tools) and (self.report_prompt != 'v6' or
+                or self.report_reasoning_effort is not None or self.report_parallel_tools
+                or self.report_strict_sections) and (self.report_prompt != 'v6' or
                 self.provider != 'openai' or not self.semantic_retrieval or self.semantic_profile != 'v8'):
             raise ValueError('Extended generation settings require explicit OpenAI semanticv8/reportv6')
         if self.request_timeout_seconds > 30 and (
@@ -93,7 +95,7 @@ def load_settings() -> InvestigationSettings:
                 if not raw.isascii() or not raw.isdecimal():
                     raise ValueError('Invalid investigation limit configuration')
                 raw = int(raw)
-            elif name in ('enabled', 'semantic_retrieval', 'report_parallel_tools'):
+            elif name in ('enabled', 'semantic_retrieval', 'report_parallel_tools', 'report_strict_sections'):
                 if raw.lower() not in ('true', 'false'):
                     raise ValueError('INVESTIGATION_ENABLED must be true or false')
                 raw = raw.lower() == 'true'

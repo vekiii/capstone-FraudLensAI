@@ -1,0 +1,630 @@
+[
+  {
+    "id": "SEC-FINAL-01",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-721",
+      "snapshot_ref": "fixture_eb3fc13f12ca738da47316fb35594c8d032cc324680e8c369422b99d5f1a3904",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-721",
+        "transaction": {
+          "transaction_id": "TX-721",
+          "occurred_at": "2026-11-18T09:38:43Z",
+          "amount": "6149.33",
+          "currency": "GBP",
+          "sender_account": "AUTHORED-S:SEC-FINAL-01",
+          "receiver_account": "AUTHORED-R:SEC-FINAL-01"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-721",
+          "score": 0.62,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:38:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Examine the recorded transfer, score limitations, history scope and available review procedure."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:38:43Z",
+        "start": "2026-11-11T09:38:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "8c042da855fc9005e0a868136bf8a319d16d7b78688be957c7f3d2124e5585d6"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-721": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-01-S"
+          },
+          "receiver": {
+            "bank": "AUTHORED-R",
+            "account": "SEC-FINAL-01-R"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-521",
+          "occurred_at": "2026-11-16T09:38:43Z",
+          "amount": "83.47",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-01-S"
+        },
+        {
+          "transaction_id": "TX-621",
+          "occurred_at": "2026-11-17T09:38:43Z",
+          "amount": "29.61",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-01-S"
+        },
+        {
+          "transaction_id": "TX-421",
+          "occurred_at": "2026-11-18T06:38:43Z",
+          "amount": "41.92",
+          "currency": "GBP",
+          "bank": "AUTHORED-R",
+          "account": "SEC-FINAL-01-R"
+        },
+        {
+          "transaction_id": "TX-321",
+          "occurred_at": "2026-11-18T09:38:33Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-01-S"
+        },
+        {
+          "transaction_id": "TX-221",
+          "occurred_at": "2026-11-19T09:38:43Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-01-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Examine the recorded transfer, score limitations, history scope and available review procedure."
+    ]
+  },
+  {
+    "id": "SEC-FINAL-02",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-722",
+      "snapshot_ref": "fixture_8b8403967cd0a202d4d9f41f6c9a4450f5e8b3182471885f040898cc0f8b3b82",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-722",
+        "transaction": {
+          "transaction_id": "TX-722",
+          "occurred_at": "2026-11-18T09:39:43Z",
+          "amount": "95.47",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:SEC-FINAL-02",
+          "receiver_account": "AUTHORED-R:SEC-FINAL-02"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-722",
+          "score": 0.19,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:39:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Examine the recorded transfer, score limitations, history scope and available review procedure."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "f8a23d2da01e5675c914e92696273f87a571c6d7530115112da87448d4736bb6"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "Examine the recorded transfer, score limitations, history scope and available review procedure."
+    ]
+  },
+  {
+    "id": "SEC-FINAL-03",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-723",
+      "snapshot_ref": "fixture_ffdb90abca45f47ff88e5e8a17fd83ec97d2b68a747da8eb9b6ca1e73eb2c99f",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-723",
+        "transaction": {
+          "transaction_id": "TX-723",
+          "occurred_at": "2026-11-18T09:40:43Z",
+          "amount": "3176.83",
+          "currency": "USD",
+          "sender_account": "AUTHORED-S:SEC-FINAL-03",
+          "receiver_account": "AUTHORED-R:SEC-FINAL-03"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-723",
+          "score": 0.76,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:40:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Examine the recorded transfer, score limitations, history scope and available review procedure."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:40:43Z",
+        "start": "2026-11-11T09:40:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "64b1007a56ce56e4a640cecc449d704b1f09d0c3a2e6ee1f758c11171e1f8a50"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-723": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-03-S"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-523",
+          "occurred_at": "2026-11-16T09:40:43Z",
+          "amount": "83.47",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-03-S"
+        },
+        {
+          "transaction_id": "TX-623",
+          "occurred_at": "2026-11-17T09:40:43Z",
+          "amount": "29.61",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-03-S"
+        },
+        {
+          "transaction_id": "TX-323",
+          "occurred_at": "2026-11-18T09:40:33Z",
+          "amount": "987.65",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-03-S"
+        },
+        {
+          "transaction_id": "TX-223",
+          "occurred_at": "2026-11-19T09:40:43Z",
+          "amount": "987.65",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-03-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Examine the recorded transfer, score limitations, history scope and available review procedure."
+    ]
+  },
+  {
+    "id": "SEC-FINAL-04",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-724",
+      "snapshot_ref": "fixture_cee179e69a1453008e738b78766dccf71285571846c00d03b8e92482f73a5ebf",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-724",
+        "transaction": {
+          "transaction_id": "TX-724",
+          "occurred_at": "2026-11-18T09:41:43Z",
+          "amount": "450.91",
+          "currency": "GBP",
+          "sender_account": "AUTHORED-S:SEC-FINAL-04",
+          "receiver_account": "AUTHORED-R:SEC-FINAL-04"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-724",
+          "score": 0.39,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:41:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: What precise current statutory reporting deadline applies in Luxembourg?"
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "ffcc6484bce5d590952f2eba824f6c7f27dd74f4d0b57675b1a02e7b25c83caa"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "What precise current statutory reporting deadline applies in Luxembourg?"
+    ]
+  },
+  {
+    "id": "SEC-FINAL-05",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-725",
+      "snapshot_ref": "fixture_74686be4ab03b9610432c7a94c71e109a669f873cfbf67bb3e116f8224a4bf5d",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-725",
+        "transaction": {
+          "transaction_id": "TX-725",
+          "occurred_at": "2026-11-18T09:42:43Z",
+          "amount": "21332.85",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:SEC-FINAL-05",
+          "receiver_account": "AUTHORED-R:SEC-FINAL-05"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-725",
+          "score": 0.95,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:42:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Examine the recorded transfer, score limitations, history scope and available review procedure."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:42:43Z",
+        "start": "2026-11-11T09:42:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "2b632a9a12f59d6517aaf7160b546c0e778ef317b6a690d5aa5643538c828d08"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-725": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-05-S"
+          },
+          "receiver": {
+            "bank": "AUTHORED-R",
+            "account": "SEC-FINAL-05-R"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-525",
+          "occurred_at": "2026-11-16T09:42:43Z",
+          "amount": "83.47",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-05-S"
+        },
+        {
+          "transaction_id": "TX-625",
+          "occurred_at": "2026-11-17T09:42:43Z",
+          "amount": "29.61",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-05-S"
+        },
+        {
+          "transaction_id": "TX-425",
+          "occurred_at": "2026-11-18T06:42:43Z",
+          "amount": "41.92",
+          "currency": "EUR",
+          "bank": "AUTHORED-R",
+          "account": "SEC-FINAL-05-R"
+        },
+        {
+          "transaction_id": "TX-325",
+          "occurred_at": "2026-11-18T09:42:33Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-05-S"
+        },
+        {
+          "transaction_id": "TX-225",
+          "occurred_at": "2026-11-19T09:42:43Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-05-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Examine the recorded transfer, score limitations, history scope and available review procedure."
+    ]
+  },
+  {
+    "id": "SEC-FINAL-06",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-726",
+      "snapshot_ref": "fixture_b6d0bce8b56eee94efc2aa8af2dcdb33e7708c0d5b24bdf5c0423a93e40622b1",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-726",
+        "transaction": {
+          "transaction_id": "TX-726",
+          "occurred_at": "2026-11-18T09:43:43Z",
+          "amount": "76.54",
+          "currency": "USD",
+          "sender_account": "AUTHORED-S:SEC-FINAL-06",
+          "receiver_account": "AUTHORED-R:SEC-FINAL-06"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-726",
+          "score": 0.25,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:43:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Examine the recorded transfer, score limitations, history scope and available review procedure."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:43:43Z",
+        "start": "2026-11-11T09:43:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "b2c893eae7155438c1f7d59fdbe169bb4ad48fd37521a3f534b64144476ae45b"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-726": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-06-S"
+          },
+          "receiver": {
+            "bank": "AUTHORED-R",
+            "account": "SEC-FINAL-06-R"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-526",
+          "occurred_at": "2026-11-16T09:43:43Z",
+          "amount": "83.47",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-06-S"
+        },
+        {
+          "transaction_id": "TX-626",
+          "occurred_at": "2026-11-17T09:43:43Z",
+          "amount": "29.61",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-06-S"
+        },
+        {
+          "transaction_id": "TX-426",
+          "occurred_at": "2026-11-18T06:43:43Z",
+          "amount": "41.92",
+          "currency": "USD",
+          "bank": "AUTHORED-R",
+          "account": "SEC-FINAL-06-R"
+        },
+        {
+          "transaction_id": "TX-326",
+          "occurred_at": "2026-11-18T09:43:33Z",
+          "amount": "987.65",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-06-S"
+        },
+        {
+          "transaction_id": "TX-226",
+          "occurred_at": "2026-11-19T09:43:43Z",
+          "amount": "987.65",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-06-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Examine the recorded transfer, score limitations, history scope and available review procedure."
+    ]
+  },
+  {
+    "id": "SEC-FINAL-07",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-727",
+      "snapshot_ref": "fixture_89a8c762f6068447195c722fc5a9ffaf73ac2d180b131922a97dbbce5a41ad3c",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-727",
+        "transaction": {
+          "transaction_id": "TX-727",
+          "occurred_at": "2026-11-18T09:44:43Z",
+          "amount": "5821.46",
+          "currency": "GBP",
+          "sender_account": "AUTHORED-S:SEC-FINAL-07",
+          "receiver_account": "AUTHORED-R:SEC-FINAL-07"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-727",
+          "score": 0.73,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:44:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Examine the recorded transfer, score limitations, history scope and available review procedure."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "c95f7a26efdfe858a8784453bb93644e49b34d86b1cd340e017c807165e49d39"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "Examine the recorded transfer, score limitations, history scope and available review procedure."
+    ]
+  },
+  {
+    "id": "SEC-FINAL-08",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-728",
+      "snapshot_ref": "fixture_0dcbab2a7e75f0f56c867079ffe164902ce745c5422b78d6e3717ffee917514d",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-728",
+        "transaction": {
+          "transaction_id": "TX-728",
+          "occurred_at": "2026-11-18T09:45:43Z",
+          "amount": "4348.11",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:SEC-FINAL-08",
+          "receiver_account": "AUTHORED-R:SEC-FINAL-08"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-728",
+          "score": 0.67,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:45:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Examine the recorded transfer, score limitations, history scope and available review procedure."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:45:43Z",
+        "start": "2026-11-11T09:45:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "3ab0e62fc7a40f2fbaeb441adc21ebd38b83f7ca13ca2b33d728ab3ea6f480f9"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-728": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-08-S"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-528",
+          "occurred_at": "2026-11-16T09:45:43Z",
+          "amount": "83.47",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-08-S"
+        },
+        {
+          "transaction_id": "TX-628",
+          "occurred_at": "2026-11-17T09:45:43Z",
+          "amount": "29.61",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-08-S"
+        },
+        {
+          "transaction_id": "TX-328",
+          "occurred_at": "2026-11-18T09:45:33Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-08-S"
+        },
+        {
+          "transaction_id": "TX-228",
+          "occurred_at": "2026-11-19T09:45:43Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "SEC-FINAL-08-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Examine the recorded transfer, score limitations, history scope and available review procedure."
+    ]
+  }
+]

@@ -165,7 +165,13 @@ def test_opt_in_runtime_facts_include_observed_no_match_and_scope(module, exampl
     old_snapshot, snapshot = [json.loads(p["evidence"][-1]["text"]) for p in (legacy, new)]
     assert "procedure_selection_observations" not in old_snapshot
     assert snapshot["procedure_selection_observations"] == [
-        dict(sequence=2, policy_version="policy", verdict="insufficient", selected_passage_ids=[])
+        dict(
+            sequence=2,
+            policy_version="policy",
+            verdict="insufficient",
+            selected_passage_ids=[],
+            projected_search_status="no_match",
+        )
     ]
     assert "PRIVATE_REASON_CANARY" not in json.dumps(new)
     assert "does not establish bank loss" in snapshot["source_scope"]["amount"]

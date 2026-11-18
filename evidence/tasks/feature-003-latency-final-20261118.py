@@ -154,15 +154,19 @@ def prepare():
     )
 
 
-def run():
+def run(batch=None, *, total_cap=303):
     import httpx
 
     from fraudlens.investigation.acceptance_harness import require_authorization
 
-    require_authorization(BATCH / "approval.json", BATCH / "freeze.json")
-    save(BATCH / "supervisor-intent.json", dict(cap=42, reserved_judging=13, total_cap=303))
+    batch = BATCH if batch is None else batch
+    frozen = require_authorization(batch / "approval.json", batch / "freeze.json")
+    save(
+        batch / "supervisor-intent.json",
+        dict(cap=frozen["maximum_requests"], reserved_judging=13, total_cap=total_cap),
+    )
     env = dict(os.environ, PYTHONPATH=str(ROOT / "backend/src"), PYTHONIOENCODING="utf-8")
-    common = ["--batch", str(BATCH), "--approval", str(BATCH / "approval.json"), "--port", "8879"]
+    common = ["--batch", str(batch), "--approval", str(batch / "approval.json"), "--port", "8879"]
     children, logs = [], []
     try:
         # Occupied port must fail before any attempt creation/provider spending.
@@ -171,7 +175,7 @@ def run():
         with socket.socket() as sock:
             sock.bind(("127.0.0.1", 8879))
         for kind in ("api", "worker"):
-            log = (BATCH / (kind + ".log")).open("x", encoding="utf-8")
+            log = (batch / (kind + ".log")).open("x", encoding="utf-8")
             logs.append(log)
             children.append(
                 subprocess.Popen(

@@ -144,6 +144,7 @@ def setup(args):
         report_prompt=freeze.get("report_prompt", "v4"),
         report_reasoning_effort=freeze.get("report_reasoning_effort"),
         report_parallel_tools=freeze.get("report_parallel_tools", False),
+        report_strict_sections=freeze.get("report_strict_sections", False),
         request_timeout_seconds=freeze.get("request_timeout_seconds", 30),
         max_output_tokens=freeze.get("max_output_tokens", 4096),
         store=args.batch / "runs.sqlite",

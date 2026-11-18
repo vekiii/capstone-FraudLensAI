@@ -36,3 +36,17 @@ sources, history facts, action permissions or limits. Test this wiring offline.
 Use at most 42 final generation sends after six calibration requests, then 13
 isolated final ratings. This fits 303 total from 242 already recorded. Missing
 slots stay in the denominator. No automatic paid repeat beyond that ceiling.
+
+## Source status and draft shape follow-up
+
+A versioned opt-in generator profile carries the nonempty summary and observation
+requirements into the provider schema once the actual case-facts tool has returned
+an authorized evidence item. Local validation stays unchanged. The new prompt
+states the required sections before drafting. Report generation and evaluation
+retain their previous isolation, limits and thresholds.
+
+The opt-in evaluation packet includes the projected search status applied after a
+completed semantic selection. The persisted `insufficient` verdict with zero
+selected passages yields `no_match` under the existing application projection.
+This is a tool outcome, not a claim that no relevant procedure exists anywhere.
+Future ratings use fresh cases. Previously exposed reports and ratings are saved.

@@ -37,7 +37,7 @@ def safe_diagnostic(value):
     return result
 
 
-def compile_report_schema():
+def compile_report_schema(*, require_case_sections=False):
     """Compile the provider subset, sharing the repeated Claim definition.
 
     The provider enforces the closed shape. Original allOf/if/then conditions and
@@ -68,6 +68,9 @@ def compile_report_schema():
     for field in schema['properties'].values():
         if field.get('items') == claim:
             field['items'] = {'$ref': '#/$defs/Claim'}
+    if require_case_sections:
+        for section in ('summary', 'observed_facts', 'citations'):
+            schema['properties'][section]['minItems'] = 1
     schema['$defs'] = {'Claim': claim}
     return schema
 
@@ -112,7 +115,7 @@ def _bounded_transport(inner):
 
 class OpenAIProvider:
     def __init__(self, api_key, model, prompt='', transport=None, *, request_timeout_cap=30, output_token_cap=4096,
-                 reasoning_effort=None, parallel_tools=False):
+                 reasoning_effort=None, parallel_tools=False, strict_case_sections=False):
         import httpx2
         from openai import AsyncOpenAI
         if type(request_timeout_cap) is not int or request_timeout_cap not in (30, 45, 60):
@@ -124,6 +127,7 @@ class OpenAIProvider:
         if type(parallel_tools) is not bool:
             raise ProviderError('unsupported_capability')
         self.parallel_tools = parallel_tools
+        self.strict_case_sections = strict_case_sections
         self.reasoning_effort = reasoning_effort
         self.output_token_cap = output_token_cap
         self.request_timeout_cap = request_timeout_cap
@@ -160,12 +164,17 @@ class OpenAIProvider:
                 if 'reason' in item:
                     instruction += ' ' + REPAIR_HINTS[item['reason']]
                 pending.append(dict(role='user', content=instruction))
+        require_case_sections = self.strict_case_sections and any(
+            evidence['kind'] == 'case_fact'
+            for item in messages if item['type'] == 'tool_result'
+            for evidence in item['result']['evidence']
+        )
         payload = dict(model=self.model, instructions=self.prompt, input=pending,
             tools=tools, parallel_tool_calls=self.parallel_tools, store=False,
             include=['reasoning.encrypted_content'],
             max_output_tokens=remaining_limits['max_output_tokens'],
             text=dict(format=dict(type='json_schema', name='investigation_report',
-                                  strict=True, schema=compile_report_schema())))
+                                  strict=True, schema=compile_report_schema(require_case_sections=require_case_sections))))
         if self.reasoning_effort is not None:
             payload['reasoning'] = {'effort': self.reasoning_effort}
         if 'tool_choice' in remaining_limits:

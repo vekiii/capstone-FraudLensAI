@@ -85,6 +85,8 @@ class InvestigationService:
             and binding.get('limits', {}).get('request_timeout_seconds', 30) > 30) else {}
         if binding.get('limits', {}).get('request_timeout_seconds', 30) > 45:
             cap_args['request_timeout_cap'] = 60
+        if binding.get('report_strict_sections') is True:
+            cap_args['strict_case_sections'] = True
         if binding.get('report_parallel_tools') is True:
             cap_args['parallel_tools'] = True
         if binding.get('report_reasoning_effort') is not None:
@@ -132,6 +134,8 @@ class InvestigationService:
             prompt += '\n\n' + (ROOT / 'prompts/application/semantic-worker-addendum-v1.md').read_text(encoding='utf-8')
         if self.settings.report_parallel_tools:
             prompt += '\n\n' + (ROOT / 'prompts/application/report-parallel-history-v1.md').read_text(encoding='utf-8')
+        if self.settings.report_strict_sections:
+            prompt += '\n\n' + (ROOT / 'prompts/application/report-source-sections-v1.md').read_text(encoding='utf-8')
         limits = {key: getattr(self.settings, key) for key in (
             'max_provider_requests', 'max_tool_calls', 'total_timeout_seconds', 'request_timeout_seconds',
             'max_input_bytes', 'max_output_tokens', 'max_response_bytes')}
@@ -143,6 +147,8 @@ class InvestigationService:
                        report_policy=HUMAN_AUTHORITY_POLICY)
         if self.settings.report_parallel_tools:
             binding['report_parallel_tools'] = True
+        if self.settings.report_strict_sections:
+            binding['report_strict_sections'] = True
         if self.settings.report_reasoning_effort is not None:
             binding['report_reasoning_effort'] = self.settings.report_reasoning_effort
         if self.settings.report_prompt == 'v6':

@@ -6,6 +6,7 @@ import pytest
 from test_investigation_openai import LIMITS, messages, response
 from test_investigation_workflow import create, runtime  # noqa: F401
 
+from fraudlens.investigation import provider as provider_module
 from fraudlens.investigation.models import SCHEMA
 from fraudlens.investigation.provider import OpenAIProvider, ProviderError, ScriptedProvider
 from fraudlens.investigation.settings import InvestigationSettings
@@ -115,6 +116,14 @@ def test_latency_profile_requires_explicit_v6_and_wires_low_reasoning():
 
     asyncio.run(exercise())
     assert requests[0]["reasoning"] == {"effort": "low"}
+
+
+def test_compiled_report_requires_claims_when_case_evidence_is_available():
+    legacy = provider_module.compile_report_schema()["properties"]
+    detailed = provider_module.compile_report_schema(require_case_sections=True)["properties"]
+    for section in ("summary", "observed_facts", "citations"):
+        assert "minItems" not in legacy[section]
+        assert detailed[section]["minItems"] == 1
 
 
 def test_parallel_history_profile_keeps_existing_tool_arguments():
