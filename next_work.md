@@ -1,5 +1,18 @@
 # Next work - FraudLens AI
 
+## Feature 004 specification draft
+
+Created the local `004-simulation-and-prioritization` branch from fetched `origin/main`.
+The [specification](specs/004-simulation-and-prioritization/spec.md) defines a synthetic
+historical replay, three advisory review orders, equal-capacity comparison and outcome metrics.
+The [requirements checklist](specs/004-simulation-and-prioritization/checklists/requirements.md)
+records specification review. Product acceptance checks and team review are pending.
+The bundled scenario is the first acceptance input. The batch adapter depends on a
+compatible Feature 02 export.
+
+See [specification evidence](evidence/tasks/feature-004-specification.md).
+Next step: review the draft and run `speckit-plan` for `specs/004-simulation-and-prioritization`.
+
 ## Latest recovery - 2026-11-13
 
 The user's pull of feature 002 into main started a merge with `0f5ad9a` and
