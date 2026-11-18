@@ -1,5 +1,29 @@
 # Next work - FraudLens AI
 
+## Feature 004 implementation tasks
+
+The [task list](specs/004-simulation-and-prioritization/tasks.md) has 21 tasks
+across setup, foundation, the three user stories and final validation. The first
+demo checkpoint is T001–T011 on the bundled scenario. The Feature 02 adapter
+depends on a compatible frozen score export and is outside this checkpoint.
+
+See [task generation evidence](evidence/tasks/feature-004-task-generation.md).
+Implementation and application checks are pending.
+Next step: start T001 with Feature 004 selected and capture the locked setup
+and existing application baseline.
+
+## Feature 004 technical plan
+
+The [Spec Kit plan](specs/004-simulation-and-prioritization/plan.md) defines the
+synthetic scenario, deterministic replay, outcome evaluation and the Simulation
+& Evaluation view. Its [contract](specs/004-simulation-and-prioritization/contracts/replay-v1.md)
+defines the comparison and portable run recipe. The batch adapter requires a
+compatible frozen export of Feature 02 scores, including scores below its alert threshold.
+
+See the [planning evidence](evidence/tasks/feature-004-technical-plan.md).
+Application checks and the teammate walkthrough are pending.
+Next step: run `speckit-tasks` for `specs/004-simulation-and-prioritization` using the completed design.
+
 ## Feature 004 specification draft
 
 Created the local `004-simulation-and-prioritization` branch from fetched `origin/main`.
