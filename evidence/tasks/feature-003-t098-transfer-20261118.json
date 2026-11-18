@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-18",
+  "kind": "transferred_frozen_stores_byte_verification",
+  "files": [
+    {
+      "name": "source.sqlite",
+      "bytes": 12443103232,
+      "sha256": "125895e52cd7ce72fc1c4328ea758d3af23014dc8eb5df9d6a190e275e55ac47",
+      "expected": "125895e52cd7ce72fc1c4328ea758d3af23014dc8eb5df9d6a190e275e55ac47",
+      "match": true
+    },
+    {
+      "name": "model-bounded.sqlite",
+      "bytes": 131072,
+      "sha256": "13cde42167cac02f257748633034a9461aa00648f6737ade813779845882d384",
+      "expected": "13cde42167cac02f257748633034a9461aa00648f6737ade813779845882d384",
+      "match": true
+    },
+    {
+      "name": "model-daily-bounded.sqlite",
+      "bytes": 94208,
+      "sha256": "c0bd8daa3c646e89069c8ab04c8ca73adc32e91e98600aecaa5c4e1b14afc1e0",
+      "expected": "c0bd8daa3c646e89069c8ab04c8ca73adc32e91e98600aecaa5c4e1b14afc1e0",
+      "match": true
+    },
+    {
+      "name": "rules-bounded.sqlite",
+      "bytes": 90112,
+      "sha256": "8b4e3b2160adb7abb4babf5d9376d6386737a6b12b954a09028a42c47bb42347",
+      "expected": "8b4e3b2160adb7abb4babf5d9376d6386737a6b12b954a09028a42c47bb42347",
+      "match": true
+    },
+    {
+      "name": "history-index.sqlite",
+      "bytes": 1622720512,
+      "sha256": "8745ec13848f5ce0f76417fd0c2f7c731a2189cb634034aea5eeaa3a205c5a9f",
+      "expected": "8745ec13848f5ce0f76417fd0c2f7c731a2189cb634034aea5eeaa3a205c5a9f",
+      "match": true
+    }
+  ],
+  "all_match": true,
+  "import_repeated": false,
+  "model_publication_quick_check": "ok",
+  "runtime_config": "relative paths match workspace; TEST-only config not used for live fixture evaluation"
+}

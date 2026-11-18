@@ -1,0 +1,18 @@
+{
+  "method": "blind separate LLM judge; same model, correlated; not human review",
+  "judge_calibration_valid": true,
+  "judge_quality_valid": true,
+  "threshold_pass": true,
+  "metrics": {
+    "recall_at5": 0.9375,
+    "mrr_at5": 0.9375,
+    "answerable": 16,
+    "no_answer_correct": 4,
+    "no_answer_total": 4,
+    "failed_or_unrun_ids": []
+  },
+  "dispatched": 44,
+  "max_requests": 44,
+  "full_summary_sha256": "6f98af5e569961896f9e3c248420859247bbec943c20829f6baf5d48e65dc480",
+  "full_summary_path": "evals/results/feature-003/report-v6-latency-cycle-20261118/retrieval/full-summary.json"
+}

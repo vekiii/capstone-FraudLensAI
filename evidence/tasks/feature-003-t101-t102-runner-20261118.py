@@ -129,6 +129,7 @@ def setup(args):
         INVESTIGATION_SEMANTIC_PROFILE=freeze.get("semantic_profile", "v6"),
         INVESTIGATION_REPORT_PROMPT=freeze.get("report_prompt", "v4"),
         INVESTIGATION_REQUEST_TIMEOUT_SECONDS=str(freeze.get("request_timeout_seconds", 30)),
+        INVESTIGATION_MAX_OUTPUT_TOKENS=str(freeze.get("max_output_tokens", 4096)),
     )
     # A local T098 dataset index setting must not contaminate authored fixture mode.
     from fraudlens.investigation.settings import InvestigationSettings
@@ -141,7 +142,10 @@ def setup(args):
         semantic_retrieval=freeze["semantic_retrieval"],
         semantic_profile=freeze.get("semantic_profile", "v6"),
         report_prompt=freeze.get("report_prompt", "v4"),
+        report_reasoning_effort=freeze.get("report_reasoning_effort"),
+        report_parallel_tools=freeze.get("report_parallel_tools", False),
         request_timeout_seconds=freeze.get("request_timeout_seconds", 30),
+        max_output_tokens=freeze.get("max_output_tokens", 4096),
         store=args.batch / "runs.sqlite",
         api_key=private.api_key,
         model=freeze["model"] if freeze["provider"] == "openai" else "",

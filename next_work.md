@@ -1,4 +1,165 @@
-# Current handoff - actual RUN3 failed; v8/v5 offline candidate ready, 2026-11-18
+# Current handoff - report v6 performance passed, final quality 4/8, 2026-11-18
+
+User authorized iterative recovery and the final evaluation. Development passed
+4/4 after explicit low reasoning and 60-second generation, within 120 seconds
+per attempt. Retrieval passed .9375 Recall@5/MRR@5 with 4/4 no-answer. Grouping
+existing read tools gave 8/8 structurally valid final reports in 33 calls.
+SC-006 passed 5/5 useful, all terminal within120, local search p95 4.498ms.
+SC-003 final quality FAILED 4/8 versus required7/8. T101 remains open.
+[Actual evidence](evidence/tasks/feature-003-report-v6-latency-recovery-20261118.md).
+
+Preserved both earlier report calibrations (5/6, then clarified6/6) and the final
+13 ratings. Fixed future packet source coverage and claim-kind constraints.
+Typed calibration accepted the wire schema but got 5/6 because C2 used unknown
+report pointer `/`. The follow-up wire schema binds pointers to actual sections.
+23 final focused checks PASS. Full backend before eval-only fixes 1159 PASS.
+Prior artifacts and frozen execution source snapshots are preserved. No regrading.
+
+300/303 actual, three requests remain. The successor inputs and controls are frozen
+under report-v6-successor-20261118, pending explicit budget decision. Requested
+ceiling361 covers 6 new calibration + up to42 generation +13 final ratings.
+Do not dispatch until authorized. First validate exact6/6 with typed units and
+pointers, then generate and measure first five, materialize with --runtime-facts,
+and judge with --typed-units. No prior reports or ratings reused as fresh results.
+
+# Previous handoff - report v6 latency recovery testing, 2026-11-18
+
+User authorized diagnosis, corrective iterations and final evaluation. The explicit
+303 overall ceiling remains. Starting actual was 168. The pinned corrective profile
+uses low reasoning and 60 seconds per generation request, with the 120-second
+attempt and 90-second useful-result targets retained. Full backend 1158 PASS.
+
+Development produced 4/4 valid and source-reviewed drafts in 24.40 to 40.14 seconds.
+Language variance noted. Retrieval passed with Recall@5/MRR@5 both .9375 and 4/4
+no-answer outcomes. 24 + 44 requests, actual 236 before report calibration.
+The prior raw report calibration is unavailable locally. Reserved 6 unchanged controls,
+48 final generation and 13 rating requests within the total ceiling of 303.
+
+**Next:** finish judge calibration, then freeze and run the eight-report final cohort
+with first five timed and 20 local searches. No checkmarks until actual gates pass.
+
+# Previous handoff - report v6 development gate failed, 2026-11-18
+
+User approved one new cycle with a 303 total ceiling (153 new from 150 existing)
+and requested Codex review. Fresh report v6/8192 development ran. Two valid and
+source-reviewed drafts (35.665s and 31.002s), one unknown draft timeout (59.908s),
+one unstarted under the existing ledger guard. Development 2/4 failed. Retrieval
+and final evaluation had zero requests. T101 and T102 remain open.
+Actual counter 168/303, 18 new intents (17 HTTP200, one unknown). Saved responses
+show no output-cap truncation; exact minute bounds and unavailable history handled
+correctly in the two drafts. [Evidence](evidence/tasks/feature-003-report-v6-development-20261118.md).
+
+Next: diagnose the 45-second draft request timeout using preserved transport and
+attempt records. The approved cycle stopped at its development gate. Preserve
+all four slots and ledger identities. Do not replay the unknown send or transfer
+unused budget to an additional cycle automatically.
+
+# Previous handoff - output8192/reportv6 + exact bounds implemented, 2026-11-18
+
+User explicitly requested both corrections. New explicit OpenAI semanticv8/reportv6
+profile accepts8192 output tokens; default4096/v4 and oldv5 unchanged. Both provider
+factories and eval runner use saved output limits; default SDK still caps4096.
+New reportv6 pins history_bounds_version1: actual start and computed UTC minute
+end in evidence text/exact facts; unavailable bounds null. Old projections/attempts
+unchanged. Retry preserves pins and validates same-reader evidence reuse.
+[Actual evidence](evidence/tasks/feature-003-report-v6-output-bounds-20261118.md),
+[design](specs/003-ai-investigation/report-v6-output-bounds.md).
+
+RED5 ->GREEN7 new tests; targeted74PASS8.65s, full1157PASS98.24s, Ruff/diff PASS.
+No new API calls, no.env activation/commit/push/merge; counter150/279 unchanged.
+T101/T102 remain open, previous v8 development3/4valid still FAILED. No current
+live success/8192completion/performance guarantee.72old execution source files
+archived EXACT hashes verified, current runtime hash intentionally different.
+Prior dirty work/observations/freeze/private reference artifacts preserved.
+
+**Next concrete step:** prepare a concrete fresh reportv6/8192 development-cycle
+proposal and reviewed source obligations/freeze. Further live cycle needs decision
+under failed-stage stop rule; do not replay old sources/results or automatically
+spend leftover129. New cap does not grant more provider requests or deadlines.
+
+# Previous handoff - reportv6/output8192 + exact bounds under verification, 2026-11-18
+
+User explicitly requested both corrections. Implemented explicit report_prompt=v6,
+max_output_tokens8192 opt-in gated OpenAI semanticv8/reportv6. Defaults/old prompt
+bytes remain4096/v4, oldv5 unchanged. Application/evaluation factories use SAVED
+binding cap; SDK default cap4096 remains. New v6 attempts pin history_bounds_version1;
+tool public text/exact facts receive computed UTC minute end and actual start,
+unavailable histories null. Retry with evidence retains new bounds/version.
+
+RED5 ->GREEN7 new tests; targeted74PASS8.65s, Ruff/diff PASS. Full suite running,
+completion not yet claimed. [Design](specs/003-ai-investigation/report-v6-output-bounds.md).
+No new live cycle/API calls,.env activation, commit/push/merge. Actual150/279 remains;
+T101/T102 open. Preserve prior v8 failed gate and all outputs.
+
+Exact72 executed-source files from preceding development were archived and matched
+the original freeze under ignored development/executed-source-snapshot BEFORE
+finishing changes (original tracked bytes recovered from HEAD where needed, exact
+hash-verified line endings); do not use current runtime to claim old freeze identity.
+Old runtime source changed only in working tree; old run/results/prompts unchanged.
+
+**Next concrete step:** wait full backend, finalize docs/evidence, then prepare a
+separate fresh cycle proposal; do not replay old development or spend leftover129.
+
+# Previous clarification - output ceiling increase authorized, 2026-11-18
+
+User expressly permits increasing max_output_tokens. Current runtime remains4096;
+new proposed explicit profile8192 needs implementation/tests with old frozen
+semantics preserved. No API calls or new cycle launched by this clarification.
+Actual150/279 and development failure unchanged. User asks explanation of exact
+minute-boundary correction; no technical proposal required from user.
+Next: implement/test new bounded output profile and source-derived actual minute
+boundary before proposing a fresh cycle under existing stop/budget rules.
+
+# Previous handoff - v8 development gate FAILED, stopped, 2026-11-18
+
+User approved v8/reportv5,153NEW/279TOTAL including126old. Actual development used
+24new HTTP200,0unknown, total150/279. Three of4valid reports; DEV8N-02 incomplete
+max_output_tokens (NOT timeout/quota/DB). Gate FAILED, cycle STOPPED before any
+retrieval/heldout/judging. T101/T102 remain OPEN. Do not spend unused129 or retry
+old slots automatically. [Actual evidence](evidence/tasks/feature-003-v8-development-20261118.md).
+
+Four new inputs/private obligations: evals/investigation/v8-development-20261118/.
+Raw freeze/ledger/observer/reports: evals/results/feature-003/v8-cycle-20261118/development/.
+All frozen source hashes verified after run. New v8 candidate NOT accepted. First
+report also has focal-minute end wording conflict (09:18:43 vs09:18:00), qualitative
+AI author finding, not independent/calibrated semantic score. No output regrading.
+
+Transferred five T098 stores verified original SHA256; no re-import, relative
+config paths valid, TEST config NOT used for live fixture evaluation. See
+[evidence](evidence/tasks/feature-003-t098-transfer-20261118.json). Data stays ignored.
+33targeted tests PASS after isolated pytest-temp correction; no fresh full/frontend
+rerun. No runtime/default/.env changes, commit/push/merge. Owned API/worker closed.
+
+**Next concrete step:** review/propose versioned correction for output verbosity/
+max_output_tokens and accurate minute-boundary wording; get cycle decision per
+approved stop rule before further paid work. Preserve actual150counter and all
+failed outputs. Budget ceiling279 is not permission for automatic repeated cycles.
+
+# Previous handoff - approved v8 cycle, development executing, 2026-11-18
+
+User explicitly confirmed v8/reportv5, maximum153NEW/279TOTAL including126 old
+actual calls. One staged cycle,32development/44retrieval/64generation/13judging;
+no extra retry reserve. Stop failed development/retrieval gates, no old replay.
+Approval recorded in `t101-t102-source-map-v8-proposal-20261118.md` addendum and
+`prompts/development/003-v8-cycle-approval-20261118.md`.
+
+Transferred T098 five stores match original SHA256 byte-for-byte, no re-import.
+[Verification](evidence/tasks/feature-003-t098-transfer-20261118.json). TEST-only
+runtime-env paths valid; not loaded into live authored fixture process.
+
+New4 development sources/private obligations:
+evals/investigation/v8-development-20261118/; run ledger/freeze/approval/observer
+under ignored evals/results/feature-003/v8-cycle-20261118/development/.
+API/worker/observer launched only for this stage via tracked supervisor; do NOT
+replay/reserve new stage until reading actual ledger/observations. Fresh .cache
+pytest override corrected temp-dir setup errors;33 relevant checks PASS.
+No runtime source/default changes, no commit/push/merge; T101/T102 remain open.
+
+**Next concrete step:** wait for development observer to finish, inspect ALL4
+outcomes/evidence/source coverage under predeclared gate. If failed, STOP paid
+continuation and record. Only if passed prepare new-profile retrieval regression.
+
+# Previous handoff - actual RUN3 failed; v8/v5 offline candidate ready, 2026-11-18
 
 feature03, checkpoint0786f83; subsequent offline candidate/results unit ready for
 local checkpoint. No push/merge/new tasks. T101/T102 remain the ONLY open tasks;

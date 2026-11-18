@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "profile": "v8",
+  "report": "v6",
+  "cap": 32,
+  "order": [
+    "DEV6B-01",
+    "DEV6B-02",
+    "DEV6B-03",
+    "DEV6B-04"
+  ],
+  "historical_actual": 150,
+  "total_cap": 303,
+  "decision": "User approved one report v6 cycle, 153 new requests, total ceiling303 on2026-11-18",
+  "gate": "All4 valid; support>=.90/coverage>=.80; faithful limits; zero critical/unsupported guidance"
+}

@@ -14,7 +14,9 @@ class InvestigationSettings(BaseModel):
     enabled: bool = False
     semantic_retrieval: bool = False
     semantic_profile: Literal['v6', 'v7', 'v8'] = 'v6'
-    report_prompt: Literal['v4', 'v5'] = 'v4'
+    report_prompt: Literal['v4', 'v5', 'v6'] = 'v4'
+    report_parallel_tools: bool = False
+    report_reasoning_effort: Literal['low'] | None = None
     max_semantic_requests: int = Field(default=10, ge=1, le=30)
     provider: Literal['test', 'openai'] = 'test'
     test_scenario: Literal['grounded', 'needs_information', 'invalid_citation', 'refusal', 'incomplete'] = 'grounded'
@@ -31,9 +33,9 @@ class InvestigationSettings(BaseModel):
     max_provider_requests: int = Field(default=8, ge=1, le=8)
     max_tool_calls: int = Field(default=12, ge=1, le=12)
     total_timeout_seconds: int = Field(default=120, ge=1, le=120)
-    request_timeout_seconds: int = Field(default=30, ge=1, le=45)
+    request_timeout_seconds: int = Field(default=30, ge=1, le=60)
     max_input_bytes: int = Field(default=48000, ge=1, le=48000)
-    max_output_tokens: int = Field(default=4096, ge=1, le=4096)
+    max_output_tokens: int = Field(default=4096, ge=1, le=8192)
     max_response_bytes: int = Field(default=2097152, ge=1, le=2097152)
 
     @field_validator('store', 'dataset_run_store', 'dataset_store', 'dataset_history_index', mode='before')
@@ -55,6 +57,10 @@ class InvestigationSettings(BaseModel):
 
     @model_validator(mode='after')
     def explicit_model(self):
+        if (self.max_output_tokens > 4096 or self.request_timeout_seconds > 45
+                or self.report_reasoning_effort is not None or self.report_parallel_tools) and (self.report_prompt != 'v6' or
+                self.provider != 'openai' or not self.semantic_retrieval or self.semantic_profile != 'v8'):
+            raise ValueError('Extended generation settings require explicit OpenAI semanticv8/reportv6')
         if self.request_timeout_seconds > 30 and (
                 not self.semantic_retrieval or self.semantic_profile not in ('v7', 'v8') or self.provider != 'openai'):
             raise ValueError('Request limits above30 require an explicit OpenAI semantic v7/v8 profile')
@@ -87,7 +93,7 @@ def load_settings() -> InvestigationSettings:
                 if not raw.isascii() or not raw.isdecimal():
                     raise ValueError('Invalid investigation limit configuration')
                 raw = int(raw)
-            elif name in ('enabled', 'semantic_retrieval'):
+            elif name in ('enabled', 'semantic_retrieval', 'report_parallel_tools'):
                 if raw.lower() not in ('true', 'false'):
                     raise ValueError('INVESTIGATION_ENABLED must be true or false')
                 raw = raw.lower() == 'true'

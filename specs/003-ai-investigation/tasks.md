@@ -536,4 +536,34 @@ are existing pre-release acceptance gaps, not new product scope or permission to
 spend. Prior quality/timing outcomes remain unchanged. No new live budget exists.
 
 - [ ] T101 Prepare reviewed fresh report inputs/private references and an explicitly bounded, version-frozen execution path under `specs/003-ai-investigation/report-quality-v4-validation.md`; only after separate explicit provider/judge authorization execute actual six-control calibration (exact6/6), all8 primary reports and the same paired5 secondary reports, then aggregate with `backend/src/fraudlens/investigation/judging_v4.py` and record immutable outputs, usage/failures/disagreements and actual SC-003 results in `evidence/tasks/`. Retain support>=90%, coverage>=80%, >=7/8 pass, zero unsupported critical claims across all8 and no invented no-guidance procedures. Do not replay/regrade old outputs, use fixture calibration as model evidence, tune on unblinded holdout or reuse exhausted budgets. HIGH per SC-003, FR-013–017, FR-025–028, plan: mandatory actual report evaluation (partial).
-- [ ] T102 Materialize/review five fresh ordinary cases and20 local search queries under `specs/003-ai-investigation/timing-v1-protocol.md`, freeze actual source/model/corpus/dirty-code/machine/observer identities, and prepare the bounded external POST-to-visible-terminal observer/watchdog; only after separate explicit execution authorization run the frozen batch and assess with `backend/src/fraudlens/investigation/timing_evaluation.py`. Record all5/20 outcomes/errors, >=4/5 useful results<=90s, all5 visibly terminal<=120s and search p95<=2s in `evidence/tasks/`, preserving old2/5/outlier failures. No cached/scripted/three-case replacement, old batch replay or automatic provider spend; proposed40-request timing cap is not approved. HIGH per SC-006, FR-018–021, FR-028, plan: measured demonstration (partial).
+- [x] T102 Materialize/review five fresh ordinary cases and20 local search queries under `specs/003-ai-investigation/timing-v1-protocol.md`, freeze actual source/model/corpus/dirty-code/machine/observer identities, and prepare the bounded external POST-to-visible-terminal observer/watchdog; only after separate explicit execution authorization run the frozen batch and assess with `backend/src/fraudlens/investigation/timing_evaluation.py`. Record all5/20 outcomes/errors, >=4/5 useful results<=90s, all5 visibly terminal<=120s and search p95<=2s in `evidence/tasks/`, preserving old2/5/outlier failures. No cached/scripted/three-case replacement, old batch replay or automatic provider spend; proposed40-request timing cap is not approved. HIGH per SC-006, FR-018–021, FR-028, plan: measured demonstration (partial).
+
+### Authorized v8 cycle update, 2026-11-18
+
+User approved v8/reportv5 and153new/279total. Transferred5 T098 stores match
+original hashes; no re-import. Fresh4-case development executed24HTTP200,
+3valid drafts/1incomplete max_output_tokens. Session150/279. Development gate
+FAILED; no retrieval/heldout/judging started. T101/T102 remain unchecked.
+Source-minute wording conflict also recorded; no post-result correction/regrading.
+Next-cycle decision required under approved stop rule; do not spend remaining129
+automatically. Evidence: `evidence/tasks/feature-003-v8-development-20261118.md`.
+
+### Authorized generator correction, 2026-11-18
+
+Explicit reportv6/8192 output profile and deterministic history-minute evidence
+bounds implemented/tested.7new/74related/full1157PASS, zero API calls. Defaults
+and previous failed outputs unchanged; T101/T102 stay OPEN. Exact72old execution
+source files archived/hash-verified. Current source hashes versioned separately.
+Evidence: `evidence/tasks/feature-003-report-v6-output-bounds-20261118.md`.
+Next paid cycle remains separately gated; actual150/279 retained.
+
+Report v6 cycle, 2026-11-18. The user approved 303 total requests. Development
+2/4 valid, one unknown timeout and one unstarted. 18 new intents, 168/303 overall.
+The failed gate prevented retrieval and final evaluation. T101/T102 stay open.
+Evidence: `evidence/tasks/feature-003-report-v6-development-20261118.md`.
+
+T102 actual completion in the frozen report v6 grouped-tool cohort: 5/5 useful
+within90s, 5/5 terminal within120s, local search p95 4.498ms on20 queries.
+T101 remains open at4/8 final quality versus7/8 required. Current 300/303.
+Offline successor prepared after packet/typed-wire fixes, pending ceiling361
+and fresh exact6/6 calibration. See `evidence/tasks/feature-003-report-v6-latency-recovery-20261118.md`.

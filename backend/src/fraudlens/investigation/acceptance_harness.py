@@ -223,6 +223,14 @@ def build_service(knowledge, inputs, settings, *, ledger=None):
                 and binding.get("limits", {}).get("request_timeout_seconds", 30) > 30
                 else {}
             )
+            if binding.get('limits', {}).get('request_timeout_seconds', 30) > 45:
+                cap_args['request_timeout_cap'] = 60
+            if binding.get('report_parallel_tools') is True:
+                cap_args['parallel_tools'] = True
+            if binding.get('report_reasoning_effort') is not None:
+                cap_args['reasoning_effort'] = binding['report_reasoning_effort']
+            if binding.get('limits', {}).get('max_output_tokens', 4096) > 4096:
+                cap_args['output_token_cap'] = 8192
             return OpenAIProvider(
                 settings.api_key.get_secret_value(),
                 binding["requested_model"],

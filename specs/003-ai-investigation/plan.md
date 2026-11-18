@@ -1,5 +1,9 @@
 # Implementation Plan: Evidence-backed AI Investigation
 
+Authorized2026-11-18: [reportv6 output/bounds correction](report-v6-output-bounds.md),
+explicit8192-output profile and code-computed exclusive history-minute bounds.
+Offline implementation only; no new live acceptance or default activation.
+
 2026-11-18 actual RUN3 addendum: v7/request45 completed, qualified calibration6/6,
 report quality1/8 and useful timing3/5 FAIL. Originals preserved. An explicit v8
 source-map/reportv5 candidate is offline implemented/tested (1150backend PASS),

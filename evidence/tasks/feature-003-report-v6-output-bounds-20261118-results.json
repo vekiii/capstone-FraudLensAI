@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-18",
+  "branch": "feature03",
+  "head": "bb46ba4434fe9c82091d382da4d190f80810a706",
+  "scope": "authorized offline output8192 + exact history-bound corrections",
+  "red": "5 intended failures",
+  "green": "7 new tests;74 related regressions PASS8.65s",
+  "full_backend": "1157 passed in98.24s",
+  "ruff": "PASS",
+  "diff_check": "PASS",
+  "provider_calls": 0,
+  "session_actual_unchanged": 150,
+  "session_ceiling": 279,
+  "live_cycle": "not started; failed development gate retained",
+  "historical_execution_bytes_archived_verified": 72,
+  "new_source_sha256_lf": {
+    "backend/src/fraudlens/investigation/settings.py": "9122230667de4631d6d827cfef2ca0d2c5777dd52ba1db6cffbfc1c0f682885b",
+    "backend/src/fraudlens/investigation/provider.py": "9a37340eda00f91df812009ba7342b597d66d33cc645d6a63a7195a305d34821",
+    "backend/src/fraudlens/investigation/tools.py": "9fe7e17b51a67d669e5cb3074217880b6572d64c8a01ae493d142467eb985e59",
+    "backend/src/fraudlens/investigation/workflow.py": "baf401ac21733b0e842ae1b09d75c26936cb64a5eb09f5bdf872cd352e733c05",
+    "backend/src/fraudlens/investigation/acceptance_harness.py": "f2262e7ac63293c997f8484f74b6aa96fdb563de05c2d5c0035bf7e81576764a",
+    "prompts/application/investigation-v6.md": "ee57e564114de72fc83a6fddc774ab3d077968043a09507102236522f88862f5",
+    "backend/tests/unit/test_report_v6_bounds.py": "4c6a6cda9962d71339ce1e905ec96a83a82232537e4c0491d9a6e5e5c5bfa95c",
+    "evidence/tasks/feature-003-t101-t102-runner-20261118.py": "e0d4c48ff9a25fdac3fcef3f3a52c5c8870c55ef4930652009e5a343c9cc238b"
+  },
+  "limitations": "Higher cap does not guarantee completion or90s, nor prove faithful prose; new live inputs/source freezes required"
+}

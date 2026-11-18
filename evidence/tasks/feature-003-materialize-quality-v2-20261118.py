@@ -24,7 +24,37 @@ def clauses(text):
     ]
 
 
-def materialize(archive, item, source_obligations, role="primary"):
+def runtime_source_facts(archive):
+    """Allowlisted outcomes from completed selections, excluding model explanations."""
+    events = archive.get("events", [])
+    completed = {
+        event["sequence"]
+        for event in events
+        if event["operation"] == "dispatch_result" and event["outcome"] == "completed"
+    }
+    selections = []
+    for event in events:
+        if event["operation"] != "semantic_selection" or event["sequence"] not in completed:
+            continue
+        selection = event["selection"]
+        selections.append(
+            dict(
+                sequence=event["sequence"],
+                policy_version=event["policy_version"],
+                verdict=selection["verdict"],
+                selected_passage_ids=[row["passage_id"] for row in selection["selected"]],
+            )
+        )
+    return dict(
+        procedure_selection_observations=selections,
+        source_scope=dict(
+            amount="The case amount describes the synthetic transfer. It does not establish bank loss.",
+            workflow="Investigation tools are read-only. The AI draft does not execute case actions. The human analyst decides.",
+        ),
+    )
+
+
+def materialize(archive, item, source_obligations, role="primary", *, runtime_facts=False):
     item = input_only(item)
     context = item["context"]
     if archive["context"] != context:
@@ -59,6 +89,8 @@ def materialize(archive, item, source_obligations, role="primary"):
         policy=POLICY,
         tool_trace=archive["view"].get("trace", []),
     )
+    if runtime_facts:
+        snapshot.update(runtime_source_facts(archive))
     evidence.append(dict(evidence_id=source_id, text=canonical(snapshot).decode()))
     runtime_report = archive["view"].get("report")
     draft = runtime_report["draft"] if runtime_report else None

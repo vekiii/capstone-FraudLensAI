@@ -83,6 +83,14 @@ class InvestigationService:
         from fraudlens.investigation.provider import OpenAIProvider
         cap_args = {'request_timeout_cap': 45} if (binding.get('semantic_profile') in ('v7', 'v8')
             and binding.get('limits', {}).get('request_timeout_seconds', 30) > 30) else {}
+        if binding.get('limits', {}).get('request_timeout_seconds', 30) > 45:
+            cap_args['request_timeout_cap'] = 60
+        if binding.get('report_parallel_tools') is True:
+            cap_args['parallel_tools'] = True
+        if binding.get('report_reasoning_effort') is not None:
+            cap_args['reasoning_effort'] = binding['report_reasoning_effort']
+        if binding.get('limits', {}).get('max_output_tokens', 4096) > 4096:
+            cap_args['output_token_cap'] = 8192
         return OpenAIProvider(self.settings.api_key.get_secret_value(), binding['requested_model'],
                               prompt=binding['prompt'], **cap_args)
 
@@ -122,6 +130,8 @@ class InvestigationService:
         prompt = (ROOT / f'prompts/application/investigation-{self.settings.report_prompt}.md').read_text(encoding='utf-8')
         if self.settings.semantic_retrieval:
             prompt += '\n\n' + (ROOT / 'prompts/application/semantic-worker-addendum-v1.md').read_text(encoding='utf-8')
+        if self.settings.report_parallel_tools:
+            prompt += '\n\n' + (ROOT / 'prompts/application/report-parallel-history-v1.md').read_text(encoding='utf-8')
         limits = {key: getattr(self.settings, key) for key in (
             'max_provider_requests', 'max_tool_calls', 'total_timeout_seconds', 'request_timeout_seconds',
             'max_input_bytes', 'max_output_tokens', 'max_response_bytes')}
@@ -131,6 +141,12 @@ class InvestigationService:
                            self.settings.model.get_secret_value() if self.settings.provider == 'openai' else None),
                        test_scenario=getattr(self.settings, 'test_scenario', 'grounded'),
                        report_policy=HUMAN_AUTHORITY_POLICY)
+        if self.settings.report_parallel_tools:
+            binding['report_parallel_tools'] = True
+        if self.settings.report_reasoning_effort is not None:
+            binding['report_reasoning_effort'] = self.settings.report_reasoning_effort
+        if self.settings.report_prompt == 'v6':
+            binding['history_bounds_version'] = 1
         if self.settings.semantic_retrieval:
             from fraudlens.investigation.retrieval_semantic_v6 import (
                 policy_identity,
@@ -277,7 +293,9 @@ class InvestigationService:
             binding['semantic_runtime_revision'] = runtime_revision()
         items = self.evidence(attempt_id) if reuse else []
         # Recompute facts/history and resolve exact archived passages; digest alone is insufficient.
-        executor = ToolExecutor(self.repo, attempt_id, '', context, self.knowledge, corpus, retrieval)
+        executor = ToolExecutor(self.repo, attempt_id, '', context, self.knowledge, corpus, retrieval,
+            history_reader=self.history_reader if binding.get('history_bounds_version') == 1 else None,
+            history_bounds=binding.get('history_bounds_version') == 1)
         for item in items:
             if item['content_sha256'] != content_digest(item):
                 raise ValueError('stale_snapshot')
@@ -453,7 +471,8 @@ class InvestigationService:
             self.context_reader.resolve(context['case_id'], context['source_mode'], context['snapshot_ref'])
             provider = self.provider_factory(binding)
             executor = ToolExecutor(self.repo, attempt_id, owner, context, self.knowledge,
-                                    binding['corpus_version'], binding['retrieval_version'],self.history_reader)
+                                    binding['corpus_version'], binding['retrieval_version'],self.history_reader,
+                                    history_bounds=binding.get('history_bounds_version') == 1)
             while True:
                 view = self.read(attempt_id)
                 remaining = deadline - time.monotonic()
@@ -463,6 +482,8 @@ class InvestigationService:
                     raise ProviderError('budget_exhausted')
                 sequence = self.repo.reserve_dispatch(attempt_id, owner)
                 cap = 45 if binding.get('semantic_profile') in ('v7', 'v8') else 30
+                if binding.get('history_bounds_version') == 1 and binding.get('semantic_profile') == 'v8':
+                    cap = 60
                 request_limits = dict(request_timeout=min(cap, limits['request_timeout_seconds'], remaining),
                     max_input_bytes=limits['max_input_bytes'], max_output_tokens=limits['max_output_tokens'],
                     max_response_bytes=limits['max_response_bytes'])

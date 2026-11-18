@@ -111,11 +111,21 @@ def _bounded_transport(inner):
 
 
 class OpenAIProvider:
-    def __init__(self, api_key, model, prompt='', transport=None, *, request_timeout_cap=30):
+    def __init__(self, api_key, model, prompt='', transport=None, *, request_timeout_cap=30, output_token_cap=4096,
+                 reasoning_effort=None, parallel_tools=False):
         import httpx2
         from openai import AsyncOpenAI
-        if type(request_timeout_cap) is not int or request_timeout_cap not in (30, 45):
+        if type(request_timeout_cap) is not int or request_timeout_cap not in (30, 45, 60):
             raise ProviderError('unsupported_capability')
+        if type(output_token_cap) is not int or output_token_cap not in (4096, 8192):
+            raise ProviderError('unsupported_capability')
+        if reasoning_effort not in (None, 'low'):
+            raise ProviderError('unsupported_capability')
+        if type(parallel_tools) is not bool:
+            raise ProviderError('unsupported_capability')
+        self.parallel_tools = parallel_tools
+        self.reasoning_effort = reasoning_effort
+        self.output_token_cap = output_token_cap
         self.request_timeout_cap = request_timeout_cap
         if not isinstance(model, str) or not model.strip() or len(model) > 200:
             raise ProviderError('unsupported_capability')
@@ -151,15 +161,17 @@ class OpenAIProvider:
                     instruction += ' ' + REPAIR_HINTS[item['reason']]
                 pending.append(dict(role='user', content=instruction))
         payload = dict(model=self.model, instructions=self.prompt, input=pending,
-            tools=tools, parallel_tool_calls=False, store=False,
+            tools=tools, parallel_tool_calls=self.parallel_tools, store=False,
             include=['reasoning.encrypted_content'],
             max_output_tokens=remaining_limits['max_output_tokens'],
             text=dict(format=dict(type='json_schema', name='investigation_report',
                                   strict=True, schema=compile_report_schema())))
+        if self.reasoning_effort is not None:
+            payload['reasoning'] = {'effort': self.reasoning_effort}
         if 'tool_choice' in remaining_limits:
             payload['tool_choice'] = remaining_limits['tool_choice']
         timeout = min(self.request_timeout_cap, remaining_limits['request_timeout'])
-        if (timeout <= 0 or not 1 <= payload['max_output_tokens'] <= 4096
+        if (timeout <= 0 or not 1 <= payload['max_output_tokens'] <= self.output_token_cap
                 or len(canonical(payload)) > min(48000, remaining_limits['max_input_bytes'])):
             raise ProviderError('budget_exhausted')
         self.transport.limit = min(2097152, remaining_limits['max_response_bytes'])

@@ -59,3 +59,24 @@ No broader product scope or new tasks. Approval must cover this candidate, fresh
 input review, retrieval regression within existing acceptance work and the explicit
 279 ceiling before creating any new hash-bound dispatch authorization. No approval
 exists yet; do not activate the candidate or spend the remaining29 automatically.
+
+## Actual team authorization, 2026-11-18
+
+User explicitly replied "Potvrdjujem" to candidate v8/reportv5 and maximum153 NEW
+requests,279 total including126 historical actual. Approved one staged cycle only,
+32development/44retrieval/64generation/13judging, no extra retry reserve. Fresh
+source authoring/review and separate freezes precede dispatch; no old replay.
+Development advance gate is predeclared: all4 locally validated reports, faithful
+source naming/unknown-history/human-authority disclosures, no invented critical
+facts or unsupported procedures, source-derived essential coverage >=.80 and
+factual support >=.90 on each. Automated source/output review disclosed, no human
+or model independence claim. Failed development/retrieval stops this cycle.
+
+## Output ceiling decision, 2026-11-18
+
+User expressly authorized increasing max_output_tokens so a response can finish.
+Proposed implementation: new explicit generator profile with8192 output tokens,
+keeping old frozen/default4096 semantics; source-minute boundary copied from actual
+computed evidence, not guessed from focal timestamp. This is authorization to
+implement/test the ceiling correction, not a claim it is implemented or guarantees
+completion. No new cycle/budget or replay inferred; actual counter150/279 retained.

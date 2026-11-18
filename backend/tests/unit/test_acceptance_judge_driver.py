@@ -16,6 +16,44 @@ from fraudlens.investigation.judging_v4 import project_packet
 from fraudlens.investigation.models import ROOT
 
 
+def test_typed_wire_schema_restricts_judgment_to_bound_claim_kind():
+    from jsonschema import Draft202012Validator
+
+    path = ROOT / "evidence/tasks/feature-003-latency-judge-20261118.py"
+    spec = importlib.util.spec_from_file_location("typed_wire_driver", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    packet = {
+        "report": {"summary": "Transfer", "limitations": "Unknown history"},
+        "units": [
+            {"unit_id": "p1", "claim_kind": "procedure"},
+            {"unit_id": "o1", "claim_kind": "observation"},
+        ],
+    }
+    schema = module.provider_rating_schema(packet)["properties"]["units"]["items"]
+    validator = Draft202012Validator(schema)
+    row = dict(unit_id="p1", judgment="applicable", reason="Source applies", critical_error=False)
+    assert validator.is_valid(row)
+    assert not validator.is_valid(dict(row, judgment="supported"))
+    assert validator.is_valid(dict(row, unit_id="o1", judgment="supported"))
+    assert not validator.is_valid(dict(row, unit_id="missing"))
+
+
+def test_typed_wire_schema_rejects_unknown_report_pointer():
+    from jsonschema import Draft202012Validator
+
+    path = ROOT / "evidence/tasks/feature-003-latency-judge-20261118.py"
+    spec = importlib.util.spec_from_file_location("typed_pointer_driver", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    schema = module.provider_rating_schema({"units": [], "report": {"summary": "Transfer"}})
+    decision = schema["properties"]["checks"]["properties"]["required_disclosures_complete"]
+    locations = Draft202012Validator(decision["properties"]["report_locations"])
+    assert locations.is_valid(["/summary"])
+    assert locations.is_valid([])
+    assert not locations.is_valid(["/"])
+
+
 def fixture_run(tmp_path, monkeypatch, *, quota=False, invalid=False, strict_wire=False):
     path = ROOT / "evidence/tasks/feature-003-t101-judge-live-20261118.py"
     spec = importlib.util.spec_from_file_location("test_only_acceptance_judge_driver", path)

@@ -61,3 +61,30 @@ Reserve budget and dispatch intent before sending, then release DB lock. Unknown
 | summarize-reviews | --protocol, --reviews; validate reviewer completeness and compute rubric counts/disagreements |
 
 All command paths are trusted local operator inputs, never model/browser arguments. Print safe IDs/counts/reasons only. Exit 0 completed, 2 missing/ineligible prerequisites, 1 execution/validation failure. A completed metric computation below target records failed quality acceptance even when command execution succeeds. No provider initialization at module import or ordinary GET/startup.
+
+## Explicit report-v6 addendum, 2026-11-18
+
+Authorized opt-in generator profile: report_prompt=v6 with OpenAI semanticv8 may
+set max_output_tokens8192. Default remains4096 and old prompt bytes unchanged.
+Both application and metered harness factories pass explicit output_token_cap8192
+from persisted attempt binding; default provider cap remains4096. Rejected caps
+fail before HTTP; SDK retries0, output response2MiB and request/input limits retain
+prior ceilings. Semantic selector output budget remains its own unchanged budget.
+Request45/selector30/total120 and8requests/12tools are not increased.
+
+New v6 attempts pin history_bounds_version1. History evidence text and exact-fact
+projection add window_start_inclusive and window_end_exclusive. The former copies
+actual history start; latter is UTC cutoff floored to minute, exclusive. Unavailable
+history has null values; no cutoff or totals inferred. The typed history envelope,
+raw cutoff and filtering rules are unchanged; no old evidence or bindings altered.
+Legacy attempts omit fields. Retries preserve version/prompt/output caps and
+revalidate evidence using the same source reader before reuse. These additive
+public facts are not private expected answers. Code computes, new prompt copies.
+
+Future opt-in settings (not activated by this document):
+INVESTIGATION_PROVIDER=openai, INVESTIGATION_SEMANTIC_RETRIEVAL=true,
+INVESTIGATION_SEMANTIC_PROFILE=v8, INVESTIGATION_REPORT_PROMPT=v6,
+INVESTIGATION_MAX_OUTPUT_TOKENS=8192. Request45 remains separately explicit.
+Evaluation freezes must include max_output_tokens8192 and report_promptv6; shared
+runner defaults omitted fields to old4096. New input/source/code freezes are
+required; no old acceptance/profile/prompt hash inheritance or live-spend approval.

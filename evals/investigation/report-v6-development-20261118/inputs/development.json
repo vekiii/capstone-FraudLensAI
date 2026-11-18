@@ -1,0 +1,290 @@
+[
+  {
+    "id": "DEV6B-01",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-621",
+      "snapshot_ref": "fixture_8d3cb79e8f906c58636ac9dd9dda8d22456a69e3ea2b3eb5e72114a568d2d2f9",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-621",
+        "transaction": {
+          "transaction_id": "TX-621",
+          "occurred_at": "2026-11-18T09:38:43Z",
+          "amount": "2816.27",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:DEV6B-01",
+          "receiver_account": "AUTHORED-R:DEV6B-01"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-621",
+          "score": 0.46,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:38:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:38:43Z",
+        "start": "2026-11-11T09:38:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "60dc6ea68b3a97f10492c9d8d2f578da6eba2237e0dbfbfb85ae25d34aed49a2"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-621": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "DEV6B-01-S"
+          },
+          "receiver": {
+            "bank": "AUTHORED-R",
+            "account": "DEV6B-01-R"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-421",
+          "occurred_at": "2026-11-16T09:38:43Z",
+          "amount": "83.47",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "DEV6B-01-S"
+        },
+        {
+          "transaction_id": "TX-521",
+          "occurred_at": "2026-11-17T09:38:43Z",
+          "amount": "29.61",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "DEV6B-01-S"
+        },
+        {
+          "transaction_id": "TX-321",
+          "occurred_at": "2026-11-18T06:38:43Z",
+          "amount": "41.92",
+          "currency": "EUR",
+          "bank": "AUTHORED-R",
+          "account": "DEV6B-01-R"
+        },
+        {
+          "transaction_id": "TX-221",
+          "occurred_at": "2026-11-18T09:38:33Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "DEV6B-01-S"
+        },
+        {
+          "transaction_id": "TX-121",
+          "occurred_at": "2026-11-19T09:38:43Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "DEV6B-01-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+    ]
+  },
+  {
+    "id": "DEV6B-02",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-622",
+      "snapshot_ref": "fixture_efcd83a1ad8438aed0af081f7732acbd8deb3a5b2930d4a70fbcfdb92f082e79",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-622",
+        "transaction": {
+          "transaction_id": "TX-622",
+          "occurred_at": "2026-11-18T09:39:43Z",
+          "amount": "184.29",
+          "currency": "USD",
+          "sender_account": "AUTHORED-S:DEV6B-02",
+          "receiver_account": "AUTHORED-R:DEV6B-02"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-622",
+          "score": 0.29,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:39:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "9437262febfdb944265d756c452eebc589f44410c8e0570ca1f62bff5558e6ca"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+    ]
+  },
+  {
+    "id": "DEV6B-03",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-623",
+      "snapshot_ref": "fixture_f5ea3e45d55187589075cf4a61e9d900d8bf18bcf8ef8d4b2570ffac0f965bae",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-623",
+        "transaction": {
+          "transaction_id": "TX-623",
+          "occurred_at": "2026-11-18T09:40:43Z",
+          "amount": "1736.94",
+          "currency": "GBP",
+          "sender_account": "AUTHORED-S:DEV6B-03",
+          "receiver_account": "AUTHORED-R:DEV6B-03"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-623",
+          "score": 0.74,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:40:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:40:43Z",
+        "start": "2026-11-11T09:40:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "095eee4f915f530110c8d5d3edb33502658bc4bf8593b524ba2917fe442a32b6"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-623": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "DEV6B-03-S"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-423",
+          "occurred_at": "2026-11-16T09:40:43Z",
+          "amount": "83.47",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "DEV6B-03-S"
+        },
+        {
+          "transaction_id": "TX-523",
+          "occurred_at": "2026-11-17T09:40:43Z",
+          "amount": "29.61",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "DEV6B-03-S"
+        },
+        {
+          "transaction_id": "TX-223",
+          "occurred_at": "2026-11-18T09:40:33Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "DEV6B-03-S"
+        },
+        {
+          "transaction_id": "TX-123",
+          "occurred_at": "2026-11-19T09:40:43Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "DEV6B-03-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+    ]
+  },
+  {
+    "id": "DEV6B-04",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-624",
+      "snapshot_ref": "fixture_8dd313b7c0602f9b12f01f6a9a07f6be411483a0fc0508518a4d61f1cf3ee704",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-624",
+        "transaction": {
+          "transaction_id": "TX-624",
+          "occurred_at": "2026-11-18T09:41:43Z",
+          "amount": "326.81",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:DEV6B-04",
+          "receiver_account": "AUTHORED-R:DEV6B-04"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-624",
+          "score": 0.37,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:41:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: What is the exact current statutory reporting deadline in Chile?"
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "a9b1a1d032fbfe8f80f276d021d6da731cc2ed6186fe924eb752705f86f93a76"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "What is the exact current statutory reporting deadline in Chile?"
+    ]
+  }
+]

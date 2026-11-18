@@ -68,7 +68,7 @@ def provider_evidence(item):
 
 class ToolExecutor:
     def __init__(self, repository, attempt_id, owner, context, knowledge,
-                 corpus_version, retrieval_version, history_reader=None):
+                 corpus_version, retrieval_version, history_reader=None, *, history_bounds=False):
         self.repo, self.attempt_id, self.owner = repository, attempt_id, owner
         self.context = validate('InvestigationContext', context)
         self.attempt = repository.get(attempt_id)
@@ -76,6 +76,7 @@ class ToolExecutor:
             raise ValueError('context_scope_mismatch')
         self.knowledge, self.corpus, self.retrieval = knowledge, corpus_version, retrieval_version
         self.history_reader = history_reader or HistoryReader()
+        self.history_bounds = history_bounds
 
     def _item(self, kind, text, exact_facts, returned=1, eligible=1,
               truncated=False, passage=None, history=None):
@@ -116,6 +117,13 @@ class ToolExecutor:
             body['totals_scope'] = 'per_direction_per_currency_permitted_lookback_before_truncation'
         for key in ('cutoff', 'start', 'lookback_days'):
             body[key] = raw.get(key)
+        if self.history_bounds:
+            from fraudlens.investigation.context import instant
+            available = raw['availability'] == 'available'
+            body['window_start_inclusive'] = raw['start'] if available else None
+            body['window_end_exclusive'] = (instant(raw['cutoff']).astimezone(UTC)
+                .replace(second=0, microsecond=0).isoformat().replace('+00:00', 'Z')
+                if available else None)
         for event in raw['events']:
             body['events'].append({**{key: event[key] for key in
                                       ('transaction_id', 'occurred_at', 'amount', 'currency')},

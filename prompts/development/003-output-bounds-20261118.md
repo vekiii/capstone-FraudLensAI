@@ -1,0 +1,1 @@
+User explicitly said "Implementiraj to" for8192max_output_tokens and code-computed exact history-minute bound. No new live-cycle authorization. Implement/test explicit version preserving old attempts/defaults/outputs.

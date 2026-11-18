@@ -141,3 +141,33 @@ def test_procedure_scope_provenance_preserved_without_source_reviewer_notes(modu
     text = json.dumps(packet)
     assert "HISTORICAL TEST JURISDICTION" in text and "scope-test-v1" in text
     assert "PRIVATE_SOURCE_REVIEWER_CANARY" not in text
+
+
+def test_opt_in_runtime_facts_include_observed_no_match_and_scope(module, example):
+    archive, item = example
+    archive["events"] = [
+        dict(operation="dispatch_result", sequence=2, outcome="completed"),
+        dict(
+            operation="semantic_selection",
+            sequence=2,
+            policy_version="policy",
+            selection=dict(verdict="insufficient", selected=[], reason="PRIVATE_REASON_CANARY"),
+        ),
+        dict(
+            operation="semantic_selection",
+            sequence=3,
+            policy_version="policy",
+            selection=dict(verdict="insufficient", selected=[]),
+        ),
+    ]
+    legacy = module.materialize(archive, item, ["Source obligation."])["packet"]
+    new = module.materialize(archive, item, ["Source obligation."], runtime_facts=True)["packet"]
+    old_snapshot, snapshot = [json.loads(p["evidence"][-1]["text"]) for p in (legacy, new)]
+    assert "procedure_selection_observations" not in old_snapshot
+    assert snapshot["procedure_selection_observations"] == [
+        dict(sequence=2, policy_version="policy", verdict="insufficient", selected_passage_ids=[])
+    ]
+    assert "PRIVATE_REASON_CANARY" not in json.dumps(new)
+    assert "does not establish bank loss" in snapshot["source_scope"]["amount"]
+    assert "read-only" in snapshot["source_scope"]["workflow"]
+    assert new["report"] == legacy["report"] and new["units"] == legacy["units"]
