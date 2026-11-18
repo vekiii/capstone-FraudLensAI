@@ -14,7 +14,7 @@ description: "Implementation tasks for Simulation Lab and Decision Intelligence"
 
 **Purpose**: Verify this branch can run using the existing foundation and lockfiles.
 
-- [ ] T001 Select Feature 004 in the PowerShell session and run the locked setup from `specs/004-simulation-and-prioritization/quickstart.md`. Run `backend/tests/integration/test_startup.py` and `frontend/tests/api.test.ts` as a baseline. Record versions, commands and results in `evidence/tasks/feature-004-setup.md`.
+- [x] T001 Select Feature 004 in the PowerShell session and run the locked setup from `specs/004-simulation-and-prioritization/quickstart.md`. Run `backend/tests/integration/test_startup.py` and `frontend/tests/api.test.ts` as a baseline. Record versions, commands and results in `evidence/tasks/feature-004-setup.md`.
 
 ## Phase 2: Foundational prerequisites
 

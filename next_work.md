@@ -1,3 +1,15 @@
+# Current handoff - Feature 004 T001 complete, 2026-11-18
+
+Only Phase 1/T001 executed. Locked uv sync and npm ci PASS; startup8 PASS
+(1 Starlette/httpx deprecation warning), frontend API82 PASS. Project Python
+3.14.3, uv0.10.9, Node24.20.0, npm11.19.0. No lock/source changes; existing
+untracked feature4_tasks_prompt.md preserved. No blockers. Human review/peer
+reproduction pending; no full-suite/browser/simulation checks claimed.
+Evidence: [setup](evidence/tasks/feature-004-setup.md),
+[handoff](evidence/tasks/feature-004-phase-01-handoff.md).
+Next: separately scoped Phase 2, T002-T004. Stop before T002 in this execution.
+Earlier task-generation/planning handoffs below are historical.
+
 # Next work - FraudLens AI
 
 ## Feature 004 implementation tasks
