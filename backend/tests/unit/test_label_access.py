@@ -141,3 +141,73 @@ def test_unapproved_purpose_cannot_read_aggregate_labels(tmp_path):
     with pytest.raises(PermissionError):
         access.query(shape='development_daily', purpose='debugging')
     assert log_entries(path)[0]['result'] == 'denied'
+
+
+def test_showcase_total_stays_single_use_across_service_instances(tmp_path):
+    access, path = service(tmp_path)
+    access.query(shape='showcase_total', purpose='pretraining_class_audit')
+    another, _ = service(tmp_path)
+
+    with pytest.raises(PermissionError):
+        another.query(shape='showcase_total', purpose='pretraining_class_audit')
+    assert [entry['result'] for entry in log_entries(path)] == ['allowed', 'denied']
+
+
+def test_denied_query_does_not_read_any_label(tmp_path):
+    class GuardedRecord(dict):
+        def get(self, key, default=None):
+            if key == 'is_laundering':
+                raise AssertionError('denied query read a label')
+            return super().get(key, default)
+
+    access = access_module().LabelAuditService(
+        [GuardedRecord(entry) for entry in records()],
+        partition_by_id={
+            'warm': 'development_warmup', 'train-a': 'train', 'train-b': 'train',
+            'validation': 'validation', 'test': 'test', 'showcase': 'showcase',
+        },
+        audit_log_path=tmp_path / 'guarded.jsonl',
+    )
+    with pytest.raises(PermissionError):
+        access.query(shape='record_labels', purpose='pretraining_class_audit')
+
+
+def test_invalid_label_encoding_fails_without_releasing_aggregate(tmp_path):
+    altered = records()
+    altered[1]['is_laundering'] = 1.0
+    path = tmp_path / 'invalid-label.jsonl'
+    access = access_module().LabelAuditService(
+        altered,
+        partition_by_id={
+            'warm': 'development_warmup', 'train-a': 'train', 'train-b': 'train',
+            'validation': 'validation', 'test': 'test', 'showcase': 'showcase',
+        },
+        audit_log_path=path,
+    )
+    with pytest.raises(ValueError, match='label'):
+        access.query(shape='partition_totals', purpose='pretraining_class_audit')
+    assert log_entries(path)[0]['result'] == 'error'
+
+
+def test_exact_canonical_text_labels_are_accepted(tmp_path):
+    canonical = records()
+    for entry in canonical:
+        entry['is_laundering'] = str(entry['is_laundering'])
+    access = access_module().LabelAuditService(
+        canonical,
+        partition_by_id={
+            'warm': 'development_warmup', 'train-a': 'train', 'train-b': 'train',
+            'validation': 'validation', 'test': 'test', 'showcase': 'showcase',
+        },
+        audit_log_path=tmp_path / 'canonical-labels.jsonl',
+    )
+    assert access.query(shape='showcase_total', purpose='pretraining_class_audit') == {
+        'source_count': 1, 'scoreable_count': 1, 'positive_count': 1,
+    }
+
+
+def test_malformed_query_shape_is_denied_and_logged(tmp_path):
+    access, path = service(tmp_path)
+    with pytest.raises(PermissionError):
+        access.query(shape=['record_labels'], purpose='pretraining_class_audit')
+    assert log_entries(path)[0]['result'] == 'denied'

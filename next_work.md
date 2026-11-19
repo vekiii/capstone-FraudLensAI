@@ -28,6 +28,8 @@ All raw and generated data paths remain Git-ignored; no real data or row-level l
 
 **T216 is complete as synthetic RED tests.** Eleven cases in [test_label_access.py](backend/tests/unit/test_label_access.py) cover permitted aggregate shapes, refused record-level and showcase subrange requests, purpose/filter restrictions and allowed/denied audit logging. All eleven fail at the intended missing T217 module boundary; Ruff passes. No label access, real-data audit or model evaluation ran. See [T216 evidence](evidence/tasks/T216.md).
 
+**T217 is complete for the synthetic restricted audit interface.** [label_access.py](backend/src/fraudlens/training/label_access.py) permits only fixed pretraining aggregate shapes and logs allowed, denied and error requests with UTC time and purpose. It denies filtered/record-level access before label reads and enforces one showcase-wide total per shared log. Sixteen focused cases and the 396-test backend suite passed; Ruff passed. The log is append-only by application behavior, not tamper-evident or cross-process serialized. No real labels were read; the actual class audit, prevalence tolerance check and partition hashes remain T218/T219. See [T217 evidence](evidence/tasks/T217.md).
+
 ## One concrete next step
 
-Execute T217: implement the restricted aggregate label-audit interface and append-only access log to turn T216 GREEN. Preserve the verified ignored T210 snapshot and stage; real-scale feature sorting and T210 temporal counts need separate measured gates.
+Prepare T218's measured, verified chronological partition pass and permitted aggregate class audit; stop on failed FR-018 tolerances. Preserve the ignored T210 snapshot and stage. Real-scale feature sorting and temporal counts need separate measured gates before audit publication.

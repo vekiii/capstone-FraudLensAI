@@ -43,6 +43,7 @@ documentation or ignore-policy setup must state that no data/model checks were r
 - [T214 partition RED contracts](tasks/T214.md): six synthetic cases for half-open warm-up, whole-instant nearest boundaries and earlier ties; GREEN is pending T215.
 - [T215 partition planner](tasks/T215.md): synthetic GREEN and backend regression; real-scale chronological pass remains gated.
 - [T216 label-access RED contracts](tasks/T216.md): eleven synthetic cases for allowed aggregate shapes, refused record/showcase subrange access and audit logging; GREEN is pending T217.
+- [T217 restricted aggregate audit](tasks/T217.md): synthetic GREEN, additional denial/encoding regressions and full backend checks; real label audit remains pending T218.
 - [Current handoff](../next_work.md), [data card](../data/README.md) and [protocol](../specs/002-data-and-risk-scoring/protocol.md): current status, local data limitations and next action.
 - [2026-11-19 local commit receipt](tasks/session-commits-2026-11-19.md): reviewed file scope, commit identity, checks and publication status.
 
