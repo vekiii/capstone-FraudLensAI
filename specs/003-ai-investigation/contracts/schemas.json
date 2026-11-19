@@ -1,0 +1,1397 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fraudlens.local/specs/003/contracts/schemas.json",
+  "title": "Proposed feature 003 closed boundary schemas",
+  "description": "Select a $defs entry explicitly; semantic identity, scope, finite-number, trimmed-string and state checks are additional mandatory validators. Producer snapshot is an immutable documentation reference, not implemented behavior.",
+  "$defs": {
+    "Digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
+    },
+    "Instant": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z(?![\\s\\S])"
+    },
+    "RunId": {
+      "type": "string",
+      "pattern": "^inv_[0-9a-f]{32}(?![\\s\\S])"
+    },
+    "AttemptId": {
+      "type": "string",
+      "pattern": "^att_[0-9a-f]{32}(?![\\s\\S])"
+    },
+    "EvidenceId": {
+      "type": "string",
+      "pattern": "^ev_[0-9a-f]{32}(?![\\s\\S])"
+    },
+    "ReviewId": {
+      "type": "string",
+      "pattern": "^rev_[0-9a-f]{32}(?![\\s\\S])"
+    },
+    "CaseId": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^CASE-[0-9]{3}(?![\\s\\S])"
+        },
+        {
+          "type": "string",
+          "pattern": "^C[0-9a-f]{32}(?![\\s\\S])"
+        }
+      ]
+    },
+    "History": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "availability": {
+          "type": "string",
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "cutoff": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Instant"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "coverage": {
+          "type": "string",
+          "enum": [
+            "full",
+            "incomplete",
+            "unavailable"
+          ]
+        },
+        "start": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Instant"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lookback_days": {
+          "const": 7
+        },
+        "view_scope": {
+          "type": "string",
+          "enum": [
+            "authored_fixture",
+            "synthetic_shared_banks"
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "availability",
+        "cutoff",
+        "coverage",
+        "start",
+        "lookback_days",
+        "view_scope",
+        "reason"
+      ]
+    },
+    "InvestigationContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": 1
+        },
+        "context_revision": {
+          "$ref": "#/$defs/Digest"
+        },
+        "source_mode": {
+          "type": "string",
+          "enum": [
+            "fixture",
+            "dataset"
+          ]
+        },
+        "case_id": {
+          "$ref": "#/$defs/CaseId"
+        },
+        "snapshot_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^dv_[0-9a-f]{64}(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_at": {
+          "$ref": "#/$defs/Instant"
+        },
+        "source_payload": {
+          "type": "object"
+        },
+        "history": {
+          "$ref": "#/$defs/History"
+        }
+      },
+      "required": [
+        "contract_version",
+        "context_revision",
+        "source_mode",
+        "case_id",
+        "snapshot_ref",
+        "dataset_version",
+        "observed_at",
+        "source_payload",
+        "history"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source_mode": {
+                "const": "fixture"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "case_id": {
+                "type": "string",
+                "pattern": "^CASE-[0-9]{3}(?![\\s\\S])"
+              },
+              "snapshot_ref": {
+                "type": "string",
+                "pattern": "^fixture_[0-9a-f]{64}(?![\\s\\S])"
+              },
+              "dataset_version": {
+                "type": "null"
+              },
+              "source_payload": {
+                "$ref": "../../001-project-foundation/contracts/schemas.json#/$defs/CaseDetail"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "case_id": {
+                "type": "string",
+                "pattern": "^C[0-9a-f]{32}(?![\\s\\S])"
+              },
+              "dataset_version": {
+                "type": "string",
+                "pattern": "^dv_[0-9a-f]{64}(?![\\s\\S])"
+              },
+              "source_payload": {
+                "$ref": "producer-v2.snapshot.json#/$defs/CaseDetailV2"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2400
+        }
+      },
+      "required": [
+        "path",
+        "value"
+      ]
+    },
+    "Assertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidence_ref": {
+          "$ref": "#/$defs/EvidenceId"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2400
+        }
+      },
+      "required": [
+        "evidence_ref",
+        "path",
+        "value"
+      ]
+    },
+    "Quote": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidence_ref": {
+          "$ref": "#/$defs/EvidenceId"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2400
+        }
+      },
+      "required": [
+        "evidence_ref",
+        "text"
+      ]
+    },
+    "Claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "observation",
+            "hypothesis",
+            "procedure"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceId"
+          },
+          "maxItems": 20,
+          "minItems": 1
+        },
+        "exact_assertions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Assertion"
+          },
+          "maxItems": 20
+        },
+        "quotes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Quote"
+          },
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "text",
+        "kind",
+        "evidence_refs",
+        "exact_assertions",
+        "quotes"
+      ]
+    },
+    "ReportDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "ready_for_review",
+            "needs_information"
+          ]
+        },
+        "summary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 20
+        },
+        "observed_facts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 20
+        },
+        "risk_indicators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 20
+        },
+        "alternative_explanations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 20
+        },
+        "missing_information": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "maxItems": 20
+        },
+        "recommended_checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "maxItems": 20
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "maxItems": 20
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceId"
+          },
+          "maxItems": 100,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "outcome",
+        "summary",
+        "observed_facts",
+        "risk_indicators",
+        "alternative_explanations",
+        "missing_information",
+        "recommended_checks",
+        "limitations",
+        "citations"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "ready_for_review"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "summary": {
+                "minItems": 1
+              },
+              "observed_facts": {
+                "minItems": 1
+              },
+              "citations": {
+                "minItems": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "limitations": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Report": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "report_id": {
+          "$ref": "#/$defs/Digest"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/AttemptId"
+        },
+        "context_revision": {
+          "$ref": "#/$defs/Digest"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Instant"
+        },
+        "validation": {
+          "type": "string",
+          "enum": [
+            "schema_reference_passed"
+          ]
+        },
+        "semantic_review": {
+          "type": "string",
+          "enum": [
+            "not_reviewed",
+            "reviewed_with_notes"
+          ]
+        },
+        "draft": {
+          "$ref": "#/$defs/ReportDraft"
+        }
+      },
+      "required": [
+        "report_id",
+        "attempt_id",
+        "context_revision",
+        "created_at",
+        "validation",
+        "semantic_review",
+        "draft"
+      ]
+    },
+    "ReviewRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "report_id": {
+          "$ref": "#/$defs/Digest"
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "escalate",
+            "close",
+            "request_more_information"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "correction_note": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supersedes_review_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "report_id",
+        "disposition",
+        "rationale",
+        "correction_note",
+        "supersedes_review_id"
+      ]
+    },
+    "Review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "review_id": {
+          "$ref": "#/$defs/ReviewId"
+        },
+        "report_id": {
+          "$ref": "#/$defs/Digest"
+        },
+        "actor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "escalate",
+            "close",
+            "request_more_information"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "correction_note": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supersedes_review_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "$ref": "#/$defs/Instant"
+        }
+      },
+      "required": [
+        "review_id",
+        "report_id",
+        "actor",
+        "disposition",
+        "rationale",
+        "correction_note",
+        "supersedes_review_id",
+        "created_at"
+      ]
+    },
+    "CreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "$ref": "#/$defs/CaseId"
+        },
+        "source_mode": {
+          "type": "string",
+          "enum": [
+            "fixture",
+            "dataset"
+          ]
+        },
+        "snapshot_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        }
+      },
+      "required": [
+        "case_id",
+        "source_mode",
+        "snapshot_ref"
+      ]
+    },
+    "RetryRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reuse_evidence": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "reuse_evidence"
+      ]
+    },
+    "CancelRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {},
+      "required": []
+    },
+    "Document": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "doc_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "origin_kind": {
+          "type": "string",
+          "enum": [
+            "official",
+            "simulated",
+            "dataset_guide"
+          ]
+        },
+        "source_uri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unknown_date_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retrieved_at": {
+          "$ref": "#/$defs/Instant"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "reviewed_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "reviewed_at": {
+          "$ref": "#/$defs/Instant"
+        },
+        "reuse_terms": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "content_sha256": {
+          "$ref": "#/$defs/Digest"
+        },
+        "included_sections": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "maxItems": 100
+        },
+        "applicability_notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "doc_id",
+        "title",
+        "origin_kind",
+        "source_uri",
+        "published_at",
+        "unknown_date_reason",
+        "retrieved_at",
+        "jurisdiction",
+        "version",
+        "reviewed_by",
+        "reviewed_at",
+        "reuse_terms",
+        "content_sha256",
+        "included_sections",
+        "applicability_notes"
+      ]
+    },
+    "Passage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "passage_id": {
+          "$ref": "#/$defs/Digest"
+        },
+        "corpus_version": {
+          "type": "string",
+          "pattern": "^corpus_[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "document": {
+          "$ref": "#/$defs/Document"
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "ordinal": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2400
+        },
+        "content_sha256": {
+          "$ref": "#/$defs/Digest"
+        }
+      },
+      "required": [
+        "passage_id",
+        "corpus_version",
+        "document",
+        "section",
+        "ordinal",
+        "text",
+        "content_sha256"
+      ]
+    },
+    "SearchHit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rank": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0
+        },
+        "passage": {
+          "$ref": "#/$defs/Passage"
+        }
+      },
+      "required": [
+        "rank",
+        "score",
+        "passage"
+      ]
+    },
+    "SearchResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": 1
+        },
+        "corpus_version": {
+          "type": "string",
+          "pattern": "^corpus_[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "retrieval_version": {
+          "$ref": "#/$defs/Digest"
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "matched",
+            "no_match"
+          ]
+        },
+        "hits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SearchHit"
+          },
+          "maxItems": 5
+        }
+      },
+      "required": [
+        "contract_version",
+        "corpus_version",
+        "retrieval_version",
+        "query",
+        "status",
+        "hits"
+      ]
+    },
+    "DocumentList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": 1
+        },
+        "corpus_version": {
+          "type": "string",
+          "pattern": "^corpus_[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "documents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Document"
+          },
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "contract_version",
+        "corpus_version",
+        "documents"
+      ]
+    },
+    "Evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": 1
+        },
+        "evidence_id": {
+          "$ref": "#/$defs/EvidenceId"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/AttemptId"
+        },
+        "context_revision": {
+          "$ref": "#/$defs/Digest"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "case_fact",
+            "history",
+            "procedure"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16000
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Fact"
+          },
+          "maxItems": 500
+        },
+        "passage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Passage"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "history": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/History"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "returned_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "eligible_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "content_sha256": {
+          "$ref": "#/$defs/Digest"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Instant"
+        }
+      },
+      "required": [
+        "contract_version",
+        "evidence_id",
+        "attempt_id",
+        "context_revision",
+        "kind",
+        "text",
+        "facts",
+        "passage",
+        "history",
+        "returned_count",
+        "eligible_count",
+        "truncated",
+        "content_sha256",
+        "created_at"
+      ]
+    },
+    "ErrorEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": 1
+        },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "type": "string",
+              "enum": [
+                "invalid_request",
+                "forbidden_scope",
+                "case_not_found",
+                "investigation_not_found",
+                "evidence_not_found",
+                "stale_snapshot",
+                "request_conflict",
+                "revision_conflict",
+                "invalid_transition",
+                "knowledge_unavailable",
+                "context_unavailable",
+                "provider_unavailable",
+                "store_busy",
+                "internal_error"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ]
+        }
+      },
+      "required": [
+        "contract_version",
+        "error"
+      ]
+    },
+    "Failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "provider_access",
+            "provider_refusal",
+            "provider_incomplete",
+            "provider_failure",
+            "unsupported_capability",
+            "output_invalid",
+            "budget_exhausted",
+            "interrupted",
+            "stale_snapshot",
+            "tool_result_too_large",
+            "context_unavailable"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "outcome_unknown": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "outcome_unknown"
+      ]
+    },
+    "Budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider_requests": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "tool_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "repairs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "transient_retries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "deadline": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Instant"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "provider_requests",
+        "tool_calls",
+        "repairs",
+        "transient_retries",
+        "deadline"
+      ]
+    },
+    "ToolTrace": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "enum": [
+            "get_case_facts",
+            "get_account_history",
+            "search_procedures"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "completed",
+            "rejected",
+            "failed"
+          ]
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceId"
+          },
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "sequence",
+        "name",
+        "status",
+        "elapsed_ms",
+        "evidence_refs"
+      ]
+    },
+    "RunView": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": 1
+        },
+        "run_id": {
+          "$ref": "#/$defs/RunId"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/AttemptId"
+        },
+        "parent_attempt_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AttemptId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "case_id": {
+          "$ref": "#/$defs/CaseId"
+        },
+        "context_revision": {
+          "$ref": "#/$defs/Digest"
+        },
+        "source_mode": {
+          "type": "string",
+          "enum": [
+            "fixture",
+            "dataset"
+          ]
+        },
+        "snapshot_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "corpus_version": {
+          "type": "string",
+          "pattern": "^corpus_[0-9a-f]{64}(?![\\s\\S])"
+        },
+        "retrieval_version": {
+          "$ref": "#/$defs/Digest"
+        },
+        "provider_mode": {
+          "type": "string",
+          "enum": [
+            "test",
+            "openai"
+          ]
+        },
+        "requested_model": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "returned_model": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "created",
+            "gathering_evidence",
+            "drafting",
+            "ready_for_review",
+            "needs_information",
+            "failed",
+            "cancelled",
+            "reviewed"
+          ]
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "created_at": {
+          "$ref": "#/$defs/Instant"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/Instant"
+        },
+        "budget": {
+          "$ref": "#/$defs/Budget"
+        },
+        "trace": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ToolTrace"
+          },
+          "maxItems": 12
+        },
+        "report": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Report"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "review": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Review"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "failure": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Failure"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "contract_version",
+        "run_id",
+        "attempt_id",
+        "parent_attempt_id",
+        "case_id",
+        "context_revision",
+        "source_mode",
+        "snapshot_ref",
+        "corpus_version",
+        "retrieval_version",
+        "provider_mode",
+        "requested_model",
+        "returned_model",
+        "state",
+        "revision",
+        "created_at",
+        "updated_at",
+        "budget",
+        "trace",
+        "report",
+        "review",
+        "failure"
+      ]
+    },
+    "RunList": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": 1
+        },
+        "total_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RunView"
+          },
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "contract_version",
+        "total_count",
+        "truncated",
+        "items"
+      ]
+    },
+    "CaseFactsArguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {},
+      "required": []
+    },
+    "HistoryArguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "account_side": {
+          "type": "string",
+          "enum": [
+            "sender",
+            "receiver"
+          ]
+        }
+      },
+      "required": [
+        "account_side"
+      ]
+    },
+    "SearchArguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ApiError, getCase, getCases } from "../api";
 import type { CaseDetail, CaseDetailResponse, CaseListResponse } from "../contracts";
+import { InvestigationPanel } from "./InvestigationPanel";
 interface CaseClient {
   getCases(options: { signal: AbortSignal; dataset?: boolean }): Promise<CaseListResponse>;
   getCase(caseId: string, options: { signal: AbortSignal; snapshot?: string }): Promise<CaseDetailResponse>;
@@ -193,7 +194,10 @@ export function CasesPage({ client = defaultClient, dataset = import.meta.env.VI
         {"caseId" in state && <button className="button button-back" type="button"
           onClick={() => setState({ kind: "list" })}>← Nazad na listu</button>}
         {state.kind === "detail" && ("contract_version" in state.detail
-          ? <DatasetDetail detail={state.detail} /> : <FixtureDetail detail={state.detail} />)}
+          ? <DatasetDetail detail={state.detail} /> : <>
+            <FixtureDetail detail={state.detail} />
+            <InvestigationPanel key={state.detail.case_id} caseId={state.detail.case_id} />
+          </>)}
         {state.kind === "stale" && <><p role="alert">Izabrani pregled više nije aktivan.</p>
           <button className="button" type="button" onClick={() => { void loadList(); }}>Osveži listu</button></>}
         {state.kind === "not-found" && <p role="alert">Slučaj nije pronađen.</p>}

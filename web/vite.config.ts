@@ -7,7 +7,8 @@ export default defineConfig({
     host: "127.0.0.1",
     port: 5173,
     strictPort: true,
-    proxy: { "/api": "http://127.0.0.1:8000" },
+    // Preserve the browser Host for investigation's same-origin mutation check.
+    proxy: { "/api": { target: "http://127.0.0.1:8000", changeOrigin: false } },
   },
   test: {
     environment: "jsdom",

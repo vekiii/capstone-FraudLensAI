@@ -1,0 +1,8 @@
+{
+  "contract_version": 1,
+  "error": {
+    "code": "stale_snapshot",
+    "message": "Selected snapshot is no longer active.",
+    "retryable": false
+  }
+}

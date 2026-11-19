@@ -1,5 +1,19 @@
 # Next work - FraudLens AI
 
+## Feature 03 React integration — 2026-11-19
+
+The local `integration/003-investigation-web` branch adds the existing AI
+investigation to the React fixture case detail. The Cases flow uses the
+Feature 03 investigation and knowledge APIs and an explicit local worker.
+The Chrome walkthrough passed from initial case selection through a saved
+citation and a decision reopened after refresh. React tests (205), targeted
+backend tests (79), typecheck, build and Ruff passed.
+The full backend suite is still red on the Feature 05 base.
+See [setup and verification evidence](evidence/tasks/feature-003-web-integration.md).
+
+Next step: review the integrated `CASE-001` demo before publishing the branch
+for a pull request into Feature 05.
+
 ## Overview hero title weight adjustment — 2026-11-17
 
 Reduced the hero title weight from 600 to 500 per follow-up request. Details:

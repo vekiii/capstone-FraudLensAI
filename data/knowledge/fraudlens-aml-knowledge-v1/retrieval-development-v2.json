@@ -1,0 +1,78 @@
+{
+  "configuration_version": 4,
+  "algorithm": "bm25",
+  "status": "development_candidate_unvalidated",
+  "k1": 1.2,
+  "b": 0.75,
+  "normalization": [
+    "NFKC",
+    "casefold"
+  ],
+  "tokenization": "Unicode alphanumeric sequences",
+  "term_policy": "Deduplicated query terms, Serbian Cyrillic-to-Latin lookup, reviewed glossary synonyms weight 0.5; sorted token summation",
+  "tie_break": "passage_id ascending",
+  "maximum_results": 5,
+  "adequacy_cutoff": 0.5,
+  "cutoff_status": "Existing 0.5 demo heuristic, not calibrated or selected from held-out results. Script conversion is a development revision; independent quality/no-answer evaluation is pending.",
+  "glossary": {
+    "version": 1,
+    "status": "reviewed",
+    "reviewed_by": "Vedran Mitic",
+    "reviewed_at": "2026-11-15",
+    "basis": "Authored translations of existing corpus concepts only; no held-out questions inspected.",
+    "terms": {
+      "nedostaje": [
+        "missing"
+      ],
+      "nedostajuce": [
+        "missing"
+      ],
+      "nedostajuće": [
+        "missing"
+      ],
+      "činjenice": [
+        "facts"
+      ],
+      "cinjenice": [
+        "facts"
+      ],
+      "dokaz": [
+        "evidence"
+      ],
+      "dokazi": [
+        "evidence"
+      ],
+      "izvor": [
+        "source"
+      ],
+      "izvori": [
+        "sources"
+      ],
+      "citiranje": [
+        "citation"
+      ],
+      "eskalacija": [
+        "escalation"
+      ],
+      "pregled": [
+        "review"
+      ],
+      "poverljivost": [
+        "confidentiality"
+      ],
+      "dokumentacija": [
+        "documentation"
+      ],
+      "sintetički": [
+        "synthetic"
+      ],
+      "sinteticki": [
+        "synthetic"
+      ]
+    }
+  },
+  "body_only": false,
+  "corpus": "fraudlens-aml-knowledge-v1",
+  "variant": "title_glossary",
+  "query_normalization": "sr_cyrillic_to_latin_v1"
+}
