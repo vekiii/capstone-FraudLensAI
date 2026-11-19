@@ -1,5 +1,18 @@
 # Next work - FraudLens AI
 
+## Feature 04 React integration — 2026-11-19
+
+The local `integration/004-simulation-web` branch combines the existing React
+site from Feature 05 with the Simulation & Evaluation screen, API and synthetic
+scenario from Feature 04. Open `/simulation` from the site's navigation.
+The React suite (205), targeted backend suite (160), build, lint and Chrome
+navigation and comparison checks passed. The full backend suite still reports
+failures outside the simulation tests, detailed below.
+See [integration evidence](evidence/tasks/feature-004-web-integration.md).
+
+Next step: review the integrated demo and include this branch in the capstone
+integration once the team has agreed on the target revision.
+
 ## Overview hero title weight adjustment — 2026-11-17
 
 Reduced the hero title weight from 600 to 500 per follow-up request. Details:

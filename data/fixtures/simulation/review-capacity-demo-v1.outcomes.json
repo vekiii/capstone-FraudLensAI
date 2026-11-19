@@ -1,0 +1,26 @@
+{
+  "scenario_id": "review-capacity-demo",
+  "scenario_version": 1,
+  "outcomes": [
+    {
+      "alert_id": "A",
+      "outcome": "negative"
+    },
+    {
+      "alert_id": "B",
+      "outcome": "positive"
+    },
+    {
+      "alert_id": "C",
+      "outcome": "positive"
+    },
+    {
+      "alert_id": "D",
+      "outcome": "positive"
+    },
+    {
+      "alert_id": "E",
+      "outcome": "negative"
+    }
+  ]
+}

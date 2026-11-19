@@ -16,6 +16,7 @@ from fraudlens.data_store import PublishedCaseNotFound, RunStore, RunUnavailable
 from fraudlens.overview_contracts import OverviewResponse
 from fraudlens.scoring import FixtureScorer, Scorer
 from fraudlens.settings import Settings, load_settings
+from fraudlens.simulation.api import router as simulation_router
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +78,7 @@ def get_case_service(config: Annotated[Settings, Depends(get_settings)],
 
 def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -> FastAPI:
     app = FastAPI(title='FraudLens AI')
+    app.include_router(simulation_router)
     app.state.settings = settings if settings is not None else load_settings()
     app.state.scorer = scorer if scorer is not None else FixtureScorer()
 

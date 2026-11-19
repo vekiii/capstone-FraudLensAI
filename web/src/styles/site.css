@@ -135,6 +135,24 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .explanation-items { padding-left: 22px; overflow-wrap: anywhere; }
 .button { min-height: 42px; padding: 10px 16px; color: var(--bg); background: var(--accent); border: 0; font: 12px var(--mono); cursor: pointer; }
 .button-back { margin: 0 0 16px; padding-left: 0; color: var(--accent); background: none; }
+
+.simulation-page { width: var(--content); margin: 0 auto; padding: 120px 0 72px; }
+.simulation-page :is(select, input) { color: var(--text); background: var(--surface); font: inherit; min-height: 44px; max-width: 100%; }
+.simulation-page :is(select, input:not([type="file"])) { border: 1px solid var(--line); padding: 0.5rem; }
+.simulation-page input[aria-invalid="true"] { border-color: var(--danger); }
+.simulation-page [role="alert"] { color: var(--danger); }
+.simulation-settings { display: flex; flex-wrap: wrap; align-items: end; gap: 0.75rem; margin: 1rem 0; }
+.simulation-settings label, .simulation-recipe-file { display: grid; gap: 0.25rem; min-width: 0; }
+.simulation-settings input { width: 100%; }
+.simulation-recipe-file { margin-bottom: 1rem; }
+.simulation-page [data-simulation-results] { overflow-x: auto; margin-top: 1rem; }
+.simulation-page table { width: 100%; border-collapse: collapse; }
+.simulation-page :is(th, td) { text-align: left; padding: 0.7rem; border-bottom: 1px solid var(--line); }
+.simulation-page caption { text-align: left; color: var(--muted); }
+.simulation-ordering { margin-top: 1.25rem; }
+.simulation-ordering details { padding: 0.5rem 0; border-top: 1px solid var(--line); }
+.simulation-ordering summary { cursor: pointer; }
+.simulation-ordering small { display: block; }
 .dataset-overview { width: var(--content); margin: 0 auto; padding-bottom: 100px; }
 .overview-dashboard { display: grid; gap: 18px; }
 .overview-header .intro, .data-source-line, .kpi-detail, .panel-heading p, .overview-footnote { color: var(--muted); }

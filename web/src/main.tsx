@@ -8,6 +8,7 @@ const DataPage = lazy(() => import("./pages/Data").then(({ DataPage }) => ({ def
 const RagPage = lazy(() => import("./pages/Rag").then(({ RagPage }) => ({ default: RagPage })));
 const LivePage = lazy(() => import("./pages/Live").then(({ LivePage }) => ({ default: LivePage })));
 const CasesPage = lazy(() => import("./pages/Cases").then(({ CasesPage }) => ({ default: CasesPage })));
+const SimulationPage = lazy(() => import("./pages/Simulation").then(({ SimulationPage }) => ({ default: SimulationPage })));
 const DatasetOverviewPage = lazy(() => import("./pages/DatasetOverview").then(({ DatasetOverviewPage }) => ({ default: DatasetOverviewPage })));
 
 function loadPage(page: ReactNode) {
@@ -23,6 +24,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/rag" element={loadPage(<RagPage />)} />
         <Route path="/live" element={loadPage(<LivePage />)} />
         <Route path="/cases" element={loadPage(<CasesPage />)} />
+        <Route path="/simulation" element={loadPage(<SimulationPage />)} />
         <Route path="/dataset-overview" element={loadPage(<DatasetOverviewPage />)} />
         <Route path="*" element={loadPage(<Overview />)} />
       </Route></Routes>

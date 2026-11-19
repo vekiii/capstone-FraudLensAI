@@ -13,6 +13,7 @@ const links = [
   ["/rag", "RAG"],
   ["/live", "Live demo"],
   ["/cases", "Cases"],
+  ["/simulation", "Simulation"],
   ["/dataset-overview", "Dataset overview"],
 ] as const;
 
