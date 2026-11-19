@@ -1,6 +1,6 @@
 # Feature 002 protocol
 
-Status: preparation resource settings frozen by T209 on 2026-11-19. A conditional UTC assumption for naive source timestamps is recorded below. The user authorized a content-addressed local-copy exception for T203/T210 on 2026-11-19; its limits are below. Temporal processing, partitions, feature schema, and model decisions remain open.
+Status: canonical-preparation resource settings frozen by T209 and the temporal feature contract frozen by T212 on 2026-11-19. The timezone of the selected source remains undocumented; the conditional project UTC convention below is frozen for this exact local copy. The user authorized a content-addressed local-copy exception for T203/T210 on 2026-11-19; its limits are below. Temporal implementation, partitions, full model protocol, and model decisions remain open.
 
 ## T203 local-copy decision and T210 scope
 
@@ -38,11 +38,48 @@ The selected input is **`HI-Small_Trans.csv` only**. The publisher's Kaggle desc
 
 The checked Kaggle description excerpt, IBM README and accessible paper do not assign a timezone to `HI-Small_Trans.csv`. The local timestamp field has minute precision and no offset. **Project assumption for later temporal processing:** interpret a valid naive source timestamp as UTC at minute precision, without changing its displayed text during initial canonical preparation. This is an explicit modeling convention, not a publisher claim. If source documentation for the selected bytes states another timezone, stop and revise the policy before temporal processing.
 
+## T212 frozen temporal feature contract (2026-11-19)
+
+This contract applies to the exact local `HI-Small_Trans.csv` bytes pinned above and to synthetic cases exercising the same boundary. It freezes feature definitions **before** feature experiments; it does not authorize model fitting, real-source feature generation, label access, or publishing a ready-to-model snapshot. Feature contract identifier: `hi-small-temporal-v1`. T219 will bind the implemented schema and dataset/partition hashes into the full training protocol. A change to any definition below requires a new feature version and reviewed protocol change, never a validation/test-driven edit.
+
+### Time and row eligibility
+
+- Rechecked the [IBM AML-Data README](https://github.com/IBM/AML-Data/blob/main/README.md), the [publisher paper](https://papers.nips.cc/paper_files/paper/2023/file/5f38404edff6f3f642d6fa5892479c42-Paper-Datasets_and_Benchmarks.pdf), the available user-supplied Kaggle description excerpt and the [Kaggle listing](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml). None of the readable materials assigns a timezone to this CSV; the Kaggle page returned no readable text. The T203 header/lexical scan found every local timestamp in `YYYY/MM/DD HH:MM`, without an offset. **UTC is a project convention, not a verified publisher timezone.** Contrary authoritative evidence is a stop condition before temporal processing. Upstream release, download date and Kaggle listing terms remain unknown under the T203 exception.
+- Parse the selected source's valid naive minute-precision text as an aware UTC instant, with seconds and microseconds zero. For explicitly offset synthetic/input values, use the stated offset to identify the instant and normalize to UTC without rounding away seconds or finer provided precision. Reject invalid, ambiguous or unsupported timestamp text rather than guessing. Keep original text as provenance; order and feature windows use normalized instants.
+- Sort by normalized instant, then positive `source_row_number`. Compute all members of an equal-instant group from state containing **strictly earlier** events, then add the whole group. The history interval is `[t−24h,t)`: the exact lower edge is included, the entire current instant excluded. Earliest valid instant `t0` sets warm-up `[t0,t0+24h)`; warm-up rows contribute history but cannot be scored. At exactly `t0+24h`, scoring is eligible. Partition boundary details remain T214–T215.
+
+### Exact feature order and types
+
+The ordered feature vector is the following **eleven** fields. Names, order, side-specific currencies and numeric representations are part of `hi-small-temporal-v1`; source identifiers, timestamp, transaction ID and eligibility are metadata, not model features.
+
+| Position | Feature | Value / definition |
+|---:|---|---|
+| 1 | `sender_out_count_24h` | Nonnegative integer; prior rows with the same exact `(sender_bank, sender_account)` key. |
+| 2 | `sender_distinct_receivers_24h` | Nonnegative integer; distinct exact `(receiver_bank, receiver_account)` keys among those rows. |
+| 3 | `sender_paid_count_same_currency_24h` | Nonnegative integer; sender rows whose `payment_currency` exactly matches the current payment currency. |
+| 4 | `sender_paid_sum_same_currency_24h` | Exact nonnegative Decimal sum of those rows' `amount_paid`; no conversion between currencies. |
+| 5 | `receiver_in_count_24h` | Nonnegative integer; prior rows with the same exact `(receiver_bank, receiver_account)` key. |
+| 6 | `receiver_distinct_senders_24h` | Nonnegative integer; distinct exact `(sender_bank, sender_account)` keys among those rows. |
+| 7 | `receiver_received_count_same_currency_24h` | Nonnegative integer; receiver rows whose `receiving_currency` exactly matches the current receiving currency. |
+| 8 | `receiver_received_sum_same_currency_24h` | Exact nonnegative Decimal sum of those rows' `amount_received`; no conversion between currencies. |
+| 9 | `current_amount_paid_log1p` | Finite binary64 value `math.log1p(float(Decimal(amount_paid)))`, using validated nonnegative source text; natural logarithm, no currency conversion. This deliberate float conversion occurs only for this model feature, never historical summation or identity. |
+| 10 | `current_payment_currency` | Exact nonempty payment-currency text as a categorical value, subject to the train-only unknown policy below. |
+| 11 | `current_payment_format` | Exact nonempty payment-format text as a categorical value, subject to the same policy. |
+
+Use bank-qualified keys as exact text, preserving leading zeroes. Empty prior history yields integer `0` counts and Decimal `0` sums. Current-transaction fields come only from the current event; no future row or same-instant peer may influence historical values. `receiving_currency` is used for receiver history but is **not** a separate current categorical feature in this version. `amount_received` is likewise not a current feature. Do not add a candidate field based on validation/test outcomes.
+
+### Precision, missing values and categories
+
+- The 2026-11-19 non-label local scan of all 5,078,345 source rows found at most **13 integer digits**, **6 fractional digits**, and **15 total written digits** in each amount column, with zero malformed amount texts in that scan. These are observed bounds for the pinned copy, not publisher-declared types. Parse amount text with `Decimal`, retain its source scale, and calculate history sums in a local Decimal context with precision **38** and traps for inexact/rounded arithmetic. No intermediate float conversion or silent quantization is allowed. Reject a different source or a value exceeding the selected-copy six-fractional-digit bound pending a new reviewed version; do not round it into compliance. Counts stay exact integers. Serialize Decimal sums as decimal strings in stored feature snapshots; convert to model numeric representation only under the frozen training preprocessing contract.
+- Every required timestamp, bank/account ID, amount, payment currency, receiving currency and payment format must be present and valid under the canonical validator. Missing, blank, malformed, nonfinite or negative required values reject the row with a bounded reason; no imputation. The current validator handles the selected naive CSV form; T213 must implement UTC normalization and handle explicit offsets at its temporal boundary without silently widening the selected raw-source schema.
+- Preserve category spelling and case exactly; no trim/casefold, currency exchange conversion or vocabulary inferred from the full source, quality report, validation, test or showcase partitions. Fit separate payment-currency and payment-format vocabularies on **scoreable training rows only** after partitions freeze. Reserve an internal `__UNKNOWN__` bucket for each field and include it in the encoder even if unseen in training. Any nonempty category absent from that field's training vocabulary maps to its `__UNKNOWN__` bucket in validation, test, showcase and runtime; missing/blank values reject rather than map. Sort known vocabulary values by exact Unicode code-point order, then append the reserved bucket. Keep the two vocabularies and their order with the model metadata; a literal source `__UNKNOWN__` value is rejected as a reserved-token collision. Train-only preprocessing and compatibility checks belong to later tasks.
+- Exclude `is_laundering`, future records, investigation data and analyst conclusions from feature rows, training preprocessing inputs and runtime/public contracts. Keep labels in the restricted layer. A feature row's `is_scoreable` flag is eligibility metadata; warm-up rows may update history state but never receive prediction or alert outputs.
+
 ## Later protocol decisions
 
 - Upstream Kaggle release and exact acquisition date: unknown under the explicit T203 local-copy exception; selected bytes are pinned by SHA-256.
-- Naive timestamp interpretation: UTC-at-minute-precision project assumption recorded above; implementation and verification of canonical UTC normalization remain pending T211–T213.
-- Feature order, precision, missing/category policy and version: pending T212.
+- Naive timestamp interpretation: T212 rechecked the available documentation and froze the conditional UTC project convention above; T213 implementation and synthetic GREEN verification remain pending. The publisher timezone remains unknown.
+- Feature order, precision, missing/category policy and `hi-small-temporal-v1` identifier: frozen by T212 above; implementation and train-only encoder artifacts remain pending T213 and later training tasks.
 - Development/showcase and train/validation/test boundaries and hashes: pending T214–T219.
 - Candidate grid, class strategy, threshold objective and artifact format: pending T221/T222.
 - Label access and separately authorized evaluation: pending T216–T230.

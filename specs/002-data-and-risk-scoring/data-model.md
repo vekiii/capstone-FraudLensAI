@@ -39,7 +39,7 @@ Ordered fields: eight FR-011 features, then frozen current-transaction features.
 | `receiver_received_count_same_currency_24h` | count those rows matching current receiving currency |
 | `receiver_received_sum_same_currency_24h` | sum their `amount_received` in that receiving currency |
 
-Current feature proposal (not final until frozen): `log1p(amount_paid)` numeric, `payment_currency` categorical, `payment_format` categorical. Currency remains a categorical identity, not a conversion factor. Feature order and categorical unknown behavior are protocol fields.
+T212 froze the current-feature tail as `current_amount_paid_log1p`, `current_payment_currency`, `current_payment_format`, following the eight historical fields in exactly that order under `hi-small-temporal-v1`. The [protocol](protocol.md#t212-frozen-temporal-feature-contract-2026-11-19) specifies the Decimal-to-log transform, source precision, missing-value rejection and train-only categorical vocabularies with reserved unknown buckets. Currency remains a categorical identity, not a conversion factor. Implementation and stored feature-schema hash remain pending T213/T219.
 
 ## Dataset manifest
 

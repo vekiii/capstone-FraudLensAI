@@ -1,7 +1,7 @@
 # Tasks: Dataset, Machine Learning and EDA
 
 **Inputs**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md
-**Status**: T201–T209 and T211 complete; T203 is closed under the explicit content-addressed local-copy exception in `protocol.md`; T210 is in progress; T212–T255 remain unchecked. Evidence: [T201](../../evidence/tasks/T201.md), [T202](../../evidence/tasks/T202.md), [T203](../../evidence/tasks/T203.md), [T204](../../evidence/tasks/T204.md), [T205](../../evidence/tasks/T205.md), [T206](../../evidence/tasks/T206.md), [T207](../../evidence/tasks/T207.md), [T208](../../evidence/tasks/T208.md), [T209](../../evidence/tasks/T209.md), [T210](../../evidence/tasks/T210.md), [T211](../../evidence/tasks/T211.md).
+**Status**: T201–T209 and T211–T212 complete; T203 is closed under the explicit content-addressed local-copy exception in `protocol.md`; T210 is in progress; T213–T255 remain unchecked. Evidence: [T201](../../evidence/tasks/T201.md), [T202](../../evidence/tasks/T202.md), [T203](../../evidence/tasks/T203.md), [T204](../../evidence/tasks/T204.md), [T205](../../evidence/tasks/T205.md), [T206](../../evidence/tasks/T206.md), [T207](../../evidence/tasks/T207.md), [T208](../../evidence/tasks/T208.md), [T209](../../evidence/tasks/T209.md), [T210](../../evidence/tasks/T210.md), [T211](../../evidence/tasks/T211.md), [T212](../../evidence/tasks/T212.md).
 **Verification**: Apply RED → GREEN → REFACTOR to critical behavior. Record actual outcomes; do not invent RED or claim synthetic checks establish model quality.
 **Format**: `- [ ] Tnnn [P?] [USn] action with paths (FR-xxx; verification)`
 
@@ -21,7 +21,7 @@
 ## Stage B — Historical features and frozen partitions
 
 - [x] T211 [US2] Write synthetic RED tests for strict prior-only features, timestamp ties, UTC-equivalent spellings, exact 24-hour lower edge, currency grouping, bank-qualified identity and warm-up boundary in `backend/tests/unit/test_temporal_features.py` (FR-008–014). See [T211 RED evidence](../../evidence/tasks/T211.md).
-- [ ] T212 [US2] Verify timezone policy and freeze the exact current/history feature order and category unknown handling in `protocol.md` before feature experiments (FR-008, FR-011–015).
+- [x] T212 [US2] Verify timezone policy and freeze the exact current/history feature order and category unknown handling in `protocol.md` before feature experiments (FR-008, FR-011–015). See [T212 evidence](../../evidence/tasks/T212.md).
 - [ ] T213 [US2] Implement UTC normalization and two-phase timestamp-group feature processing in `backend/src/fraudlens/data/features.py`; satisfy T211/T212 (FR-008–015).
 - [ ] T214 [US2] Write RED tests for `[t0,t0+24h)` warm-up and whole-timestamp partition boundaries/tie breaks in `backend/tests/unit/test_partitions.py` (FR-010, FR-016, FR-017).
 - [ ] T215 [US2] Implement warm-up accounting, nearest-3m source-record development/showcase boundary and 70/15/15 scoreable development split in `backend/src/fraudlens/data/partitions.py`; satisfy T214 (FR-010, FR-016, FR-017).
