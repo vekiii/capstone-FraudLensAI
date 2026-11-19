@@ -30,6 +30,8 @@ All raw and generated data paths remain Git-ignored; no real data or row-level l
 
 **T217 is complete for the synthetic restricted audit interface.** [label_access.py](backend/src/fraudlens/training/label_access.py) permits only fixed pretraining aggregate shapes and logs allowed, denied and error requests with UTC time and purpose. It denies filtered/record-level access before label reads and enforces one showcase-wide total per shared log. Sixteen focused cases and the 396-test backend suite passed; Ruff passed. The log is append-only by application behavior, not tamper-evident or cross-process serialized. No real labels were read; the actual class audit, prevalence tolerance check and partition hashes remain T218/T219. See [T217 evidence](evidence/tasks/T217.md).
 
+**T218 count-only boundary freeze is complete; aggregate audit is pending.** The verified T210 snapshot's 5,078,345 accepted rows were grouped by timestamp without parsing labels. The ignored boundary file SHA-256 `b1300cad3b94bb9c2325a221c2352ca327dc2c6cf0cd1268d0bdb39a0928a728` and exact UTC/count boundaries are frozen in the [protocol](specs/002-data-and-risk-scoring/protocol.md#t218-count-only-boundary-freeze-before-restricted-label-audit) and [T218 evidence](evidence/tasks/T218.md). Warm-up is 1,114,921; development is 2,999,902 source rows. No T218 label audit has run yet at this checkpoint.
+
 ## One concrete next step
 
-Prepare T218's measured, verified chronological partition pass and permitted aggregate class audit; stop on failed FR-018 tolerances. Preserve the ignored T210 snapshot and stage. Real-scale feature sorting and temporal counts need separate measured gates before audit publication.
+Run T218's single permitted aggregate class audit against the frozen boundary SHA-256, record actual partition totals/prevalence and stop if FR-018 tolerances fail. Preserve the ignored T210 snapshot and stage.

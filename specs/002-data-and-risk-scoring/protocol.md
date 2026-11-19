@@ -77,6 +77,10 @@ Use bank-qualified keys as exact text, preserving leading zeroes. Empty prior hi
 
 ## Later protocol decisions
 
+### T218 count-only boundary freeze, before restricted label audit
+
+For the verified T210 snapshot (source SHA-256 `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`, manifest SHA-256 `38e1cdee0e96f73abfc398ff2207c8b8fc1ed0c526a6872e56a1462e55edbb88`), the 2026-11-19 timestamp-only pass counted 5,078,345 accepted rows in 15,018 UTC minute groups without parsing label values. Its ignored `boundaries.json` has SHA-256 `b1300cad3b94bb9c2325a221c2352ca327dc2c6cf0cd1268d0bdb39a0928a728`. Earliest instant is 2022-09-01 00:00 UTC; warm-up `[t0,t0+24h)` has 1,114,921 rows, with 3,963,424 scoreable rows overall. The nearest whole-group development source count is 2,999,902, ending 2022-09-06 11:12 UTC; showcase has 2,078,443 source rows. Scoreable development splits are train 1,319,586 (ending 2022-09-05 06:55 UTC), validation 282,681 (ending 2022-09-05 21:26 UTC), and test 282,714. These count-only boundaries are frozen before T218 aggregate label access; no label-derived adjustment is allowed. The full protocol and partition-ID hashes remain T219 work. See [T218 evidence](../../evidence/tasks/T218.md).
+
 - Upstream Kaggle release and exact acquisition date: unknown under the explicit T203 local-copy exception; selected bytes are pinned by SHA-256.
 - Naive timestamp interpretation: T212 rechecked the available documentation and froze the conditional UTC project convention above; T213's normalization passed synthetic checks. The publisher timezone remains unknown, and no full-source temporal pass ran.
 - Feature order, precision, missing/category policy and `hi-small-temporal-v1` identifier: frozen by T212 above. T213 implements the label-free feature kernel and exact current/history order; train-only encoder artifacts remain pending later training tasks. External sorting, resource benchmarking and completed real-source temporal output are separate work.
