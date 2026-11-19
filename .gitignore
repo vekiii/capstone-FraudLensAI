@@ -39,3 +39,6 @@ junit.xml
 /data/artifacts/
 /data/eval/
 /evals/results/
+
+third_party/Multi-GNN/
+third_party/TabGT/
