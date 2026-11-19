@@ -1,4 +1,4 @@
-"""Synthetic RED contracts for strict-prior temporal features (T211).
+"""Synthetic T211 RED contracts turned GREEN by T213, plus regressions.
 
 T213 supplies ``normalize_timestamp_utc(text)`` and
 ``build_temporal_features(rows)``. The latter returns rows ordered by UTC instant
@@ -8,6 +8,7 @@ The input is fabricated, label-free canonical transaction data.
 """
 
 import importlib
+import math
 from datetime import datetime, timezone
 from decimal import Decimal
 
@@ -26,7 +27,7 @@ HISTORY_FIELDS = (
 
 
 def feature_module():
-    """Collect all cases and fail at the intended missing T213 boundary."""
+    """Collect cases and report a missing T213 implementation clearly."""
     try:
         module = importlib.import_module('fraudlens.data.features')
     except ModuleNotFoundError as error:
@@ -109,15 +110,16 @@ def test_current_event_and_same_instant_events_never_enter_history():
         assert history(result, number)['sender_paid_sum_same_currency_24h'] == Decimal('10.00')
 
 
-def test_exact_24_hour_lower_edge_excluded_and_newer_event_included():
+def test_exact_24_hour_lower_edge_included_and_older_event_excluded():
     result = built([
-        row(1, '2022/09/01 00:00', amount_paid='100.00'),
-        row(2, '2022/09/01 00:01', amount_paid='7.00'),
-        row(3, '2022/09/02 00:00'),
+        row(1, '2022/08/31 23:59', amount_paid='1000.00'),
+        row(2, '2022/09/01 00:00', amount_paid='100.00'),
+        row(3, '2022/09/01 00:01', amount_paid='7.00'),
+        row(4, '2022/09/02 00:00'),
     ])
-    assert history(result, 3)['sender_out_count_24h'] == 1
-    assert history(result, 3)['sender_paid_sum_same_currency_24h'] == Decimal('7.00')
-    assert history(result, 3)['receiver_received_sum_same_currency_24h'] == Decimal('9.00')
+    assert history(result, 4)['sender_out_count_24h'] == 2
+    assert history(result, 4)['sender_paid_sum_same_currency_24h'] == Decimal('107.00')
+    assert history(result, 4)['receiver_received_sum_same_currency_24h'] == Decimal('18.00')
 
 
 def test_paid_and_received_aggregates_use_their_own_currency_columns():
@@ -158,7 +160,7 @@ def test_warmup_is_half_open_and_rows_at_exact_24_hours_are_scoreable():
         row(3, '2022/09/02 00:00'),
     ])
     assert [result[number]['is_scoreable'] for number in (1, 2, 3)] == [False, False, True]
-    assert history(result, 3)['sender_out_count_24h'] == 1
+    assert history(result, 3)['sender_out_count_24h'] == 2
 
 
 def test_empty_history_is_zero_and_decimal_sums_are_exact():
@@ -174,9 +176,64 @@ def test_empty_history_is_zero_and_decimal_sums_are_exact():
     assert history(result, 3)['receiver_received_sum_same_currency_24h'] == Decimal('0.3')
 
 
-@pytest.mark.parametrize('field', ['timestamp', 'sender_bank', 'payment_currency', 'amount_paid'])
+@pytest.mark.parametrize('field', [
+    'timestamp', 'sender_bank', 'payment_currency', 'amount_paid',
+    'amount_received', 'receiving_currency', 'payment_format',
+])
 def test_missing_required_feature_input_fails_explicitly(field):
     incomplete = row(1, '2022/09/01 00:00')
     del incomplete[field]
     with pytest.raises(ValueError, match=field):
         list(feature_module().build_temporal_features([incomplete]))
+
+
+def test_frozen_current_feature_tail_is_ordered_and_label_free():
+    module = feature_module()
+    supplied = row(1, '2022/09/01 00:00', is_laundering='1')
+    output = next(module.build_temporal_features([supplied]))
+
+    assert module.FEATURE_VERSION == 'hi-small-temporal-v1'
+    assert tuple(output['features']) == module.FEATURE_ORDER == (
+        *HISTORY_FIELDS,
+        'current_amount_paid_log1p',
+        'current_payment_currency',
+        'current_payment_format',
+    )
+    assert output['current'] == {
+        'current_amount_paid_log1p': math.log1p(10.0),
+        'current_payment_currency': 'USD',
+        'current_payment_format': 'Wire',
+    }
+    assert 'is_laundering' not in output
+    assert 'is_laundering' not in output['features']
+
+
+@pytest.mark.parametrize('timestamp', [
+    '2022/02/30 00:00', '2022-09-01T00:00:00',
+    '2022-09-01T00:00:00+25:00', '2022-09-01T00:00:00Z ',
+])
+def test_invalid_or_ambiguous_timestamp_rejected(timestamp):
+    with pytest.raises(ValueError, match='timestamp'):
+        feature_module().normalize_timestamp_utc(timestamp)
+
+
+@pytest.mark.parametrize(('field', 'value'), [
+    ('amount_paid', '1.0000001'),
+    ('amount_received', '-1.00'),
+    ('payment_currency', '__UNKNOWN__'),
+    ('payment_format', '__UNKNOWN__'),
+])
+def test_precision_and_reserved_category_policy_rejects_invalid_input(field, value):
+    with pytest.raises(ValueError, match=field):
+        list(feature_module().build_temporal_features([
+            row(1, '2022/09/01 00:00', **{field: value}),
+        ]))
+
+
+def test_ordered_stream_uses_same_features_and_rejects_out_of_order_rows():
+    module = feature_module()
+    rows = [row(1, '2022/09/01 00:00'), row(2, '2022/09/01 00:01')]
+    ordered = list(module.iter_temporal_features_ordered(rows))
+    assert ordered == list(module.build_temporal_features(reversed(rows)))
+    with pytest.raises(ValueError, match='order'):
+        list(module.iter_temporal_features_ordered(reversed(rows)))

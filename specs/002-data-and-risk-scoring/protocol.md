@@ -1,6 +1,6 @@
 # Feature 002 protocol
 
-Status: canonical-preparation resource settings frozen by T209 and the temporal feature contract frozen by T212 on 2026-11-19. The timezone of the selected source remains undocumented; the conditional project UTC convention below is frozen for this exact local copy. The user authorized a content-addressed local-copy exception for T203/T210 on 2026-11-19; its limits are below. Temporal implementation, partitions, full model protocol, and model decisions remain open.
+Status: canonical-preparation resource settings frozen by T209 and the temporal feature contract frozen by T212 on 2026-11-19. T213 implements and synthetically verifies the temporal kernel; no full-source temporal output is published. The timezone of the selected source remains undocumented; the conditional project UTC convention below is frozen for this exact local copy. The user authorized a content-addressed local-copy exception for T203/T210 on 2026-11-19; its limits are below. Partitions, full model protocol, and model decisions remain open.
 
 ## T203 local-copy decision and T210 scope
 
@@ -78,8 +78,8 @@ Use bank-qualified keys as exact text, preserving leading zeroes. Empty prior hi
 ## Later protocol decisions
 
 - Upstream Kaggle release and exact acquisition date: unknown under the explicit T203 local-copy exception; selected bytes are pinned by SHA-256.
-- Naive timestamp interpretation: T212 rechecked the available documentation and froze the conditional UTC project convention above; T213 implementation and synthetic GREEN verification remain pending. The publisher timezone remains unknown.
-- Feature order, precision, missing/category policy and `hi-small-temporal-v1` identifier: frozen by T212 above; implementation and train-only encoder artifacts remain pending T213 and later training tasks.
+- Naive timestamp interpretation: T212 rechecked the available documentation and froze the conditional UTC project convention above; T213's normalization passed synthetic checks. The publisher timezone remains unknown, and no full-source temporal pass ran.
+- Feature order, precision, missing/category policy and `hi-small-temporal-v1` identifier: frozen by T212 above. T213 implements the label-free feature kernel and exact current/history order; train-only encoder artifacts remain pending later training tasks. External sorting, resource benchmarking and completed real-source temporal output are separate work.
 - Development/showcase and train/validation/test boundaries and hashes: pending T214–T219.
 - Candidate grid, class strategy, threshold objective and artifact format: pending T221/T222.
 - Label access and separately authorized evaluation: pending T216–T230.

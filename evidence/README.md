@@ -39,6 +39,7 @@ documentation or ignore-policy setup must state that no data/model checks were r
 - [T210 real canonical ingestion](tasks/T210.md) and [runner](tasks/T210-ingest.py): exact command, 5,078,345 accepted rows, verified snapshot/quality hashes, runtime-ceiling review and deferred fields.
 - [T211 temporal RED contracts](tasks/T211.md): twelve synthetic cases for UTC, strict prior-only history, 24-hour boundaries, currencies, bank-qualified identities and warm-up; GREEN is pending T213.
 - [T212 frozen temporal protocol](tasks/T212.md): conditional project UTC convention, non-label precision scan, eleven-field feature order and train-only unknown-category policy.
+- [T213 temporal feature kernel](tasks/T213.md): corrected exact-lower-edge test, synthetic GREEN/regression results, and full-source scaling limits.
 - [Current handoff](../next_work.md), [data card](../data/README.md) and [protocol](../specs/002-data-and-risk-scoring/protocol.md): current status, local data limitations and next action.
 - [2026-11-19 local commit receipt](tasks/session-commits-2026-11-19.md): reviewed file scope, commit identity, checks and publication status.
 
