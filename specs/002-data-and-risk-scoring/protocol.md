@@ -1,6 +1,6 @@
 # Feature 002 protocol
 
-Status: canonical-preparation resource settings frozen by T209, temporal feature contract by T212, and count-only partition boundaries by T218 on 2026-11-19. T219 has pinned the available dataset and boundary hashes and implemented a synthetic prefit mismatch gate; partition scoreable-ID hashes and the full training-protocol hash are **not frozen**. FR-018 failed for showcase prevalence and stops fitting pending a human decision. No full-source temporal output is published. The timezone of the selected source remains undocumented; the conditional project UTC convention below is frozen for this exact local copy. The user authorized a content-addressed local-copy exception for T203/T210 on 2026-11-19; its limits are below.
+Status: canonical-preparation resource settings frozen by T209, temporal feature contract by T212, count-only partition boundaries by T218, and label-free scoreable-ID hashes by T219 on 2026-11-19. The full training-protocol hash is **not frozen**. FR-018 failed for showcase prevalence and stops fitting pending a human decision. No full-source temporal feature output is published. The timezone of the selected source remains undocumented; the conditional project UTC convention below is frozen for this exact local copy. The user authorized a content-addressed local-copy exception for T203/T210 on 2026-11-19; its limits are below.
 
 ## T203 local-copy decision and T210 scope
 
@@ -86,17 +86,27 @@ The final JSON training protocol must contain the following exact keys and froze
 | Key(s) | Required contract / current state |
 |---|---|
 | `dataset_sha256`, `boundary_sha256` | Exact source and count-only boundary digests above; source and snapshot manifest/output digests must be reverified before a fit. |
-| `partition_scoreable_id_sha256` | Five exact keys: `development`, `showcase`, `train`, `validation`, `test`. **Pending** a measured, bounded, label-free chronological ID pass. For each partition hash UTF-8 `transaction_id` plus LF, ordered by normalized UTC instant then source row number; development includes its scoreable train/validation/test rows only. Empty or missing hashes stop fitting. |
+| `partition_scoreable_id_sha256` | Five exact keys: `development`, `showcase`, `train`, `validation`, `test`. Measured hashes are frozen below. For each partition hash UTF-8 `transaction_id` plus LF, ordered by normalized UTC instant then source row number; development includes its scoreable train/validation/test rows only. Empty or missing hashes stop fitting. |
 | `timezone_policy`, `warmup_rule` | Naive local source timestamp interpreted as UTC; `[t0,t0+24h)` contributes history and is unscoreable. See T212 contract. |
 | `feature_version`, `feature_order` | `hi-small-temporal-v1`; the exact eleven ordered fields in the T212 table. No label or source identity is a feature. |
 | `partition_boundaries`, `partition_counts` | Exact T218 count-only boundaries and counts below; development/showcase nearest 3m source rows, then 70/15/15 scoreable development groups, whole UTC instants and earlier tie. |
 | `allowed_prevalence`, `audit_passed` | Inclusive 0.75–1.25 times development prevalence and at least 20 positives in each train/validation/test/showcase partition. **Actual T218 `audit_passed=false`**, due showcase ratio 1.41661; fitting stops. A human decision must be recorded before further protocol freeze; no automatic boundary/tolerance adjustment. |
 | `seed`, `tie_rules` | Seed exactly 42; earlier boundary on equal count distance, then source row order within equal timestamp; model selection tie rules remain T221. |
 | `preprocessing`, `imbalance_option`, `candidate_grid`, `metrics`, `threshold_objective` | **Pending T221** exact choices and human decision. Train-only preprocessing, FR-023 candidates and FR-024 validation ranking constrain that decision; no placeholder string authorizes fitting. |
-| `resource_ceilings` | T209 ceilings above apply only to canonical preparation. A measured ceiling for bounded temporal ID generation/features and training remains pending; do not reuse the canonical ceiling as proof of capacity. |
+| `resource_ceilings` | T209 ceilings above apply only to canonical preparation. The T219 ID-hash pass uses 100,000-row sort runs, 512 MiB peak-working-set ceiling, 20 GiB initial/10 GiB ending disk reserve, and 15-minute runtime ceiling on the measured workstation. This does not establish feature-generation or training capacity. |
 | `label_rules`, `showcase_role`, `provenance_complete` | FR-019/020 restricted access; showcase role exactly `demo_only_record_labels_unread`. Real-source provenance is incomplete under the T203 exception; the gate requires an explicit reviewed resolution before fitting. |
 
-The synthetic prefit verifier is `backend/src/fraudlens/training/protocol.py`. It rejects missing required keys, protocol digest mismatch, independently observed source/boundary/partition-ID mismatch, wrong partition set, seed or showcase role, failed audit, and incomplete provenance. The current real-source state cannot pass it: partition ID hashes are absent, FR-018 failed, and provenance is incomplete. The generic verifier also depends on its caller to measure observed hashes independently; no real-source fit entry point has yet been connected to it. See [T219 evidence](../../evidence/tasks/T219.md).
+The T219 bounded chronological hash pass verified the source, completed snapshot and frozen count-only boundaries, then extracted only timestamp, source row number and transaction ID from the accepted JSONL bytes. No label field was parsed. A full-size 5,000,000-row synthetic five-group skew benchmark completed in 14.659 seconds with 43,048,960-byte peak working set; the 5,078,345-row local pass completed in 33.111 seconds with 44,785,664-byte peak working set. All warm-up and partition counts reconciled. Its ignored report SHA-256 is `e283752549b1f8f6b0bc6b21ce9569854cf6c4cdb593636ab3dc7381466dbf60`; the report remains under `data/processed/t219-hi-small-b19d39f5/` and must be reverified before use. Frozen **scoreable** ID SHA-256 values:
+
+| Partition | Scoreable rows | SHA-256 |
+|---|---:|---|
+| Development | 1,884,981 | `2d559559ea9c7d62110ee26e61bf92c779173bf8115ae616c908462e62c7c069` |
+| Train | 1,319,586 | `d0a14735022175d57436f591a2667cdbbfa387e9d2ce4ae348387b43d9aca5cb` |
+| Validation | 282,681 | `74647b2946d17a77f8a059e2f31e2acc9654a59afbdcf9b43c8db7e8fac14eb5` |
+| Test | 282,714 | `a28cf5f61f8149b067a36c189688a27f22cbdd5aca2eb82f3f2826459254f2b6` |
+| Showcase | 2,078,443 | `d461ce5b883cf734c7667a8c92ae175fb7ed8f92be388f630ab064c70e576041` |
+
+The synthetic prefit verifier is `backend/src/fraudlens/training/protocol.py`. It rejects missing required keys, protocol digest mismatch, independently observed source/boundary/partition-ID mismatch, wrong partition set, seed or showcase role, failed audit, and incomplete provenance. The current real-source state still cannot pass it: FR-018 failed, provenance is incomplete, and T221's model decisions/full protocol are absent. The generic verifier depends on its caller to measure observed hashes independently; no real-source fit entry point has yet been connected to it. See [T219 evidence](../../evidence/tasks/T219.md).
 
 ### T218 count-only boundary freeze, before restricted label audit
 
@@ -107,6 +117,6 @@ The one permitted aggregate audit found development scoreable prevalence 1,895/1
 - Upstream Kaggle release and exact acquisition date: unknown under the explicit T203 local-copy exception; selected bytes are pinned by SHA-256.
 - Naive timestamp interpretation: T212 rechecked the available documentation and froze the conditional UTC project convention above; T213's normalization passed synthetic checks. The publisher timezone remains unknown, and no full-source temporal pass ran.
 - Feature order, precision, missing/category policy and `hi-small-temporal-v1` identifier: frozen by T212 above. T213 implements the label-free feature kernel and exact current/history order; train-only encoder artifacts remain pending later training tasks. External sorting, resource benchmarking and completed real-source temporal output are separate work.
-- Development/showcase and train/validation/test count boundaries: frozen by T218 above. Partition-ID hashes and full protocol hash: pending T219. FR-018 showcase tolerance failed; training is stopped pending a human decision.
+- Development/showcase and train/validation/test count boundaries: frozen by T218 above. Scoreable partition-ID hashes: frozen by T219 above. Full training-protocol hash remains pending the FR-018 human decision and T221 choices. FR-018 showcase tolerance failed; training is stopped.
 - Candidate grid, class strategy, threshold objective and artifact format: pending T221/T222.
 - Synthetic aggregate label-access contract: T216/T217 complete. One T218 restricted aggregate audit ran and failed the showcase prevalence tolerance. Record-level training/evaluation access and separate test authorization remain pending later tasks.
