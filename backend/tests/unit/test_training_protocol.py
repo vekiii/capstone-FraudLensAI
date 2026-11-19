@@ -21,6 +21,10 @@ def _fixture():
     protocol = {
         'dataset_sha256': hashlib.sha256(source).hexdigest(),
         'boundary_sha256': hashlib.sha256(boundaries).hexdigest(),
+        'snapshot_manifest_sha256': hashlib.sha256(b'synthetic manifest').hexdigest(),
+        'accepted_snapshot_sha256': hashlib.sha256(b'synthetic accepted').hexdigest(),
+        'partition_hash_report_sha256': hashlib.sha256(b'synthetic ID report').hexdigest(),
+        'audit_report_sha256': hashlib.sha256(b'synthetic audit').hexdigest(),
         'partition_scoreable_id_sha256': {key: hashlib.sha256(value).hexdigest()
                                          for key, value in ids.items()},
         'timezone_policy': 'naive_source_as_UTC', 'warmup_rule': '[t0,t0+24h)',
@@ -38,6 +42,10 @@ def _fixture():
     observed = {
         'dataset_sha256': hashlib.sha256(source).hexdigest(),
         'boundary_sha256': hashlib.sha256(boundaries).hexdigest(),
+        'snapshot_manifest_sha256': protocol['snapshot_manifest_sha256'],
+        'accepted_snapshot_sha256': protocol['accepted_snapshot_sha256'],
+        'partition_hash_report_sha256': protocol['partition_hash_report_sha256'],
+        'audit_report_sha256': protocol['audit_report_sha256'],
         'partition_scoreable_id_sha256': {key: hashlib.sha256(value).hexdigest()
                                          for key, value in ids.items()},
     }
@@ -50,6 +58,8 @@ def test_matching_complete_synthetic_protocol_is_admitted():
 
 
 @pytest.mark.parametrize('field', ['dataset_sha256', 'boundary_sha256',
+                                   'snapshot_manifest_sha256', 'accepted_snapshot_sha256',
+                                   'partition_hash_report_sha256', 'audit_report_sha256',
                                    'partition_scoreable_id_sha256'])
 def test_any_observed_hash_mismatch_stops(field):
     protocol, observed = _fixture()
@@ -67,6 +77,16 @@ def test_any_observed_hash_mismatch_stops(field):
 def test_missing_exact_protocol_field_stops(field):
     protocol, observed = _fixture()
     del protocol[field]
+    with pytest.raises(ProtocolError):
+        verify_prefit_protocol(protocol, _digest(protocol), observed)
+
+
+@pytest.mark.parametrize('field', ['feature_order', 'partition_boundaries',
+                                   'partition_counts', 'preprocessing', 'candidate_grid',
+                                   'metrics', 'resource_ceilings'])
+def test_empty_structured_protocol_field_stops(field):
+    protocol, observed = _fixture()
+    protocol[field] = [] if isinstance(protocol[field], list) else {}
     with pytest.raises(ProtocolError):
         verify_prefit_protocol(protocol, _digest(protocol), observed)
 
@@ -99,3 +119,93 @@ def test_nested_protocol_change_with_old_digest_stops():
     protocol['partition_counts']['train'] += 1
     with pytest.raises(ProtocolError):
         verify_prefit_protocol(protocol, frozen_digest, observed)
+
+
+def _exception_fixture():
+    protocol, observed = _fixture()
+    report = {
+        'format': 't218-restricted-aggregate-v1',
+        'source_sha256': protocol['dataset_sha256'],
+        'boundary_sha256': protocol['boundary_sha256'],
+        'results': {
+            'overall_development_scoreable_count': 300,
+            'overall_development_positive_count': 60,
+            'partition_totals': [
+                {'partition': name, 'scoreable_count': 100, 'positive_count': 20}
+                for name in ('train', 'validation', 'test')
+            ],
+            'showcase_total': {'source_count': 100, 'scoreable_count': 100,
+                               'positive_count': 30},
+        },
+        'tolerance': {
+            'pass': False,
+            'partitions': [
+                {'partition': name, 'pass': True,
+                 'minimum_20_positive_pass': True,
+                 'prevalence_0_75_to_1_25_pass': True}
+                for name in ('train', 'validation', 'test')
+            ] + [{'partition': 'showcase', 'pass': False,
+                  'minimum_20_positive_pass': True,
+                  'prevalence_0_75_to_1_25_pass': False}],
+        },
+    }
+    report_bytes = (json.dumps(report, sort_keys=True, separators=(',', ':')) + '\n').encode()
+    decision_bytes = b'synthetic human decision'
+    protocol['audit_passed'] = False
+    protocol['audit_report_sha256'] = hashlib.sha256(report_bytes).hexdigest()
+    observed['audit_report_sha256'] = protocol['audit_report_sha256']
+    protocol['audit_decision'] = {
+        'kind': 'showcase_ratio_diagnostic_after_human_review',
+        'source_sha256': protocol['dataset_sha256'],
+        'boundary_sha256': protocol['boundary_sha256'],
+        'audit_report_sha256': hashlib.sha256(report_bytes).hexdigest(),
+        'decision_record_sha256': hashlib.sha256(decision_bytes).hexdigest(),
+        'showcase_role': 'demo_only_record_labels_unread',
+    }
+    observed['audit_report_bytes'] = report_bytes
+    observed['decision_record_sha256'] = hashlib.sha256(decision_bytes).hexdigest()
+    return protocol, observed
+
+
+def test_checked_showcase_exception_admits_only_otherwise_complete_protocol():
+    protocol, observed = _exception_fixture()
+    verify_prefit_protocol(protocol, _digest(protocol), observed)
+
+
+def test_showcase_exception_does_not_override_incomplete_provenance():
+    protocol, observed = _exception_fixture()
+    protocol['provenance_complete'] = False
+    with pytest.raises(ProtocolError, match='provenance'):
+        verify_prefit_protocol(protocol, _digest(protocol), observed)
+
+
+@pytest.mark.parametrize('change', ['report', 'decision', 'source', 'boundary',
+                                   'missing', 'development', 'showcase_minimum'])
+def test_showcase_exception_mismatch_stops(change):
+    protocol, observed = _exception_fixture()
+    if change == 'report':
+        observed['audit_report_bytes'] += b' '
+    elif change == 'decision':
+        observed['decision_record_sha256'] = '0' * 64
+    elif change == 'source':
+        protocol['audit_decision']['source_sha256'] = '0' * 64
+    elif change == 'boundary':
+        protocol['audit_decision']['boundary_sha256'] = '0' * 64
+    elif change == 'missing':
+        del protocol['audit_decision']
+    else:
+        report = json.loads(observed['audit_report_bytes'])
+        if change == 'development':
+            report['results']['partition_totals'][0]['positive_count'] = 1
+        else:
+            report['results']['showcase_total']['positive_count'] = 1
+        observed['audit_report_bytes'] = (
+            json.dumps(report, sort_keys=True, separators=(',', ':')) + '\n'
+        ).encode()
+        protocol['audit_decision']['audit_report_sha256'] = hashlib.sha256(
+            observed['audit_report_bytes']
+        ).hexdigest()
+        protocol['audit_report_sha256'] = protocol['audit_decision']['audit_report_sha256']
+        observed['audit_report_sha256'] = protocol['audit_report_sha256']
+    with pytest.raises(ProtocolError):
+        verify_prefit_protocol(protocol, _digest(protocol), observed)
