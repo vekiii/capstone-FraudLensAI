@@ -24,6 +24,8 @@ All raw and generated data paths remain Git-ignored; no real data or row-level l
 
 **T214 is complete as synthetic RED tests.** Six cases in [test_partitions.py](backend/tests/unit/test_partitions.py) specify half-open warm-up, offset-equivalent timestamp groups, nearest development/showcase source-count boundary, 70/15/15 scoreable-development whole-group boundaries, earlier exact-distance ties, label independence and impossible nonempty-split rejection. The focused run collected six tests and all failed at the expected missing T215 partition module; Ruff passed. No real data or model check ran. See [T214 evidence](evidence/tasks/T214.md).
 
+**T215 is complete for synthetic chronological partition planning.** [partitions.py](backend/src/fraudlens/data/partitions.py) implements half-open warm-up, source-count development/showcase and scoreable-development train/validation/test boundaries at whole UTC timestamp groups, earlier ties and nonempty splits. T214's six tests and the 380-test backend suite passed; Ruff passed. The finite-batch helper materializes rows and IDs, so real-scale sorting, bounded publication and T210 temporal counts remain pending. See [T215 evidence](evidence/tasks/T215.md).
+
 ## One concrete next step
 
-Execute T215: implement warm-up and whole-timestamp chronological partition planning to turn T214 GREEN, without reading labels. Preserve the verified ignored T210 snapshot and stage; real-scale feature sorting and T210 temporal counts need separate measured gates.
+Execute T216: add synthetic RED access-control tests for permitted aggregate label audit shapes and denied record-level/showcase subrange requests. Preserve the verified ignored T210 snapshot and stage; real-scale feature sorting and T210 temporal counts need separate measured gates.
