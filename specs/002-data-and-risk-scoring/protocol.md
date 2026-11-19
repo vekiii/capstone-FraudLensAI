@@ -1,6 +1,6 @@
 # Feature 002 protocol
 
-Status: canonical-preparation resource settings frozen by T209 and the temporal feature contract frozen by T212 on 2026-11-19. T213 implements and synthetically verifies the temporal kernel; no full-source temporal output is published. The timezone of the selected source remains undocumented; the conditional project UTC convention below is frozen for this exact local copy. The user authorized a content-addressed local-copy exception for T203/T210 on 2026-11-19; its limits are below. Partitions, full model protocol, and model decisions remain open.
+Status: canonical-preparation resource settings frozen by T209, temporal feature contract by T212, and count-only partition boundaries by T218 on 2026-11-19. T219 has pinned the available dataset and boundary hashes and implemented a synthetic prefit mismatch gate; partition scoreable-ID hashes and the full training-protocol hash are **not frozen**. FR-018 failed for showcase prevalence and stops fitting pending a human decision. No full-source temporal output is published. The timezone of the selected source remains undocumented; the conditional project UTC convention below is frozen for this exact local copy. The user authorized a content-addressed local-copy exception for T203/T210 on 2026-11-19; its limits are below.
 
 ## T203 local-copy decision and T210 scope
 
@@ -76,6 +76,27 @@ Use bank-qualified keys as exact text, preserving leading zeroes. Empty prior hi
 - Exclude `is_laundering`, future records, investigation data and analyst conclusions from feature rows, training preprocessing inputs and runtime/public contracts. Keep labels in the restricted layer. A feature row's `is_scoreable` flag is eligibility metadata; warm-up rows may update history state but never receive prediction or alert outputs.
 
 ## Later protocol decisions
+
+### T219 FR-021 prefit identity and field freeze: partial, fitting stopped
+
+The exact selected local source SHA-256 is `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040` (475,664,283 bytes). The T210 completed-snapshot manifest SHA-256 is `38e1cdee0e96f73abfc398ff2207c8b8fc1ed0c526a6872e56a1462e55edbb88`; its accepted JSONL SHA-256 is `8a8315288f24a387d1bd0ec3765ac9e64a6b5ce131a634952aee1b302bd9f9ba`. The count-only T218 `boundaries.json` SHA-256 is `b1300cad3b94bb9c2325a221c2352ca327dc2c6cf0cd1268d0bdb39a0928a728`. These measured identities are pinned to this copy and these bytes. An upstream release number and acquisition date remain unknown under the T203 exception; the T210 manifest explicitly has `provenance_complete=false` and `temporal_partitioning_complete=false`. Do not rewrite those fields as true without evidence.
+
+The final JSON training protocol must contain the following exact keys and frozen values before a fit. It is hashed as SHA-256 of UTF-8 JSON with sorted keys, compact separators, no NaN, and no trailing newline. An independently measured source, boundary, or partition-ID hash must match the protocol value. A missing field, missing measured counterpart, changed digest, changed provenance, failed audit or changed contract stops fitting.
+
+| Key(s) | Required contract / current state |
+|---|---|
+| `dataset_sha256`, `boundary_sha256` | Exact source and count-only boundary digests above; source and snapshot manifest/output digests must be reverified before a fit. |
+| `partition_scoreable_id_sha256` | Five exact keys: `development`, `showcase`, `train`, `validation`, `test`. **Pending** a measured, bounded, label-free chronological ID pass. For each partition hash UTF-8 `transaction_id` plus LF, ordered by normalized UTC instant then source row number; development includes its scoreable train/validation/test rows only. Empty or missing hashes stop fitting. |
+| `timezone_policy`, `warmup_rule` | Naive local source timestamp interpreted as UTC; `[t0,t0+24h)` contributes history and is unscoreable. See T212 contract. |
+| `feature_version`, `feature_order` | `hi-small-temporal-v1`; the exact eleven ordered fields in the T212 table. No label or source identity is a feature. |
+| `partition_boundaries`, `partition_counts` | Exact T218 count-only boundaries and counts below; development/showcase nearest 3m source rows, then 70/15/15 scoreable development groups, whole UTC instants and earlier tie. |
+| `allowed_prevalence`, `audit_passed` | Inclusive 0.75–1.25 times development prevalence and at least 20 positives in each train/validation/test/showcase partition. **Actual T218 `audit_passed=false`**, due showcase ratio 1.41661; fitting stops. A human decision must be recorded before further protocol freeze; no automatic boundary/tolerance adjustment. |
+| `seed`, `tie_rules` | Seed exactly 42; earlier boundary on equal count distance, then source row order within equal timestamp; model selection tie rules remain T221. |
+| `preprocessing`, `imbalance_option`, `candidate_grid`, `metrics`, `threshold_objective` | **Pending T221** exact choices and human decision. Train-only preprocessing, FR-023 candidates and FR-024 validation ranking constrain that decision; no placeholder string authorizes fitting. |
+| `resource_ceilings` | T209 ceilings above apply only to canonical preparation. A measured ceiling for bounded temporal ID generation/features and training remains pending; do not reuse the canonical ceiling as proof of capacity. |
+| `label_rules`, `showcase_role`, `provenance_complete` | FR-019/020 restricted access; showcase role exactly `demo_only_record_labels_unread`. Real-source provenance is incomplete under the T203 exception; the gate requires an explicit reviewed resolution before fitting. |
+
+The synthetic prefit verifier is `backend/src/fraudlens/training/protocol.py`. It rejects missing required keys, protocol digest mismatch, independently observed source/boundary/partition-ID mismatch, wrong partition set, seed or showcase role, failed audit, and incomplete provenance. The current real-source state cannot pass it: partition ID hashes are absent, FR-018 failed, and provenance is incomplete. The generic verifier also depends on its caller to measure observed hashes independently; no real-source fit entry point has yet been connected to it. See [T219 evidence](../../evidence/tasks/T219.md).
 
 ### T218 count-only boundary freeze, before restricted label audit
 
