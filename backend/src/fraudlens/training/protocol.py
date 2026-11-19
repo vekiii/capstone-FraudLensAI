@@ -112,13 +112,15 @@ def verify_showcase_exception(
 
 
 def verify_prefit_protocol(
-    protocol: Mapping[str, object], protocol_sha256: str,
+    protocol: Mapping[str, object], approved_protocol_sha256: str,
     observed: Mapping[str, object],
 ) -> None:
-    """Require exact protocol bytes/fields and independently observed identities.
+    """Require the approved protocol hash and independently observed identities.
 
     The caller must supply hashes measured from the source, frozen boundaries,
-    and ordered scoreable IDs. A copied value from the protocol is not evidence.
+    ordered scoreable IDs, and the human-approved canonical protocol digest.
+    A digest recomputed from a changed protocol is not approval; callers must
+    pass the approved digest unchanged. A copied data hash is not evidence.
     """
     if not isinstance(protocol, Mapping) or not isinstance(observed, Mapping):
         raise ProtocolError('Protocol and observed identities must be mappings.')
@@ -131,7 +133,7 @@ def verify_prefit_protocol(
         actual_digest = sha256_bytes(canonical_json_bytes(dict(protocol)))
     except (TypeError, ValueError, OverflowError):
         raise ProtocolError('Frozen protocol cannot be hashed canonically.') from None
-    if not _hash(protocol_sha256) or actual_digest != protocol_sha256:
+    if not _hash(approved_protocol_sha256) or actual_digest != approved_protocol_sha256:
         raise ProtocolError('Frozen protocol checksum mismatch.')
     for field in ('dataset_sha256', 'boundary_sha256', 'snapshot_manifest_sha256',
                   'accepted_snapshot_sha256', 'partition_hash_report_sha256',

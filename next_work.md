@@ -10,6 +10,10 @@ Updated 2026-11-19 Europe/Budapest. Branch `feature/002-clean-start`. T209–T21
 
 ## Current state
 
+**T221 Phase 1 evidence update (2026-11-20):** The proposal and approved-protocol-hash clarification are recorded in [T221 evidence](evidence/tasks/T221.md) and indexed in [evidence/README.md](evidence/README.md); original request preserved in [development prompt](prompts/development/002-T221-model-training.md). Backend suite: 452 passed with one known warning; Ruff and `git diff --check` passed. No fitting/evaluation. T221 remains partial: provenance/T203 restriction and FR-023/024 reconciliation block approval/fitting. A canonical approved training JSON/hash does not yet exist.
+
+**T221 Phase 1 proposal (2026-11-19):** Drafted a LightGBM training proposal in [protocol](specs/002-data-and-risk-scoring/protocol.md#t221-proposed-training-choices--pending-human-approval), preserving the frozen feature contract, partitions, showcase restrictions, audit records and hashes. Updated the generic T219 prefit verifier to treat its protocol digest parameter as the externally human-approved canonical hash; it recomputes canonical JSON SHA-256 and rejects any mismatch. The complete backend suite passed: 452 tests, with one known Starlette/httpx deprecation warning. Ruff passed. `git diff --check` passed. No fitting, label access, test evaluation, or third-party reference execution occurred. The first pytest attempt hit restricted global-temp access; the workspace-local rerun passed.
+
 Feature 001 foundation remains complete for its local synthetic demo. Its peer setup, human review and historical checks are recorded in [peer reproduction](evidence/tasks/peer-reproduction.md), [human review](evidence/tasks/human-review.md), [phase 06 handoff](evidence/tasks/phase-06-handoff.md) and [foundation validation](evidence/tasks/foundation-validation.md). No new foundation tests were run in this continuation.
 
 Feature 002 specification was committed as `df4dabf`. T201–T208 implementation and synthetic checks were committed as `3d2991e` and pushed to `origin/feature/002-clean-start`; the local publication receipt is [recorded](evidence/tasks/session-publication-2026-11-18.md). Those tasks provide the source parser, validator, resumable canonical pipeline and snapshot verifier. Their individual evidence is under `evidence/tasks/T201.md` through `T208.md`.
@@ -40,4 +44,4 @@ All raw and generated data paths remain Git-ignored; no real data or row-level l
 
 ## One concrete next step
 
-Implement a checked T219/T221 protocol record for the user's showcase-only post-audit exception, bound to the exact source/boundary/audit hashes; resolve the remaining provenance, model and resource fields before fitting. Preserve the frozen boundaries, ignored T210 snapshot and single-use T218 aggregate audit outputs; do not adjust boundaries from labels or reread showcase labels automatically.
+Review and approve the T221 training proposal by its exact canonical protocol hash. Before fitting, resolve the existing provenance blocker without rewriting recorded manifest facts; preserve frozen boundaries and audit outputs, and do not read showcase record labels.
