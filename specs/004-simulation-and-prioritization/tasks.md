@@ -72,12 +72,12 @@ description: "Implementation tasks for Simulation Lab and Decision Intelligence"
 
 ### Tests first
 
-- [ ] T015 [P] [US3] Add API regressions in `backend/tests/integration/test_simulation_api.py` for an exact canonical recipe round trip and a separate label-only variant. Verify all ordered windows, reviewed IDs and final backlog are identical for the variant and only outcome-derived counts may differ. Verify the changed fingerprint and 409 when a recipe names a missing revision, wrong digest or unavailable strategy version (FR-006–007, SC-003).
-- [ ] T016 [P] [US3] Add RED frontend tests in `frontend/tests/simulation.test.ts` for JSON download and reopen, invalid and unavailable recipes, a late result after navigation, and per-window ranking inspection. Verify score, weight, estimated duration and linked assumption labels are visible without exposing raw outcome labels (FR-007–009).
+- [x] T015 [P] [US3] Add API regressions in `backend/tests/integration/test_simulation_api.py` for an exact canonical recipe round trip and a separate label-only variant. Verify all ordered windows, reviewed IDs and final backlog are identical for the variant and only outcome-derived counts may differ. Verify the changed fingerprint and 409 when a recipe names a missing revision, wrong digest or unavailable strategy version (FR-006–007, SC-003).
+- [x] T016 [P] [US3] Add RED frontend tests in `frontend/tests/simulation.test.ts` for JSON download and reopen, invalid and unavailable recipes, a late result after navigation, and per-window ranking inspection. Verify score, weight, estimated duration and linked assumption labels are visible without exposing raw outcome labels (FR-007–009).
 
 ### Implementation
 
-- [ ] T017 [US3] Add exact recipe download and reopen and an inspectable per-window ordering in `frontend/src/simulation.ts`. Submit the saved recipe unchanged, retain its scenario reference and strategy versions, display unavailable versions clearly and require an explicit new run to use different settings. Show ranked and reviewed order, provenance and scenario assumptions. Pass T015 and T016, and record results in `evidence/tasks/feature-004-us3.md` (FR-007–009, SC-003).
+- [x] T017 [US3] Add exact recipe download and reopen and an inspectable per-window ordering in `frontend/src/simulation.ts`. Submit the saved recipe unchanged, retain its scenario reference and strategy versions, display unavailable versions clearly and require an explicit new run to use different settings. Show ranked and reviewed order, provenance and scenario assumptions. Pass T015 and T016, and record results in `evidence/tasks/feature-004-us3.md` (FR-007–009, SC-003).
 
 **Checkpoint**: A reviewer can explain the order and reproduce the same comparison from a saved recipe.
 

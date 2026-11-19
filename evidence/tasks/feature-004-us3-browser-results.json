@@ -1,0 +1,275 @@
+{
+  "mode": "Automated Chrome with real API and Vite proxy on the bundled synthetic scenario",
+  "checks": [
+    {
+      "name": "Actual API/proxy defaults, counts, privacy and original404/422",
+      "status": "PASS",
+      "detail": {
+        "base": "http://127.0.0.1:8000",
+        "scenario": "review-capacity-demo",
+        "hash": "894136f422d013cf0d1d52820acf26e3a3a95076a4b8ab044c4e24faf4105198",
+        "recipe": {
+          "contract_version": 1,
+          "scenario": {
+            "scenario_id": "review-capacity-demo",
+            "scenario_version": 1,
+            "content_sha256": "894136f422d013cf0d1d52820acf26e3a3a95076a4b8ab044c4e24faf4105198"
+          },
+          "score_threshold": "0.3",
+          "budget_minutes_per_window": 2,
+          "strategy_versions": {
+            "fifo": 1,
+            "highest_score": 1,
+            "weighted_score_per_minute": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "Actual API/proxy defaults, counts, privacy and original404/422",
+      "status": "PASS",
+      "detail": {
+        "base": "http://127.0.0.1:5173",
+        "scenario": "review-capacity-demo",
+        "hash": "894136f422d013cf0d1d52820acf26e3a3a95076a4b8ab044c4e24faf4105198",
+        "recipe": {
+          "contract_version": 1,
+          "scenario": {
+            "scenario_id": "review-capacity-demo",
+            "scenario_version": 1,
+            "content_sha256": "894136f422d013cf0d1d52820acf26e3a3a95076a4b8ab044c4e24faf4105198"
+          },
+          "score_threshold": "0.3",
+          "budget_minutes_per_window": 2,
+          "strategy_versions": {
+            "fifo": 1,
+            "highest_score": 1,
+            "weighted_score_per_minute": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "Cases remains default view",
+      "status": "PASS"
+    },
+    {
+      "name": "Normal navigation/source/assumptions rendered",
+      "status": "PASS"
+    },
+    {
+      "name": "Actual browser default comparison rows",
+      "status": "PASS",
+      "detail": {
+        "rows": [
+          [
+            "fifo",
+            "A",
+            "0",
+            "1",
+            "2",
+            "1",
+            "3"
+          ],
+          [
+            "highest_score",
+            "B",
+            "1",
+            "1",
+            "1",
+            "0",
+            "3"
+          ],
+          [
+            "weighted_score_per_minute",
+            "C,E",
+            "1",
+            "1",
+            "1",
+            "1",
+            "2"
+          ]
+        ],
+        "observed_ms": 61
+      }
+    },
+    {
+      "name": "Budget 2 to 4 clears and replaces results at threshold 0.3",
+      "status": "PASS",
+      "detail": [
+        [
+          "A,B",
+          "1",
+          "1",
+          "1",
+          "2"
+        ],
+        [
+          "B,C,E",
+          "2",
+          "1",
+          "0",
+          "1"
+        ],
+        [
+          "C,E,B",
+          "2",
+          "1",
+          "0",
+          "1"
+        ]
+      ]
+    },
+    {
+      "name": "Threshold 0.850 clears and replaces results at budget 4",
+      "status": "PASS",
+      "detail": [
+        [
+          "B",
+          "1",
+          "2",
+          "0",
+          "0"
+        ],
+        [
+          "B",
+          "1",
+          "2",
+          "0",
+          "0"
+        ],
+        [
+          "B",
+          "1",
+          "2",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    {
+      "name": "Zero budget renders zero reviews and one pending positive at threshold 0.850",
+      "status": "PASS",
+      "detail": [
+        [
+          "",
+          "0",
+          "2",
+          "1",
+          "1"
+        ],
+        [
+          "",
+          "0",
+          "2",
+          "1",
+          "1"
+        ],
+        [
+          "",
+          "0",
+          "2",
+          "1",
+          "1"
+        ]
+      ]
+    },
+    {
+      "name": "Fractional minutes show a validation error without results",
+      "status": "PASS"
+    },
+    {
+      "name": "Weighted window shows ranks, reviews, score source, weight, minutes and assumption text",
+      "status": "PASS",
+      "detail": {
+        "ranked": [
+          "C",
+          "E",
+          "B",
+          "A"
+        ],
+        "reviewed": [
+          "C",
+          "E",
+          "B"
+        ],
+        "score": "0.80",
+        "start": "2026-01-01T00:00:00Z"
+      }
+    },
+    {
+      "name": "Native JSON download contains only the canonical recipe",
+      "status": "PASS",
+      "detail": {
+        "contract_version": 1,
+        "scenario": {
+          "scenario_id": "review-capacity-demo",
+          "scenario_version": 1,
+          "content_sha256": "894136f422d013cf0d1d52820acf26e3a3a95076a4b8ab044c4e24faf4105198"
+        },
+        "score_threshold": "0.3",
+        "budget_minutes_per_window": 4,
+        "strategy_versions": {
+          "fifo": 1,
+          "highest_score": 1,
+          "weighted_score_per_minute": 1
+        }
+      }
+    },
+    {
+      "name": "Refresh and file upload repeat the same settings, counts, backlog and window order",
+      "status": "PASS",
+      "detail": {
+        "observed_ms": 68,
+        "rows": [
+          [
+            "A,B",
+            "1",
+            "1",
+            "1",
+            "2"
+          ],
+          [
+            "B,C,E",
+            "2",
+            "1",
+            "0",
+            "1"
+          ],
+          [
+            "C,E,B",
+            "2",
+            "1",
+            "0",
+            "1"
+          ]
+        ],
+        "reviewed": [
+          "C",
+          "E",
+          "B"
+        ]
+      }
+    },
+    {
+      "name": "Unavailable strategy gets HTTP 409 and needs an explicit new comparison",
+      "status": "PASS"
+    },
+    {
+      "name": "Malformed JSON clears previous results and stays local",
+      "status": "PASS"
+    },
+    {
+      "name": "Original Cases detail/back after leaving simulation",
+      "status": "PASS"
+    },
+    {
+      "name": "No uncaught browser exceptions",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "browser": "Chrome/157.0.8103.79",
+  "status": "PASS",
+  "owned_cleanup": "PASS"
+}

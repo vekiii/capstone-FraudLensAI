@@ -47,7 +47,10 @@ beforeEach(() => {
   root = document.createElement('main'); document.body.append(root);
   client = { listScenarios: vi.fn().mockResolvedValue(structuredClone(catalog)), compare: vi.fn().mockResolvedValue(structuredClone(comparison)) };
 });
-afterEach(() => { dispose?.(); dispose = undefined; document.body.replaceChildren(); vi.restoreAllMocks(); });
+afterEach(() => {
+  dispose?.(); dispose = undefined; document.body.replaceChildren();
+  vi.restoreAllMocks(); vi.unstubAllGlobals();
+});
 
 async function mount() {
   dispose = mountSimulation(root, client);
@@ -325,4 +328,169 @@ it('ignores a late comparison after leaving the simulation view', async () => {
   await nextTurn();
   expect(root.textContent).toBe('Cases');
   expect(visibleResults()).toBeNull();
+});
+
+function chooseRecipe(file: File) {
+  const input = root.querySelector<HTMLInputElement>('input[type="file"][name="simulation_recipe"]');
+  expect(input).toBeInstanceOf(HTMLInputElement);
+  Object.defineProperty(input!, 'files', { configurable: true, value: [file] });
+  input!.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+function recipeFile(contents: string) {
+  return new File([contents], 'comparison.json', { type: 'application/json' });
+}
+
+function downloadButton() {
+  return root.querySelector<HTMLButtonElement>('[data-simulation-download]');
+}
+
+it('downloads only the canonical returned recipe and reopens it after remounting', async () => {
+  const createObjectURL = vi.fn((_blob: Blob) => 'blob:recipe');
+  const revokeObjectURL = vi.fn();
+  vi.stubGlobal('URL', class extends URL {
+    static createObjectURL = createObjectURL;
+    static revokeObjectURL = revokeObjectURL;
+  });
+  const downloads: string[] = [];
+  vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+    downloads.push(this.download);
+  });
+  await run();
+  await vi.waitFor(() => expect(visibleResults()).not.toBeNull());
+  const before = visibleResults()!.querySelector('table')!.textContent;
+  expect(downloadButton()).toBeInstanceOf(HTMLButtonElement);
+  downloadButton()!.click();
+  expect(downloads).toEqual(['simulation-recipe-review-capacity-demo-v1.json']);
+  const blob = createObjectURL.mock.calls[0]?.[0];
+  expect(blob.type).toBe('application/json');
+  const saved = await blob.text();
+  expect(JSON.parse(saved)).toEqual(comparison.recipe);
+  await vi.waitFor(() => expect(revokeObjectURL).toHaveBeenCalledWith('blob:recipe'));
+
+  dispose?.();
+  await mount();
+  chooseRecipe(recipeFile(saved));
+  await vi.waitFor(() => {
+    expect(client.compare).toHaveBeenLastCalledWith(comparison.recipe, expect.anything());
+    expect(visibleResults()?.querySelector('table')?.textContent).toBe(before);
+  });
+});
+
+it('opens the exact saved revision and decimal instead of substituting the catalog defaults', async () => {
+  const revision = { ...scenario, scenario_version: 2, content_sha256: '1'.repeat(64) };
+  const saved = {
+    ...recipe, scenario: { ...recipe.scenario, scenario_version: 2, content_sha256: revision.content_sha256 },
+    score_threshold: '0.3000000000000000000000000100',
+  };
+  vi.mocked(client.listScenarios).mockResolvedValueOnce({ ...catalog, items: [scenario, revision] });
+  vi.mocked(client.compare).mockResolvedValueOnce({
+    ...comparison, scenario: revision, recipe: { ...saved, score_threshold: '0.30000000000000000000000001' },
+  });
+  await mount();
+  chooseRecipe(recipeFile(JSON.stringify(saved)));
+  await vi.waitFor(() => {
+    expect(client.compare).toHaveBeenCalledExactlyOnceWith(saved, expect.anything());
+    expect(setting('score_threshold').value).toBe(saved.score_threshold);
+    expect(root.querySelector('select')?.selectedIndex).toBe(1);
+    expect(visibleResults()?.querySelector('[data-simulation-run-settings]')?.textContent)
+      .toContain(revision.content_sha256);
+  });
+  edit('budget_minutes_per_window', '4');
+  expect(visibleResults()).toBeNull();
+  expect(downloadButton()).toBeNull();
+  expect(client.compare).toHaveBeenCalledTimes(1);
+});
+
+it.each([
+  ['broken JSON', '{broken'],
+  ['extra fields', JSON.stringify({ ...recipe, alerts: [] })],
+  ['numeric threshold', JSON.stringify({ ...recipe, score_threshold: 0.3 })],
+  ['fractional budget', JSON.stringify({ ...recipe, budget_minutes_per_window: 1.5 })],
+  ['unsupported contract', JSON.stringify({ ...recipe, contract_version: 2 })],
+  ['invalid strategy version', JSON.stringify({ ...recipe, strategy_versions: { ...recipe.strategy_versions, fifo: 0 } })],
+])('rejects a locally invalid recipe with %s and clears previous results', async (_case, saved) => {
+  await run();
+  await vi.waitFor(() => expect(visibleResults()).not.toBeNull());
+  chooseRecipe(recipeFile(saved));
+  expect(visibleResults()).toBeNull();
+  expect(downloadButton()).toBeNull();
+  await errorWithoutResults();
+  expect(root.querySelector('[role="alert"]')?.textContent).toMatch(/recept/i);
+  expect(client.compare).toHaveBeenCalledTimes(1);
+});
+
+it('reports an actual client 409 for the requested recipe and waits for an explicit new run', async () => {
+  const unavailable = { ...recipe, strategy_versions: { ...recipe.strategy_versions, fifo: 9 } };
+  const posted: unknown[] = [];
+  vi.spyOn(globalThis, 'fetch').mockImplementation(async (url, init) => {
+    if (url === '/api/simulation/scenarios') return Response.json(catalog);
+    expect(url).toBe('/api/simulation/comparisons');
+    posted.push(JSON.parse(String(init?.body)));
+    return posted.length === 1
+      ? Response.json({ error: { code: 'simulation_version_unavailable', message: 'PRIVATE' } }, { status: 409 })
+      : Response.json(comparison);
+  });
+  dispose = mountSimulation(root);
+  await vi.waitFor(() => expect(root.querySelector('option')).not.toBeNull());
+  chooseRecipe(recipeFile(JSON.stringify(unavailable)));
+  await errorWithoutResults();
+  expect(root.querySelector('[role="alert"]')?.textContent).toMatch(/verzij.*dostupn/i);
+  await nextTurn();
+  expect(posted).toEqual([unavailable]);
+  expect(downloadButton()).toBeNull();
+  submit();
+  await vi.waitFor(() => expect(visibleResults()).not.toBeNull());
+  expect(posted).toEqual([unavailable, recipe]);
+});
+
+it('ignores a saved recipe result that resolves after navigation despite cancellation', async () => {
+  await mount();
+  const late = deferComparison();
+  chooseRecipe(recipeFile(JSON.stringify(comparison.recipe)));
+  await vi.waitFor(() => expect(client.compare).toHaveBeenCalledTimes(1));
+  const signal = vi.mocked(client.compare).mock.calls[0]?.[1]?.signal;
+  dispose?.();
+  dispose = undefined;
+  root.textContent = 'Cases';
+  expect(signal?.aborted).toBe(true);
+  late.resolve(comparison);
+  await nextTurn();
+  expect(root.textContent).toBe('Cases');
+  expect(visibleResults()).toBeNull();
+});
+
+it('ignores a late file read after a new comparison is submitted', async () => {
+  await mount();
+  const file = recipeFile('{}');
+  let finish!: (value: string) => void;
+  vi.spyOn(file, 'text').mockReturnValue(new Promise(resolve => { finish = resolve; }));
+  chooseRecipe(file);
+  submit();
+  await vi.waitFor(() => expect(visibleResults()).not.toBeNull());
+  finish(JSON.stringify(recipe));
+  await nextTurn();
+  expect(client.compare).toHaveBeenCalledExactlyOnceWith(recipe, expect.anything());
+  expect(visibleResults()).not.toBeNull();
+});
+
+it('shows ranked and reviewed order, score provenance and linked assumptions for a window', async () => {
+  await run();
+  await vi.waitFor(() => expect(visibleResults()).not.toBeNull());
+  const window = root.querySelector<HTMLDetailsElement>('details[data-window-start][data-strategy="weighted_score_per_minute"]');
+  expect(window).toBeInstanceOf(HTMLDetailsElement);
+  expect(window!.dataset.windowStart).toBe(scenario.window_starts[0]);
+  window!.open = true;
+  window!.dispatchEvent(new Event('toggle'));
+  const ranked = [...window!.querySelectorAll<HTMLElement>('[data-ranked-alerts] [data-alert-id]')];
+  expect(ranked.map(row => row.dataset.alertId)).toEqual(['C', 'E', 'B', 'A']);
+  expect([...window!.querySelectorAll('[data-reviewed-order] li')].map(row => row.textContent)).toEqual(['C', 'E']);
+  expect(window!.querySelector('[data-used-minutes]')?.textContent).toContain('2');
+  expect(window!.textContent).toContain('illustrative-v1');
+  expect(ranked[0].querySelector('[data-score]')?.textContent).toBe('0.80');
+  expect(ranked[0].querySelector('[data-scenario-weight]')?.textContent).toContain('1');
+  expect(ranked[0].querySelector('[data-scenario-weight]')?.textContent).toContain('Equal synthetic weights');
+  expect(ranked[0].querySelector('[data-review-minutes]')?.textContent).toContain('1');
+  expect(ranked[0].querySelector('[data-review-minutes]')?.textContent).toContain('Authored review minutes');
+  expect(window!.textContent).not.toMatch(/\b(positive|negative)\b/);
 });

@@ -1,6 +1,6 @@
 # Quickstart: Simulation Lab and Decision Intelligence
 
-Start the backend and Vite with the commands below, then select Simulation & Evaluation. Run the bundled scenario with its defaults, or edit the risk score threshold and whole-minute budget per window before submitting. See the [default comparison evidence](../../evidence/tasks/feature-004-us1.md) and [settings verification](../../evidence/tasks/feature-004-us2.md). The recipe export, reopen and ranking inspection steps in the teammate walkthrough are scheduled for a later phase.
+Start the backend and Vite with the commands below, then select Simulation & Evaluation. Run the bundled scenario with its defaults, or edit the risk score threshold and whole-minute budget per window before submitting. Expand a window to inspect the ranking inputs and reviewed order. Use **Preuzmi recept (JSON)** on a successful comparison and **Otvori recept (JSON)** to rerun it after a refresh. The [recipe and ranking evidence](../../evidence/tasks/feature-004-us3.md) records automated verification before the teammate walkthrough.
 
 ## Setup
 

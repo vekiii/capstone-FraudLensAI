@@ -65,9 +65,16 @@ nav[aria-label="Prikazi"] { display: flex; flex-wrap: wrap; gap: 0.75rem; margin
 .simulation-settings label { display: grid; gap: 0.25rem; }
 .simulation-settings input { width: 100%; min-height: 44px; padding: 0.5rem; font: inherit; }
 .simulation-settings input[aria-invalid="true"] { border-color: #b43e27; }
+.simulation-recipe-file { display: grid; gap: 0.25rem; margin-bottom: 0.8rem; }
+.simulation-recipe-file input { max-width: 100%; font: inherit; }
 [data-simulation-results] { overflow-x: auto; margin-top: 1rem; }
 [data-simulation-results] table { width: 100%; border-collapse: collapse; }
 [data-simulation-results] th, [data-simulation-results] td { text-align: left; padding: 0.7rem; border-bottom: 1px solid #d9e2e8; }
+[data-simulation-results] summary { cursor: pointer; }
+[data-simulation-results] caption { text-align: left; color: #4c6271; }
+.simulation-ordering { margin-top: 1.25rem; }
+.simulation-ordering details { padding: 0.5rem 0; border-top: 1px solid var(--border); }
+.simulation-ordering small { display: block; }
 
 @media (max-width: 700px) {
   #app { padding: 1.5rem 1rem 2rem; }

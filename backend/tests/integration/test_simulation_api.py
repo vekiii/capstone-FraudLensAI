@@ -243,7 +243,7 @@ def test_comparison_service_failure_is_sanitized(client, monkeypatch):
 
 @pytest.fixture
 def two_window_replay(tmp_path):
-    def prepare(coverage="partial"):
+    def prepare(coverage="partial", *, swap_outcomes=False):
         facts = Catalog().resolve("review-capacity-demo", 1).facts.model_dump()
         start = "2026-01-01T00:00:00Z"
         second_start = "2026-01-01T00:30:00Z"
@@ -270,6 +270,8 @@ def two_window_replay(tmp_path):
             ],
         )
         labels = {"A": "positive", "B": "negative", "C": "positive", "D": "positive"}
+        if swap_outcomes:
+            labels["A"], labels["B"] = labels["B"], labels["A"]
         if coverage == "unknown_reviewed":
             del labels["B"]
         if coverage in {"unlabeled", "empty"}:
@@ -282,10 +284,12 @@ def two_window_replay(tmp_path):
             outcomes=[dict(alert_id=key, outcome=value) for key, value in labels.items()],
         )
         facts["content_sha256"] = fingerprint(facts, outcomes)
-        (tmp_path / "two.json").write_text(json.dumps(facts), encoding="utf-8")
-        (tmp_path / "two.outcomes.json").write_text(json.dumps(outcomes), encoding="utf-8")
+        root = tmp_path / ("variant" if swap_outcomes else "original")
+        root.mkdir(exist_ok=True)
+        (root / "two.json").write_text(json.dumps(facts), encoding="utf-8")
+        (root / "two.outcomes.json").write_text(json.dumps(outcomes), encoding="utf-8")
         app = create_app()
-        app.state.simulation_catalog = Catalog(tmp_path)
+        app.state.simulation_catalog = Catalog(root)
         return TestClient(app)
 
     return prepare
@@ -456,3 +460,65 @@ def test_comparison_reports_outcome_coverage(
             assert all(
                 w["ranked_alert_ids"] == [] and w["used_minutes"] == 0 for w in row["windows"]
             )
+
+
+def test_canonical_recipe_replays_identically_in_a_fresh_app(two_window_replay):
+    with two_window_replay() as client:
+        body = {
+            **scenario_recipe(client),
+            "score_threshold": "0.3000000000000000000000000100",
+            "budget_minutes_per_window": 4,
+        }
+        original = compare(client, body)
+    saved = json.loads(json.dumps(original["recipe"]))
+    assert saved == {**body, "score_threshold": "0.30000000000000000000000001"}
+    with two_window_replay() as fresh_client:
+        assert compare(fresh_client, saved) == original
+
+
+def test_label_only_variant_keeps_all_orders_and_backlogs(two_window_replay):
+    with two_window_replay() as client:
+        original = compare(client, scenario_recipe(client))
+    with two_window_replay(swap_outcomes=True) as client:
+        settings = original["recipe"]
+        variant_ref = scenario_recipe(client)["scenario"]
+        variant = compare(client, {**settings, "scenario": variant_ref})
+        response = client.post("/api/simulation/comparisons", json=settings)
+        assert response.status_code == 409
+        assert response.json()["error"]["code"] == "simulation_version_unavailable"
+
+    assert variant_ref["content_sha256"] != settings["scenario"]["content_sha256"]
+    comparable = copy.deepcopy(variant)
+    comparable["recipe"]["scenario"]["content_sha256"] = settings["scenario"]["content_sha256"]
+    comparable["scenario"]["content_sha256"] = original["scenario"]["content_sha256"]
+    for before, after in zip(original["strategies"], comparable["strategies"], strict=True):
+        assert before["counts"]["outcomes"] != after["counts"]["outcomes"]
+        assert after["counts"]["outcomes"] == dict(
+            positives_found=2,
+            positives_missed=1,
+            positives_missed_threshold=1,
+            positives_missed_backlog=0,
+            reviewed_negatives=0,
+        )
+        after["counts"]["outcomes"] = before["counts"]["outcomes"]
+    assert comparable == original
+
+
+@pytest.mark.parametrize(
+    ("key", "replacement"),
+    [("scenario_version", 999), ("content_sha256", "0" * 64), ("weighted_score_per_minute", 999)],
+)
+def test_unavailable_saved_recipe_has_no_fallback(two_window_replay, key, replacement):
+    with two_window_replay() as client:
+        original = compare(client, scenario_recipe(client))
+        saved = copy.deepcopy(original["recipe"])
+        target = "scenario" if key in saved["scenario"] else "strategy_versions"
+        saved[target][key] = replacement
+        response = client.post("/api/simulation/comparisons", json=saved)
+    assert response.status_code == 409
+    assert response.json() == {
+        "error": {
+            "code": "simulation_version_unavailable",
+            "message": "Simulation version unavailable.",
+        },
+    }
