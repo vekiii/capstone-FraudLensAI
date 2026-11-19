@@ -55,12 +55,12 @@ description: "Implementation tasks for Simulation Lab and Decision Intelligence"
 
 ### Tests first
 
-- [ ] T012 [P] [US2] Add two-window and edge-case endpoint regressions in `backend/tests/integration/test_simulation_api.py`. Use the same scenario reference for repeated requests and change one setting at a time. Verify differing selections and missed reasons, final backlog, zero budget, empty scenario and partial or wholly unknown outcomes. These checks may already pass against the Phase 3 implementation and should be recorded as regression checks if they do.
-- [ ] T013 [P] [US2] Add RED tests in `frontend/tests/simulation.test.ts` for editing each setting, rejecting invalid scores or minutes, showing zero and unavailable outcomes distinctly, and clearing a stale comparison after settings or scenario changes. Use a late result that resolves even after cancellation to prove the current-request guard.
+- [x] T012 [P] [US2] Add two-window and edge-case endpoint regressions in `backend/tests/integration/test_simulation_api.py`. Use the same scenario reference for repeated requests and change one setting at a time. Verify differing selections and missed reasons, final backlog, zero budget, empty scenario and partial or wholly unknown outcomes. These checks may already pass against the Phase 3 implementation and should be recorded as regression checks if they do.
+- [x] T013 [P] [US2] Add RED tests in `frontend/tests/simulation.test.ts` for editing each setting, rejecting invalid scores or minutes, showing zero and unavailable outcomes distinctly, and clearing a stale comparison after settings or scenario changes. Use a late result that resolves even after cancellation to prove the current-request guard.
 
 ### Implementation
 
-- [ ] T014 [US2] Add threshold and budget controls, validate “budget in whole minutes per window” with a nonnegative safe integer, and submit the exact threshold decimal string in `frontend/src/simulation.ts`. Display threshold versus backlog misses, explain missing outcome coverage and ignore stale successes or failures after edits, resubmission or navigation. Pass T012 and T013 and record the focused results in `evidence/tasks/feature-004-us2.md` (FR-002, FR-003, FR-005, FR-009, SC-002).
+- [x] T014 [US2] Add threshold and budget controls, validate “budget in whole minutes per window” with a nonnegative safe integer, and submit the exact threshold decimal string in `frontend/src/simulation.ts`. Display threshold versus backlog misses, explain missing outcome coverage and ignore stale successes or failures after edits, resubmission or navigation. Pass T012 and T013 and record the focused results in `evidence/tasks/feature-004-us2.md` (FR-002, FR-003, FR-005, FR-009, SC-002).
 
 **Checkpoint**: An analyst can change settings and explain the resulting differences without mixing results from two runs.
 

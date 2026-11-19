@@ -82,24 +82,210 @@ async function request(url: string, options: RequestInit): Promise<unknown> {
 const defaultClient: SimulationClient={listScenarios:o=>request('/api/simulation/scenarios',{signal:o?.signal}),compare:(body,o)=>request('/api/simulation/comparisons',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body),signal:o?.signal})};
 function node<K extends keyof HTMLElementTagNameMap>(tag: K,value=''):HTMLElementTagNameMap[K]{const n=document.createElement(tag);n.textContent=value;return n;}
 
-export function mountSimulation(root: HTMLElement,client: SimulationClient=defaultClient):()=>void {
-  let disposed=false,generation=0,pending=new AbortController();root.replaceChildren();
-  root.append(node('h1','Simulation & Evaluation'),node('p','Sintetička simulacija; savetodavni redosled, bez intervencija nad računima.'));
-  const selector=node('select'),provenance=node('section'),button=node('button','Uporedi strategije'),status=node('p'),results=node('section');selector.setAttribute('aria-label','Scenario');button.dataset.simulationRun='';button.disabled=true;root.append(selector,provenance,button,status,results);
-  let items:ReturnType<typeof decodeCatalog>=[];
-  function failure(){status.setAttribute('role','alert');status.textContent='Simulacija nije dostupna ili je odgovor neispravan. Pokušajte ponovo.';results.replaceChildren();results.removeAttribute('data-simulation-results');}
-  function select(){generation++;pending.abort();pending=new AbortController();results.replaceChildren();results.removeAttribute('data-simulation-results');status.removeAttribute('role');status.textContent='';const s=items[selector.selectedIndex];provenance.replaceChildren();button.disabled=!s;if(s)provenance.append(node('p',`${s.source.kind} / ${s.source.data_version} / ${s.source.time_basis}`),node('p',`${s.score_provenance.source} / ${s.score_provenance.score_kind} / ${s.score_provenance.scorer_version}`),...s.assumptions.map(a=>node('p',`${a.id}: ${a.description}`)));}
-  selector.addEventListener('change',select);button.addEventListener('click',()=>{void compare();});
-  async function compare(){
-    const s=items[selector.selectedIndex];if(!s)return;const token=++generation;pending.abort();pending=new AbortController();button.disabled=true;results.replaceChildren();results.removeAttribute('data-simulation-results');status.removeAttribute('role');status.textContent='Računanje…';
-    try{
-      const input={contract_version:1,scenario:{scenario_id:s.scenario_id,scenario_version:s.scenario_version,content_sha256:s.content_sha256},...s.defaults,strategy_versions:{fifo:1,highest_score:1,weighted_score_per_minute:1}};
-      const decoded=decodeComparison(await client.compare(input,{signal:pending.signal}));if(disposed||token!==generation)return;
-      if(decoded.recipe.scenario.scenario_id!==s.scenario_id||decoded.recipe.scenario.scenario_version!==s.scenario_version||decoded.recipe.scenario.content_sha256!==s.content_sha256||decoded.recipe.budget_minutes_per_window!==s.defaults.budget_minutes_per_window||canonicalDecimal(decoded.recipe.score_threshold)!==canonicalDecimal(s.defaults.score_threshold))throw Error('Wrong recipe');
-      results.dataset.simulationResults='';status.textContent='Poređenje završeno.';const table=node('table'),head=node('tr');for(const label of ['Strategija','Pregledani','Pronađeni pozitivni','Propušteni pragom','Propušteni u redu','Pregledani negativni','Backlog'])head.append(node('th',label));table.append(head);
-      for(const result of decoded.strategies){const row=node('tr');row.dataset.strategyId=result.strategy_id;const reviewed=node('td',result.windows.flatMap(w=>w.reviewed_alert_ids).join(','));reviewed.dataset.reviewedAlerts='';const found=node('td',String(result.counts.outcomes?.positives_found??'Nedostupno'));found.dataset.positivesFound='';const backlog=node('td',String(result.counts.backlog));backlog.dataset.backlog='';row.append(node('td',result.strategy_id),reviewed,found,node('td',String(result.counts.outcomes?.positives_missed_threshold??'Nedostupno')),node('td',String(result.counts.outcomes?.positives_missed_backlog??'Nedostupno')),node('td',String(result.counts.outcomes?.reviewed_negatives??'Nedostupno')),backlog);table.append(row);}results.append(table);
-    }catch{if(!disposed&&token===generation)failure();}finally{if(!disposed&&token===generation)button.disabled=false;}
+function renderResults(results: HTMLElement, comparison: ReturnType<typeof decodeComparison>) {
+  const table = node('table');
+  const head = table.createTHead().insertRow();
+  for (const label of [
+    'Strategija', 'Pregledani', 'Pronađeni pozitivni', 'Ukupno propušteni pozitivni',
+    'Propušteni pragom', 'Propušteni u zaostatku', 'Pregledani negativni', 'Završni zaostatak',
+    'Bez oznake u periodu', 'Pregledani bez oznake',
+  ]) {
+    const cell = node('th', label);
+    cell.scope = 'col';
+    head.append(cell);
   }
-  void(async()=>{try{items=decodeCatalog(await client.listScenarios({signal:pending.signal}));if(disposed)return;for(const s of items){const option=node('option',`${s.title} (v${s.scenario_version})`);option.value=s.scenario_id;selector.append(option);}select();if(!items.length)status.textContent='Nema dostupnih scenarija.';}catch{if(!disposed)failure();}})();
-  return ()=>{disposed=true;generation++;pending.abort();root.replaceChildren();};
+  const body = table.createTBody();
+  for (const result of comparison.strategies) {
+    const { outcomes, backlog, unknown_in_horizon, unknown_reviewed } = result.counts;
+    const row = body.insertRow();
+    row.dataset.strategyId = result.strategy_id;
+    const strategy = node('th', result.strategy_id);
+    strategy.scope = 'row';
+    row.append(strategy);
+    const cells = [
+      ['reviewedAlerts', result.windows.flatMap(w => w.reviewed_alert_ids).join(',')],
+      ['positivesFound', outcomes?.positives_found],
+      ['positivesMissed', outcomes?.positives_missed],
+      ['missedThreshold', outcomes?.positives_missed_threshold],
+      ['missedBacklog', outcomes?.positives_missed_backlog],
+      ['reviewedNegatives', outcomes?.reviewed_negatives],
+      ['backlog', backlog],
+      ['unknownInHorizon', unknown_in_horizon],
+      ['unknownReviewed', unknown_reviewed],
+    ] as const;
+    for (const [field, value] of cells) {
+      const cell = row.insertCell();
+      cell.dataset[field] = '';
+      cell.textContent = String(value ?? 'Nedostupno');
+    }
+  }
+
+  if (comparison.strategies.some(row => row.counts.outcomes === null)) {
+    results.append(node('p', 'Nema poznatih oznaka ishoda. Metrike pozitivnih i negativnih ishoda su nedostupne.'));
+  } else if (comparison.strategies.some(row => row.counts.unknown_in_horizon > 0)) {
+    results.append(node('p', 'Pokrivenost oznakama ishoda je delimična. Metrike pozitivnih i negativnih ishoda obuhvataju samo poznate oznake.'));
+  }
+  results.append(table);
+  results.dataset.simulationResults = '';
+}
+
+export function mountSimulation(root: HTMLElement, client: SimulationClient = defaultClient): () => void {
+  let disposed = false;
+  let generation = 0;
+  let pending: AbortController | undefined = new AbortController();
+  let items: ReturnType<typeof decodeCatalog> = [];
+
+  const selector = node('select');
+  selector.setAttribute('aria-label', 'Scenario');
+  selector.disabled = true;
+  const provenance = node('section');
+  const form = node('form');
+  form.className = 'simulation-settings';
+  const thresholdLabel = node('label', 'Prag skora rizika (0–1)');
+  const threshold = node('input');
+  threshold.name = 'score_threshold';
+  threshold.inputMode = 'decimal';
+  thresholdLabel.append(threshold);
+  const budgetLabel = node('label', 'Budžet (minuti po vremenskom prozoru)');
+  const budget = node('input');
+  budget.name = 'budget_minutes_per_window';
+  budget.inputMode = 'numeric';
+  budgetLabel.append(budget);
+  const button = node('button', 'Uporedi strategije');
+  button.type = 'submit';
+  button.className = 'button';
+  button.dataset.simulationRun = '';
+  for (const control of [threshold, budget, button]) control.disabled = true;
+  form.append(thresholdLabel, budgetLabel, button);
+  const status = node('p');
+  status.setAttribute('aria-live', 'polite');
+  const results = node('section');
+  root.replaceChildren(
+    node('h1', 'Simulation & Evaluation'),
+    node('p', 'Sintetička simulacija; savetodavni redosled, bez intervencija nad računima.'),
+    selector, provenance, form, status, results,
+  );
+
+  function cancelPending() {
+    generation++;
+    pending?.abort();
+    pending = undefined;
+  }
+
+  function clearComparison() {
+    cancelPending();
+    results.replaceChildren();
+    results.removeAttribute('data-simulation-results');
+    status.removeAttribute('role');
+    status.textContent = '';
+    threshold.removeAttribute('aria-invalid');
+    budget.removeAttribute('aria-invalid');
+  }
+
+  function showError(message: string, input?: HTMLInputElement) {
+    status.setAttribute('role', 'alert');
+    status.textContent = message;
+    input?.setAttribute('aria-invalid', 'true');
+    input?.focus();
+  }
+
+  const requestError = 'Simulacija nije dostupna ili je odgovor neispravan. Pokušajte ponovo.';
+
+  function selectScenario() {
+    if (disposed || !items.length) return;
+    clearComparison();
+    const selected = items[selector.selectedIndex];
+    for (const control of [threshold, budget, button]) control.disabled = !selected;
+    threshold.value = selected?.defaults.score_threshold ?? '';
+    budget.value = selected ? String(selected.defaults.budget_minutes_per_window) : '';
+    provenance.replaceChildren();
+    if (!selected) return;
+    const { source, score_provenance, assumptions } = selected;
+    provenance.append(
+      node('p', `${source.kind} / ${source.data_version} / ${source.time_basis}`),
+      node('p', `${score_provenance.source} / ${score_provenance.score_kind} / ${score_provenance.scorer_version}`),
+      ...assumptions.map(a => node('p', `${a.id}: ${a.description}`)),
+    );
+  }
+
+  async function compare() {
+    const selected = items[selector.selectedIndex];
+    if (disposed || !selected) return;
+    clearComparison();
+
+    let scoreThreshold: string;
+    try {
+      scoreThreshold = decimal(threshold.value);
+    } catch {
+      showError('Unesite prag od 0 do 1, sa tačkom kao decimalnim separatorom (najviše 128 znakova).', threshold);
+      return;
+    }
+    const minutes = Number(budget.value);
+    if (!/^\d+$/.test(budget.value) || !Number.isSafeInteger(minutes)) {
+      showError(`Unesite ceo broj minuta od 0 do ${Number.MAX_SAFE_INTEGER} po vremenskom prozoru.`, budget);
+      return;
+    }
+
+    const { scenario_id, scenario_version, content_sha256 } = selected;
+    const input = {
+      contract_version: 1,
+      scenario: { scenario_id, scenario_version, content_sha256 },
+      score_threshold: scoreThreshold,
+      budget_minutes_per_window: minutes,
+      strategy_versions: { fifo: 1, highest_score: 1, weighted_score_per_minute: 1 },
+    };
+    const token = generation;
+    pending = new AbortController();
+    status.textContent = 'Računanje…';
+    try {
+      const response = await client.compare(input, { signal: pending.signal });
+      if (disposed || token !== generation) return;
+      const decoded = decodeComparison(response);
+      const returned = decoded.recipe;
+      if (
+        returned.scenario.scenario_id !== scenario_id ||
+        returned.scenario.scenario_version !== scenario_version ||
+        returned.scenario.content_sha256 !== content_sha256 ||
+        returned.budget_minutes_per_window !== minutes ||
+        canonicalDecimal(returned.score_threshold) !== canonicalDecimal(scoreThreshold)
+      ) throw Error('Wrong recipe');
+      renderResults(results, decoded);
+      status.textContent = 'Poređenje završeno.';
+    } catch {
+      if (!disposed && token === generation) showError(requestError);
+    } finally {
+      if (token === generation) pending = undefined;
+    }
+  }
+
+  selector.addEventListener('change', selectScenario);
+  threshold.addEventListener('input', clearComparison);
+  budget.addEventListener('input', clearComparison);
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    void compare();
+  });
+  void (async () => {
+    try {
+      const response = await client.listScenarios({ signal: pending?.signal });
+      if (disposed) return;
+      pending = undefined;
+      items = decodeCatalog(response);
+      for (const scenario of items) {
+        const option = node('option', `${scenario.title} (v${scenario.scenario_version})`);
+        option.value = scenario.scenario_id;
+        selector.append(option);
+      }
+      selector.disabled = !items.length;
+      if (items.length) selectScenario();
+      else status.textContent = 'Nema dostupnih scenarija.';
+    } catch {
+      if (!disposed) showError(requestError);
+    }
+  })();
+  return () => {
+    disposed = true;
+    cancelPending();
+    root.replaceChildren();
+  };
 }

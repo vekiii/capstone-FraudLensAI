@@ -239,3 +239,220 @@ def test_comparison_service_failure_is_sanitized(client, monkeypatch):
     assert response.json() == {
         "error": {"code": "internal_error", "message": "Internal server error."}
     }
+
+
+@pytest.fixture
+def two_window_replay(tmp_path):
+    def prepare(coverage="partial"):
+        facts = Catalog().resolve("review-capacity-demo", 1).facts.model_dump()
+        start = "2026-01-01T00:00:00Z"
+        second_start = "2026-01-01T00:30:00Z"
+        template = facts["alerts"][0]
+        facts.update(
+            scenario_id="two-window-demo",
+            horizon=dict(starts_at=start, ends_at="2026-01-01T01:00:00Z"),
+            window_starts=[start, second_start],
+            alerts=[
+                {
+                    **template,
+                    "alert_id": alert_id,
+                    "available_at": available_at,
+                    "score": score,
+                    "estimated_review_minutes": minutes,
+                }
+                for alert_id, available_at, score, minutes in [
+                    ("A", start, "0.9", 3),
+                    ("B", start, "0.8", 1),
+                    ("C", "2026-01-01T00:15:00Z", "0.6", 1),
+                    ("D", "2026-01-01T00:15:00Z", "0.2", 1),
+                    ("E", "2026-01-01T00:45:00Z", "0.7", 1),
+                ]
+            ],
+        )
+        labels = {"A": "positive", "B": "negative", "C": "positive", "D": "positive"}
+        if coverage == "unknown_reviewed":
+            del labels["B"]
+        if coverage in {"unlabeled", "empty"}:
+            labels.clear()
+        if coverage == "empty":
+            facts["alerts"] = []
+        outcomes = dict(
+            scenario_id=facts["scenario_id"],
+            scenario_version=facts["scenario_version"],
+            outcomes=[dict(alert_id=key, outcome=value) for key, value in labels.items()],
+        )
+        facts["content_sha256"] = fingerprint(facts, outcomes)
+        (tmp_path / "two.json").write_text(json.dumps(facts), encoding="utf-8")
+        (tmp_path / "two.outcomes.json").write_text(json.dumps(outcomes), encoding="utf-8")
+        app = create_app()
+        app.state.simulation_catalog = Catalog(tmp_path)
+        return TestClient(app)
+
+    return prepare
+
+
+def scenario_recipe(client):
+    response = client.get("/api/simulation/scenarios")
+    assert response.status_code == 200
+    (item,) = response.json()["items"]
+    return {
+        **recipe(),
+        "scenario": {
+            key: item[key] for key in ("scenario_id", "scenario_version", "content_sha256")
+        },
+        **item["defaults"],
+    }
+
+
+def compare(client, body):
+    response = client.post("/api/simulation/comparisons", json=body)
+    assert response.status_code == 200
+    result = response.json()
+    assert result["recipe"]["scenario"] == body["scenario"]
+    assert result["recipe"]["budget_minutes_per_window"] == body["budget_minutes_per_window"]
+    assert_no_private_labels(result)
+    return result
+
+
+def test_two_window_comparison_changes_one_setting_at_a_time(two_window_replay):
+    with two_window_replay() as client:
+        body = scenario_recipe(client)
+        baseline = compare(client, body)
+        higher_budget = compare(client, {**body, "budget_minutes_per_window": 4})
+        higher_threshold = compare(client, {**body, "score_threshold": "0.8"})
+        zero_budget = compare(client, {**body, "budget_minutes_per_window": 0})
+
+    for result, threshold, admitted in [
+        (baseline, "0.3", ["A", "B", "C", "E"]),
+        (higher_budget, "0.3", ["A", "B", "C", "E"]),
+        (higher_threshold, "0.8", ["A", "B"]),
+        (zero_budget, "0.3", ["A", "B", "C", "E"]),
+    ]:
+        assert result["recipe"]["score_threshold"] == threshold
+        assert [a["alert_id"] for a in result["admitted_alerts"]] == admitted
+        assert [row["strategy_id"] for row in result["strategies"]] == [
+            "fifo",
+            "highest_score",
+            "weighted_score_per_minute",
+        ]
+
+    for row in baseline["strategies"]:
+        first, second = row["windows"]
+        assert set(first["ranked_alert_ids"]) == {"A", "B"}
+        assert first["reviewed_alert_ids"] == ["B"]
+        assert set(second["ranked_alert_ids"]) == {"A", "C"}
+        assert second["reviewed_alert_ids"] == ["C"]
+        assert [first["used_minutes"], second["used_minutes"]] == [1, 1]
+        assert row["pending_alert_ids"] == ["A", "E"]
+        assert row["counts"] == dict(
+            reviewed=2,
+            backlog=2,
+            unknown_in_horizon=1,
+            unknown_reviewed=0,
+            outcomes=dict(
+                positives_found=1,
+                positives_missed=2,
+                positives_missed_threshold=1,
+                positives_missed_backlog=1,
+                reviewed_negatives=1,
+            ),
+        )
+
+    for row, first_order in zip(
+        higher_budget["strategies"], [["A", "B"], ["A", "B"], ["B", "A"]], strict=True
+    ):
+        first, second = row["windows"]
+        assert first["reviewed_alert_ids"] == first_order
+        assert second["reviewed_alert_ids"] == ["C"]
+        assert [first["used_minutes"], second["used_minutes"]] == [4, 1]
+        assert row["pending_alert_ids"] == ["E"]
+        assert row["counts"]["outcomes"] == dict(
+            positives_found=2,
+            positives_missed=1,
+            positives_missed_threshold=1,
+            positives_missed_backlog=0,
+            reviewed_negatives=1,
+        )
+
+    for row in higher_threshold["strategies"]:
+        assert [w["reviewed_alert_ids"] for w in row["windows"]] == [["B"], []]
+        assert row["pending_alert_ids"] == ["A"]
+        assert row["counts"]["outcomes"] == dict(
+            positives_found=0,
+            positives_missed=3,
+            positives_missed_threshold=2,
+            positives_missed_backlog=1,
+            reviewed_negatives=1,
+        )
+
+    for row in zero_budget["strategies"]:
+        assert all(w["reviewed_alert_ids"] == [] and w["used_minutes"] == 0 for w in row["windows"])
+        assert row["pending_alert_ids"] == ["A", "B", "C", "E"]
+        assert row["counts"] == dict(
+            reviewed=0,
+            backlog=4,
+            unknown_in_horizon=1,
+            unknown_reviewed=0,
+            outcomes=dict(
+                positives_found=0,
+                positives_missed=3,
+                positives_missed_threshold=1,
+                positives_missed_backlog=2,
+                reviewed_negatives=0,
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "coverage, reviewed, pending, unknown, unknown_reviewed, outcomes",
+    [
+        (
+            "empty",
+            0,
+            0,
+            0,
+            0,
+            dict(
+                positives_found=0,
+                positives_missed=0,
+                positives_missed_threshold=0,
+                positives_missed_backlog=0,
+                reviewed_negatives=0,
+            ),
+        ),
+        ("unlabeled", 2, 2, 5, 2, None),
+        (
+            "unknown_reviewed",
+            2,
+            2,
+            2,
+            1,
+            dict(
+                positives_found=1,
+                positives_missed=2,
+                positives_missed_threshold=1,
+                positives_missed_backlog=1,
+                reviewed_negatives=0,
+            ),
+        ),
+    ],
+)
+def test_comparison_reports_outcome_coverage(
+    two_window_replay, coverage, reviewed, pending, unknown, unknown_reviewed, outcomes
+):
+    with two_window_replay(coverage) as client:
+        result = compare(client, scenario_recipe(client))
+    for row in result["strategies"]:
+        assert row["counts"] == dict(
+            reviewed=reviewed,
+            backlog=pending,
+            unknown_in_horizon=unknown,
+            unknown_reviewed=unknown_reviewed,
+            outcomes=outcomes,
+        )
+        if coverage == "empty":
+            assert result["admitted_alerts"] == []
+            assert row["pending_alert_ids"] == []
+            assert all(
+                w["ranked_alert_ids"] == [] and w["used_minutes"] == 0 for w in row["windows"]
+            )

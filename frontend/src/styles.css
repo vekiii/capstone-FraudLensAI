@@ -61,6 +61,10 @@ dd { margin: 0; font-weight: 550; }
 .explanation { white-space: pre-wrap; margin-bottom: 0; }
 
 nav[aria-label="Prikazi"] { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; }
+.simulation-settings { display: flex; flex-wrap: wrap; align-items: end; gap: 0.75rem; margin-bottom: 0.8rem; }
+.simulation-settings label { display: grid; gap: 0.25rem; }
+.simulation-settings input { width: 100%; min-height: 44px; padding: 0.5rem; font: inherit; }
+.simulation-settings input[aria-invalid="true"] { border-color: #b43e27; }
 [data-simulation-results] { overflow-x: auto; margin-top: 1rem; }
 [data-simulation-results] table { width: 100%; border-collapse: collapse; }
 [data-simulation-results] th, [data-simulation-results] td { text-align: left; padding: 0.7rem; border-bottom: 1px solid #d9e2e8; }

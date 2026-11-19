@@ -1,21 +1,20 @@
-# Current handoff - Feature 004 US1 complete, 2026-11-18
+# Current handoff — Feature 004 Phase 4 complete, 2026-11-19
 
-T001-T011 checked in their actual scopes. T008-T011 now implemented: exact
-label-free replay; closed read-only simulation API; outcome join after selection;
-strict client/decoder/default-results view with normal navigation. Cases default
-preserved. No remaining intentional RED (replay9/API26/frontend simulation8 GREEN).
-Final full backend401 PASS, frontend159 PASS, Ruff/typecheck/build/diff PASS.
-Existing Starlette/httpx deprecation warning. Normal local FastAPI/Vite/automated
-Chrome walkthrough7 grouped checks PASS; A/B/C,E and exact hand-counted results,
-Cases detail/back and404/422. Isolated browser/owned processes cleaned up.
+T001–T014 are checked in their actual scopes. Phase 4 added the risk score threshold
+and whole-minute budget per review window to Simulation & Evaluation. Editing a
+setting immediately clears results. Obsolete successes and failures are ignored
+after edits, scenario changes, resubmission and navigation. Each strategy shows
+threshold and backlog misses and the counts of unknown outcomes.
 
-No fixture/outcome/hash/catalog/lock/shared/Cases contract/scorer changes; no
-provider/ML/Feature02 adapter/Feature05/agents or Git publication. Human review
-and actual teammate reproduction remain pending, not inferred from automation.
-Evidence: [US1](evidence/tasks/feature-004-us1.md),
-[handoff](evidence/tasks/feature-004-phase-03-handoff.md),
-[browser](evidence/tasks/feature-004-us1-browser-results.json).
+T012 API regressions passed before implementation. T013 produced 21 expected RED
+failures and all 30 focused frontend tests passed after T014. Final verification
+passed 405 backend tests, 181 frontend tests, Ruff, typecheck, production build
+and `git diff --check`. The local Chrome retry passed 11 grouped checks, including
+budget 2→4, threshold editing, zero budget, invalid minutes and Cases navigation.
+[US2 evidence](evidence/tasks/feature-004-us2.md) ·
+[Chrome results](evidence/tasks/feature-004-us2-browser-results.json) ·
+[Prior US1 evidence](evidence/tasks/feature-004-us1.md)
 
-Next: separately scope Phase4 T012-T014 (capacity/threshold controls and
-stale-result extensions). Do not start automatically. Recipe export/reopen and
-producer adapter remain later work. Detailed prior RED/history retained in evidence.
+Human review and teammate reproduction are pending. The next separately scoped
+step is T015, API regressions for the exact recipe round trip and a label-only
+scenario variant. The walkthrough with recipe reopen is pending that phase.

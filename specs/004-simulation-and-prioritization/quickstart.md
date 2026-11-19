@@ -1,6 +1,6 @@
 # Quickstart: Simulation Lab and Decision Intelligence
 
-Default bundled comparison (T008-T011) is implemented and verified through local API/proxy/automated Chrome. Start the existing backend/Vite commands below and select Simulation & Evaluation. Capacity/threshold editing and recipe export/reopen remain later tasks; the corresponding walkthrough steps below are future acceptance checks. Actual results: ../../evidence/tasks/feature-004-us1.md.
+Start the backend and Vite with the commands below, then select Simulation & Evaluation. Run the bundled scenario with its defaults, or edit the risk score threshold and whole-minute budget per window before submitting. See the [default comparison evidence](../../evidence/tasks/feature-004-us1.md) and [settings verification](../../evidence/tasks/feature-004-us2.md). The recipe export, reopen and ranking inspection steps in the teammate walkthrough are scheduled for a later phase.
 
 ## Setup
 

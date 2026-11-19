@@ -35,4 +35,5 @@ junit.xml
 # Large/local data and generated evaluation output
 /data/raw/
 /data/processed/
+/data/artifacts/
 /evals/results/
