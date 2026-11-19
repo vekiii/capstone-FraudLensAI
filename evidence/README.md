@@ -37,6 +37,7 @@ documentation or ignore-policy setup must state that no data/model checks were r
 - [T209 resource benchmark](tasks/T209.md) and [runner](tasks/T209-benchmark.py): four synthetic scale/skew runs and frozen preparation ceilings.
 - [T203 source verification and local-copy decision](tasks/T203.md): measured source hash/header, IBM data-license statement, unknown Kaggle release/terms, and the user-directed content-addressed exception.
 - [T210 real canonical ingestion](tasks/T210.md) and [runner](tasks/T210-ingest.py): exact command, 5,078,345 accepted rows, verified snapshot/quality hashes, runtime-ceiling review and deferred fields.
+- [T211 temporal RED contracts](tasks/T211.md): twelve synthetic cases for UTC, strict prior-only history, 24-hour boundaries, currencies, bank-qualified identities and warm-up; GREEN is pending T213.
 - [Current handoff](../next_work.md), [data card](../data/README.md) and [protocol](../specs/002-data-and-risk-scoring/protocol.md): current status, local data limitations and next action.
 - [2026-11-19 local commit receipt](tasks/session-commits-2026-11-19.md): reviewed file scope, commit identity, checks and publication status.
 

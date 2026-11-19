@@ -16,6 +16,8 @@ Feature 002 specification was committed as `df4dabf`. T201–T208 implementation
 
 All raw and generated data paths remain Git-ignored; no real data or row-level labels should be committed. T210's missing temporal and label-audit fields belong to the later authorized tasks. Human review and second-person reproduction remain pending. The T209 runner and T210 runner passed Ruff; `git diff --check` passed. The actual T210 pipeline and snapshot verifier completed. No new application test suite was run for T203/T209/T210 documentation and operational ingestion.
 
+**T211 is complete as a synthetic RED test task.** Twelve cases in [test_temporal_features.py](backend/tests/unit/test_temporal_features.py) cover UTC equivalence, strict prior-only/tied events, the exact 24-hour edge, separate currency sums, bank-qualified identity, warm-up eligibility, Decimal exactness and missing required inputs. The focused pytest run collected 12 tests and all failed at the expected missing T213 feature-module boundary; Ruff passed after an import-order correction. No GREEN claim or real-source temporal pass has been made. See [T211 evidence](evidence/tasks/T211.md).
+
 ## One concrete next step
 
-Begin T211's synthetic RED temporal-feature contracts for UTC normalization, strict prior-only history, timestamp ties and the 24-hour boundaries. Preserve the verified ignored T210 snapshot and stage. Keep the missing upstream Kaggle details labeled unknown.
+Execute T212: verify the recorded UTC convention and freeze the exact feature order, decimal precision and unknown-category policy in `protocol.md` before T213 implements the RED contract. Preserve the verified ignored T210 snapshot and stage. Keep the missing upstream Kaggle details labeled unknown.
