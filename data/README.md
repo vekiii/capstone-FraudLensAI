@@ -88,19 +88,80 @@ IBM's [AML-Data README](https://github.com/IBM/AML-Data/blob/main/README.md)
 states that the repository code is Apache-2.0 while the actual dataset is under
 [CDLA-Sharing-1.0](https://cdla.dev/sharing-1-0/), and links to the Kaggle
 distribution and an IBM Box PDF. The README describes the data as synthetic.
+The CDLA text permits use and publication subject to its conditions; publication
+of data or enhanced data carries license, attribution and change-notice duties.
+No source or processed data is published from this repository. The current
+Kaggle listing's own license/terms field still needs capture for the selected
+release before real ingestion or any sharing decision.
 The Kaggle listing and Box PDF could not be read in this verification, so the
 current Kaggle-specific terms and any release-specific details remain unverified.
 Review the CDLA terms before publishing source or enhanced data.
 
 The local scan establishes observed non-label lexical shapes, but not authoritative
 field types. IBM's accessible README and linked NeurIPS paper do not specify the
-timezone for this release. Do not interpret naive timestamps as UTC until that
-meaning is documented or explicitly decided. For parsing, retain all raw CSV
-fields as text initially; identifier preservation and amount/label validation
-remain later pipeline work.
+timezone for this release. The subsequent project UTC assumption is recorded
+below and in the protocol; it is not a source-system claim. For parsing, retain
+all raw CSV fields as text initially; identifier preservation and amount/label
+validation remain later pipeline work.
 See [T203 evidence](../evidence/tasks/T203.md) for source links, checks and
-limitations. T203 remains open pending pinned revision, Kaggle terms, field-type
-and timestamp/timezone documentation.
+limitations. The later explicit local-copy decision below closes T203 for the
+measured source bytes despite the unavailable upstream release/acquisition
+record and Kaggle listing terms. Publisher-declared field types and timezone
+remain undocumented; the text-first and conditional time policies record how
+the project handles those limits.
+
+A 2026-11-19 follow-up confirmed that IBM/AMLSim is a separate generator whose
+schema does not describe this CSV. A third-party copy carries the same file hash
+and size, which corroborates byte identity but does not establish the local
+file's Kaggle version or acquisition history. The Kaggle listing/API and browser
+remained unavailable, so no version number or Kaggle-specific terms were inferred.
+The user subsequently confirmed a local download but could not provide its
+version or receipt. They then explicitly directed closure of T203 and execution
+of T210. The [protocol's local-copy exception](../specs/002-data-and-risk-scoring/protocol.md#t203-local-copy-decision-and-t210-scope)
+pins this copy by measured SHA-256 for local canonical preparation. Its Kaggle
+revision, acquisition date and Kaggle listing terms remain unknown. T203 is
+closed under that exception; it does not establish redistribution rights or
+authorize model claims.
+
+The user-supplied Kaggle description excerpt identifies `HI-Small_Trans.csv` as
+the HI-Small transaction file and `HI-Small_Patterns.txt` as a separate pattern
+file. The six HI/LI size variants are independent. For HI-Small, the publisher
+describes approximately five million transactions, 515,000 bank accounts and
+5,100 laundering-tagged transactions, with primary activity Sep 1–10, 2022.
+It also warns that some transactions occur later and describes those as
+laundering. These are approximate publisher statements, not measured local
+counts or an authorized label audit. The dataset shows an entire synthetic
+financial ecosystem, which is broader than one real bank's view. The publisher's
+60/20/20 split suggestion does not replace Feature 002's specified boundaries.
+The excerpt has no version, license sidebar, declared dtypes or timezone.
+
+The [Feature 002 protocol](../specs/002-data-and-risk-scoring/protocol.md)
+now records a project assumption to interpret naive timestamps as UTC at minute
+precision for later temporal processing. No source document checked so far
+asserts that timezone, and contrary documentation for the pinned release would
+stop ingestion. Initial parsing continues to preserve the timestamp text.
+
+## Feature 002 T210 data card status (2026-11-19)
+
+| Field | Current recorded value |
+|---|---|
+| Dataset and publisher | IBM synthetic AMLworld HI-Small transaction CSV; IBM links to the Kaggle distribution above. |
+| Local raw file identity | `raw/HI-Small_Trans.csv`; 475,664,283 bytes; SHA-256 `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`. |
+| Local source rows and header | 5,078,345 non-label record prefixes; exact 11-column header shown above. |
+| Publisher-stated data license | CDLA-Sharing-1.0 in IBM's README; Kaggle listing terms were inaccessible. Local preparation only; no data redistribution decision. |
+| Acquisition date, method and publisher version | User reports a local download. Date and exact Kaggle version are unknown; filesystem modification time is not acquisition evidence. Selected local revision is the SHA-256 above. |
+| Timestamp semantics | `YYYY/MM/DD HH:MM` observed; publisher timezone undocumented. Protocol records a conditional project UTC assumption at minute precision, not a publisher fact. |
+| Declared field types and label meaning | Source field types remain unverified; IBM describes the tag as a laundering tag on synthetic transactions, not a legal determination. |
+| Accepted/rejected/missing counts and quality report | Canonical run: 5,078,345 accepted, 0 rejected, 0 missing non-label values. [Ignored quality report](processed/t210-hi-small-b19d39f5-quality.json) contains 15 currencies on each side and 7 payment formats with aggregate counts. |
+| Timestamp and amount ranges | Source text: `2022/09/01 00:00` to `2022/09/18 16:18`; both amount columns `0.000001` to `1046302363293.48` in their respective currency units. Publisher timezone is unknown. |
+| Processed manifest, checksums and temporal counts | [Ignored snapshot](processed/t210-hi-small-b19d39f5/manifest.json) has 508 checkpoints, a verified `COMPLETE` marker and output hashes in [T210 evidence](../evidence/tasks/T210.md). `provenance_complete=false`; warm-up and scoreable counts require later temporal processing. |
+| Restricted label distribution | Pending the authorized aggregate audit after frozen partitions; no record-level label values are in this data card. |
+| Limits | Synthetic full-ecosystem source; unknown exact Kaggle release/date/terms; late-period label caveat from publisher; no claim about real-bank performance. The integrated run exceeded the prior 15-minute ceiling by 3.834 seconds; the breach and a 20-minute repeat-run ceiling are recorded in the protocol. Temporal/model gates remain. |
+
+[T209 resource protocol](../specs/002-data-and-risk-scoring/protocol.md) applies
+to canonical preparation only. [T210 evidence](../evidence/tasks/T210.md)
+records the exact run, checksums, runtime breach and still-missing fields. Other
+pre-existing ignored processed files were not treated as T210 outputs.
 
 Feature 002 policy and execution records are linked from
 [T201 evidence](../evidence/tasks/T201.md). No real dataset or generated model

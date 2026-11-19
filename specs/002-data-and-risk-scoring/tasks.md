@@ -1,7 +1,7 @@
 # Tasks: Dataset, Machine Learning and EDA
 
 **Inputs**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md
-**Status**: T201–T202, T204–T208 complete; T203 partially verified but remains open; T209–T255 remain unchecked. Evidence: [T201](../../evidence/tasks/T201.md), [T202](../../evidence/tasks/T202.md), [T203](../../evidence/tasks/T203.md), [T204](../../evidence/tasks/T204.md), [T205](../../evidence/tasks/T205.md), [T206](../../evidence/tasks/T206.md), [T207](../../evidence/tasks/T207.md), [T208](../../evidence/tasks/T208.md).
+**Status**: T201–T209 complete; T203 is closed under the explicit content-addressed local-copy exception in `protocol.md`; T210 is in progress; T211–T255 remain unchecked. Evidence: [T201](../../evidence/tasks/T201.md), [T202](../../evidence/tasks/T202.md), [T203](../../evidence/tasks/T203.md), [T204](../../evidence/tasks/T204.md), [T205](../../evidence/tasks/T205.md), [T206](../../evidence/tasks/T206.md), [T207](../../evidence/tasks/T207.md), [T208](../../evidence/tasks/T208.md), [T209](../../evidence/tasks/T209.md), [T210](../../evidence/tasks/T210.md).
 **Verification**: Apply RED → GREEN → REFACTOR to critical behavior. Record actual outcomes; do not invent RED or claim synthetic checks establish model quality.
 **Format**: `- [ ] Tnnn [P?] [USn] action with paths (FR-xxx; verification)`
 
@@ -9,14 +9,14 @@
 
 - [x] T201 [US1] Preserve the original prompt and document Feature 002 evidence/output policy in `prompts/development/`, `evidence/`, `data/README.md`, and `.gitignore` (FR-004, FR-005; diff reviewed and generated data paths verified ignored; see `evidence/tasks/T201.md`).
 - [x] T202 [US1] Write synthetic duplicate-header positional-map RED tests in `backend/tests/unit/test_dataset_schema.py` for sender/receiver mapping, leading zeros and changed/malformed schema (FR-002, FR-003; test must fail for wrong mapping). See `evidence/tasks/T202.md`.
-- [ ] T203 [US1] Verify the actual source revision, source terms/license, CSV header positions/types and timezone documentation; record findings without reading record-level labels in `evidence/tasks/T203.md` and `data/README.md` (FR-001, FR-002, FR-008). Partial verification recorded; resolve listed source/version/type/timezone gaps before checking complete.
+- [x] T203 [US1] Verify the selected source, source terms/license, CSV header positions/types and timezone documentation; record findings without reading record-level labels in `evidence/tasks/T203.md` and `data/README.md` (FR-001, FR-002, FR-008). Closed for the exact content-addressed local copy by the user's explicit exception in `protocol.md`; upstream Kaggle revision/acquisition date/listing terms and publisher-declared dtypes/timezone remain unknown, with local preparation only permitted.
 - [x] T204 [US1] Implement raw-byte hashing, schema gate, exact-text parser and stable source-row transaction identity in `backend/src/fraudlens/data/source.py`; satisfy T202 (FR-001–003). See `evidence/tasks/T204.md`.
 - [x] T205 [P] [US1] Add validation RED tests for malformed/missing values, amount, label encoding, row reconciliation and bounded reason codes in `backend/tests/unit/test_dataset_validation.py` (FR-006, FR-007, FR-013). RED evidence: `evidence/tasks/T205.md`.
 - [x] T206 [US1] Implement deterministic canonical validation and rejection ledger in `backend/src/fraudlens/data/validation.py`; satisfy T205 (FR-006, FR-007, FR-013). See `evidence/tasks/T206.md`.
 - [x] T207 [US1] Add interruption, checkpoint mismatch, disk exhaustion and resume RED tests in `backend/tests/unit/test_dataset_resume.py` (FR-006). See `evidence/tasks/T207.md`.
 - [x] T208 [US1] Implement bounded chunk staging, verified resume, manifest and atomic completed-snapshot marker in `backend/src/fraudlens/data/pipeline.py` and `manifest.py`; satisfy T207 (FR-004–006). See `evidence/tasks/T208.md`.
-- [ ] T209 [US1] Benchmark representative synthetic scale/skew; decide and record memory, disk reserve, runtime, chunk and checkpoint ceilings in `protocol.md` and `evidence/tasks/T209.md` before real ingestion (FR-006).
-- [ ] T210 [US1] Acquire only the verified source and create actual data card, manifest, checksums, counts, quality report and limitations in `data/README.md` and ignored `data/processed/` (FR-001–007; record exact commands/results).
+- [x] T209 [US1] Benchmark representative synthetic scale/skew; decide and record memory, disk reserve, runtime, chunk and checkpoint ceilings in `protocol.md` and `evidence/tasks/T209.md` before real ingestion (FR-006). See [T209 evidence](../../evidence/tasks/T209.md).
+- [ ] T210 [US1] Acquire only the verified source and create actual data card, manifest, checksums, counts, quality report and limitations in `data/README.md` and ignored `data/processed/` (FR-001–007; record exact commands/results). Local canonical preparation of the exact T203 content-addressed copy is authorized under `protocol.md`; see [T210 evidence](../../evidence/tasks/T210.md).
 
 ## Stage B — Historical features and frozen partitions
 
