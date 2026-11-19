@@ -28,7 +28,7 @@ Add the Simulation & Evaluation screen for one analyst to compare FIFO, highest 
 | Parallel work and provenance | Fixture-first with a replaceable boundary. | Scenario source, score kind, assumptions and exact recipe versions are explicit. Feature 02 integration has its own evidence gate. |
 | Reproducibility and evidence | Record design choices and actual checks. | Preserve original prompt and design evidence. Keep user-downloaded recipes local. Record test outcomes and actual peer walkthrough during implementation. |
 
-Both design reviews pass. Team review of the draft and executable product acceptance are pending.
+Both design reviews passed during planning. The [acceptance matrix](../../evidence/tasks/feature-004-acceptance.md) records the completed executable product acceptance and code review.
 
 ## Project Structure
 

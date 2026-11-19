@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-18
 
-**Status**: Draft for team review
+**Status**: Implementation and acceptance complete for the bundled synthetic scenario. [Acceptance matrix](../../evidence/tasks/feature-004-acceptance.md)
 
 **Input**: Compare alert review strategies under limited analyst capacity by replaying a frozen synthetic alert stream. See [the approved product idea](../../original_idea.md#8-decision-intelligence-i-simulation-lab).
 
