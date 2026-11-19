@@ -85,8 +85,8 @@ description: "Implementation tasks for Simulation Lab and Decision Intelligence"
 
 **Purpose**: Verify the fixture flow through the app and capture reproducible evidence.
 
-- [ ] T018 [P] Run the full backend suite and Ruff as listed in `specs/004-simulation-and-prioritization/quickstart.md`. Include existing case and health endpoint regressions and record actual output in `evidence/tasks/feature-004-backend-validation.md`.
-- [ ] T019 [P] Run the full frontend suite, TypeScript typecheck and production build as listed in `specs/004-simulation-and-prioritization/quickstart.md`. Include the existing Cases navigation and stale request regressions and record actual output in `evidence/tasks/feature-004-frontend-validation.md`.
+- [x] T018 [P] Run the full backend suite and Ruff as listed in `specs/004-simulation-and-prioritization/quickstart.md`. Include existing case and health endpoint regressions and record actual output in `evidence/tasks/feature-004-backend-validation.md`.
+- [x] T019 [P] Run the full frontend suite, TypeScript typecheck and production build as listed in `specs/004-simulation-and-prioritization/quickstart.md`. Include the existing Cases navigation and stale request regressions and record actual output in `evidence/tasks/feature-004-frontend-validation.md`.
 - [ ] T020 Run the teammate browser walkthrough in `specs/004-simulation-and-prioritization/quickstart.md` (SC-004). Record the actual reviewer, revision, versions, settings, scenario digest, observed turnaround, budget change and recipe rerun in `evidence/tasks/feature-004-browser-acceptance.md`. Retain any unverified step as pending until the corresponding check occurs.
 - [ ] T021 Confirm coverage of FR-001–009 and SC-001–004 against actual evidence and update `next_work.md` and `evidence/tasks/feature-004-acceptance.md`. Record remaining integration and human review status. Describe fixture outcomes as synthetic replay results.
 
