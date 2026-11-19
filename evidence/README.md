@@ -30,3 +30,14 @@ label-audit access, actual preparation/training commands, outputs, limitations a
 human review as separate task evidence. Do not place raw/processed rows, model
 artifacts, record-level labels, or holdout answers in this directory. Evidence for
 documentation or ignore-policy setup must state that no data/model checks were run.
+
+## Feature 002 current evidence index
+
+- [T201–T208 task records](tasks/T201.md): evidence for source-policy setup, synthetic parser/validation contracts and the resumable canonical runner; follow the individual T201–T208 links in [tasks.md](../specs/002-data-and-risk-scoring/tasks.md).
+- [T209 resource benchmark](tasks/T209.md) and [runner](tasks/T209-benchmark.py): four synthetic scale/skew runs and frozen preparation ceilings.
+- [T203 source verification and local-copy decision](tasks/T203.md): measured source hash/header, IBM data-license statement, unknown Kaggle release/terms, and the user-directed content-addressed exception.
+- [T210 real canonical ingestion](tasks/T210.md) and [runner](tasks/T210-ingest.py): exact command, 5,078,345 accepted rows, verified snapshot/quality hashes, runtime-ceiling review and deferred fields.
+- [Current handoff](../next_work.md), [data card](../data/README.md) and [protocol](../specs/002-data-and-risk-scoring/protocol.md): current status, local data limitations and next action.
+- [2026-11-19 local commit receipt](tasks/session-commits-2026-11-19.md): reviewed file scope, commit identity, checks and publication status.
+
+The raw CSV, snapshot, stage and quality report live in ignored `data/` paths and are not part of Git. No feature/model evaluation or authorized restricted label audit has been reported for T210.
