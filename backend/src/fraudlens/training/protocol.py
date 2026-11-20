@@ -21,6 +21,7 @@ _FIELDS = (
     'showcase_role', 'audit_passed', 'provenance_complete',
 )
 _PARTITIONS = frozenset(('development', 'showcase', 'train', 'validation', 'test'))
+_APPROVED_LOCAL_SOURCE = 'b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040'
 
 
 def _hash(value: object) -> bool:
@@ -111,6 +112,24 @@ def verify_showcase_exception(
         raise ProtocolError('Original audit does not match showcase-only exception.') from None
 
 
+def verify_local_copy_fitting_decision(
+    protocol: Mapping[str, object], observed: Mapping[str, object],
+) -> None:
+    """Bind the reported team approval to this exact local copy and snapshot."""
+    decision = protocol.get('provenance_decision')
+    if (not isinstance(decision, Mapping)
+            or decision.get('kind') != 'exact_local_copy_fitting_after_team_approval'
+            or protocol['dataset_sha256'] != _APPROVED_LOCAL_SOURCE
+            or decision.get('source_sha256') != _APPROVED_LOCAL_SOURCE
+            or decision.get('snapshot_manifest_sha256') != protocol['snapshot_manifest_sha256']):
+        raise ProtocolError('Exact local-copy provenance decision identity mismatch.')
+    raw_decision = observed.get('fitting_decision_record_bytes')
+    if (not isinstance(raw_decision, bytes)
+            or not _hash(decision.get('decision_record_sha256'))
+            or sha256_bytes(raw_decision) != decision['decision_record_sha256']):
+        raise ProtocolError('Exact local-copy fitting decision record mismatch.')
+
+
 def verify_prefit_protocol(
     protocol: Mapping[str, object], approved_protocol_sha256: str,
     observed: Mapping[str, object],
@@ -156,5 +175,7 @@ def verify_prefit_protocol(
         verify_showcase_exception(protocol, observed)
     elif protocol['audit_passed'] is not True:
         raise ProtocolError('Aggregate class audit status is invalid.')
-    if protocol['provenance_complete'] is not True:
-        raise ProtocolError('Dataset provenance is incomplete.')
+    if protocol['provenance_complete'] is False:
+        verify_local_copy_fitting_decision(protocol, observed)
+    elif protocol['provenance_complete'] is not True:
+        raise ProtocolError('Dataset provenance status is invalid.')

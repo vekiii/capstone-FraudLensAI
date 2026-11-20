@@ -179,6 +179,70 @@ def test_showcase_exception_does_not_override_incomplete_provenance():
         verify_prefit_protocol(protocol, _digest(protocol), observed)
 
 
+def _local_copy_fitting_fixture():
+    protocol, observed = _exception_fixture()
+    source = 'b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040'
+    protocol['dataset_sha256'] = source
+    observed['dataset_sha256'] = source
+    report = json.loads(observed['audit_report_bytes'])
+    report['source_sha256'] = source
+    observed['audit_report_bytes'] = (
+        json.dumps(report, sort_keys=True, separators=(',', ':')) + '\n'
+    ).encode()
+    protocol['audit_report_sha256'] = hashlib.sha256(observed['audit_report_bytes']).hexdigest()
+    observed['audit_report_sha256'] = protocol['audit_report_sha256']
+    protocol['audit_decision']['source_sha256'] = source
+    protocol['audit_decision']['audit_report_sha256'] = protocol['audit_report_sha256']
+    protocol['provenance_complete'] = False
+    decision = b'exact local-copy fitting approved; upstream revision unknown'
+    observed['fitting_decision_record_bytes'] = decision
+    protocol['provenance_decision'] = {
+        'kind': 'exact_local_copy_fitting_after_team_approval',
+        'source_sha256': source,
+        'snapshot_manifest_sha256': protocol['snapshot_manifest_sha256'],
+        'decision_record_sha256': hashlib.sha256(decision).hexdigest(),
+    }
+    return protocol, observed
+
+
+def test_checked_exact_local_copy_fitting_decision_admits_incomplete_provenance():
+    protocol, observed = _local_copy_fitting_fixture()
+    verify_prefit_protocol(protocol, _digest(protocol), observed)
+
+
+@pytest.mark.parametrize('damage', [
+    'missing_decision', 'changed_decision', 'wrong_source', 'wrong_snapshot',
+    'wrong_kind', 'other_source',
+])
+def test_local_copy_fitting_exception_mismatch_stops(damage):
+    protocol, observed = _local_copy_fitting_fixture()
+    if damage == 'missing_decision':
+        del protocol['provenance_decision']
+    elif damage == 'changed_decision':
+        observed['fitting_decision_record_bytes'] += b' changed'
+    elif damage == 'wrong_source':
+        protocol['provenance_decision']['source_sha256'] = '0' * 64
+    elif damage == 'wrong_snapshot':
+        protocol['provenance_decision']['snapshot_manifest_sha256'] = '0' * 64
+    elif damage == 'wrong_kind':
+        protocol['provenance_decision']['kind'] = 'unreviewed'
+    else:
+        protocol['dataset_sha256'] = '0' * 64
+        observed['dataset_sha256'] = '0' * 64
+        protocol['audit_decision']['source_sha256'] = '0' * 64
+        report = json.loads(observed['audit_report_bytes'])
+        report['source_sha256'] = '0' * 64
+        observed['audit_report_bytes'] = (
+            json.dumps(report, sort_keys=True, separators=(',', ':')) + '\n'
+        ).encode()
+        protocol['audit_report_sha256'] = hashlib.sha256(observed['audit_report_bytes']).hexdigest()
+        observed['audit_report_sha256'] = protocol['audit_report_sha256']
+        protocol['audit_decision']['audit_report_sha256'] = protocol['audit_report_sha256']
+        protocol['provenance_decision']['source_sha256'] = '0' * 64
+    with pytest.raises(ProtocolError):
+        verify_prefit_protocol(protocol, _digest(protocol), observed)
+
+
 @pytest.mark.parametrize('change', ['report', 'decision', 'source', 'boundary',
                                    'missing', 'development', 'showcase_minimum'])
 def test_showcase_exception_mismatch_stops(change):
