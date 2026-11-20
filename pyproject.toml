@@ -16,6 +16,10 @@ dev = [
     "ruff>=0.9,<1",
     "jsonschema[format]>=4.23,<5",
 ]
+ml = [
+    "lightgbm==4.7.0",
+    "scikit-learn==1.9.1",
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["backend/src"]
