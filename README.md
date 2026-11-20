@@ -1,5 +1,7 @@
 # FraudLens AI
 
+For the current Feature 002 model-training status and teammate setup, see the [team training handoff](TEAM_TRAINING_HANDOFF.md). The fixture quickstart below remains independent of a trained model.
+
 Educational AML prototype. Foundation phases 1-5 are implemented: local synthetic
 cases, strict contracts, replaceable scoring and list/detail UI. Phase 6 verifies
 coverage and delivery; independent peer reproduction and human review are pending.
