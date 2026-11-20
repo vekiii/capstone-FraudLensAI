@@ -1,7 +1,7 @@
 # Tasks: Dataset, Machine Learning and EDA
 
 **Inputs**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md
-**Status**: T201–T209 and T211–T218 complete; T203 is closed under the explicit content-addressed local-copy exception in `protocol.md`; T210 is in progress; T219–T255 remain unchecked. Evidence: [T201](../../evidence/tasks/T201.md), [T202](../../evidence/tasks/T202.md), [T203](../../evidence/tasks/T203.md), [T204](../../evidence/tasks/T204.md), [T205](../../evidence/tasks/T205.md), [T206](../../evidence/tasks/T206.md), [T207](../../evidence/tasks/T207.md), [T208](../../evidence/tasks/T208.md), [T209](../../evidence/tasks/T209.md), [T210](../../evidence/tasks/T210.md), [T211](../../evidence/tasks/T211.md), [T212](../../evidence/tasks/T212.md), [T213](../../evidence/tasks/T213.md), [T214](../../evidence/tasks/T214.md), [T215](../../evidence/tasks/T215.md), [T216](../../evidence/tasks/T216.md), [T217](../../evidence/tasks/T217.md), [T218](../../evidence/tasks/T218.md).
+**Status**: T201–T209, T211–T218 and T220 complete; T203 is closed under the explicit content-addressed local-copy exception in `protocol.md`; T210 is in progress; T219 and T221–T255 remain unchecked. Evidence: [T201](../../evidence/tasks/T201.md), [T202](../../evidence/tasks/T202.md), [T203](../../evidence/tasks/T203.md), [T204](../../evidence/tasks/T204.md), [T205](../../evidence/tasks/T205.md), [T206](../../evidence/tasks/T206.md), [T207](../../evidence/tasks/T207.md), [T208](../../evidence/tasks/T208.md), [T209](../../evidence/tasks/T209.md), [T210](../../evidence/tasks/T210.md), [T211](../../evidence/tasks/T211.md), [T212](../../evidence/tasks/T212.md), [T213](../../evidence/tasks/T213.md), [T214](../../evidence/tasks/T214.md), [T215](../../evidence/tasks/T215.md), [T216](../../evidence/tasks/T216.md), [T217](../../evidence/tasks/T217.md), [T218](../../evidence/tasks/T218.md), [T220](../../evidence/tasks/T220.md).
 **Verification**: Apply RED → GREEN → REFACTOR to critical behavior. Record actual outcomes; do not invent RED or claim synthetic checks establish model quality.
 **Format**: `- [ ] Tnnn [P?] [USn] action with paths (FR-xxx; verification)`
 
@@ -32,7 +32,7 @@
 
 ## Stage C — Machine learning
 
-- [ ] T220 [US3] Write RED tests proving training preprocessing fits only train data and test/showcase labels remain unread in `backend/tests/unit/test_training_boundaries.py` (FR-020–025).
+- [x] T220 [US3] Write RED tests proving training preprocessing fits only train data and test/showcase labels remain unread in `backend/tests/unit/test_training_boundaries.py` (FR-020–025). See [T220 RED evidence](../../evidence/tasks/T220.md); GREEN remains pending implementation.
 - [ ] T221 [US3] Resolve and freeze exact candidate grid, class strategy, threshold objective, feature admission policy and budget before any fit; record human decision in protocol/evidence (FR-021, FR-023–026).
 - [ ] T222 [US3] Verify scikit-learn/Python 3.14 lock compatibility and artifact format/security options; record actual versions and decision in `evidence/tasks/T222.md` (FR-030).
 - [ ] T223 [US3] Implement prevalence, depth-5/min-leaf-500 tree and L2 logistic baselines in `backend/src/fraudlens/training/baselines.py`; satisfy T220 (FR-023, FR-025).
