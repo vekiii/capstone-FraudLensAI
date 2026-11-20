@@ -29,19 +29,21 @@ class ThresholdChoice:
 class ValidationEvaluation:
     count: int
     positive_count: int
+    negative_count: int
     prevalence: float
-    threshold: float
-    f1: float
-    precision: float
-    recall: float
-    average_precision: float
-    roc_auc: float
+    threshold: float | None
+    f1: float | None
+    precision: float | None
+    recall: float | None
+    average_precision: float | None
+    roc_auc: float | None
     brier_score: float
-    confusion_matrix: dict[str, int]
+    calibration_status: str
+    confusion_matrix: dict[str, int] | None
     precision_at: dict[int, float]
-    recall_at: dict[int, float]
+    recall_at: dict[int, float | None]
     top_k_denominators: dict[int, int]
-    pr_curve: tuple[tuple[float, float, float], ...]
+    pr_curve: tuple[tuple[float, float, float], ...] | None
     daily_alert_counts: dict[str, int]
 
 
@@ -53,9 +55,6 @@ def _validated_binary_scores(
     if any(isinstance(label, (bool, np.bool_)) or not isinstance(label, (int, np.integer))
            or label not in (0, 1) for label in labels):
         raise ValueError('labels must be binary integers')
-    positives = sum(labels)
-    if positives == 0 or positives == len(labels):
-        raise ValueError('validation labels must contain both classes')
     checked_scores = []
     for score in scores:
         if isinstance(score, (bool, np.bool_)) or not isinstance(
@@ -118,6 +117,8 @@ def _choose_from_groups(
 def choose_threshold(labels: Sequence[int], scores: Sequence[float]) -> ThresholdChoice:
     """Maximize positive F1 over distinct scores, then precision and threshold."""
     checked_labels, checked_scores = _validated_binary_scores(labels, scores)
+    if sum(checked_labels) == 0:
+        raise ValueError('positive-class F1 threshold is undefined without positives')
     return _choose_from_groups(_score_groups(checked_labels, checked_scores),
                                sum(checked_labels))
 
@@ -142,8 +143,10 @@ def evaluate_validation(
     scores: Sequence[float],
     transaction_ids: Sequence[str],
     occurred_at_utc: Sequence[datetime],
+    *,
+    fixed_threshold: float | None = None,
 ) -> ValidationEvaluation:
-    """Report validation-only metrics and every UTC day's uncapped alert count."""
+    """Report metrics; use a validation-selected or externally frozen threshold."""
     checked_labels, checked_scores = _validated_binary_scores(labels, scores)
     ids, instants = _validated_identity_time(
         transaction_ids, occurred_at_utc, len(checked_labels),
@@ -152,7 +155,14 @@ def evaluate_validation(
     positives = sum(checked_labels)
     negatives = count - positives
     groups = _score_groups(checked_labels, checked_scores)
-    selected = _choose_from_groups(groups, positives)
+    if fixed_threshold is not None and (
+        isinstance(fixed_threshold, bool) or not isinstance(fixed_threshold, (int, float))
+        or not math.isfinite(fixed_threshold) or not 0 <= fixed_threshold <= 1
+    ):
+        raise ValueError('fixed threshold must be finite in [0,1]')
+    selected = (_choose_from_groups(groups, positives) if positives else None)
+    threshold = (float(fixed_threshold) if fixed_threshold is not None
+                 else selected.threshold if selected is not None else None)
 
     tp = fp = 0
     ap = auc_pairs = 0.0
@@ -162,10 +172,11 @@ def evaluate_validation(
         auc_pairs += group_positive * (lower_negatives + group_negative / 2)
         tp += group_positive
         fp += group_negative
-        precision = tp / (tp + fp)
-        recall = tp / positives
-        ap += group_positive / positives * precision
-        pr_curve.append((recall, precision, score))
+        if positives:
+            precision = tp / (tp + fp)
+            recall = tp / positives
+            ap += group_positive / positives * precision
+            pr_curve.append((recall, precision, score))
 
     ranked = sorted(range(count), key=lambda index: (-checked_scores[index], ids[index]))
     precision_at = {}
@@ -175,41 +186,50 @@ def evaluate_validation(
         denominator = min(k, count)
         hits = sum(checked_labels[index] for index in ranked[:denominator])
         precision_at[k] = hits / denominator
-        recall_at[k] = hits / positives
+        recall_at[k] = hits / positives if positives else None
         denominators[k] = denominator
 
-    alerts = tuple(score >= selected.threshold for score in checked_scores)
-    true_positive = sum(label and alert for label, alert in zip(checked_labels, alerts,
-                                                               strict=True))
-    false_positive = sum(not label and alert for label, alert in zip(checked_labels, alerts,
-                                                                    strict=True))
+    alerts = (tuple(score >= threshold for score in checked_scores)
+              if threshold is not None else None)
+    tp = (sum(label and alert for label, alert in zip(checked_labels, alerts, strict=True))
+          if alerts is not None else 0)
+    fp = (sum(not label and alert for label, alert in zip(checked_labels, alerts, strict=True))
+          if alerts is not None else 0)
+    predicted_positive = tp + fp
+    threshold_precision = tp / predicted_positive if predicted_positive else None
+    threshold_recall = tp / positives if positives else None
+    threshold_f1 = (2 * tp / (positives + predicted_positive)
+                    if positives + predicted_positive else None)
     by_day: Counter[str] = Counter()
-    for instant, alert in zip(instants, alerts, strict=True):
-        day = instant.date().isoformat()
-        by_day[day] += int(alert)
+    if alerts is not None:
+        for instant, alert in zip(instants, alerts, strict=True):
+            day = instant.date().isoformat()
+            by_day[day] += int(alert)
     brier = sum((score - label) ** 2 for label, score in zip(checked_labels, checked_scores,
                                                             strict=True)) / count
     return ValidationEvaluation(
         count=count,
         positive_count=positives,
+        negative_count=negatives,
         prevalence=positives / count,
-        threshold=selected.threshold,
-        f1=selected.f1,
-        precision=selected.precision,
-        recall=selected.recall,
-        average_precision=ap,
-        roc_auc=auc_pairs / (positives * negatives),
+        threshold=threshold,
+        f1=threshold_f1,
+        precision=threshold_precision,
+        recall=threshold_recall,
+        average_precision=ap if positives else None,
+        roc_auc=auc_pairs / (positives * negatives) if positives and negatives else None,
         brier_score=brier,
-        confusion_matrix={
-            'tn': negatives - false_positive,
-            'fp': false_positive,
-            'fn': positives - true_positive,
-            'tp': true_positive,
-        },
+        calibration_status='uncalibrated_probabilities',
+        confusion_matrix=(None if alerts is None else {
+            'tn': negatives - fp,
+            'fp': fp,
+            'fn': positives - tp,
+            'tp': tp,
+        }),
         precision_at=precision_at,
         recall_at=recall_at,
         top_k_denominators=denominators,
-        pr_curve=tuple(pr_curve),
+        pr_curve=tuple(pr_curve) if positives else None,
         daily_alert_counts=dict(sorted(by_day.items())),
     )
 

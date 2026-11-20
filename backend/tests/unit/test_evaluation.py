@@ -137,10 +137,47 @@ def test_nonfinite_out_of_range_or_non_numeric_scores_are_rejected(bad_score):
 
 
 @pytest.mark.parametrize('labels,scores', [((1, 0), (0.5,)), ((1, 2), (0.5, 0.2)),
-                                           ((1, 1), (0.5, 0.2)), ((), ())])
-def test_invalid_or_single_class_validation_is_rejected(labels, scores):
+                                           ((), ())])
+def test_invalid_validation_inputs_are_rejected(labels, scores):
     with pytest.raises(ValueError):
         evaluation().choose_threshold(labels, scores)
+
+
+def test_no_positive_validation_reports_undefined_selection_and_metrics():
+    module = evaluation()
+    report = module.evaluate_validation((0, 0), (0.2, 0.1), ('a', 'b'), instants(2))
+
+    assert report.positive_count == 0
+    assert report.prevalence == 0
+    assert report.threshold is None
+    assert report.f1 is None
+    assert report.average_precision is None
+    assert report.roc_auc is None
+    assert report.confusion_matrix is None
+    assert report.recall_at[20] is None
+    assert report.brier_score is not None
+    assert report.daily_alert_counts == {}
+    with pytest.raises(ValueError, match='without positives'):
+        module.choose_threshold((0, 0), (0.2, 0.1))
+
+
+def test_all_positive_validation_reports_roc_auc_undefined():
+    report = evaluation().evaluate_validation((1, 1), (0.8, 0.2), ('a', 'b'), instants(2))
+
+    assert report.average_precision == 1
+    assert report.roc_auc is None
+    assert report.f1 is not None
+
+
+def test_fixed_threshold_reports_test_confusion_without_reselecting_threshold():
+    report = evaluation().evaluate_validation(
+        (1, 0, 0), (0.8, 0.7, 0.2), ('a', 'b', 'c'), instants(3),
+        fixed_threshold=0.75,
+    )
+
+    assert report.threshold == 0.75
+    assert report.confusion_matrix == {'tn': 2, 'fp': 0, 'fn': 0, 'tp': 1}
+    assert report.f1 == 1
 
 
 def test_evaluation_rejects_duplicate_ids_and_naive_times():

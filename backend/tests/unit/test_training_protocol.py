@@ -24,6 +24,8 @@ def _fixture():
         'snapshot_manifest_sha256': hashlib.sha256(b'synthetic manifest').hexdigest(),
         'accepted_snapshot_sha256': hashlib.sha256(b'synthetic accepted').hexdigest(),
         'partition_hash_report_sha256': hashlib.sha256(b'synthetic ID report').hexdigest(),
+        'feature_manifest_sha256': hashlib.sha256(b'synthetic feature manifest').hexdigest(),
+        'training_labels_manifest_sha256': hashlib.sha256(b'synthetic labels manifest').hexdigest(),
         'audit_report_sha256': hashlib.sha256(b'synthetic audit').hexdigest(),
         'partition_scoreable_id_sha256': {key: hashlib.sha256(value).hexdigest()
                                          for key, value in ids.items()},
@@ -45,6 +47,8 @@ def _fixture():
         'snapshot_manifest_sha256': protocol['snapshot_manifest_sha256'],
         'accepted_snapshot_sha256': protocol['accepted_snapshot_sha256'],
         'partition_hash_report_sha256': protocol['partition_hash_report_sha256'],
+        'feature_manifest_sha256': protocol['feature_manifest_sha256'],
+        'training_labels_manifest_sha256': protocol['training_labels_manifest_sha256'],
         'audit_report_sha256': protocol['audit_report_sha256'],
         'partition_scoreable_id_sha256': {key: hashlib.sha256(value).hexdigest()
                                          for key, value in ids.items()},
@@ -60,6 +64,7 @@ def test_matching_complete_synthetic_protocol_is_admitted():
 @pytest.mark.parametrize('field', ['dataset_sha256', 'boundary_sha256',
                                    'snapshot_manifest_sha256', 'accepted_snapshot_sha256',
                                    'partition_hash_report_sha256', 'audit_report_sha256',
+                                   'feature_manifest_sha256', 'training_labels_manifest_sha256',
                                    'partition_scoreable_id_sha256'])
 def test_any_observed_hash_mismatch_stops(field):
     protocol, observed = _fixture()
@@ -77,6 +82,20 @@ def test_any_observed_hash_mismatch_stops(field):
 def test_missing_exact_protocol_field_stops(field):
     protocol, observed = _fixture()
     del protocol[field]
+    with pytest.raises(ProtocolError):
+        verify_prefit_protocol(protocol, _digest(protocol), observed)
+
+
+def test_missing_verified_feature_manifest_stops():
+    protocol, observed = _fixture()
+    del protocol['feature_manifest_sha256']
+    with pytest.raises(ProtocolError):
+        verify_prefit_protocol(protocol, _digest(protocol), observed)
+
+
+def test_missing_verified_training_label_manifest_stops():
+    protocol, observed = _fixture()
+    del protocol['training_labels_manifest_sha256']
     with pytest.raises(ProtocolError):
         verify_prefit_protocol(protocol, _digest(protocol), observed)
 

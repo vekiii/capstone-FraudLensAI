@@ -128,6 +128,37 @@ def fit_lightgbm_grid(
     )
 
 
+def fit_lightgbm_matrix_grid(
+    train: np.ndarray,
+    labels: np.ndarray,
+    validation: np.ndarray,
+    validation_labels: np.ndarray,
+    *,
+    n_jobs: int,
+) -> tuple[lgb.LGBMClassifier, ...]:
+    """Fit the frozen LightGBM grid from preprocessed arrays."""
+    if type(n_jobs) is not int or n_jobs < 1:
+        raise ValueError('n_jobs must be a positive integer')
+    y_train = np.asarray(labels, dtype=np.int8)
+    y_validation = np.asarray(validation_labels, dtype=np.int8)
+    if (train.ndim != 2 or validation.ndim != 2 or train.shape[1] != validation.shape[1]
+            or train.shape[0] != len(y_train) or validation.shape[0] != len(y_validation)
+            or not np.isin(y_train, (0, 1)).all()
+            or not np.isin(y_validation, (0, 1)).all()):
+        raise ValueError('training and validation arrays must be aligned binary matrices')
+    positives = int(np.count_nonzero(y_train))
+    negatives = len(y_train) - positives
+    if positives == 0 or negatives == 0:
+        raise ValueError('training labels must contain both classes')
+    if int(np.count_nonzero(y_validation)) == 0:
+        raise ValueError('validation has no positive examples; model selection is uninformative')
+    weight = negatives / positives
+    return tuple(
+        _fit_lightgbm(candidate, train, y_train, validation, y_validation, weight, n_jobs)
+        for candidate in LIGHTGBM_GRID
+    )
+
+
 def _fit_hist_gradient(
     candidate: HistGradientCandidate,
     train: np.ndarray,

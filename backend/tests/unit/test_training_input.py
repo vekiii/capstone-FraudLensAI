@@ -81,6 +81,20 @@ def test_full_source_requires_explicit_higher_row_ceiling(tmp_path):
         publish_training_features([], frozen, hashes(), tmp_path / 'features')
 
 
+def test_resource_stop_does_not_publish_partial_features(tmp_path):
+    lines = [row(i, TIMES[i - 1], 0) for i in range(1, 6)]
+    target = tmp_path / 'features'
+
+    def stop():
+        raise RuntimeError('resource limit reached')
+
+    with pytest.raises(RuntimeError, match='resource limit'):
+        publish_training_features(
+            lines, boundary(), hashes(), target, resource_check=stop,
+        )
+    assert not target.exists()
+
+
 def test_missing_canonical_label_field_fails_before_publication(tmp_path):
     lines = [row(i, TIMES[i - 1], 0) for i in range(1, 6)]
     lines[0] = lines[0].replace(b',"is_laundering":0', b'')

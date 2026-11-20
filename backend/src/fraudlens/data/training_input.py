@@ -9,6 +9,7 @@ import json
 import re
 import sqlite3
 import tempfile
+from collections.abc import Callable
 from contextlib import ExitStack
 from decimal import Decimal
 from pathlib import Path
@@ -99,6 +100,7 @@ def publish_training_features(
     destination: str | Path,
     *,
     max_rows: int = 10_000,
+    resource_check: Callable[[], None] | None = None,
 ) -> dict[str, Any]:
     """Sort non-label fields, compute strict-prior features, and verify partitions.
 
@@ -168,6 +170,8 @@ def publish_training_features(
                     raise ValueError('accepted row count exceeds frozen count')
                 if count % 10_000 == 0:
                     connection.commit()
+                    if resource_check is not None:
+                        resource_check()
             if count != accepted:
                 raise ValueError('accepted row count differs from frozen count')
             connection.commit()
@@ -177,7 +181,11 @@ def publish_training_features(
             with ExitStack() as stack:
                 streams = {name: stack.enter_context((stage / f'{name}.jsonl').open('wb'))
                            for name in _PARTITIONS}
+                processed = 0
                 for result in iter_temporal_features_ordered(_ordered_rows(connection)):
+                    processed += 1
+                    if processed % 10_000 == 0 and resource_check is not None:
+                        resource_check()
                     partition = _partition(result['timestamp'], cutoffs)
                     if (partition is None) != (not result['is_scoreable']):
                         raise ValueError('feature warm-up eligibility differs from boundary')
@@ -215,5 +223,7 @@ def publish_training_features(
             'files': {name: sha256_file(stage / f'{name}.jsonl') for name in _PARTITIONS},
         }
         (stage / 'manifest.json').write_bytes(canonical_json_bytes(manifest) + b'\n')
+        if resource_check is not None:
+            resource_check()
         stage.rename(target)
     return manifest

@@ -1,43 +1,69 @@
-# Local T228 training handout
+# Local T228 training and evaluation runbook
 
-Run from the repository root in PowerShell. **Current status: preparation checks can run; real training cannot yet start.** The user confirmed team approval to fit the exact SHA-256 `b19d39f5…` local copy despite unknown upstream revision/date. This is [recorded](../../prompts/development/002-T228-input-clarification.md) and checked by a narrow prefit exception. The complete approved FR-021 protocol, verified full-source feature/partition publication and gated full-source T228 runner are still absent. Calling model fit functions directly on the local dataset would bypass the required checks.
+Run commands from the repository root in PowerShell. The source bytes and generated feature/label files live only on the original workstation unless the team separately transfers them. `data/eval/` and `data/processed/` are Git-ignored.
 
-## 1. Set up the locked local environment
+## Current inputs and status
+
+- Exact local CSV SHA-256: `b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040`; upstream release, acquisition date and declared source timezone remain unknown.
+- Research feature manifest: `63873b79a1ff875c5702a62c40c7a9cb3faef6bb7e0bb658739abac35274c05f`.
+- Train/validation labels only: `5aee2e1d5f4f2ca7329fcc7b5b1ca0c808c4e8e39e84559e76a0d3e1a6add12c`.
+- FR-021 candidate: `specs/002-data-and-risk-scoring/t219-training-protocol.ibm-60-20-20.candidate.json`; canonical SHA-256 without trailing newline: `f34c51bcaeec63072a29eceae987b85ff3e8d88ac106fe51e9fc16355d5b3f5f` (check the current T219 evidence if code changes regenerate it). It is a review candidate, not approved or frozen.
+- No model training has been run. Current lightweight checks do not report model performance.
+
+## Set up the locked Windows environment
 
 ```powershell
 $env:UV_CACHE_DIR = (Join-Path (Get-Location) '.cache/uv')
-uv sync --locked --group ml
 $env:PYTHONPATH = 'backend/src'
+uv sync --locked --group dev --group ml
+uv run --locked --group ml python --version
+uv run --locked --group ml python -c "import lightgbm, sklearn; print('lightgbm', lightgbm.__version__, 'scikit-learn', sklearn.__version__)"
 ```
 
-The T222 lock records CPython 3.14.10, LightGBM 4.7.0 and scikit-learn 1.9.1. `uv sync` installs dependencies; it does not train a model.
+The project lock targets Python 3.14.10, LightGBM 4.7.0 and scikit-learn 1.9.1. The local runner also records NumPy, `uv.lock` SHA-256, Git revision/dirty state, configured thread count, peak Windows working set, and fit duration.
 
-## 2. Run the available no-fit checks
+## Review and verify before training
 
 ```powershell
-uv run --locked --group ml python evidence/tasks/T219-verify-decision.py
-uv run --locked --group ml pytest backend/tests/unit/test_training_protocol.py backend/tests/unit/test_training_boundaries.py backend/tests/unit/test_model_candidates.py backend/tests/unit/test_evaluation.py backend/tests/unit/test_artifacts.py -q --basetemp .cache/t228-local-check -o 'cache_dir=.cache/t228-local-check-cache'
+uv run --locked --group ml python evidence/tasks/T219-ibm-candidate.py
+uv run --locked --group ml python -m fraudlens.training.local_run --help
+uv run --locked --group dev --group ml pytest backend/tests/unit/test_research_split.py backend/tests/unit/test_research_labels.py backend/tests/unit/test_research_protocol.py backend/tests/unit/test_local_run.py backend/tests/unit/test_lightgbm_matrices.py backend/tests/unit/test_evaluation.py -q --basetemp .cache/pytest-ibm-training
+uv run --locked --group dev --group ml ruff check backend/src backend/tests evidence/tasks/T219-ibm-split.py evidence/tasks/T219-ibm-labels.py evidence/tasks/T219-ibm-candidate.py evidence/tasks/T230-evaluate.py
 ```
 
-The first command verifies the original restricted aggregate audit and human showcase decision. The second checks code on invented inputs; its results are **not model evaluation**. It does not establish fitting permission or source provenance.
+The candidate-builder recomputes whole-day assignment and validates manifest hashes. It does not fit a model. Tests use synthetic fixtures or mocked estimators.
 
-## 3. Check the current local data status
+## Run the LightGBM experiment yourself
+
+Review the exact candidate and digest first. If you decide to use that protocol, run all eight frozen LightGBM configurations using train-only preprocessing and class weighting, validation-based early stopping/threshold/model selection, and the configurable thread setting (default 4):
 
 ```powershell
-$m = Get-Content data/processed/t210-hi-small-b19d39f5/manifest.json -Raw | ConvertFrom-Json
-[pscustomobject]@{
-  accepted_count = $m.accepted_count
-  provenance_complete = $m.provenance_complete
-  temporal_partitioning_complete = $m.temporal_partitioning_complete
-  source_release = $m.source_release
-  scoreable_count = $m.scoreable_count
-} | Format-List
+$protocol = 'specs/002-data-and-risk-scoring/t219-training-protocol.ibm-60-20-20.candidate.json'
+$protocolSha = 'f34c51bcaeec63072a29eceae987b85ff3e8d88ac106fe51e9fc16355d5b3f5f'
+uv run --locked --group ml python -m fraudlens.training.local_run `
+  --features data/processed/t219-ibm-day-60-20-20-v1 `
+  --labels data/processed/t219-ibm-day-60-20-20-labels-v1 `
+  --protocol $protocol --protocol-sha256 $protocolSha `
+  --output data/eval/ibm-day-lightgbm-001 --n-jobs 4
 ```
 
-Expected on this workstation: `accepted_count=5078345`, provenance and temporal partitioning `False`, release and scoreable count null. These are observed gaps, not fields to edit in the T210 manifest.
+This is the only full-fit command. It will refuse mismatched candidate/input hashes, bad label alignment, single-class training, or validation without positives. It writes `experiment.json`, validation metrics and scores, a native LightGBM text model plus manifest, and test predictions without test labels. It does not automatically read test labels or create test metrics. Estimate runtime on your PC before choosing `--n-jobs`; fit runtime and memory have not been measured yet. Output directory must be new.
 
-## 4. Conditions for an actual training run
+## Evaluate test after freezing scores
 
-Before fitting, publish and verify the full-source chronological feature/partition output within measured resource ceilings. The new `training_input.py` core covers synthetic-scale label-free sorting/features/partition verification only and defaults to a 10,000-row ceiling. Complete T219's canonical protocol with all frozen identities, the recorded exact-copy `provenance_decision` and fields; obtain its independently recorded approval hash; and pass `verify_prefit_protocol` against freshly measured source/snapshot/boundary/partition/audit identities and decision-record bytes. A T228 runner must then bind those checks to the fit entry point and enforce the T221 3,600-second per-fit and 28,800-second eight-fit ceilings, memory/disk preflight, and train-only labels/preprocessing.
+Do not open test labels during model selection. When you intentionally authorize the one-time final test evaluation, the evaluator requires both the saved prediction hash and an explicit flag; it checks that the hash matches the experiment manifest before scanning labels. It writes aggregate metrics only and does not publish record-level test labels.
 
-The runnable **real training command does not exist yet**. Once those conditions and a gated runner are implemented, run the eight LightGBM configurations in the declared order, evaluate **validation only** with [evaluation.py](../../backend/src/fraudlens/training/evaluation.py), retain per-candidate timings and metrics under ignored `data/eval/`, and record the selected threshold/model and limitations in [T228 evidence](T228.md). Do not use test or showcase labels for this comparison. T229 freezes predictions afterward; T230 requires separate authorization before test-label evaluation.
+```powershell
+$run = Get-Content data/eval/ibm-day-lightgbm-001/experiment.json -Raw | ConvertFrom-Json
+uv run --locked --group ml python evidence/tasks/T230-evaluate.py `
+  --predictions data/eval/ibm-day-lightgbm-001/test-predictions-sealed.csv `
+  --prediction-sha256 $run.prediction_sha256.test `
+  --authorize-test-evaluation I_AUTHORIZE `
+  --output data/eval/ibm-day-lightgbm-001/test-evaluation.json
+```
+
+Only run that command after the predictions are frozen and the team explicitly authorizes test evaluation. Showcase labels remain unavailable. The reported test threshold comes from validation and cannot be changed using test outcomes.
+
+## Known limits
+
+The primary experiment covers the 1,884,981 scoreable development rows, not the warm-up context rows or later showcase. This preserves the project's existing showcase boundary and label restrictions. Only five UTC dates are available within scoreable development, so whole-day constraints yield 62.03/25.61/12.36 shares, not a close exact 60/20/20 split. Actual class counts are listed in [T219 evidence](T219.md). This exact local source's publisher revision and timezone remain unknown; UTC is the existing project assumption, not a verified publisher statement. No fit-resource numbers or model-quality results exist until you run the command.
