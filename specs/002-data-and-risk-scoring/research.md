@@ -2,6 +2,8 @@
 
 **Status**: Desk research and design proposals only. No dataset downloaded, real labels inspected, model trained, or application dependency changed during specification work.
 
+**Later decision:** The 2026-11-20 [T221 model-choice decision](protocol.md#t221-model-choice-decision--frozen-choices-fitting-stopped) supersedes the AP-first/F0.5 and at-most-five-candidate proposals below. The earlier research text is retained as its original design rationale.
+
 ## Dataset, provenance and license
 
 IBM's AML-Data README states the repository is Apache-2.0 while the data itself is CDLA-Sharing-1.0, and describes the generated transactions as synthetic from a virtual-world model, not anonymized real individuals ([IBM AML-Data README](https://github.com/IBM/AML-Data/blob/main/README.md)). The NeurIPS Datasets and Benchmarks paper describes six AML datasets with different sizes/illicit ratios and reports public synthetic statistics ([paper](https://papers.nips.cc/paper_files/paper/2023/file/5f38404edff6f3f642d6fa5892479c42-Paper-Datasets_and_Benchmarks.pdf)). Published figures do not replace verification of the exact Kaggle file/revision acquired. Prompt figures (including checksum/record counts) remain unverified references.

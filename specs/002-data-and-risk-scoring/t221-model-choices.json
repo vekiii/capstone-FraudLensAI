@@ -1,0 +1,111 @@
+{
+  "format": "t221-model-choices-v1",
+  "feature_admission": {
+    "feature_version": "hi-small-temporal-v1",
+    "policy": "exact_frozen_eleven_only",
+    "validation_driven_additions": false
+  },
+  "seed": 42,
+  "preprocessing": {
+    "fit_partition": "train_scoreable_only",
+    "feature_order_source": "hi-small-temporal-v1",
+    "categorical_fields": ["current_payment_currency", "current_payment_format"],
+    "categorical_encoding": "separate_train_vocabulary_one_hot",
+    "category_order": "unicode_codepoint_ascending_then_unknown",
+    "unknown_bucket": "__UNKNOWN__",
+    "reserved_token_collision": "reject",
+    "missing_values": "reject_no_imputation",
+    "history_decimal_sums": "exact_decimal_until_finite_float64_model_boundary",
+    "logistic_numeric_scaling": "train_fit_standard_scaler_only",
+    "tree_numeric_scaling": "none"
+  },
+  "imbalance": {
+    "policy": "training_only_class_weighting",
+    "positive_weight": "train_negative_count / train_positive_count",
+    "negative_weight": 1,
+    "constant_baseline": "unweighted_train_prevalence",
+    "downsampling": false,
+    "validation_test_showcase_prevalence": "natural"
+  },
+  "candidates": {
+    "prevalence_constant": {"count": 1, "score": "train_positive_count / train_scoreable_count"},
+    "decision_tree": {
+      "count": 1,
+      "max_depth": 5,
+      "min_samples_leaf": 500,
+      "class_weight": "training_only_ratio",
+      "random_state": 42
+    },
+    "logistic_regression": {
+      "count": 1,
+      "penalty": "l2",
+      "C": 1.0,
+      "solver": "lbfgs",
+      "max_iter": 1000,
+      "class_weight": "training_only_ratio",
+      "random_state": 42
+    },
+    "hist_gradient_boosting": {
+      "shared": {
+        "loss": "log_loss",
+        "early_stopping": false,
+        "min_samples_leaf": 500,
+        "random_state": 42,
+        "sample_weight": "training_only_ratio"
+      },
+      "grid": [
+        {"max_iter": 200, "learning_rate": 0.05, "max_leaf_nodes": 15, "l2_regularization": 0.0},
+        {"max_iter": 200, "learning_rate": 0.05, "max_leaf_nodes": 31, "l2_regularization": 0.0},
+        {"max_iter": 300, "learning_rate": 0.05, "max_leaf_nodes": 31, "l2_regularization": 1.0},
+        {"max_iter": 200, "learning_rate": 0.1, "max_leaf_nodes": 15, "l2_regularization": 0.0},
+        {"max_iter": 300, "learning_rate": 0.1, "max_leaf_nodes": 31, "l2_regularization": 1.0}
+      ]
+    },
+    "lightgbm": {
+      "implementation_order": "first",
+      "objective": "binary",
+      "boosting_type": "gbdt",
+      "metric_for_early_stopping": "binary_logloss",
+      "deterministic_cpu": true,
+      "random_state": 42,
+      "n_estimators": 1000,
+      "early_stopping_rounds": 50,
+      "num_leaves": [31, 63],
+      "learning_rate": [0.05, 0.1],
+      "min_child_samples": [50, 200],
+      "grid_order": "num_leaves_then_learning_rate_then_min_child_samples_ascending",
+      "scale_pos_weight": "training_only_ratio"
+    }
+  },
+  "selection": {
+    "partition": "validation_only",
+    "candidate_thresholds": "distinct_validation_scores_with_score_greater_or_equal_threshold",
+    "threshold_objective": "maximize_positive_class_f1",
+    "threshold_ties": ["higher_precision", "higher_threshold"],
+    "model_ranking": ["higher_validation_positive_class_f1", "higher_validation_average_precision", "higher_validation_precision_at_20", "simpler_model", "earlier_declared_candidate"],
+    "family_simplicity_order": ["prevalence_constant", "logistic_regression", "decision_tree", "hist_gradient_boosting", "lightgbm"],
+    "within_family_simplicity": "lower_tree_leaves_then_fewer_iterations_then_earlier_grid_position",
+    "final_model": "highest_ranked_across_all_declared_families",
+    "score_ties_for_precision_at_20": "transaction_id_unicode_codepoint_ascending",
+    "freeze_before_test_labels": true,
+    "showcase_for_selection": false
+  },
+  "report_metrics": ["positive_class_f1", "average_precision", "precision", "recall", "roc_auc", "precision_recall_at_20_50_100", "brier_score", "confusion_matrix", "false_positive_count", "false_negative_count", "daily_alert_count"],
+  "budget": {
+    "device": "cpu_only",
+    "n_jobs": "max(1, physical_core_count - 1)",
+    "fit_seconds_max_each": 3600,
+    "fit_seconds_max_all": 54000,
+    "peak_working_set_bytes_max": 8589934592,
+    "initial_free_disk_bytes_min": 21474836480,
+    "ending_free_disk_bytes_min": 10737418240,
+    "on_limit": "stop_and_record_no_silent_subsample",
+    "physical_core_count": "measure_and_log_at_run"
+  },
+  "label_access": {
+    "fit": "train_only",
+    "selection": "validation_only",
+    "test": "record_labels_unread_until_frozen_predictions_and_separate_authorization",
+    "showcase": "demo_only_record_labels_unread"
+  }
+}

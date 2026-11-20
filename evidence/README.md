@@ -46,7 +46,7 @@ documentation or ignore-policy setup must state that no data/model checks were r
 - [T217 restricted aggregate audit](tasks/T217.md): synthetic GREEN, additional denial/encoding regressions and full backend checks; the later real audit is recorded under T218.
 - [T218 frozen boundaries and real aggregate audit](tasks/T218.md): count-only UTC boundaries committed before label access, permitted partition/day totals, and the FR-018 showcase tolerance failure; training stopped pending a human decision.
 - [T220 training boundary RED contracts](tasks/T220.md): ten synthetic cases for train-only preprocessing and sealed test/showcase labels; GREEN pending implementation.
-- [T221 Phase 1 training-protocol proposal](tasks/T221.md): proposed LightGBM configuration, T219 approved-protocol-hash clarification, verification results and unresolved provenance/specification blockers. No model fit or evaluation was run.
+- [T221 model-choice decision](tasks/T221.md): Phase 1 LightGBM proposal and the later user-reported team approval for the combined LightGBM/baseline/HistGradientBoosting grid, choice hash, schedule impact and remaining FR-021/provenance gates. No model fit or evaluation was run.
 - [Current handoff](../next_work.md), [data card](../data/README.md) and [protocol](../specs/002-data-and-risk-scoring/protocol.md): current status, local data limitations and next action.
 - [2026-11-19 local commit receipt](tasks/session-commits-2026-11-19.md): reviewed file scope, commit identity, checks and publication status.
 

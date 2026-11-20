@@ -79,11 +79,11 @@ Hard memory and disk ceilings remain a blocking decision. Before real ingestion,
 
 ## Model and Evaluation Architecture
 
-- Feature contract is frozen independently of labels. Recommendation: current paid amount (`log1p` after validated nonnegative decimal conversion), payment currency, and payment format; categorical unknown behavior must be explicit.
-- Baselines: training prevalence constant; depth-5/min-leaf-500 decision tree; L2 logistic regression.
-- Candidate: maximum five declared `HistGradientBoosting` configurations, seed 42; validation AP, then P@20, then deterministic simplicity rule.
-- Preprocessing, encoders and any scaling are fitted only on training. If labels are downsampled/weighted, only frozen training rows are affected.
-- Threshold selected on validation by predeclared objective (recommended F0.5 pending decision). Test and showcase remain sealed.
+- Feature contract is frozen independently of labels as the exact eleven `hi-small-temporal-v1` fields, including current paid amount (`log1p`), payment currency and payment format with a reserved unknown bucket.
+- First implementation track: eight declared LightGBM configurations. Retain training-prevalence constant, depth-5/min-leaf-500 decision tree, L2 logistic regression and five declared `HistGradientBoosting` configurations for the combined comparison. The exact grid and budget are in [T221 model choices](t221-model-choices.json); the user's report of team approval and schedule impact are recorded in [T221 evidence](../../evidence/tasks/T221.md).
+- Rank all declared families on validation positive-class F1 at the selected threshold, then AP, P@20 and the frozen simplicity/order tie-break. LightGBM uses validation binary log loss for early stopping only; no internal random validation split is permitted.
+- Preprocessing, encoders and logistic scaling are fitted only on training. Frozen training rows alone receive the declared class weighting; no downsampling changes their population.
+- Threshold selected on validation by positive-class F1 with higher-precision, then higher-threshold ties. Test and showcase remain sealed.
 - Store model, preprocessing, metadata, feature order/version, runtime/library versions, source/protocol hashes, training code revision, random seed, validation metrics, threshold method/value, and artifact checksum as one compatibility unit.
 - Proposed serialization recommendation: prefer a format with safer inspection/loading such as `skops.io` if candidate estimator support and Python-version compatibility pass; otherwise use a native format only for trusted local artifacts with strict hash/version checks. Pickle/joblib must never load untrusted artifacts. Keep final choice open pending compatibility spike.
 - Frozen predictions precede separately authorized test evaluation. Reports clearly label synthetic source and only claim the split actually measured.
@@ -117,12 +117,12 @@ Show prediction score, threshold status, feature/model version, synthetic-data n
 | Timezone-naive timestamp | Source-declared zone; explicit project UTC assumption; reject pending clarification | Treat as UTC only if documentation leaves it unspecified, record assumption; otherwise stop | Changes canonical instants, warm-up, feature windows and every temporal boundary | Ingestion |
 | Current-transaction features | Amount only; amount + currency + format; omit current fields | Amount `log1p` + payment currency + format; freeze before experiments | Changes feature schema, preprocessing and model artifact compatibility | Feature generation |
 | Resource ceilings | Measured developer-machine limits; fixed team baseline | Benchmark and record RSS, disk reserve, runtime, chunk and checkpoint limits | Determines storage engine, chunk sizes, sort strategy and whether full source run is feasible | Full ingestion |
-| Model candidate grid | Up to five predeclared configurations | Small shallow/regularized grid; freeze exact values before fitting | Bounds compute and affects deterministic selection/model complexity | Model training |
-| Threshold objective | F0.5; minimum precision with recall tie-break; another declared objective | F0.5, deterministic threshold tie rule; team decision | Changes review status and alert volume in API/UI and evaluation | Validation |
+| Model candidate grid | Decision recorded 2026-11-20 | Eight LightGBM, five HistGradientBoosting and three baseline configurations in [T221 choices](t221-model-choices.json); LightGBM implementation first | Up to 15 fit-hours plus preparation, evaluation and integration | Full FR-021 protocol approval before fitting |
+| Threshold objective | Decision recorded 2026-11-20 | Validation positive-class F1, then precision and higher-threshold ties | Changes review status and alert volume in API/UI and evaluation | Full FR-021 protocol approval before fitting |
 | Artifact format | ONNX; skops; trusted joblib/native model | Compatibility/security spike; prefer safer inspectable format supported by chosen model | Determines dependency, loader, version checks and runtime portability | Runtime integration |
 | EDA page | Approve dedicated route; defer to existing screen | Approve only with written benefit and schedule impact; no approval asserted here | Adds a separately navigable UI destination, tests, chart/accessibility work and delivery time | EDA UI |
-| Feature admission margin | No added features; proposed +10% relative AP over frozen baseline | Apply only after team approval; preserve interpretability | Controls whether feature experiments can expand input schema and evaluation schedule | Any feature experiment |
-| Class strategy | None; weighting; deterministic negative downsample | Start with none, compare only predeclared allowed options | Changes training population/objective; must not alter validation/test/showcase prevalence | Training |
+| Feature admission margin | Decision recorded 2026-11-20 | Exact frozen eleven features; no validation-driven admission experiment | Keeps feature schema fixed | Any feature experiment requires a new reviewed decision |
+| Class strategy | Decision recorded 2026-11-20 | Train-only class weighting using training negative/positive ratio; constant baseline unweighted | Natural validation/test/showcase prevalence retained | Full FR-021 protocol approval before fitting |
 
 ## Complexity Tracking
 
