@@ -49,6 +49,7 @@ documentation or ignore-policy setup must state that no data/model checks were r
 - [T221 model-choice decision](tasks/T221.md): Phase 1 LightGBM proposal and the later user-reported team approval for the combined LightGBM/baseline/HistGradientBoosting grid, choice hash, schedule impact and remaining FR-021/provenance gates. No model fit or evaluation was run.
 - [T222 locked ML compatibility and artifact decision](tasks/T222.md): Python 3.14/scikit-learn/LightGBM versions, synthetic native model roundtrip, locked regression check and trusted-local-artifact plan. No real fit or loader was run.
 - [T223 train-only preparation and baselines](tasks/T223.md): T220 GREEN, synthetic prevalence/tree/L2 logistic checks, class weighting and train-only scaling. No real-source fit was run.
+- [T224 candidate code and cross-family rule](tasks/T224.md): eight LightGBM and five HistGradientBoosting configurations, frozen later-selection rule, and mocked no-fit checks. Actual model training remains unrun by user instruction.
 - [Current handoff](../next_work.md), [data card](../data/README.md) and [protocol](../specs/002-data-and-risk-scoring/protocol.md): current status, local data limitations and next action.
 - [2026-11-19 local commit receipt](tasks/session-commits-2026-11-19.md): reviewed file scope, commit identity, checks and publication status.
 
