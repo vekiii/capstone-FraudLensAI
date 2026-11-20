@@ -1,5 +1,11 @@
 # Next work — FraudLens AI
 
+## Latest handoff: 2026-11-20 colleague bundle publication
+
+The generated T228 transfer ZIP remains local and Git-ignored; its SHA-256 file, macOS guide, task evidence, prompt record, ignore rule and evidence index were committed as `b7693f6` and pushed to `origin/feature/002-clean-start` (remote advanced from `42adea7`). The [transfer evidence](evidence/tasks/T228-transfer.md) records who requested, implemented and checked the bundle. No model fit, test evaluation or second-person Mac reproduction occurred. The exact FR-021 candidate protocol hash is still awaiting explicit approval before fitting.
+
+**One concrete next step:** send the local ZIP and checksum through the team's approved transfer channel, then record the protocol approval before the colleague runs the fit.
+
 ## Latest handoff: 2026-11-20 T228 colleague bundle
 
 Created local, ignored `T228-colleague-transfer-2026-11-20.zip` with tracked repository files, the feature and train/validation label inputs, T219 evidence, protocol candidate, runbook and macOS colleague guide. Created matching [SHA-256 file](T228-colleague-transfer-2026-11-20.zip.sha256). Archive CRC validation passed, duplicate archive paths were removed, and both expected prepared manifests are present. It excludes raw CSV, test-label data, showcase data and model/evaluation outputs. An initial broad filename exclusion check matched one historical showcase-decision prompt, which is documentation only; inspection confirmed no showcase dataset or test-label files are bundled. The FR-021 protocol candidate remains unapproved; archive receipt does not authorize fitting. No model training or test evaluation occurred. [Transfer evidence](evidence/tasks/T228-transfer.md) records contributions and checks; [evidence index](evidence/README.md) links it.

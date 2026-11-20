@@ -22,6 +22,9 @@
 - Python `zipfile.testzip()` returned `None` (all archive CRC checks passed); expected input manifests were present; no duplicate archive entries. A broad filename check matched a tracked historical showcase-decision prompt, not a showcase dataset. The actual data directory selection excluded raw CSV, test-label files, showcase data and evaluation output.
 - Final archive size: 111,539,550 bytes. SHA-256: `a3f36444a829f44cf990a43dcdc2d70bfe906ee85327186449dfa31e32595687`. The archive was rebuilt after the guide gained exact extraction instructions; CRC, path uniqueness and permitted data-directory checks passed again.
 - No model fit, test evaluation, macOS installation check or colleague reproduction was run. This was documentation and packaging; RED/GREEN testing is not applicable.
+- `git check-ignore -v T228-colleague-transfer-2026-11-20.zip`: matched `.gitignore` line 44. `git diff --cached --check`: exit 0, with no whitespace findings. The archive was not staged.
+- `git commit -m "Document colleague training transfer and ignore local bundle"`: exit 0, commit `b7693f6`; seven documentation/ignore/checksum files committed. Git reported the automatically configured committer identity `Isidora Popovic LUKOWA <i.popovic@lukowa.com>`.
+- `git push origin feature/002-clean-start`: exit 0, remote advanced from `42adea7` to `b7693f6`, publishing that commit and the 12 earlier local commits on the feature branch. No push to `master` was requested or performed.
 
 ## Limits and review
 
