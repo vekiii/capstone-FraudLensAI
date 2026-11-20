@@ -52,6 +52,7 @@ documentation or ignore-policy setup must state that no data/model checks were r
 - [T224 candidate code and cross-family rule](tasks/T224.md): eight LightGBM and five HistGradientBoosting configurations, frozen later-selection rule, and mocked no-fit checks. Actual model training remains unrun by user instruction.
 - [T225 validation evaluation RED contracts](tasks/T225.md): 25 fixed-score tests for thresholds, ranking, metrics, denominators, alert counts and invalid inputs; GREEN remains T226 work. No model fit.
 - [T226 validation evaluation](tasks/T226.md): T225 GREEN plus NumPy and tied-score regressions, positive-class threshold and uncapped daily counts, all on fixed scores without fitting.
+- [T227 artifact integrity](tasks/T227.md): native-text writer, independently anchored manifest digest, metadata/version/path validation and no deserialization; synthetic byte checks only.
 - [Current handoff](../next_work.md), [data card](../data/README.md) and [protocol](../specs/002-data-and-risk-scoring/protocol.md): current status, local data limitations and next action.
 - [2026-11-19 local commit receipt](tasks/session-commits-2026-11-19.md): reviewed file scope, commit identity, checks and publication status.
 
