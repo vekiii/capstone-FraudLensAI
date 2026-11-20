@@ -33,6 +33,8 @@ documentation or ignore-policy setup must state that no data/model checks were r
 
 ## Feature 002 current evidence index
 
+The [T228 transfer record](tasks/T228-transfer.md) identifies the request, recorded Git author, Codex packaging work, observed archive checks, and pending colleague reproduction. The generated data archive is local and ignored by Git; its [checksum](../T228-colleague-transfer-2026-11-20.zip.sha256) is committed. The [macOS colleague guide](tasks/T228-colleague-macos-guide.md) gives the setup and run steps. The FR-021 candidate still needs explicit approval before fitting.
+
 - [T201–T208 task records](tasks/T201.md): evidence for source-policy setup, synthetic parser/validation contracts and the resumable canonical runner; follow the individual T201–T208 links in [tasks.md](../specs/002-data-and-risk-scoring/tasks.md).
 - [T209 resource benchmark](tasks/T209.md) and [runner](tasks/T209-benchmark.py): four synthetic scale/skew runs and frozen preparation ceilings.
 - [T203 source verification and local-copy decision](tasks/T203.md): measured source hash/header, IBM data-license statement, unknown Kaggle release/terms, and the user-directed content-addressed exception.

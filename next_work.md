@@ -1,5 +1,17 @@
 # Next work — FraudLens AI
 
+## Latest handoff: 2026-11-20 T228 colleague bundle
+
+Created local, ignored `T228-colleague-transfer-2026-11-20.zip` with tracked repository files, the feature and train/validation label inputs, T219 evidence, protocol candidate, runbook and macOS colleague guide. Created matching [SHA-256 file](T228-colleague-transfer-2026-11-20.zip.sha256). Archive CRC validation passed, duplicate archive paths were removed, and both expected prepared manifests are present. It excludes raw CSV, test-label data, showcase data and model/evaluation outputs. An initial broad filename exclusion check matched one historical showcase-decision prompt, which is documentation only; inspection confirmed no showcase dataset or test-label files are bundled. The FR-021 protocol candidate remains unapproved; archive receipt does not authorize fitting. No model training or test evaluation occurred. [Transfer evidence](evidence/tasks/T228-transfer.md) records contributions and checks; [evidence index](evidence/README.md) links it.
+
+**One concrete next step:** transfer the archive only through the team's approved channel; record approval of the exact protocol hash before the colleague runs the fit command.
+
+## Latest handoff: 2026-11-20 colleague training guide
+
+Added [T228-colleague-macos-guide.md](evidence/tasks/T228-colleague-macos-guide.md) with step-by-step macOS setup, required data transfer and digest checks, locked environment setup, no-fit checks, gated LightGBM command, expected outputs, model scope and later comparison decisions. It explicitly distinguishes macOS from iOS and records that the FR-021 hash `f34c51bcaeec63072a29eceae987b85ff3e8d88ac106fe51e9fc16355d5b3f5f` remains unapproved, so fitting must wait for written protocol approval. Prepared files are ignored and absent from a clone; the colleague must obtain them and verify manifests through the approved transfer process. Mac/Apple Silicon installation and fit compatibility are not yet verified. No training or tests were run for this documentation-only change.
+
+**One concrete next step:** obtain explicit approval for the candidate protocol hash, then have the colleague confirm Mac `uv sync --locked` succeeds and verify the transferred manifests before any fit.
+
 ## Latest handoff: 2026-11-20 IBM split / T219 / T228 implementation
 
 The user asked to align the AML split with IBM Multi-GNN's complete-day 60/20/20 method, retire fixed positive-count/prevalence-ratio gates, update FR-021/027 and prepare a locally runnable LightGBM workflow without training. The old T218 3m development/showcase boundary and 70/15/15 partitions are preserved as history; research v2 applies to the 1,884,981 scoreable development rows only. Warm-up remains context and showcase remains excluded/sealed. Complete UTC days yield train/validation/test 1,169,261 / 482,650 / 233,070 (62.03% / 25.61% / 12.36%), cutoffs Sep 4 / Sep 5 / development end 2022-09-06 11:12 UTC. Counts are train 1,206 positive / 1,168,055 negative; validation 471 / 482,179; test 218 / 232,852. Test counts came from the existing T218 daily aggregate; no test record labels were read.

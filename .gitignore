@@ -40,5 +40,8 @@ junit.xml
 /data/eval/
 /evals/results/
 
+# Local colleague transfer bundle contains generated transaction features and labels
+/T228-colleague-transfer-*.zip
+
 third_party/Multi-GNN/
 third_party/TabGT/
