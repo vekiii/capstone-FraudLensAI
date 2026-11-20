@@ -4,6 +4,7 @@ import importlib
 import math
 from datetime import datetime, timezone
 
+import numpy as np
 import pytest
 
 
@@ -54,6 +55,16 @@ def test_equal_f1_thresholds_prefer_higher_precision():
     assert selected.precision == 1.0
 
 
+def test_threshold_accepts_numpy_model_score_arrays_without_a_fit():
+    selected = evaluation().choose_threshold(
+        np.asarray([1, 0, 1, 0], dtype=np.int64),
+        np.asarray([0.9, 0.8, 0.7, 0.1], dtype=np.float32),
+    )
+
+    assert selected.threshold == pytest.approx(0.7)
+    assert selected.f1 == pytest.approx(0.8)
+
+
 def test_validation_metrics_use_explicit_denominators_and_positive_class():
     result = evaluation().evaluate_validation(
         labels=(1, 0, 1, 0),
@@ -92,6 +103,19 @@ def test_precision_at_20_breaks_score_ties_by_transaction_id():
     assert result.precision_at[20] == pytest.approx(19 / 20)
     assert result.recall_at[20] == pytest.approx(19 / 20)
     assert result.top_k_denominators[20] == 20
+
+
+def test_average_precision_and_roc_auc_treat_equal_scores_as_one_group():
+    result = evaluation().evaluate_validation(
+        labels=(1, 0),
+        scores=(0.5, 0.5),
+        transaction_ids=('a', 'b'),
+        occurred_at_utc=instants(2),
+    )
+
+    assert result.average_precision == 0.5
+    assert result.roc_auc == 0.5
+    assert result.threshold == 0.5
 
 
 def test_daily_alert_counts_preserve_zero_and_more_than_twenty():
