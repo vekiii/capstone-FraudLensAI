@@ -12,6 +12,9 @@ from fraudlens.contracts import (
     CaseDetail,
     CaseId,
     CaseList,
+    EdaError,
+    EdaErrorBody,
+    EdaSummary,
     Error,
     ErrorBody,
     Health,
@@ -23,6 +26,7 @@ from fraudlens.contracts import (
     RiskError,
     RiskErrorBody,
 )
+from fraudlens.eda.service import EdaService, EdaUnavailable
 from fraudlens.scoring import FixtureScorer, Scorer
 from fraudlens.scoring.model_scorer import (
     FeatureStore,
@@ -71,16 +75,26 @@ def _results_error(status: int, code: str, message: str) -> JSONResponse:
     return JSONResponse(status_code=status, content=body.model_dump(mode='json'))
 
 
+def _eda_error(status: int, code: str, message: str) -> JSONResponse:
+    body = EdaError(error=EdaErrorBody(code=code, message=message))
+    return JSONResponse(status_code=status,
+                        content=body.model_dump(mode='json'))
+
+
 def create_app(settings: Settings | None = None, scorer: Scorer | None = None,
                model_scorer: ModelScorer | None = None,
                feature_store: FeatureStore | None = None,
-               results_service: ResultsService | None = None) -> FastAPI:
+               results_service: ResultsService | None = None,
+               eda_service: EdaService | None = None) -> FastAPI:
     app = FastAPI(title='FraudLens AI')
     app.state.settings = settings if settings is not None else load_settings()
     app.state.scorer = scorer if scorer is not None else FixtureScorer()
     app.state.model_scorer = model_scorer
     app.state.feature_store = feature_store
     app.state.results_service = results_service if results_service is not None else ResultsService()
+    app.state.eda_service = eda_service if eda_service is not None else EdaService(
+        app.state.settings.eda_summary_path, app.state.settings.eda_summary_sha256,
+    )
     if app.state.settings.mode == 'model':
         try:
             if app.state.model_scorer is None:
@@ -187,6 +201,18 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None,
         except ResultsUnavailable:
             logger.error('Frozen aggregate results unavailable or incompatible')
             return _results_error(404, 'results_unavailable', 'Model results are unavailable.')
+
+    @app.get('/api/eda/summary', response_model=EdaSummary,
+             responses={404: {'model': EdaError}, 422: {'model': EdaError},
+                        500: {'model': EdaError}})
+    def eda_summary(request: Request):
+        if request.query_params:
+            return _eda_error(422, 'invalid_request', 'EDA query is not permitted.')
+        try:
+            return app.state.eda_service.load()
+        except EdaUnavailable:
+            logger.error('Trusted EDA aggregate is unavailable or incompatible')
+            return _eda_error(404, 'dataset_unavailable', 'EDA summary is unavailable.')
 
     return app
 
