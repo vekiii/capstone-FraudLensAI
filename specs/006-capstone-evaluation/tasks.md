@@ -16,7 +16,7 @@ description: "Implementation and verification tasks for the Capstone evaluation"
 
 ## Faza 2 — Preduslovi
 
-- [ ] T002 [P] Proveriti T098 transfer digest za `data/processed/feature-003-t098-20261118/model-bounded.sqlite`, `data/processed/feature-003-t098-20261118/source.sqlite` i `data/processed/feature-003-t098-20261118/history-index.sqlite`. Read-only proveriti aktivni kompletni `run_boosted_candidate_smoke`, vezu indeksa sa izvornim store-om, oba case ID-ja i provenance skora. Snimiti nalaz u `evidence/tasks/feature-006-t098-inputs.md`. Za nedostupan ili nekompatibilan paket evidentirati blokadu ili odobren kompatibilan snapshot.
+- [x] T002 [P] Proveriti T098 transfer digest za `data/processed/feature-003-t098-20261118/model-bounded.sqlite`, `data/processed/feature-003-t098-20261118/source.sqlite` i `data/processed/feature-003-t098-20261118/history-index.sqlite`. Read-only proveriti aktivni kompletni `run_boosted_candidate_smoke`, vezu indeksa sa izvornim store-om, oba case ID-ja i provenance skora. Snimiti nalaz u `evidence/tasks/feature-006-t098-inputs.md`. Za nedostupan ili nekompatibilan paket evidentirati blokadu ili odobren kompatibilan snapshot.
 - [x] T003 [P] Obnoviti neophodne runtime zavisnosti za postojeći provider i validaciju u `pyproject.toml` i generisati `uv.lock`. Uporediti verzije SDK-a i transporta sa Feature 03, proveriti zaključani sync i lokalne importe SDK-a, transporta i validatora bez modelskog poziva. Zabeležiti u `evidence/tasks/feature-006-provider-setup.md`.
 
 ## Faza 3 — US1: Živa istraga označene transakcije (P1)

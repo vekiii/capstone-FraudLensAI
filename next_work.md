@@ -1,6 +1,14 @@
 # Next work - FraudLens AI
 
-## Feature 06 — T003 završen, T002 otvoren, 21. novembar 2026.
+## Feature 06 — T002 i T003 završeni, 21. novembar 2026.
+
+Uz Milanovu potvrdu izgrađen je zaseban lokalni T098 indeks sa 5.078.345 redova.
+Oba slučaja imaju identičan Cases i investigation payload i dostupnu istoriju.
+Originalni transfer digesti su potvrđeni. T003 locked provere i 84 ciljana testa
+prošli su u prethodnom izvršavanju. Sledeći korak je T004 u zasebnoj fazi 3.
+[Predaja faze 2](evidence/tasks/feature-006-phase-02-handoff.md).
+
+## Feature 06 — Početni nalaz pre lokalnog indeksa
 
 Tri T098 digesta odgovaraju manifestu i oba Cases payload-a odgovaraju
 investigation čitanju bez indeksa. Predati indeks vraća `stale_snapshot`

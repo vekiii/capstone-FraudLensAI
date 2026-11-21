@@ -1,7 +1,7 @@
 # T002 — T098 integritet i kompatibilnost, 21. novembar 2026.
 
-**T002 ostaje otvoren.** Paket je identičan manifestu, ali predati indeks
-postojeći reader odbija na ovom checkout-u.
+**T002 je zatvoren uz odobren i proveren lokalni indeks.** Ispod su početni
+nalaz za predati indeks i završna provera lokalnog indeksa.
 
 Grana `006-capstone-evaluation`, početni HEAD
 `055fc06561f8b3d45d1a96e4db15a5ba682deefe`, početno radno stablo čisto.
@@ -54,3 +54,34 @@ Istorija je u toj probi bila `unavailable`. Ovo je dijagnoza kompatibilnosti
 skora, a predati indeks i dalje mora proći redovnu proveru. Nalaz ne potvrđuje
 EV-08. Sledeći preduslov je kompatibilan indeks od vlasnika artefakta za ovaj
 source i checkout ili zasebno odobrena izmena ugovora o prenosivosti indeksa.
+
+## Završna provera lokalnog indeksa, 21. novembar 2026.
+
+Korisnik je preneo Milanovu potvrdu za lokalnu izgradnju. Nastavak je pokrenut
+na `002989f671ccae25f0ec5a5f09f0d7b8551fdd3e`, sa čistim radnim stablom.
+SHA-256 izvornog store-a ponovo je potvrđen pre izgradnje.
+
+```powershell
+$env:SPECIFY_FEATURE_DIRECTORY='specs/006-capstone-evaluation'
+$env:UV_CACHE_DIR=Join-Path $PWD '.cache/uv'
+$env:PYTHONPATH=Join-Path $PWD 'backend/src'
+$root='data/processed/feature-003-t098-20261118'
+uv run --locked python -m fraudlens.investigation.cli prepare-history-index --source-store "$root/source.sqlite" --output "$root/history-index-feature006-local.sqlite"
+uv run --locked python evidence/tasks/feature-006-t098-local-check.py
+uv run --locked ruff check evidence/tasks/feature-006-t098-local-check.py
+git diff --check
+```
+
+Izgradnja i read-only provera imaju exit 0. Lokalni indeks ima **5.078.345
+redova**, status `complete` i digest
+`605a37302c6436e72c2cbc5a5b4d257c73048ad527f6e40df81f5ead7df5901c`.
+Postojeći reader prihvata putanju, potpis i digest izvora za isti dataset.
+Za oba navedena slučaja ceo Cases payload je identičan investigation
+`source_payload`, sa istim identitetima i sačuvanim skorovima iz tabele.
+Oba slučaja imaju istoriju `available/full` i svaki je vratio jedan događaj
+pošiljaoca na zahtev ograničen na jedan. Provera nije ispisala događaje.
+Sva tri originalna digesta ponovo odgovaraju transfer manifestu.
+
+Novi indeks je ignorisan u Git-u. Quickstart navodi njegovu putanju i digest
+za ovaj checkout. Ljudska reprodukcija i EV-08 stanje ostaju za kasnije.
+[Skripta provere](feature-006-t098-local-check.py).

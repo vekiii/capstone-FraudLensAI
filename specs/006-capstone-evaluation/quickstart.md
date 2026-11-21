@@ -26,6 +26,10 @@ označiti živi tok kao blokiran dok tim ne isporuči kompatibilan izvor.
 
 Konfiguraciju izvora ponoviti u API i worker terminalu. Koristiti relativne
 putanje iz korena repozitorijuma i svež, ignorisan investigation store.
+Vrednosti indeksa ispod su proverene za checkout `D:\AIBootcamp\capstone`.
+Za drugi checkout potreban je indeks vezan za njegovu putanju i potpis
+izvornog fajla. Koristiti digest utvrđen pri pripremi i proveri tog indeksa.
+[T002 postupak](../../evidence/tasks/feature-006-t098-inputs.md).
 
 ```powershell
 $env:PYTHONPATH = 'backend/src'
@@ -37,8 +41,8 @@ $env:INVESTIGATION_SOURCE = 'dataset'
 $env:INVESTIGATION_DATASET_SCORE_SOURCE = $env:APP_SCORER
 $env:INVESTIGATION_DATASET_RUN_STORE = $env:APP_RUN_STORE
 $env:INVESTIGATION_DATASET_STORE = 'data/processed/feature-003-t098-20261118/source.sqlite'
-$env:INVESTIGATION_DATASET_HISTORY_INDEX = 'data/processed/feature-003-t098-20261118/history-index.sqlite'
-$env:INVESTIGATION_DATASET_HISTORY_INDEX_SHA256 = '8745ec13848f5ce0f76417fd0c2f7c731a2189cb634034aea5eeaa3a205c5a9f'
+$env:INVESTIGATION_DATASET_HISTORY_INDEX = 'data/processed/feature-003-t098-20261118/history-index-feature006-local.sqlite'
+$env:INVESTIGATION_DATASET_HISTORY_INDEX_SHA256 = '605a37302c6436e72c2cbc5a5b4d257c73048ad527f6e40df81f5ead7df5901c'
 $env:INVESTIGATION_STORE = 'data/processed/capstone-baseline.sqlite'
 ```
 

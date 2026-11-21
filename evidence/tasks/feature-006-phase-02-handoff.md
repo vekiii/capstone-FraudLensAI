@@ -1,5 +1,14 @@
 # Feature 06 — Predaja faze 2, 21. novembar 2026.
 
+**Završni status — T002 i T003 su završeni.** Uz Milanovu potvrdu prenetu
+kroz razgovor izgrađen je odvojeni lokalni indeks. Read-only provera
+potvrdila je puni Cases/Investigation match i history `available/full`
+za oba slučaja. Originalne baze ponovo se poklapaju sa manifestom.
+Sledeći korak je zasebna faza 3, počevši od T004.
+[T002 komande i digest](feature-006-t098-inputs.md).
+
+## Početna predaja, pre lokalne izgradnje
+
 **T002 otvoren.** Sva tri SHA-256 digesta odgovaraju Feature 03 transfer
 manifestu, a oba Cases skora odgovaraju investigation payload-u u dijagnostičkom
 čitanju bez indeksa. Predati history indeks odbijen je kao `stale_snapshot`

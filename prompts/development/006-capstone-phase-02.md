@@ -177,3 +177,10 @@ Bez subagenata osim ako ih primenljive instrukcije zahtevaju. Bez commit-a, push
 Završni odgovor neka kratko navede status T002 i T003, proverene artefakte i dependencies, stvarne provere, blokade i handoff putanju. Sledeći korak je zasebna faza 3, T004–T008, ili konkretan nerešeni preduslov ove faze.
 
 Ne započinji T004.
+
+## Nastavak T002 — 21. novembar 2026.
+
+> Rekao mi je da mozemo.
+
+Korisnik prenosi Milanovu potvrdu za izgradnju zasebnog lokalnog indeksa iz
+proverenog T098 source.sqlite i ponavljanje T002 čitanja.
