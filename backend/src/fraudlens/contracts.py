@@ -82,6 +82,11 @@ class Health(Contract):
     mode: Literal['fixture']
 
 
+class ModelHealth(Contract):
+    status: Literal['ok']
+    mode: Literal['model']
+
+
 class ErrorBody(Contract):
     code: Literal['invalid_request', 'case_not_found', 'internal_error']
     message: Annotated[str, StringConstraints(min_length=1, max_length=200)]
@@ -89,3 +94,29 @@ class ErrorBody(Contract):
 
 class Error(Contract):
     error: ErrorBody
+
+
+class PredictionResult(Contract):
+    """Feature 002 v1 assessment; no target or ground truth fields."""
+
+    transaction_id: Annotated[str, StringConstraints(
+        min_length=1, max_length=160,
+        pattern=r'^ibm-hi-small:[0-9a-f]{64}:row:[1-9][0-9]*$')]
+    risk_score: Score
+    review_status: Literal['review_recommended', 'below_threshold']
+    source: Literal['model']
+    model_version: Annotated[str, StringConstraints(min_length=1, max_length=80)]
+    feature_version: Annotated[str, StringConstraints(min_length=1, max_length=80)]
+    synthetic_data: Literal[True]
+    scored_at: Timestamp
+    explanation: Annotated[str, StringConstraints(min_length=1, max_length=1000)]
+
+
+class RiskErrorBody(Contract):
+    code: Literal['invalid_request', 'transaction_not_found', 'transaction_ineligible',
+                  'model_unavailable', 'internal_error']
+    message: Annotated[str, StringConstraints(min_length=1, max_length=200)]
+
+
+class RiskError(Contract):
+    error: RiskErrorBody
