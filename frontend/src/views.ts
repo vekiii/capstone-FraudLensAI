@@ -1,5 +1,5 @@
 import type { ApiError } from './api';
-import type { CaseDetail, CaseSummary, ScoreSource } from './contracts';
+import type { CaseDetail, CaseSummary, ModelResults, PredictionResult, ScoreSource } from './contracts';
 
 export type UiState =
   | { kind: 'list-loading' }
@@ -147,6 +147,136 @@ export function createCaseView(root: HTMLElement, actions: Actions) {
       }
       if (focus && focus !== 'panel') selections.get(focus)?.focus();
       else if (focus === 'panel' || panelHadFocus) title.focus();
+    },
+  };
+}
+
+export type RiskUiState = { kind: 'idle' } | { kind: 'loading' }
+  | { kind: 'success'; result: PredictionResult }
+  | { kind: 'error'; message: string };
+
+export function createRiskView(root: HTMLElement, assess: (id: string) => void) {
+  const section = element('section', undefined, 'risk-workspace');
+  section.setAttribute('aria-labelledby', 'risk-title');
+  const title = element('h2', 'Model procena transakcije');
+  title.id = 'risk-title';
+  const intro = element('p',
+    'Unesite kanonski IBM HI-Small ID transakcije. Demonstracioni CASE/TX ID-jevi nisu povezani sa ovim podacima.', 'muted');
+  const form = element('form');
+  const label = element('label', 'Kanonski ID transakcije');
+  label.htmlFor = 'risk-transaction-id';
+  const input = element('input');
+  input.id = 'risk-transaction-id';
+  input.name = 'transaction_id';
+  input.type = 'text';
+  input.maxLength = 160;
+  input.autocomplete = 'off';
+  input.placeholder = 'ibm-hi-small:<sha256>:row:<broj>';
+  const submit = element('button', 'Prikaži risk score', 'button');
+  submit.type = 'submit';
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    assess(input.value.trim());
+  });
+  form.append(label, input, submit);
+  const output = element('div');
+  section.append(title, intro, form, output);
+  root.append(section);
+  return {
+    render(state: RiskUiState) {
+      output.replaceChildren();
+      section.setAttribute('aria-busy', String(state.kind === 'loading'));
+      if (state.kind === 'idle') {
+        output.append(status('Model procena nije zatražena.'));
+      } else if (state.kind === 'loading') {
+        output.append(status('Učitavanje model procene…'));
+      } else if (state.kind === 'error') {
+        output.append(status(state.message, true), button('Pokušaj ponovo', () => assess(input.value.trim())));
+      } else {
+        const result = state.result;
+        const sourceHash = result.transaction_id.split(':')[1];
+        output.append(element('p', `${result.risk_score} / 1`, 'risk-score'),
+          element('p', 'AML risk score; nije kalibrisana verovatnoća niti nalaz o krivičnom delu.', 'muted'),
+          fields([
+            ['Status', result.review_status === 'review_recommended'
+              ? 'Preporučen ljudski pregled' : 'Ispod praga; ljudska procena ostaje potrebna'],
+            ['ID transakcije', result.transaction_id],
+            ['Izvor skora', result.source],
+            ['Model verzija', result.model_version],
+            ['Feature verzija', result.feature_version],
+            ['Izvorni skup SHA-256', sourceHash],
+            ['Poreklo podataka', 'Sintetički podaci'],
+            ['Vreme ocenjivanja (UTC)', result.scored_at],
+          ]), element('h3', 'Dostupne činjenice i feature vrednosti'),
+          element('p', result.explanation, 'explanation'));
+      }
+    },
+  };
+}
+
+// T240 presentation boundary: only render an already decoded, authorized response.
+// T251 must supply that response before this becomes a live screen.
+export function modelResultsContent(results: ModelResults): HTMLElement {
+  const section = element('section', undefined, 'detail-section');
+  section.append(element('h2', 'Agregatni rezultati modela'), fields([
+    ['Model verzija', results.model_version],
+    ['Feature verzija', results.feature_version],
+    ['Verzija podataka', results.dataset_version],
+    ['Prag', results.threshold === null ? 'Nije dostupan' : String(results.threshold)],
+    ['Kalibracija', results.calibration_status === 'assessed' ? 'Procenjena' : 'Nije procenjena'],
+  ]));
+  for (const partition of results.partitions) {
+    const block = element('section', undefined, 'detail-section');
+    block.append(element('h3', `Particija: ${partition.partition}`),
+      element('p', partition.state === 'available' ? 'Dostupni agregati — sintetički podaci'
+        : partition.state === 'not_authorized' ? 'Evaluacija nije odobrena'
+          : 'Rezultati nisu dostupni', 'muted'),
+      fields([
+        ['Vremenski obuhvat (UTC)', partition.coverage_utc],
+        ['Broj redova', String(partition.row_count)],
+        ['Pozitivni primjeri', String(partition.positive_count)],
+        ['Negativni primjeri', String(partition.negative_count)],
+      ]));
+    if (partition.state === 'available') {
+      block.append(fields(partition.metrics.map(metric => [metric.name,
+        `${metric.value === null ? 'Nedefinisano' : metric.value} ${metric.unit}; imenilac ${metric.denominator}`] as const)));
+    }
+    section.append(block);
+  }
+  const limitations = element('ul');
+  for (const item of results.limitations) limitations.append(element('li', item));
+  section.append(element('h3', 'Ograničenja'), limitations);
+  return section;
+}
+
+export type ModelResultsUiState = { kind: 'idle' } | { kind: 'loading' }
+  | { kind: 'success'; result: ModelResults }
+  | { kind: 'unavailable' } | { kind: 'unauthorized' }
+  | { kind: 'error'; message: string };
+
+export function createModelResultsView(root: HTMLElement, load: () => void) {
+  const section = element('section', undefined, 'risk-workspace');
+  section.setAttribute('aria-labelledby', 'results-title');
+  const title = element('h2', 'Agregatni rezultati modela');
+  title.id = 'results-title';
+  const output = element('div');
+  section.append(title, element('p',
+    'Prikaz postojećih odobrenih izvještaja za zamrznuti model. Ne pokreće evaluaciju.', 'muted'),
+  button('Učitaj rezultate', load), output);
+  root.append(section);
+  return {
+    render(state: ModelResultsUiState) {
+      output.replaceChildren();
+      section.setAttribute('aria-busy', String(state.kind === 'loading'));
+      if (state.kind === 'idle') output.append(status('Rezultati nisu učitani.'));
+      else if (state.kind === 'loading') output.append(status('Učitavanje agregatnih rezultata…'));
+      else if (state.kind === 'success') output.append(modelResultsContent(state.result));
+      else {
+        const message = state.kind === 'unavailable' ? 'Agregatni rezultati nisu dostupni.'
+          : state.kind === 'unauthorized' ? 'Test evaluacija nije odobrena za ovaj režim.'
+            : state.message;
+        output.append(status(message, true), button('Pokušaj ponovo', load));
+      }
     },
   };
 }

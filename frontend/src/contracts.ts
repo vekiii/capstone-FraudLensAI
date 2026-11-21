@@ -52,6 +52,54 @@ export interface ErrorEnvelope {
   error: ErrorBody;
 }
 
+export type RiskErrorCode = 'invalid_request' | 'transaction_not_found' | 'transaction_ineligible'
+  | 'model_unavailable' | 'results_unavailable' | 'evaluation_not_authorized'
+  | 'internal_error';
+
+export interface PredictionResult {
+  transaction_id: string;
+  risk_score: number;
+  review_status: 'review_recommended' | 'below_threshold';
+  source: 'model';
+  model_version: string;
+  feature_version: string;
+  synthetic_data: true;
+  scored_at: string;
+  explanation: string;
+}
+
+export interface Metric {
+  name: string;
+  value: number | null;
+  denominator: number;
+  unit: string;
+}
+
+export interface PartitionResults {
+  partition: 'train' | 'validation' | 'test';
+  state: 'available' | 'not_authorized' | 'unavailable';
+  synthetic_data: true;
+  coverage_utc: string;
+  row_count: number;
+  positive_count: number;
+  negative_count: number;
+  metrics: Metric[];
+}
+
+export interface ModelResults {
+  model_version: string;
+  feature_version: string;
+  dataset_version: string;
+  threshold: number | null;
+  calibration_status: 'not_assessed' | 'assessed';
+  partitions: PartitionResults[];
+  limitations: string[];
+}
+
+export interface RiskErrorEnvelope {
+  error: { code: RiskErrorCode; message: string };
+}
+
 export class ContractValidationError extends Error {
   constructor() {
     // Never include the rejected value or server text in an exception.
@@ -192,5 +240,95 @@ export function decodeErrorEnvelope(value: unknown): ErrorEnvelope {
   if (code !== 'invalid_request' && code !== 'case_not_found' && code !== 'internal_error') {
     return invalid();
   }
+  return { error: { code, message: boundedText(error.message, 200) } };
+}
+
+const canonicalIdPattern = /^ibm-hi-small:[0-9a-f]{64}:row:[1-9][0-9]*(?![\s\S])/;
+
+export function decodeCanonicalTransactionId(value: unknown): string {
+  const id = patternedText(value, canonicalIdPattern);
+  return [...id].length <= 160 ? id : invalid();
+}
+
+export function decodePredictionResult(value: unknown): PredictionResult {
+  const object = closedObject(value, [
+    'transaction_id', 'risk_score', 'review_status', 'source', 'model_version',
+    'feature_version', 'synthetic_data', 'scored_at', 'explanation',
+  ]);
+  if (object.review_status !== 'review_recommended' && object.review_status !== 'below_threshold') invalid();
+  if (object.source !== 'model' || object.synthetic_data !== true) invalid();
+  return {
+    transaction_id: decodeCanonicalTransactionId(object.transaction_id),
+    risk_score: score(object.risk_score), review_status: object.review_status,
+    source: 'model', model_version: boundedText(object.model_version, 80),
+    feature_version: boundedText(object.feature_version, 80), synthetic_data: true,
+    scored_at: timestamp(object.scored_at), explanation: boundedText(object.explanation, 1000),
+  };
+}
+
+function finiteOrNull(value: unknown): number | null {
+  return value === null ? null : typeof value === 'number' && Number.isFinite(value) ? value : invalid();
+}
+
+function nonnegativeInteger(value: unknown): number {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 ? value : invalid();
+}
+
+function decodeMetric(value: unknown): Metric {
+  const object = closedObject(value, ['name', 'value', 'denominator', 'unit']);
+  return { name: boundedText(object.name, 80), value: finiteOrNull(object.value),
+    denominator: nonnegativeInteger(object.denominator), unit: boundedText(object.unit, 40) };
+}
+
+function decodePartition(value: unknown): PartitionResults {
+  const object = closedObject(value, [
+    'partition', 'state', 'synthetic_data', 'coverage_utc', 'row_count',
+    'positive_count', 'negative_count', 'metrics',
+  ]);
+  if (object.partition !== 'train' && object.partition !== 'validation' && object.partition !== 'test') invalid();
+  if (object.state !== 'available' && object.state !== 'not_authorized' && object.state !== 'unavailable') invalid();
+  if (object.synthetic_data !== true || !Array.isArray(object.metrics) || object.metrics.length > 40) invalid();
+  if (object.state !== 'available' && object.metrics.length !== 0) invalid();
+  const row_count = nonnegativeInteger(object.row_count);
+  const positive_count = nonnegativeInteger(object.positive_count);
+  const negative_count = nonnegativeInteger(object.negative_count);
+  if (positive_count + negative_count !== row_count) invalid();
+  return { partition: object.partition, state: object.state, synthetic_data: true,
+    coverage_utc: boundedText(object.coverage_utc, 120),
+    row_count, positive_count, negative_count,
+    metrics: object.metrics.map(decodeMetric) };
+}
+
+export function decodeModelResults(value: unknown): ModelResults {
+  const object = closedObject(value, [
+    'model_version', 'feature_version', 'dataset_version', 'threshold',
+    'calibration_status', 'partitions', 'limitations',
+  ]);
+  if (object.calibration_status !== 'not_assessed' && object.calibration_status !== 'assessed') invalid();
+  if (!Array.isArray(object.partitions) || object.partitions.length > 3
+    || !Array.isArray(object.limitations) || object.limitations.length > 20) invalid();
+  const threshold = object.threshold === null ? null : score(object.threshold);
+  const partitions = object.partitions.map(decodePartition);
+  if (new Set(partitions.map(partition => partition.partition)).size !== partitions.length) invalid();
+  return { model_version: boundedText(object.model_version, 80),
+    feature_version: boundedText(object.feature_version, 80),
+    dataset_version: boundedText(object.dataset_version, 120), threshold,
+    calibration_status: object.calibration_status, partitions,
+    limitations: object.limitations.map(item => {
+      const result = text(item);
+      return [...result].length <= 300 ? result : invalid();
+    }) };
+}
+
+export function decodeRiskErrorEnvelope(value: unknown): RiskErrorEnvelope {
+  const object = closedObject(value, ['error']);
+  const error = closedObject(object.error, ['code', 'message']);
+  const codes: readonly RiskErrorCode[] = [
+    'invalid_request', 'transaction_not_found', 'transaction_ineligible',
+    'model_unavailable', 'results_unavailable', 'evaluation_not_authorized',
+    'internal_error',
+  ];
+  const code = codes.find(item => item === error.code);
+  if (code === undefined) invalid();
   return { error: { code, message: boundedText(error.message, 200) } };
 }
