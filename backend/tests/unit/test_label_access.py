@@ -12,6 +12,10 @@ import json
 from datetime import datetime, timezone
 
 import pytest
+from fastapi.testclient import TestClient
+
+from fraudlens.main import create_app
+from fraudlens.settings import Settings
 
 
 def access_module():
@@ -210,4 +214,38 @@ def test_malformed_query_shape_is_denied_and_logged(tmp_path):
     access, path = service(tmp_path)
     with pytest.raises(PermissionError):
         access.query(shape=['record_labels'], purpose='pretraining_class_audit')
+    assert log_entries(path)[0]['result'] == 'denied'
+
+
+@pytest.mark.parametrize('query', [
+    'transaction_id=ibm-hi-small%3Aexample%3Arow%3A1',
+    'partition=test&utc_day=2022-09-06',
+    'partition=showcase&start_utc=2022-09-06T00%3A00%3A00Z',
+    'partition=test&end_utc=2022-09-07T00%3A00%3A00Z',
+    'shape=record_labels',
+])
+def test_results_route_refuses_record_daily_and_subrange_queries_before_labels(query):
+    with TestClient(create_app(settings=Settings())) as client:
+        response = client.get(f'/api/model/results?{query}')
+    assert response.status_code == 422
+    assert response.json()['error']['code'] == 'invalid_request'
+    assert 'is_laundering' not in response.text
+
+
+def test_results_route_without_model_opt_in_does_not_disclose_test_metrics():
+    with TestClient(create_app(settings=Settings())) as client:
+        response = client.get('/api/model/results')
+    assert response.status_code == 409
+    assert response.json()['error']['code'] == 'evaluation_not_authorized'
+
+
+@pytest.mark.parametrize('shape', ['test_daily', 'test_subrange', 'showcase_daily',
+                                   'showcase_subrange', 'record_labels'])
+def test_results_purpose_cannot_query_restricted_label_shapes(tmp_path, shape):
+    access, path = service(tmp_path)
+    with pytest.raises(PermissionError):
+        access.query(shape=shape, purpose='results_api', partition='test',
+                     start_utc=datetime(2022, 9, 4, tzinfo=timezone.utc),
+                     end_utc=datetime(2022, 9, 5, tzinfo=timezone.utc),
+                     transaction_id='test' if shape == 'record_labels' else None)
     assert log_entries(path)[0]['result'] == 'denied'
