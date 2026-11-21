@@ -1,6 +1,6 @@
 # Feature 002: dedicated EDA page proposal
 
-**Status:** proposal pending an explicit team decision (T243 / FR-038).
+**Status:** team approval reported by the user on 2026-11-21 (T243 / FR-038). The approved scope and planning impact are recorded below.
 
 ## Proposed scope
 
@@ -18,6 +18,8 @@ Only verified, label-free source/canonical fields and precomputed Python aggrega
 
 The page lets an analyst inspect source coverage and quality beside the risk workflow, and demonstrates that aggregate distributions and monetary units are traceable without exposing labels. It is a **fifth destination beyond the constitution's four-screen MVP**. Its implementation adds T244–T249: synthetic RED checks, Python aggregate and closed API contracts, a bounded endpoint, accessible navigation/charts and states, frontend decoder tests, and full regression/evidence. A planning estimate is **3–5 contributor days after approval and verified aggregate inputs**, including review and regressions; this is an estimate, not an observed duration or delivery commitment. It may shift other MVP work by the same capacity and requires a reviewer for the additional UI surface. If the team declines or defers, T247–T249 stay open/deferred and the existing four-screen scope is retained. Backend aggregate work T244–T246 is specified independently, but any public EDA route should be reviewed for consistency with the page decision before exposure.
 
-## Decision requested
+## Decision and authorization
 
-Choose **approve the dedicated EDA page and its 3–5 day planning allowance**, or **defer it from the current MVP**. Approval must be explicitly attributed to the team, with the actual decision date and any revised scope/schedule recorded here before T247 UI implementation. No decision has been received in this task. T243 remains open.
+The proposal asked the team to approve the dedicated EDA page and its 3–5 contributor-day planning allowance, or defer it from the current MVP. The actual decision was required before T247 UI implementation.
+
+**Actual team decision:** The user confirms that the team approved the additional dedicated EDA page as proposed, including the described scope and recorded 3–5 contributor-day planning impact. This is the user's report of the team decision; individual names, votes, reviewers and separate confirmations were not supplied or inferred. T247–T249 may proceed within this scope. This does not approve showcase replay, new training, test evaluation, label access or production deployment.
