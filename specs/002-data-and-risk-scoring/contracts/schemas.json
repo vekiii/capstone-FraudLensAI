@@ -6,7 +6,7 @@
     "Error": {
       "type": "object", "additionalProperties": false,
       "properties": {"error": {"type": "object", "additionalProperties": false,
-        "properties": {"code": {"enum": ["invalid_request", "transaction_not_found", "transaction_ineligible", "model_unavailable", "results_unavailable", "evaluation_not_authorized", "internal_error"]}, "message": {"type": "string", "minLength": 1, "maxLength": 200}}, "required": ["code", "message"]}},
+        "properties": {"code": {"enum": ["invalid_request", "transaction_not_found", "transaction_ineligible", "model_unavailable", "results_unavailable", "evaluation_not_authorized", "dataset_unavailable", "internal_error"]}, "message": {"type": "string", "minLength": 1, "maxLength": 200}}, "required": ["code", "message"]}},
       "required": ["error"]
     },
     "PredictionResult": {
@@ -38,6 +38,16 @@
       "type": "object", "additionalProperties": false,
       "properties": {"model_version": {"type": "string", "minLength": 1, "maxLength": 80}, "feature_version": {"type": "string", "minLength": 1, "maxLength": 80}, "dataset_version": {"type": "string", "minLength": 1, "maxLength": 120}, "threshold": {"type": ["number", "null"], "minimum": 0, "maximum": 1}, "calibration_status": {"enum": ["not_assessed", "assessed"]}, "partitions": {"type": "array", "items": {"$ref": "#/$defs/PartitionResults"}, "maxItems": 3}, "limitations": {"type": "array", "items": {"type": "string", "maxLength": 300}, "maxItems": 20}},
       "required": ["model_version", "feature_version", "dataset_version", "threshold", "calibration_status", "partitions", "limitations"]
+    },
+    "EdaSeries": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"series_id": {"type": "string", "minLength": 1, "maxLength": 80}, "label": {"type": "string", "minLength": 1, "maxLength": 120}, "unit": {"enum": ["transactions", "amount"]}, "currency": {"type": ["string", "null"], "minLength": 1, "maxLength": 40}, "side": {"enum": ["paid", "received", null]}, "timezone": {"enum": ["UTC", null]}, "bucket_labels": {"type": "array", "items": {"type": "string", "maxLength": 120}, "maxItems": 366}, "values": {"type": "array", "items": {"type": "number", "minimum": 0}, "maxItems": 366}, "denominator": {"type": "integer", "minimum": 0}},
+      "required": ["series_id", "label", "unit", "bucket_labels", "values", "denominator", "currency", "side", "timezone"]
+    },
+    "EdaSummary": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"dataset_version": {"type": "string", "minLength": 1, "maxLength": 120}, "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "synthetic_data": {"const": true}, "coverage_start_utc": {"type": ["string", "null"], "format": "date-time"}, "coverage_end_utc": {"type": ["string", "null"], "format": "date-time"}, "source_count": {"type": "integer", "minimum": 0}, "accepted_count": {"type": "integer", "minimum": 0}, "rejected_count": {"type": "integer", "minimum": 0}, "warmup_count": {"type": "integer", "minimum": 0}, "scoreable_count": {"type": "integer", "minimum": 0}, "quality_counts": {"type": "object", "maxProperties": 20, "additionalProperties": {"type": "integer", "minimum": 0}}, "omitted_amount_currencies": {"type": "object", "additionalProperties": false, "properties": {"paid": {"type": "integer", "minimum": 0}, "received": {"type": "integer", "minimum": 0}}, "required": ["paid", "received"]}, "series": {"type": "array", "items": {"$ref": "#/$defs/EdaSeries"}, "maxItems": 30}},
+      "required": ["dataset_version", "source_sha256", "synthetic_data", "coverage_start_utc", "coverage_end_utc", "source_count", "accepted_count", "rejected_count", "warmup_count", "scoreable_count", "quality_counts", "omitted_amount_currencies", "series"]
     }
   }
 }
