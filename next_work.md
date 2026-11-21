@@ -1,5 +1,16 @@
 # Next work - FraudLens AI
 
+## Feature 06 — T003 završen, T002 otvoren, 21. novembar 2026.
+
+Tri T098 digesta odgovaraju manifestu i oba Cases payload-a odgovaraju
+investigation čitanju bez indeksa. Predati indeks vraća `stale_snapshot`
+zbog vezivanja za putanju i mtime drugog checkout-a. Baze imaju iste završne
+digeste. T003 runtime deps su zaključane, importi, 84 ciljana backend testa,
+Ruff i lock check prolaze. T004 i žive provere ostaju kasniji rad.
+
+Sledeći korak je pribaviti kompatibilan T098 indeks od vlasnika paketa i
+ponoviti read-only T002. [Predaja faze 2](evidence/tasks/feature-006-phase-02-handoff.md).
+
 ## Feature 06 — T001 završen, 21. novembar 2026.
 
 Zaključani Python i web setup su prošli na `006-capstone-evaluation`.
