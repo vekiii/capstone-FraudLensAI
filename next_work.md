@@ -1,5 +1,19 @@
 # Next work - FraudLens AI
 
+## Feature 06 — Capstone evaluation specification
+
+Local branch `006-capstone-evaluation` starts at the reviewed React investigation
+commit `71f34dd`. The [draft specification](specs/006-capstone-evaluation/spec.md)
+covers the live investigation, fixed EV-01–EV-16 before/after comparison and
+the CAP-01–CAP-08 evidence for the final revision.
+
+The starting branch has a verified test-provider demo. Live investigation of a
+scored transaction and the final revision are pending. See the
+[specification evidence](evidence/tasks/feature-006-specification.md).
+
+Next step: review the draft with the team, then run `speckit-plan` for
+`specs/006-capstone-evaluation` and pin the evaluation cases before baseline runs.
+
 ## Feature 03 React integration — 2026-11-19
 
 The local `integration/003-investigation-web` branch adds the existing AI
