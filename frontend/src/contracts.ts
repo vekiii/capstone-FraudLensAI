@@ -54,7 +54,7 @@ export interface ErrorEnvelope {
 
 export type RiskErrorCode = 'invalid_request' | 'transaction_not_found' | 'transaction_ineligible'
   | 'model_unavailable' | 'results_unavailable' | 'evaluation_not_authorized'
-  | 'internal_error';
+  | 'dataset_unavailable' | 'internal_error';
 
 export interface PredictionResult {
   transaction_id: string;
@@ -98,6 +98,34 @@ export interface ModelResults {
 
 export interface RiskErrorEnvelope {
   error: { code: RiskErrorCode; message: string };
+}
+
+export interface EdaSeries {
+  series_id: string;
+  label: string;
+  unit: 'transactions' | 'amount';
+  bucket_labels: string[];
+  values: number[];
+  denominator: number;
+  currency: string | null;
+  side: 'paid' | 'received' | null;
+  timezone: 'UTC' | null;
+}
+
+export interface EdaSummary {
+  dataset_version: string;
+  source_sha256: string;
+  synthetic_data: true;
+  coverage_start_utc: string | null;
+  coverage_end_utc: string | null;
+  source_count: number;
+  accepted_count: number;
+  rejected_count: number;
+  warmup_count: number;
+  scoreable_count: number;
+  quality_counts: Record<string, number>;
+  omitted_amount_currencies: { paid: number; received: number };
+  series: EdaSeries[];
 }
 
 export class ContractValidationError extends Error {
@@ -326,9 +354,85 @@ export function decodeRiskErrorEnvelope(value: unknown): RiskErrorEnvelope {
   const codes: readonly RiskErrorCode[] = [
     'invalid_request', 'transaction_not_found', 'transaction_ineligible',
     'model_unavailable', 'results_unavailable', 'evaluation_not_authorized',
-    'internal_error',
+    'dataset_unavailable', 'internal_error',
   ];
   const code = codes.find(item => item === error.code);
   if (code === undefined) invalid();
   return { error: { code, message: boundedText(error.message, 200) } };
+}
+
+const edaCountIds = new Set([
+  'sender_bank_count', 'receiver_bank_count', 'payment_currency_count',
+  'receiving_currency_count', 'payment_format_count', 'utc_transaction_count',
+]);
+
+function decodeEdaSeries(value: unknown): EdaSeries {
+  const object = closedObject(value, [
+    'series_id', 'label', 'unit', 'bucket_labels', 'values', 'denominator',
+    'currency', 'side', 'timezone',
+  ]);
+  const series_id = boundedText(object.series_id, 80);
+  const label = boundedText(object.label, 120);
+  if (object.unit !== 'transactions' && object.unit !== 'amount') invalid();
+  if (!Array.isArray(object.bucket_labels) || !Array.isArray(object.values)
+    || object.bucket_labels.length > 366 || object.values.length > 366
+    || object.bucket_labels.length !== object.values.length) invalid();
+  const bucket_labels = object.bucket_labels.map(item => {
+    const value = text(item);
+    return [...value].length <= 120 ? value : invalid();
+  });
+  const values = object.values.map(item =>
+    typeof item === 'number' && Number.isFinite(item) && item >= 0 ? item : invalid());
+  const denominator = nonnegativeInteger(object.denominator);
+  const currency = object.currency === null ? null : boundedText(object.currency, 40);
+  if (object.side !== null && object.side !== 'paid' && object.side !== 'received') invalid();
+  if (object.timezone !== null && object.timezone !== 'UTC') invalid();
+  if (object.unit === 'transactions') {
+    if (currency !== null || object.side !== null || !edaCountIds.has(series_id)) invalid();
+  } else if (currency === null || object.side === null
+    || series_id !== `${object.side}_amount_${currency}`) invalid();
+  return { series_id, label, unit: object.unit, bucket_labels, values, denominator,
+    currency, side: object.side, timezone: object.timezone };
+}
+
+export function decodeEdaSummary(value: unknown): EdaSummary {
+  const object = closedObject(value, [
+    'dataset_version', 'source_sha256', 'synthetic_data', 'coverage_start_utc',
+    'coverage_end_utc', 'source_count', 'accepted_count', 'rejected_count',
+    'warmup_count', 'scoreable_count', 'quality_counts',
+    'omitted_amount_currencies', 'series',
+  ]);
+  if (object.synthetic_data !== true) invalid();
+  const source_sha256 = patternedText(object.source_sha256, /^[0-9a-f]{64}(?![\s\S])/);
+  const source_count = nonnegativeInteger(object.source_count);
+  const accepted_count = nonnegativeInteger(object.accepted_count);
+  const rejected_count = nonnegativeInteger(object.rejected_count);
+  const warmup_count = nonnegativeInteger(object.warmup_count);
+  const scoreable_count = nonnegativeInteger(object.scoreable_count);
+  if (source_count !== accepted_count + rejected_count
+    || accepted_count !== warmup_count + scoreable_count) invalid();
+  const coverage_start_utc = object.coverage_start_utc === null ? null : timestamp(object.coverage_start_utc);
+  const coverage_end_utc = object.coverage_end_utc === null ? null : timestamp(object.coverage_end_utc);
+  if ((coverage_start_utc === null) !== (coverage_end_utc === null)
+    || (accepted_count === 0) !== (coverage_start_utc === null)
+    || (coverage_start_utc !== null && coverage_end_utc !== null
+      && coverage_start_utc > coverage_end_utc)) invalid();
+  if (!isRecord(object.quality_counts) || Object.keys(object.quality_counts).length > 20) invalid();
+  const quality_counts: Record<string, number> = Object.create(null);
+  for (const [key, count] of Object.entries(object.quality_counts)) {
+    if (!key || [...key].length > 80
+      || /label|launder|target|positive|negative|fraud/i.test(key)) invalid();
+    quality_counts[key] = nonnegativeInteger(count);
+  }
+  const omitted = closedObject(object.omitted_amount_currencies, ['paid', 'received']);
+  const omitted_amount_currencies = {
+    paid: nonnegativeInteger(omitted.paid), received: nonnegativeInteger(omitted.received),
+  };
+  if (!Array.isArray(object.series) || object.series.length > 30) invalid();
+  const series = object.series.map(decodeEdaSeries);
+  if (series.some(item => item.denominator > accepted_count)) invalid();
+  return { dataset_version: boundedText(object.dataset_version, 120), source_sha256,
+    synthetic_data: true, coverage_start_utc, coverage_end_utc, source_count,
+    accepted_count, rejected_count, warmup_count, scoreable_count, quality_counts,
+    omitted_amount_currencies, series };
 }

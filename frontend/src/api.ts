@@ -1,9 +1,9 @@
 import {
   ContractValidationError, decodeCaseDetail, decodeCaseList, decodeErrorEnvelope,
   decodeCanonicalTransactionId, decodePredictionResult, decodeRiskErrorEnvelope,
-  decodeModelResults,
+  decodeModelResults, decodeEdaSummary,
 } from './contracts';
-import type { CaseDetail, CaseList, ModelResults, PredictionResult, RiskErrorCode, ServerErrorCode } from './contracts';
+import type { CaseDetail, CaseList, EdaSummary, ModelResults, PredictionResult, RiskErrorCode, ServerErrorCode } from './contracts';
 
 export type ApiErrorCode = ServerErrorCode | RiskErrorCode
   | 'invalid_response' | 'network_error' | 'timeout' | 'cancelled';
@@ -21,6 +21,7 @@ const messages: Record<ApiErrorCode, string> = {
   model_unavailable: 'Model procena trenutno nije dostupna.',
   results_unavailable: 'Rezultati nisu dostupni.',
   evaluation_not_authorized: 'Evaluacija nije odobrena.',
+  dataset_unavailable: 'Podaci nisu dostupni.',
   invalid_response: 'Server je vratio neispravan odgovor.',
   network_error: 'Povezivanje sa serverom nije uspelo.',
   timeout: 'Vreme čekanja na odgovor je isteklo.',
@@ -50,7 +51,7 @@ function expectedErrorCode(status: number): ServerErrorCode | undefined {
 
 async function request<T>(
   url: string, decode: (value: unknown) => T, { signal }: RequestOptions,
-  errorContract: 'foundation' | 'risk' | 'results' = 'foundation',
+  errorContract: 'foundation' | 'risk' | 'results' | 'eda' = 'foundation',
 ): Promise<T> {
   if (signal?.aborted) throw new ApiError('cancelled');
 
@@ -96,6 +97,7 @@ async function request<T>(
         ? decodeRiskErrorEnvelope(payload) : decodeErrorEnvelope(payload);
       const expected = errorContract === 'risk' ? expectedRiskErrorCode(response.status)
         : errorContract === 'results' ? expectedResultsErrorCode(response.status)
+          : errorContract === 'eda' ? expectedEdaErrorCode(response.status)
           : expectedErrorCode(response.status);
       if (envelope.error.code !== expected) {
         throw new ApiError('invalid_response', response.status);
@@ -141,6 +143,15 @@ function expectedResultsErrorCode(status: number): RiskErrorCode | undefined {
   }
 }
 
+function expectedEdaErrorCode(status: number): RiskErrorCode | undefined {
+  switch (status) {
+    case 404: return 'dataset_unavailable';
+    case 422: return 'invalid_request';
+    case 500: return 'internal_error';
+    default: return undefined;
+  }
+}
+
 export function getCases(options: RequestOptions = {}): Promise<CaseList> {
   return request('/api/cases', decodeCaseList, options);
 }
@@ -164,4 +175,8 @@ export function getTransactionRisk(transactionId: string, options: RequestOption
 
 export function getModelResults(options: RequestOptions = {}): Promise<ModelResults> {
   return request('/api/model/results', decodeModelResults, options, 'results');
+}
+
+export function getEdaSummary(options: RequestOptions = {}): Promise<EdaSummary> {
+  return request('/api/eda/summary', decodeEdaSummary, options, 'eda');
 }

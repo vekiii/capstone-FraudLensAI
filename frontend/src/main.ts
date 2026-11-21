@@ -1,7 +1,7 @@
-import { ApiError, getCase, getCases, getModelResults, getTransactionRisk } from './api';
+import { ApiError, getCase, getCases, getEdaSummary, getModelResults, getTransactionRisk } from './api';
 import type { CaseDetail, CaseList, CaseSummary } from './contracts';
 import { ContractValidationError, decodeCanonicalTransactionId } from './contracts';
-import { createCaseView, createModelResultsView, createRiskView } from './views';
+import { createCaseView, createEdaView, createModelResultsView, createRiskView } from './views';
 import type { UiState } from './views';
 import './styles.css';
 
@@ -166,10 +166,42 @@ export function mountModelResultsApp(root: HTMLElement): () => void {
   return () => { disposed = true; generation += 1; pending?.abort(); };
 }
 
+export function mountEdaApp(root: HTMLElement): () => void {
+  let pending: AbortController | undefined;
+  let generation = 0;
+  let disposed = false;
+  const view = createEdaView(root, () => { void load(); });
+  async function load() {
+    pending?.abort();
+    const token = ++generation;
+    const controller = new AbortController();
+    pending = controller;
+    view.render({ kind: 'loading' });
+    try {
+      const result = await getEdaSummary({ signal: controller.signal });
+      if (!disposed && token === generation) view.render({ kind: 'success', result });
+    } catch (error) {
+      if (disposed || token !== generation) return;
+      const safe = error instanceof ApiError ? error : new ApiError('internal_error');
+      view.render(safe.code === 'dataset_unavailable' ? { kind: 'unavailable' }
+        : { kind: 'error', message: safe.message });
+    } finally {
+      if (token === generation) pending = undefined;
+    }
+  }
+  void load();
+  return () => { disposed = true; generation += 1; pending?.abort(); };
+}
+
 const root = document.querySelector<HTMLElement>('#app');
 if (root) {
-  const disposeCases = mountCaseApp(root);
-  const disposeRisk = mountRiskApp(root);
-  const disposeResults = mountModelResultsApp(root);
-  import.meta.hot?.dispose(() => { disposeCases(); disposeRisk(); disposeResults(); });
+  if (window.location.pathname === '/eda') {
+    const disposeEda = mountEdaApp(root);
+    import.meta.hot?.dispose(disposeEda);
+  } else {
+    const disposeCases = mountCaseApp(root);
+    const disposeRisk = mountRiskApp(root);
+    const disposeResults = mountModelResultsApp(root);
+    import.meta.hot?.dispose(() => { disposeCases(); disposeRisk(); disposeResults(); });
+  }
 }

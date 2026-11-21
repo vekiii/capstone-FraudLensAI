@@ -1,6 +1,6 @@
 # Feature 002 API Contract v1
 
-The prediction, aggregate results and EDA summary routes are implemented. The dedicated EDA page is pending the T243 team decision; the backend exposes a bounded summary through `GET /api/eda/summary`. Feature 001 routes and fixture payloads remain unchanged. Responses use `application/json`; prediction/results schemas are closed in Pydantic and TypeScript, while the EDA schema is closed in Pydantic, JSON Schema and a future T248 TypeScript decoder. This is a local single-user workflow, not an authentication claim.
+The prediction, aggregate results and EDA summary routes are implemented. The team-approved dedicated EDA page reads the bounded summary through `GET /api/eda/summary`. Feature 001 routes and fixture payloads remain unchanged. Responses use `application/json`; prediction/results schemas are closed in Pydantic and TypeScript, while the EDA schema is closed in Pydantic, JSON Schema and the T248 TypeScript decoder. This is a local single-user workflow, not an authentication claim.
 
 | Method / path | Success | Controlled failures |
 |---|---|---|
