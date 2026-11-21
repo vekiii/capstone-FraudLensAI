@@ -1,5 +1,15 @@
 # Next work - FraudLens AI
 
+## Feature 06 — Capstone evaluation technical plan
+
+The [plan](specs/006-capstone-evaluation/plan.md) and Phase 0–1 design specify
+the React dataset binding, existing local T098 scored snapshot, provider setup,
+and the [EV candidate matrix](specs/006-capstone-evaluation/contracts/ev-cases.md).
+The source/index integrity check, live provider readiness, frozen EV pack and
+actual execution remain pending. See [planning evidence](evidence/tasks/feature-006-technical-plan.md).
+
+Next step: run `speckit-tasks` for `specs/006-capstone-evaluation`.
+
 ## Feature 06 — Capstone evaluation specification
 
 Local branch `006-capstone-evaluation` starts at the reviewed React investigation
