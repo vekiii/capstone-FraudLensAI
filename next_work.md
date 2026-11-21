@@ -1,5 +1,16 @@
 # Next work - FraudLens AI
 
+## Feature 06 — Capstone evaluation tasks
+
+The [task list](specs/006-capstone-evaluation/tasks.md) has 25 tasks in six
+phases. Initial milestone: T001–T008 for the scored dataset browser flow.
+EV inputs and deterministic checks can be prepared alongside integration.
+Freeze all 16 inputs and the execution conditions before primary baseline runs.
+
+No implementation or evaluation runs in this unit.
+See [task generation evidence](evidence/tasks/feature-006-task-generation.md).
+Next step: start T001 and record the locked setup and application baseline.
+
 ## Feature 06 — Capstone evaluation technical plan
 
 The [plan](specs/006-capstone-evaluation/plan.md) and Phase 0–1 design specify
