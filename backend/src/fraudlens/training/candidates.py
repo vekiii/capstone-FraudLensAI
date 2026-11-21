@@ -6,6 +6,7 @@ requires the separate FR-021 protocol/provenance and resource preflight gate.
 
 from dataclasses import dataclass
 from itertools import product
+from typing import Callable
 
 import lightgbm as lgb
 import numpy as np
@@ -135,6 +136,7 @@ def fit_lightgbm_matrix_grid(
     validation_labels: np.ndarray,
     *,
     n_jobs: int,
+    on_candidate_start: Callable[[int], None] | None = None,
 ) -> tuple[lgb.LGBMClassifier, ...]:
     """Fit the frozen LightGBM grid from preprocessed arrays."""
     if type(n_jobs) is not int or n_jobs < 1:
@@ -153,10 +155,14 @@ def fit_lightgbm_matrix_grid(
     if int(np.count_nonzero(y_validation)) == 0:
         raise ValueError('validation has no positive examples; model selection is uninformative')
     weight = negatives / positives
-    return tuple(
-        _fit_lightgbm(candidate, train, y_train, validation, y_validation, weight, n_jobs)
-        for candidate in LIGHTGBM_GRID
-    )
+    models = []
+    for index, candidate in enumerate(LIGHTGBM_GRID):
+        if on_candidate_start is not None:
+            on_candidate_start(index)
+        models.append(_fit_lightgbm(
+            candidate, train, y_train, validation, y_validation, weight, n_jobs,
+        ))
+    return tuple(models)
 
 
 def _fit_hist_gradient(

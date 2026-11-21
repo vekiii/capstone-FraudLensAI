@@ -9,7 +9,7 @@ import os
 import subprocess
 import sys
 import time
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -23,10 +23,42 @@ from fraudlens.scoring.artifacts import ArtifactMetadata, write_artifact
 from fraudlens.training.candidates import LIGHTGBM_GRID, fit_lightgbm_matrix_grid
 from fraudlens.training.evaluation import evaluate_validation, rank_lightgbm_candidates
 from fraudlens.training.protocol import verify_research_protocol
+from fraudlens.training.resource_guard import supervise_command
 
 _CATEGORICAL = ('current_payment_currency', 'current_payment_format')
 _NUMERIC = tuple(name for name in FEATURE_ORDER if name not in _CATEGORICAL)
 _SOURCE_SHA = 'b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040'
+_FEATURE_MANIFEST_KEYS = frozenset({
+    'format', 'source_sha256', 'parent_feature_manifest_sha256', 'method',
+    'target_shares', 'warmup_rows_excluded_from_partitions',
+    'showcase_rows_excluded_from_experiment', 'chronological',
+    'cutoffs_inclusive_utc_day', 'counts', 'daily_counts',
+    'partition_scoreable_id_sha256', 'label_values_read', 'files',
+    'resource_ceilings',
+})
+_LABEL_MANIFEST_KEYS = frozenset({
+    'format', 'source_sha256', 'feature_manifest_sha256', 'scope',
+    'label_values_read', 'counts', 'partition_scoreable_id_sha256', 'files',
+})
+
+
+@dataclass(slots=True)
+class _PreparedInputs:
+    protocol_sha: str
+    feature_sha: str
+    label_sha: str
+    feature_manifest: dict[str, Any]
+    vocab: dict[str, tuple[str, ...]]
+    train: np.ndarray
+    train_ids: list[str]
+    train_labels: np.ndarray
+    validation: np.ndarray
+    validation_ids: list[str]
+    validation_times: list[datetime]
+    validation_labels: np.ndarray
+    train_positive: int
+    train_negative: int
+    train_positive_weight: float
 
 
 class _MemoryCounters(ctypes.Structure):
@@ -41,6 +73,11 @@ class _MemoryCounters(ctypes.Structure):
 
 
 def _peak_working_set() -> int | None:
+    if sys.platform == 'darwin':
+        import resource
+
+        # Darwin ru_maxrss is bytes (Linux reports KiB).
+        return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     if sys.platform != 'win32':
         return None
     counters = _MemoryCounters()
@@ -70,9 +107,16 @@ def _load_protocol(path: Path, expected_digest: str) -> tuple[dict[str, Any], st
 
 def _manifest(root: Path, format_name: str) -> dict[str, Any]:
     manifest = json.loads((root / 'manifest.json').read_bytes())
-    if manifest.get('format') != format_name:
+    expected_keys = (_FEATURE_MANIFEST_KEYS if format_name.endswith('features-v1')
+                     else _LABEL_MANIFEST_KEYS)
+    expected_parts = ({'train', 'validation', 'test'} if format_name.endswith('features-v1')
+                      else {'train', 'validation'})
+    if (not isinstance(manifest, dict) or manifest.get('format') != format_name
+            or set(manifest) != expected_keys
+            or not isinstance(manifest.get('files'), dict)
+            or set(manifest['files']) != expected_parts):
         raise ValueError(f'unexpected manifest format in {root}')
-    for name, digest in manifest.get('files', {}).items():
+    for name, digest in manifest['files'].items():
         if sha256_file(root / f'{name}.jsonl') != digest:
             raise ValueError(f'{name} file checksum mismatch in {root}')
     return manifest
@@ -174,28 +218,27 @@ def _write_scores(path: Path, ids: list[str], timestamps: list[datetime], scores
                          for identity, instant, score in zip(ids, timestamps, scores, strict=True))
 
 
-def run_training(args: argparse.Namespace) -> dict[str, Any]:
-    started = time.monotonic()
-    if args.output.exists():
-        raise ValueError('experiment output already exists; refusing overwrite')
-    args.output.parent.mkdir(parents=True, exist_ok=True)
+def _prepare_training_inputs(args: argparse.Namespace) -> _PreparedInputs:
+    """Validate and materialize train/validation inputs; never invoke an estimator."""
     protocol, protocol_sha = _load_protocol(args.protocol, args.protocol_sha256)
     feature_manifest = _manifest(args.features, 'hi-small-ibm-day-60-20-20-features-v1')
     label_manifest = _manifest(args.labels, 'hi-small-ibm-day-60-20-20-training-labels-v1')
     feature_sha = sha256_file(args.features / 'manifest.json')
+    label_sha = sha256_file(args.labels / 'manifest.json')
     verify_research_protocol(
         protocol, protocol_sha, feature_manifest, label_manifest, feature_sha,
-        sha256_file(args.labels / 'manifest.json'),
+        label_sha,
     )
     if (label_manifest.get('feature_manifest_sha256') != feature_sha
             or label_manifest.get('source_sha256') != _SOURCE_SHA
             or feature_manifest.get('source_sha256') != _SOURCE_SHA
-            or feature_manifest.get('feature_version') != FEATURE_VERSION
-            or feature_manifest.get('feature_order') != list(FEATURE_ORDER)):
-        raise ValueError('source, feature or label manifest identities differ')
+            or feature_manifest.get('parent_feature_manifest_sha256')
+            != protocol.get('feature_manifest_sha256')
+            or protocol.get('feature_version') != FEATURE_VERSION
+            or protocol.get('feature_order') != list(FEATURE_ORDER)):
+        raise ValueError('source, feature version/order or label manifest identities differ')
     if (protocol.get('research_feature_manifest_sha256') != feature_sha
-            or protocol.get('research_label_manifest_sha256') != sha256_file(
-                args.labels / 'manifest.json')):
+            or protocol.get('research_label_manifest_sha256') != label_sha):
         raise ValueError('protocol does not bind the prepared input manifests')
 
     vocab = _discover_vocab(args.features / 'train.jsonl')
@@ -214,11 +257,79 @@ def run_training(args: argparse.Namespace) -> dict[str, Any]:
     train_positive = int(np.count_nonzero(train_labels))
     train_negative = len(train_labels) - train_positive
     train_positive_weight = train_negative / train_positive
+    if (train_positive != label_manifest['counts']['train']['positive']
+            or int(np.count_nonzero(validation_labels))
+            != label_manifest['counts']['validation']['positive']):
+        raise ValueError('train or validation label counts differ from the frozen manifest')
+    return _PreparedInputs(
+        protocol_sha, feature_sha, label_sha, feature_manifest, vocab,
+        train, train_ids, train_labels, validation, validation_ids,
+        validation_times, validation_labels, train_positive, train_negative,
+        train_positive_weight,
+    )
+
+
+def run_preflight(args: argparse.Namespace) -> dict[str, Any]:
+    """Exercise the full prefit path without model creation or test-feature reads."""
+    started = time.monotonic()
+    prepared = _prepare_training_inputs(args)
+    report = {
+        'kind': 'training_input_preflight',
+        'protocol_sha256': prepared.protocol_sha,
+        'feature_manifest_sha256': prepared.feature_sha,
+        'label_manifest_sha256': prepared.label_sha,
+        'feature_version': FEATURE_VERSION,
+        'feature_order': list(FEATURE_ORDER),
+        'train_count': len(prepared.train_ids),
+        'validation_count': len(prepared.validation_ids),
+        'train_matrix_shape': list(prepared.train.shape),
+        'validation_matrix_shape': list(prepared.validation.shape),
+        'train_positive_count': prepared.train_positive,
+        'validation_positive_count': int(np.count_nonzero(prepared.validation_labels)),
+        'train_only_vocabulary_sizes': {name: len(values)
+                                        for name, values in prepared.vocab.items()},
+        'train_validation_labels_aligned': True,
+        'test_feature_file_hashed': True,
+        'test_feature_rows_parsed': False,
+        'test_labels_read': False,
+        'estimator_fit_called': False,
+        'elapsed_seconds': round(time.monotonic() - started, 3),
+    }
+    args.output.mkdir(exist_ok=getattr(args, '_worker', False))
+    (args.output / 'preflight.json').write_bytes(canonical_json_bytes(report) + b'\n')
+    return report
+
+
+def run_training(args: argparse.Namespace) -> dict[str, Any]:
+    started = time.monotonic()
+    if args.output.exists() and not getattr(args, '_worker', False):
+        raise ValueError('experiment output already exists; refusing overwrite')
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    prepared = _prepare_training_inputs(args)
+    (protocol_sha, feature_sha, label_sha, feature_manifest, vocab, train,
+     train_ids, train_labels, validation, validation_ids, validation_times,
+     validation_labels, train_positive, train_negative, train_positive_weight) = (
+        prepared.protocol_sha, prepared.feature_sha, prepared.label_sha,
+        prepared.feature_manifest, prepared.vocab, prepared.train,
+        prepared.train_ids, prepared.train_labels, prepared.validation,
+        prepared.validation_ids, prepared.validation_times, prepared.validation_labels,
+        prepared.train_positive, prepared.train_negative, prepared.train_positive_weight,
+    )
 
     fit_started = time.monotonic()
+    def mark_fit(index: int) -> None:
+        marker = args.output / 'fit-progress.json'
+        temporary = args.output / 'fit-progress.json.tmp'
+        temporary.write_text(json.dumps({
+            'candidate_index': index, 'started_monotonic': time.monotonic(),
+        }), encoding='utf-8')
+        temporary.replace(marker)
+
     models = fit_lightgbm_matrix_grid(
         train, train_labels, validation, validation_labels, n_jobs=args.n_jobs,
+        on_candidate_start=mark_fit,
     )
+    (args.output / 'fit-progress.json').unlink(missing_ok=True)
     fit_seconds = round(time.monotonic() - fit_started, 3)
     results = []
     for index, (candidate, model) in enumerate(zip(LIGHTGBM_GRID, models, strict=True)):
@@ -244,7 +355,7 @@ def run_training(args: argparse.Namespace) -> dict[str, Any]:
         validation_labels, validation_scores, validation_ids, validation_times,
     )
     evaluation = asdict(chosen_evaluation)
-    args.output.mkdir(exist_ok=False)
+    args.output.mkdir(exist_ok=getattr(args, '_worker', False))
     revision, dirty = _git_revision(args.root)
     model_bytes = model.booster_.model_to_string(num_iteration=model.best_iteration_).encode()
     artifact_root = args.output / 'artifacts'
@@ -270,9 +381,8 @@ def run_training(args: argparse.Namespace) -> dict[str, Any]:
     )
     _write_scores(args.output / 'validation-scores.csv', validation_ids, validation_times,
                   validation_scores)
-    manifest = json.loads((args.features / 'manifest.json').read_bytes())
     test_matrix, test_ids, test_times = _read_feature_file(
-        args.features / 'test.jsonl', vocab, expected_counts['test'],
+        args.features / 'test.jsonl', vocab, feature_manifest['counts']['test'],
     )
     test_scores = model.predict_proba(test_matrix, num_iteration=model.best_iteration_)[:, 1]
     _write_scores(args.output / 'test-predictions-sealed.csv', test_ids, test_times, test_scores)
@@ -280,7 +390,7 @@ def run_training(args: argparse.Namespace) -> dict[str, Any]:
         'protocol_sha256': protocol_sha,
         'source_sha256': _SOURCE_SHA,
         'feature_manifest_sha256': feature_sha,
-        'label_manifest_sha256': sha256_file(args.labels / 'manifest.json'),
+        'label_manifest_sha256': label_sha,
         'code_revision': revision,
         'working_tree_dirty': dirty,
         'python_version': sys.version.split()[0],
@@ -313,7 +423,7 @@ def run_training(args: argparse.Namespace) -> dict[str, Any]:
             'test': sha256_file(args.output / 'test-predictions-sealed.csv'),
         },
         'elapsed_seconds': round(time.monotonic() - started, 3),
-        'features_file_hashes': manifest['files'],
+        'features_file_hashes': feature_manifest['files'],
     }
     (args.output / 'experiment.json').write_bytes(canonical_json_bytes(report) + b'\n')
     return report
@@ -328,10 +438,29 @@ def main() -> None:
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--root', type=Path, default=Path.cwd())
     parser.add_argument('--n-jobs', type=int, default=4)
+    parser.add_argument('--preflight-only', action='store_true',
+                        help='validate and materialize train/validation inputs without fitting')
+    parser.add_argument('--_worker', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.n_jobs < 1 or not args.root.is_dir():
         parser.error('--n-jobs must be positive and --root must be a directory')
-    print(json.dumps(run_training(args), sort_keys=True))
+    if args._worker:
+        print(json.dumps(run_preflight(args) if args.preflight_only else run_training(args),
+                         sort_keys=True))
+        return
+    protocol, _ = _load_protocol(args.protocol, args.protocol_sha256)
+    limits = protocol['resource_ceilings']['fit']
+    command = [sys.executable, '-m', 'fraudlens.training.local_run',
+               '--features', str(args.features), '--labels', str(args.labels),
+               '--protocol', str(args.protocol), '--protocol-sha256', args.protocol_sha256,
+               '--output', '{output}', '--root', str(args.root),
+               '--n-jobs', str(args.n_jobs), '--_worker']
+    if args.preflight_only:
+        command.append('--preflight-only')
+    print(json.dumps(supervise_command(
+        command, args.output, limits,
+        report_name='preflight.json' if args.preflight_only else 'experiment.json',
+    ), sort_keys=True))
 
 
 if __name__ == '__main__':

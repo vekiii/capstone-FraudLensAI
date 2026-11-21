@@ -1,0 +1,7 @@
+# Original request: Stage C Mac Python and resource remediation
+
+Date: 2026-11-20 Europe/Belgrade. The user directed work in `/Users/ladylazarus/Desktop/FraudLensAI-StageC` after transfer checks, preserving all local changes and making no commit or push.
+
+> Sada riješi tehničke prepreke za trening na ovom Mac-u, bez pokretanja treninga. Prvo pročitaj AGENTS.md, next_work.md i evidence/tasks/T228-stagec-mac-receipt-2026-11-20.md.
+
+The requested Python work was to distinguish uv version availability from network, installation and configuration errors; use exact 3.14.10 in this project's virtual environment without changing system Python or another project; leave `uv.lock` and version checks intact. The resource work was to inspect the runner, artifact and candidate `resource_ceilings`; implement initial and running disk checks, macOS peak memory measurement, active time and memory limits including each fit, clear abort reasons, and incomplete-output status, while retaining Windows compatibility and avoiding new dependencies. The requested RED/GREEN checks used only synthetic inputs or controlled processes, plus no-fit regression, Ruff and `git diff --check`. The candidate JSON must remain untouched; `T219-ibm-candidate.py`, eight real candidates, any real-data fit, test/showcase labels and T230 must not run. Report old/new implementation hashes and leave protocol revision and approval for the next step. T228–T230 must remain open.

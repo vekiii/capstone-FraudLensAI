@@ -39,6 +39,7 @@ junit.xml
 /data/artifacts/
 /data/eval/
 /evals/results/
+/work/
 
 # Local colleague transfer bundle contains generated transaction features and labels
 /T228-colleague-transfer-*.zip
