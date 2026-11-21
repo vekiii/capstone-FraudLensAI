@@ -12,7 +12,7 @@ description: "Implementation and verification tasks for the Capstone evaluation"
 
 ## Faza 1 — Setup
 
-- [ ] T001 Izabrati `specs/006-capstone-evaluation` u PowerShell sesiji, izvršiti zaključani setup iz `specs/006-capstone-evaluation/quickstart.md` i snimiti granu, reviziju, verzije, početne ciljane Cases/investigation i React provere u `evidence/tasks/feature-006-setup.md`. Svaki postojeći pad opisati sa izvršenom komandom.
+- [x] T001 Izabrati `specs/006-capstone-evaluation` u PowerShell sesiji, izvršiti zaključani setup iz `specs/006-capstone-evaluation/quickstart.md` i snimiti granu, reviziju, verzije, početne ciljane Cases/investigation i React provere u `evidence/tasks/feature-006-setup.md`. Svaki postojeći pad opisati sa izvršenom komandom.
 
 ## Faza 2 — Preduslovi
 

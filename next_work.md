@@ -1,5 +1,16 @@
 # Next work - FraudLens AI
 
+## Feature 06 — T001 završen, 21. novembar 2026.
+
+Zaključani Python i web setup su prošli na `006-capstone-evaluation`.
+Prvi `npm ci` je vratio EACCES u sandboxu i prošao uz eskalaciju. Ciljani
+backend 84/84 i React 47/47 prolaze, kao i typecheck i build. Starlette/httpx
+i Vite/Three.js upozorenja su zabeležena. Puna regresija i reprodukcija drugog
+člana ostaju van ovog baseline-a.
+
+[Setup](evidence/tasks/feature-006-setup.md) · [Predaja](evidence/tasks/feature-006-phase-01-handoff.md).
+Sledeći korak je T002 provera lokalnih T098 artefakata u zasebnoj fazi T002–T003.
+
 ## Feature 06 — Capstone evaluation tasks
 
 The [task list](specs/006-capstone-evaluation/tasks.md) has 25 tasks in six
