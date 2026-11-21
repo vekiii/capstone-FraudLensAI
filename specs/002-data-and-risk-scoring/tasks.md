@@ -1,7 +1,7 @@
 # Tasks: Dataset, Machine Learning and EDA
 
 **Inputs**: spec.md, plan.md, research.md, data-model.md, contracts/, quickstart.md
-**Status**: T201?T218 and T220?T227 complete as previously evidenced; T203/T210 remain scoped to the exact local copy; T219?s IBM-day protocol candidate is pending human review; T228?s local pipeline is implemented but no model fit has run; T229?T255 remain unchecked. Evidence: [T219](../../evidence/tasks/T219.md), [T228](../../evidence/tasks/T228.md).
+**Status**: T201–T249, T250–T251 and design-only T253 are checked for their stated scope; T203/T210 remain scoped to the exact local copy. Stage C's selected unweighted model and one authorized T230 test evaluation are documented. The user separately [accepted that exact model for local opt-in capstone integration](../../evidence/tasks/T231-stage-d-acceptance-2026-11-21.md); [Stage D T231–T236](../../evidence/tasks/T236.md) provide the backend risk route and verified adapter. [Stage E](../../evidence/tasks/T242.md) provides frontend prediction integration; [T250/T251](../../evidence/tasks/T251.md) gate authorized aggregate results and complete T240. [T243 team approval](../../evidence/tasks/T243.md) unlocked the [Stage F EDA page and full regression](../../evidence/tasks/T249.md), using the [T246](../../evidence/tasks/T246-full-source-eda-2026-11-21.md) verified label-free full-source aggregate. T252 and T254–T255 remain unchecked. T252/T254–T255 preparation and pending decisions are in [planning evidence](../../evidence/tasks/T243-T255-planning.md). This does not cover production, new fitting/evaluation or showcase replay.
 **Verification**: Apply RED → GREEN → REFACTOR to critical behavior. Record actual outcomes; do not invent RED or claim synthetic checks establish model quality.
 **Format**: `- [ ] Tnnn [P?] [USn] action with paths (FR-xxx; verification)`
 
@@ -28,7 +28,7 @@
 - [x] T216 [US2] Write access-control RED tests for allowed aggregate audit shapes and refused record-level/showcase subrange queries in `backend/tests/unit/test_label_access.py` (FR-018–020). See [T216 RED evidence](../../evidence/tasks/T216.md); GREEN is pending T217.
 - [x] T217 [US2] Implement restricted label audit interface and append-only purpose/query/time/result log in `backend/src/fraudlens/training/label_access.py`; satisfy T216 (FR-018–020). See [T217 synthetic GREEN evidence](../../evidence/tasks/T217.md); real aggregate audit remains T218.
 - [x] T218 [US2] Preserve the historical aggregate audit in `evidence/tasks/T218.md` (FR-018/FR-019 as specified at that time). Its original minimum-positive/prevalence thresholds and showcase failure are retained as historical facts; the new IBM-day FR-018 no longer applies those thresholds to the research split.
-- [ ] T219 [US2] Review and freeze dataset/protocol/partition hashes and exact protocol fields in `specs/002-data-and-risk-scoring/protocol.md`; verify every mismatch is a stop condition (FR-021). The versioned IBM-day features, restricted training labels, class distribution and candidate digest are in [latest T219 evidence](../../evidence/tasks/T219.md). The candidate remains pending; no approval or fit is claimed.
+- [x] T219 [US2] Review and freeze dataset/protocol/partition hashes and exact protocol fields in `specs/002-data-and-risk-scoring/protocol.md`; verify every mismatch is a stop condition (FR-021). The current reconciliation records the exact approved/executed revision, inherited and locally checked identities, a stopped mismatch attempt and the historical status of earlier candidates; see [Stage C approval/execution evidence](../../evidence/tasks/T228-stagec-second-fit-2026-11-20.md) and [FR-023 preparation](../../evidence/tasks/T224-stagec-cross-family-preparation-2026-11-20.md).
 
 ## Stage C — Machine learning
 
@@ -36,48 +36,48 @@
 - [x] T221 [US3] Resolve and freeze exact candidate grid, class strategy, threshold objective, feature admission policy and budget before any fit; record human decision in protocol/evidence (FR-021, FR-023–026). See [T221 evidence](../../evidence/tasks/T221.md); the complete FR-021 prefit protocol hash and provenance gate remain T219 work.
 - [x] T222 [US3] Verify scikit-learn, LightGBM and Python 3.14 lock compatibility and artifact format/security options; record actual versions and decision in `evidence/tasks/T222.md` (FR-030). See [T222 synthetic compatibility and artifact decision](../../evidence/tasks/T222.md); full-source fit and loader remain gated.
 - [x] T223 [US3] Implement train-only preparation and prevalence, depth-5/min-leaf-500 tree and L2 logistic baselines in `backend/src/fraudlens/training/`; satisfy T220 on synthetic data before any real-source fit (FR-020, FR-023, FR-025). See [T223 evidence](../../evidence/tasks/T223.md). The user explicitly requested this implementation order on 2026-11-20.
-- [x] T224 [US3] Implement the eight frozen LightGBM configurations and five frozen HistGradientBoosting comparisons in `backend/src/fraudlens/training/`; freeze a cross-family final-selection rule before using comparison results to change the selected model (FR-023, FR-024). See [T224 evidence](../../evidence/tasks/T224.md). Model fits and runtime checks remain unrun by explicit user instruction.
+- [x] T224 [US3] Implement the eight frozen LightGBM configurations and five frozen HistGradientBoosting comparisons in `backend/src/fraudlens/training/`; freeze a cross-family final-selection rule before using comparison results to change the selected model (FR-023, FR-024). See [T224 implementation evidence](../../evidence/tasks/T224.md) and the later [approved cross-family execution](../../evidence/tasks/T224-stagec-cross-family-execution-2026-11-20.md). Validation ranking does not constitute application acceptance.
 - [x] T225 [US3] Write RED tests for positive-class F1 selection, AP/P@k/recall/denominators, threshold and model-ranking ties, alert counts, NaN/inf and bounded score in `backend/tests/unit/test_evaluation.py` (FR-022, FR-024, FR-026, FR-027). See [T225 RED evidence](../../evidence/tasks/T225.md); GREEN remains T226.
 - [x] T226 [US3] Implement validation evaluation and threshold selection without daily alert suppression in `backend/src/fraudlens/training/evaluation.py`; satisfy T225 (FR-024, FR-026, FR-027). See [T226 no-fit GREEN evidence](../../evidence/tasks/T226.md).
 - [x] T227 [US3] Implement artifact writer/metadata/hash/version validation in `backend/src/fraudlens/scoring/artifacts.py`; ensure no untrusted deserialization (FR-021, FR-030). See [T227 evidence](../../evidence/tasks/T227.md); real fitting and native model adapter remain gated.
-- [ ] T228 [US3] Run the implemented local train/validation LightGBM experiment only after the candidate protocol is reviewed; record actual comparisons, limitations and review in `evidence/tasks/T228.md` plus ignored `data/eval/` (FR-022?029). No model was fitted in the implementation task.
-- [ ] T229 [US3] Freeze model and development-test predictions without reading test labels; record their hashes in `evidence/tasks/T229.md` (FR-020, FR-021, FR-028).
-- [ ] T230 [US3] After predictions are frozen, run `evidence/tasks/T230-evaluate.py` with the matching prediction SHA-256 and explicit authorization; record aggregate-only metrics/limits in `evidence/tasks/T230.md` (FR-020, FR-027, FR-028). No test label was read for the current implementation.
+- [x] T228 [US3] Run the implemented local train/validation LightGBM experiment only after the candidate protocol is reviewed; record actual comparisons, limitations and review in `evidence/tasks/T228.md` plus ignored `data/eval/` (FR-022?029). The approved eight-candidate run and validation review are recorded in [T228 evidence](../../evidence/tasks/T228.md); this checkbox does not accept a model for application or complete the later cross-family comparison.
+- [x] T229 [US3] Freeze model and development-test predictions without reading test labels; record their hashes in `evidence/tasks/T229.md` (FR-020, FR-021, FR-028). The historical weighted selected model and 233,070 sealed predictions remain frozen; the separately human-selected unweighted diagnostic model now has its own trusted manifest, unchanged native bytes and 233,070 new sealed predictions. Both hash sets are distinguished in [T229 evidence](../../evidence/tasks/T229.md). No T230 or application acceptance is implied.
+- [x] T230 [US3] After predictions are frozen, run `evidence/tasks/T230-evaluate.py` with the matching prediction SHA-256 and explicit authorization; record aggregate-only metrics/limits in `evidence/tasks/T230.md` (FR-020, FR-027, FR-028). The one authorized run used the unweighted sealed prediction hash and fixed validation threshold; [T230 evidence](../../evidence/tasks/T230.md) records the aggregate result and limits. This checkbox does not approve application use.
 
 ## Stage D — Backend prediction integration
 
-- [ ] T231 [US4] Write synthetic API RED tests for model success, warm-up ineligibility, absent/incompatible artifact, transaction mismatch, malformed score and fixture fallback in `backend/tests/contracts/test_risk_contracts.py` and `backend/tests/integration/test_risk_api.py` (FR-030–034).
-- [ ] T232 [US4] Add versioned closed schemas and Pydantic models in `contracts/schemas.json` and `backend/src/fraudlens/contracts.py`; preserve Foundation v1 compatibility (FR-031–034).
-- [ ] T233 [US4] Implement trusted local artifact loader and model adapter for the existing `Scorer` boundary in `backend/src/fraudlens/scoring/model_scorer.py` (FR-030–032).
-- [ ] T234 [US4] Add explicit opt-in model settings and controlled eligibility/unavailable error mapping in `backend/src/fraudlens/settings.py` and `main.py`; fixture startup remains artifact-free (FR-030–034).
-- [ ] T235 [US4] Implement read-only eligible transaction risk endpoint in `backend/src/fraudlens/main.py`; satisfy T231 and exclude target labels (FR-031–034).
-- [ ] T236 [US4] Run existing Foundation backend regression checks and record actual commands/outcomes in `evidence/tasks/T236.md` (FR-032).
+- [x] T231 [US4] Write synthetic API RED tests for model success, warm-up ineligibility, absent/incompatible artifact, transaction mismatch, malformed score and fixture fallback in `backend/tests/contracts/test_risk_contracts.py` and `backend/tests/integration/test_risk_api.py` (FR-030–034). [RED/GREEN evidence](../../evidence/tasks/T231.md).
+- [x] T232 [US4] Add versioned closed schemas and Pydantic models in `contracts/schemas.json` and `backend/src/fraudlens/contracts.py`; preserve Foundation v1 compatibility (FR-031–034). [Evidence](../../evidence/tasks/T232.md).
+- [x] T233 [US4] Implement trusted local artifact loader and model adapter for the existing `Scorer` boundary in `backend/src/fraudlens/scoring/model_scorer.py` (FR-030–032). [Integrity and parity evidence](../../evidence/tasks/T233.md).
+- [x] T234 [US4] Add explicit opt-in model settings and controlled eligibility/unavailable error mapping in `backend/src/fraudlens/settings.py` and `main.py`; fixture startup remains artifact-free (FR-030–034). [Evidence and feature-snapshot limit](../../evidence/tasks/T234.md).
+- [x] T235 [US4] Implement read-only eligible transaction risk endpoint in `backend/src/fraudlens/main.py`; satisfy T231 and exclude target labels (FR-031–034). [Evidence](../../evidence/tasks/T235.md).
+- [x] T236 [US4] Run existing Foundation backend regression checks and record actual commands/outcomes in `evidence/tasks/T236.md` (FR-032). [Full-suite evidence](../../evidence/tasks/T236.md).
 
 ## Stage E — Frontend prediction/results integration
 
-- [ ] T237 [US4] Write decoder RED tests for closed prediction/results payloads, label leakage and malformed/unavailable states in `frontend/tests/contracts.test.ts` (FR-033, FR-034).
-- [ ] T238 [US4] Implement typed decoders and API calls in `frontend/src/contracts.ts` and `frontend/src/api.ts`; decode unknown values without unsafe casts (FR-033, FR-034).
-- [ ] T239 [US4] Render score, non-final review state, source, synthetic-data notice, model/feature versions and explanation in `frontend/src/views.ts` and `main.ts` (FR-033).
-- [ ] T240 [US4] Render model metrics with partition, denominator, calibration status and authorization limitations in `frontend/src/views.ts` (FR-027, FR-028, FR-033).
-- [ ] T241 [US4] Verify safe text rendering, no target labels, and explicit loading/error/retry UI states in `frontend/tests/` (FR-033, FR-034).
-- [ ] T242 [US4] Run locked frontend tests, typecheck and build; record exact outcomes in `evidence/tasks/T242.md` (FR-033).
+- [x] T237 [US4] Write decoder RED tests for closed prediction/results payloads, label leakage and malformed/unavailable states in `frontend/tests/contracts.test.ts` (FR-033, FR-034). [Evidence](../../evidence/tasks/T237.md).
+- [x] T238 [US4] Implement typed decoders and API calls in `frontend/src/contracts.ts` and `frontend/src/api.ts`; decode unknown values without unsafe casts (FR-033, FR-034). [Evidence](../../evidence/tasks/T238.md).
+- [x] T239 [US4] Render score, non-final review state, source, synthetic-data notice, model/feature versions and explanation in `frontend/src/views.ts` and `main.ts` (FR-033). [Evidence](../../evidence/tasks/T239.md).
+- [x] T240 [US4] Render model metrics with partition, denominator, calibration status and authorization limitations in `frontend/src/views.ts` (FR-027, FR-028, FR-033). Live integration follows T251. [Evidence](../../evidence/tasks/T240.md).
+- [x] T241 [US4] Verify safe text rendering, no target labels, and explicit loading/error/retry UI states in `frontend/tests/` (FR-033, FR-034). [Evidence](../../evidence/tasks/T241.md).
+- [x] T242 [US4] Run locked frontend tests, typecheck and build; record exact outcomes in `evidence/tasks/T242.md` (FR-033). [Evidence](../../evidence/tasks/T242.md).
 
-## Stage F — Dedicated EDA page (approval gated)
+## Stage F — Dedicated EDA page (approved)
 
-- [ ] T243 [US6] Record the fourth-screen proposal, benefit and schedule impact, and obtain explicit team approval in `docs/decisions/feature-002-eda.md`; otherwise defer EDA UI tasks (FR-038).
-- [ ] T244 [US6] Write aggregate correctness, bounded size, denominator and currency-separation RED tests in `backend/tests/unit/test_eda.py` (FR-035–037).
-- [ ] T245 [US6] Implement label-free Python EDA aggregates and closed models in `backend/src/fraudlens/eda/` and `contracts.py` (FR-035, FR-036).
-- [ ] T246 [US6] Implement bounded EDA summary endpoint and contract examples in `backend/src/fraudlens/main.py` and `contracts/api.md` (FR-035–037).
-- [ ] T247 [US6] Add accessible EDA route/navigation and bounded aggregate charts with explicit units/denominators in `frontend/src/`; requires T243 approval (FR-035, FR-037, FR-038).
-- [ ] T248 [US6] Add EDA decoder and loading/empty/unavailable/malformed/retry checks in `frontend/tests/` (FR-036, FR-037).
-- [ ] T249 [US6] Run full Foundation plus Feature 002 regression checks and record exact outcomes in `evidence/tasks/T249.md` (FR-032, FR-037).
+- [x] T243 [US6] Record the fourth-screen proposal, benefit and schedule impact, and obtain explicit team approval in `docs/decisions/feature-002-eda.md`; otherwise defer EDA UI tasks (FR-038). [User-reported team decision](../../evidence/tasks/T243.md), no individual names inferred.
+- [x] T244 [US6] Write aggregate correctness, bounded size, denominator and currency-separation RED tests in `backend/tests/unit/test_eda.py` (FR-035–037). [Five intended missing-module RED failures](../../evidence/tasks/T244.md), later GREEN under [T245](../../evidence/tasks/T245.md).
+- [x] T245 [US6] Implement label-free Python EDA aggregates and closed models in `backend/src/fraudlens/eda/` and `contracts.py` (FR-035, FR-036). [Synthetic GREEN and limits](../../evidence/tasks/T245.md); no full-source summary was produced.
+- [x] T246 [US6] Implement bounded EDA summary endpoint and contract examples in `backend/src/fraudlens/main.py` and `contracts/api.md` (FR-035–037). [Endpoint and contract](../../evidence/tasks/T246.md); [one exact T210 label-free full-source publication and live HTTP 200](../../evidence/tasks/T246-full-source-eda-2026-11-21.md), with controlled missing/tampered failures.
+- [x] T247 [US6] Add accessible EDA route/navigation and bounded aggregate charts with explicit units/denominators in `frontend/src/`; requires T243 approval (FR-035, FR-037, FR-038). [Implementation and real Safari checks](../../evidence/tasks/T247.md).
+- [x] T248 [US6] Add EDA decoder and loading/empty/unavailable/malformed/retry checks in `frontend/tests/` (FR-036, FR-037). [RED/GREEN evidence](../../evidence/tasks/T248.md).
+- [x] T249 [US6] Run full Foundation plus Feature 002 regression checks and record exact outcomes in `evidence/tasks/T249.md` (FR-032, FR-037). [632 backend and 229 frontend passed](../../evidence/tasks/T249.md).
 
 ## Stage G — Gated evaluation and future showcase
 
-- [ ] T250 [US5] Add denied test/showcase record, daily, and subrange label query tests in `backend/tests/unit/test_label_access.py` (FR-019, FR-020, FR-028, FR-034).
-- [ ] T251 [US5] Implement aggregate results API with partition visibility controlled by explicit evaluation authorization in `backend/src/fraudlens/training/results.py` and `main.py` (FR-027, FR-028, FR-034).
+- [x] T250 [US5] Add denied test/showcase record, daily, and subrange label query tests in `backend/tests/unit/test_label_access.py` (FR-019, FR-020, FR-028, FR-034). [RED/GREEN evidence](../../evidence/tasks/T250.md).
+- [x] T251 [US5] Implement aggregate results API with partition visibility controlled by explicit evaluation authorization in `backend/src/fraudlens/training/results.py` and `main.py` (FR-027, FR-028, FR-034). [Hash and regression evidence](../../evidence/tasks/T251.md).
 - [ ] T252 [US5] Complete human review/reproduction of protocol, data card, metrics and limitations; record scope and actual reviewers in `evidence/tasks/feature-002-review.md` (FR-004, FR-021, FR-028).
-- [ ] T253 [US5] Specify showcase preceding-24-hour context and event-order contract in `specs/002-data-and-risk-scoring/showcase.md`, without implementing replay (FR-039).
+- [x] T253 [US5] Specify showcase preceding-24-hour context and event-order contract in `specs/002-data-and-risk-scoring/showcase.md`, without implementing replay (FR-039). [Design contract](showcase.md) and [evidence](../../evidence/tasks/T243-T255-planning.md); no replay approval or execution.
 - [ ] T254 [US5] If replay receives separate approval, add synthetic context/order/threshold/no-label/>20-alert tests in `backend/tests/` (FR-039).
 - [ ] T255 [US5] Only after separate scope approval, implement later chronological replay and record actual review; do not gate initial data/prediction/EDA delivery on it (FR-039).
 
@@ -85,7 +85,7 @@
 
 T202 precedes T204; T205 precedes T206; T207 precedes T208; T209 precedes T210. Stage B depends on verified Stage A; T211 precedes T213; T214 precedes T215; T216 precedes T217; T218 follows frozen boundaries and access control; T219 follows audit/hash checks. Stage C depends on T219 and decisions T221/T222; T220 precedes training; T228 precedes T229; T230 requires separate authorization. Stage D T231 precedes T232–T235. Stage E depends on backend contracts/API. Stage F's route/UI requires T243 approval. Stage G T251 depends on authorization tests and frozen results; T255 is separately gated/deferred.
 
-The first implementation focus is synthetic validation plus independently verified source ingestion. Build the smallest complete data-to-prediction workflow before optional chart refinement or replay. T240 may be developed against the versioned contract and synthetic responses, but its live results integration depends on T251; model results are unavailable until their permitted evidence exists.
+The first implementation focus is synthetic validation plus independently verified source ingestion. Build the smallest complete data-to-prediction workflow before optional chart refinement or replay. T240 was first developed against the versioned contract and synthetic responses, then connected after T251 verified the permitted T230 evidence. Results remain unavailable when that exact local authorization or report integrity is absent.
 
 ## Requirement traceability index
 
