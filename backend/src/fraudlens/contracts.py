@@ -3,7 +3,13 @@ import re
 from typing import Annotated, Literal
 
 from jsonschema import FormatChecker
-from pydantic import AfterValidator, BaseModel, ConfigDict, Field, StringConstraints
+from pydantic import (
+    AfterValidator,
+    BaseModel,
+    ConfigDict,
+    Field,
+    StringConstraints,
+)
 
 
 def utc_timestamp(value: str) -> str:
@@ -120,3 +126,42 @@ class RiskErrorBody(Contract):
 
 class RiskError(Contract):
     error: RiskErrorBody
+
+
+class Metric(Contract):
+    name: Annotated[str, StringConstraints(min_length=1, max_length=80)]
+    value: Annotated[float, Field(allow_inf_nan=False)] | None
+    denominator: Annotated[int, Field(ge=0)]
+    unit: Annotated[str, StringConstraints(min_length=1, max_length=40)]
+
+
+class PartitionResults(Contract):
+    partition: Literal['train', 'validation', 'test']
+    state: Literal['available', 'not_authorized', 'unavailable']
+    synthetic_data: Literal[True]
+    coverage_utc: Annotated[str, StringConstraints(min_length=1, max_length=120)]
+    row_count: Annotated[int, Field(ge=0)]
+    positive_count: Annotated[int, Field(ge=0)]
+    negative_count: Annotated[int, Field(ge=0)]
+    metrics: Annotated[list[Metric], Field(max_length=40)]
+
+
+class ModelResults(Contract):
+    model_version: Annotated[str, StringConstraints(min_length=1, max_length=80)]
+    feature_version: Annotated[str, StringConstraints(min_length=1, max_length=80)]
+    dataset_version: Annotated[str, StringConstraints(min_length=1, max_length=120)]
+    threshold: Score | None
+    calibration_status: Literal['not_assessed', 'assessed']
+    partitions: Annotated[list[PartitionResults], Field(max_length=3)]
+    limitations: Annotated[list[Annotated[str, StringConstraints(max_length=300)]],
+                           Field(max_length=20)]
+
+
+class ResultsErrorBody(Contract):
+    code: Literal['invalid_request', 'results_unavailable',
+                  'evaluation_not_authorized', 'internal_error']
+    message: Annotated[str, StringConstraints(min_length=1, max_length=200)]
+
+
+class ResultsError(Contract):
+    error: ResultsErrorBody

@@ -6,7 +6,7 @@
     "Error": {
       "type": "object", "additionalProperties": false,
       "properties": {"error": {"type": "object", "additionalProperties": false,
-        "properties": {"code": {"enum": ["invalid_request", "transaction_not_found", "transaction_ineligible", "model_unavailable", "internal_error"]}, "message": {"type": "string", "minLength": 1, "maxLength": 200}}, "required": ["code", "message"]}},
+        "properties": {"code": {"enum": ["invalid_request", "transaction_not_found", "transaction_ineligible", "model_unavailable", "results_unavailable", "evaluation_not_authorized", "internal_error"]}, "message": {"type": "string", "minLength": 1, "maxLength": 200}}, "required": ["code", "message"]}},
       "required": ["error"]
     },
     "PredictionResult": {
@@ -23,6 +23,21 @@
         "explanation": {"type": "string", "minLength": 1, "maxLength": 1000}
       },
       "required": ["transaction_id", "risk_score", "review_status", "source", "model_version", "feature_version", "synthetic_data", "scored_at", "explanation"]
+    },
+    "Metric": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"name": {"type": "string", "minLength": 1, "maxLength": 80}, "value": {"type": ["number", "null"]}, "denominator": {"type": "integer", "minimum": 0}, "unit": {"type": "string", "minLength": 1, "maxLength": 40}},
+      "required": ["name", "value", "denominator", "unit"]
+    },
+    "PartitionResults": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"partition": {"enum": ["train", "validation", "test"]}, "state": {"enum": ["available", "not_authorized", "unavailable"]}, "synthetic_data": {"const": true}, "coverage_utc": {"type": "string", "minLength": 1, "maxLength": 120}, "row_count": {"type": "integer", "minimum": 0}, "positive_count": {"type": "integer", "minimum": 0}, "negative_count": {"type": "integer", "minimum": 0}, "metrics": {"type": "array", "items": {"$ref": "#/$defs/Metric"}, "maxItems": 40}},
+      "required": ["partition", "state", "synthetic_data", "coverage_utc", "row_count", "positive_count", "negative_count", "metrics"]
+    },
+    "ModelResults": {
+      "type": "object", "additionalProperties": false,
+      "properties": {"model_version": {"type": "string", "minLength": 1, "maxLength": 80}, "feature_version": {"type": "string", "minLength": 1, "maxLength": 80}, "dataset_version": {"type": "string", "minLength": 1, "maxLength": 120}, "threshold": {"type": ["number", "null"], "minimum": 0, "maximum": 1}, "calibration_status": {"enum": ["not_assessed", "assessed"]}, "partitions": {"type": "array", "items": {"$ref": "#/$defs/PartitionResults"}, "maxItems": 3}, "limitations": {"type": "array", "items": {"type": "string", "maxLength": 300}, "maxItems": 20}},
+      "required": ["model_version", "feature_version", "dataset_version", "threshold", "calibration_status", "partitions", "limitations"]
     }
   }
 }

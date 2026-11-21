@@ -1,7 +1,7 @@
-import { ApiError, getCase, getCases, getTransactionRisk } from './api';
+import { ApiError, getCase, getCases, getModelResults, getTransactionRisk } from './api';
 import type { CaseDetail, CaseList, CaseSummary } from './contracts';
 import { ContractValidationError, decodeCanonicalTransactionId } from './contracts';
-import { createCaseView, createRiskView } from './views';
+import { createCaseView, createModelResultsView, createRiskView } from './views';
 import type { UiState } from './views';
 import './styles.css';
 
@@ -138,9 +138,38 @@ export function mountRiskApp(root: HTMLElement): () => void {
   return () => { disposed = true; generation += 1; pending?.abort(); };
 }
 
+export function mountModelResultsApp(root: HTMLElement): () => void {
+  let pending: AbortController | undefined;
+  let generation = 0;
+  let disposed = false;
+  const view = createModelResultsView(root, () => { void load(); });
+  view.render({ kind: 'idle' });
+  async function load() {
+    pending?.abort();
+    const token = ++generation;
+    const controller = new AbortController();
+    pending = controller;
+    view.render({ kind: 'loading' });
+    try {
+      const result = await getModelResults({ signal: controller.signal });
+      if (!disposed && token === generation) view.render({ kind: 'success', result });
+    } catch (error) {
+      if (disposed || token !== generation) return;
+      const safe = error instanceof ApiError ? error : new ApiError('internal_error');
+      view.render(safe.code === 'evaluation_not_authorized' ? { kind: 'unauthorized' }
+        : safe.code === 'results_unavailable' ? { kind: 'unavailable' }
+          : { kind: 'error', message: safe.message });
+    } finally {
+      if (token === generation) pending = undefined;
+    }
+  }
+  return () => { disposed = true; generation += 1; pending?.abort(); };
+}
+
 const root = document.querySelector<HTMLElement>('#app');
 if (root) {
   const disposeCases = mountCaseApp(root);
   const disposeRisk = mountRiskApp(root);
-  import.meta.hot?.dispose(() => { disposeCases(); disposeRisk(); });
+  const disposeResults = mountModelResultsApp(root);
+  import.meta.hot?.dispose(() => { disposeCases(); disposeRisk(); disposeResults(); });
 }

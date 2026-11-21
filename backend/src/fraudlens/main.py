@@ -16,7 +16,10 @@ from fraudlens.contracts import (
     ErrorBody,
     Health,
     ModelHealth,
+    ModelResults,
     PredictionResult,
+    ResultsError,
+    ResultsErrorBody,
     RiskError,
     RiskErrorBody,
 )
@@ -28,6 +31,7 @@ from fraudlens.scoring.model_scorer import (
     valid_canonical_id,
 )
 from fraudlens.settings import Settings, load_settings
+from fraudlens.training.results import ResultsNotAuthorized, ResultsService, ResultsUnavailable
 
 logger = logging.getLogger(__name__)
 
@@ -62,14 +66,21 @@ def _risk_error(status: int, code: str, message: str) -> JSONResponse:
     return JSONResponse(status_code=status, content=body.model_dump(mode='json'))
 
 
+def _results_error(status: int, code: str, message: str) -> JSONResponse:
+    body = ResultsError(error=ResultsErrorBody(code=code, message=message))
+    return JSONResponse(status_code=status, content=body.model_dump(mode='json'))
+
+
 def create_app(settings: Settings | None = None, scorer: Scorer | None = None,
                model_scorer: ModelScorer | None = None,
-               feature_store: FeatureStore | None = None) -> FastAPI:
+               feature_store: FeatureStore | None = None,
+               results_service: ResultsService | None = None) -> FastAPI:
     app = FastAPI(title='FraudLens AI')
     app.state.settings = settings if settings is not None else load_settings()
     app.state.scorer = scorer if scorer is not None else FixtureScorer()
     app.state.model_scorer = model_scorer
     app.state.feature_store = feature_store
+    app.state.results_service = results_service if results_service is not None else ResultsService()
     if app.state.settings.mode == 'model':
         try:
             if app.state.model_scorer is None:
@@ -158,6 +169,24 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None,
         except ModelUnavailable:
             logger.error('Opt-in model assessment failed')
             return _risk_error(503, 'model_unavailable', 'Model assessment is unavailable.')
+
+    @app.get('/api/model/results', response_model=ModelResults,
+             responses={404: {'model': ResultsError}, 409: {'model': ResultsError},
+                        422: {'model': ResultsError}, 500: {'model': ResultsError}})
+    def model_results(request: Request):
+        if request.query_params:
+            return _results_error(422, 'invalid_request', 'Results query is not permitted.')
+        if app.state.settings.mode != 'model':
+            return _results_error(409, 'evaluation_not_authorized',
+                                  'Model results require local model mode.')
+        try:
+            return app.state.results_service.load()
+        except ResultsNotAuthorized:
+            return _results_error(409, 'evaluation_not_authorized',
+                                  'Test evaluation is not authorized.')
+        except ResultsUnavailable:
+            logger.error('Frozen aggregate results unavailable or incompatible')
+            return _results_error(404, 'results_unavailable', 'Model results are unavailable.')
 
     return app
 

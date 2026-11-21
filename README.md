@@ -58,8 +58,27 @@ Invoke-RestMethod -Uri 'http://127.0.0.1:5173/api/cases/CASE-001'
 ```
 Unknown CASE-999 returns 404; malformed CASE-1 returns 422. Errors use the closed
 `{"error":{"code":"...","message":"..."}}` envelope. See T016 evidence for actual bodies.
-APP_MODE defaults to fixture and is the only supported value. If APP_MODE is set
-otherwise, startup fails validation; remove it or explicitly set it to fixture.
+APP_MODE defaults to fixture. Explicit `APP_MODE=model` activates the local
+Feature 002 risk endpoint with the pinned, ignored LightGBM artifact and frozen
+label-free research features. Missing or incompatible model inputs return 503
+from the risk endpoint; they never trigger fixture scoring there. Other mode
+values fail validation. For the local opt-in mode, run from the repository root:
+
+```powershell
+$env:APP_MODE = 'model'
+uv run --locked --group ml uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
+```
+
+Then request `GET /api/transactions/{canonical_transaction_id}/risk` with an ID
+from the verified label-free feature snapshot. The existing `/api/cases` fixture
+routes remain available. In the same explicit model mode, the interface's
+“Učitaj rezultate” control calls `GET /api/model/results`. That route serves
+only hash-verified, previously authorized aggregate validation/test reports;
+it does not evaluate or read label/score rows. Missing or changed approval is
+409, unavailable/incompatible reports are 404, and arbitrary query filters are
+422. Remove `APP_MODE` or set it to `fixture` to return to
+the default mode. The local model is for synthetic capstone review only; scores
+are uncalibrated risk scores, alerts are not capped, and analysts make final decisions.
 Settings resolve data/fixtures/cases.json relative to the repository, but startup
 and health do not open it. T014's three synthetic cases are stored there without scores.
 
