@@ -1,0 +1,21 @@
+# Future chronological showcase contract (T253 / FR-039)
+
+**Status:** design contract only, 2026-11-21. Replay is deferred and requires separate scope approval under T254/T255. This document grants no access to showcase labels and authorizes no replay execution.
+
+## Immutable inputs and boundary
+
+Use the exact content-addressed synthetic HI-Small source, frozen source/partition/feature identities, the accepted unweighted LightGBM native model SHA-256 `3b4e4019312d60610dd0094c6697897a061611a60e7777ed7be35e133af9451c`, trusted manifest SHA-256 `c766e90159a70eff2d1f29d5ff425029af20ff123f1fad08e45f9fc416076d45`, train-only preprocessing and 32 ordered model columns, and threshold `0.2489517623052024`. Verify hashes and version compatibility before model parsing or scoring. A mismatch stops replay; it does not trigger fitting, download, threshold selection or fixture substitution.
+
+The historical development/showcase boundary is frozen by UTC timestamp group and source count, without labels. The observed development end is `2022-09-06 11:12 UTC`; the first showcase instant is the next full timestamp group from the frozen boundary, not a guessed calendar date. Let `s` be that first showcase instant. Preload only valid **development facts** with instants in `[s−24h, s)`, in `(normalized UTC instant, source_row_number)` order. This interval is the immediately preceding 24 hours, not a daily partition. It includes all eligible development facts in that interval regardless of train/validation/test membership, but no target labels, scores, predictions or analyst outcomes. The original source warm-up `[t0,t0+24h)` remains history-only and unscored; preloading context is not a second warm-up or an extra source partition. Verify that the required context is present and source-bound; missing/corrupt context stops replay rather than silently resetting history.
+
+## Event order and features
+
+After preload, process showcase events in ascending normalized UTC instant and then stable source-row identity. Keep each equal-instant group indivisible. For every group at time `t`, expire history older than `t−24h`, calculate all features from `[t−24h,t)` **before** adding any member of the group, then add the whole group to the rolling state. The exact lower edge is included and the current instant is excluded. Bank-qualified sender/receiver identities, side-specific paid/received currencies, Decimal sums, frozen eleven feature names/order, and train-only category vocabulary retain their existing `hi-small-temporal-v1` meanings. Reject invalid or duplicate IDs/order and incompatible feature values; do not repair them or read labels to decide eligibility.
+
+Score each eligible showcase event once with its canonical transaction ID. Emit only the bounded risk score, non-final review status, frozen threshold/model/feature identity, UTC time and defensible observed facts/feature values. Scores must be finite in `[0,1]`; at or above the frozen threshold means `review_recommended`, otherwise `below_threshold`. Both are analyst-review statuses, not findings or calibrated crime probabilities. No showcase ground truth, class counts, confusion metrics, false-positive claims or label-derived rates enter replay inputs or outputs.
+
+Alert counts may be reported by UTC day **without suppression**. Zero alerts and more than 20 alerts on a day are valid outcomes; no daily cap, queue truncation, threshold adjustment or skipped score is permitted. Tie order is stable for display, never a means to discard an alert. Any later replay implementation must use synthetic tests for context edges, event/timestamp ties, strict prior-only features, frozen threshold, no-label access and >20-alert behavior before accessing the real showcase source. The source's late-period prevalence difference and unknown upstream release/timezone limit any demonstration; showcase is a chronological demo, not an unbiased performance holdout.
+
+## Approval boundary
+
+T254 synthetic replay tests and T255 chronological implementation require a **separate explicit team scope decision** recording benefit, schedule impact and reviewer. The earlier model acceptance and T230 test-evaluation authorization do not include replay. No replay has run under this contract.
