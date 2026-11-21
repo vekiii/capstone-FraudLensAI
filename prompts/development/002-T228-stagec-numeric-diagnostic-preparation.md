@@ -1,0 +1,3 @@
+# Original development request — 2026-11-20
+
+The user accepted preparation of five controlled variants on the selected LightGBM configuration (31 leaves, learning rate 0.05, minimum child samples 200): unchanged control; scale_pos_weight=1; boost_from_average=false; lambda_l2=1; max_delta_step=1. They requested exact effective parameters, per-arm model/history/probability and raw validation scores/metrics/ties/leaf diagnostics/time/memory, predefined comparisons, a separate hash-bound pending-review protocol, tests, Ruff, diff check and evidence. They explicitly prohibited project-data fits, T230, test/showcase labels, new test predictions, activation, commit and push. Existing frozen protocols and outputs must remain unchanged.

@@ -1,0 +1,5 @@
+# T228 Stage C: exact-hash numeric diagnostic approval — 2026-11-20
+
+The user explicitly approved **one execution** of five predefined train/validation-only LightGBM variants under `specs/002-data-and-risk-scoring/t228-lightgbm-numeric-diagnostic.ibm-day-60-20-20.candidate.json`, canonical SHA-256 `22a4e6c8efe744de7d4d9b5304a8252f144ffa532037d7f0d8a5a83c66951b5b`. The scope is the unmodified control and one-factor changes to `scale_pos_weight=1`, `boost_from_average=false`, `lambda_l2=1`, and `max_delta_step=1`, with four threads and the frozen resource limits and analysis rules. The user accepted 0.1-second memory sampling limitations and the prior use of validation for selection and diagnosis.
+
+This approval does **not** authorize a changed protocol hash, variant, selection criterion or ceiling; automatic retry; test/showcase label access; new test predictions; T230; model activation; commit or push. A failed run must be preserved as incomplete. The approved JSON was not modified. The exact execution command and observed results are recorded separately in the execution evidence.
