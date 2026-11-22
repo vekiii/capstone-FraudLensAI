@@ -59,9 +59,15 @@ Isidora pasted six SHA-256 outputs from PowerShell in the temporary T252 checkou
 
 The date is the conversation date; the exact command execution time and elapsed review duration were not supplied. This closes the previously missing-input/hash-output portion of the record. No user-run `T233-parity.py` result or nonauthor review findings were supplied, and no T230 evaluation was repeated. T252 stays open.
 
+## Windows HTTP parity failure and input repair — 2026-11-22
+
+Isidora then ran the suggested `T233-parity.py` command and pasted a `StarletteDeprecationWarning`, `Opt-in model inputs are unavailable or incompatible`, and an assertion failure because the risk route returned HTTP `503` rather than `200`. The script had reached the HTTP check after its eight offline score comparisons; this is not a successful user parity result. Codex inspected the reviewed `d46699f` checkout and found that `FeatureStore._verify()` requires all three T219 partition files at application startup; `train.jsonl` and `validation.jsonl` were absent. The warning was incidental to the failure.
+
+The supplied ZIP contained both missing label-free partitions. Codex checked the checkout HEAD, verified the archive entries against the existing T219 manifest, then extracted only those two ignored files without overwriting existing paths. On-disk SHA-256 values matched: train `0c1debf145db1268172c08089db2911b7008239a7c28b8924ca531eea7631899`; validation `2106dea32e8943433068bedf8a2734a3e1d55ca303883b14bfd3705fe1b1d273`. Codex's separate rerun using `.venv\Scripts\python.exe evidence\tasks\T233-parity.py` with `PYTHONPATH=backend\src` exited 0 and printed `8/8 exact float parity by ID-only deterministic sample; 1/1 HTTP parity`. It again emitted the deprecation warning. No label access, T230 repeat, training, or code change occurred. Isidora has not yet reported her own successful rerun; the nonauthor review gate remains open.
+
 ## Open closure items
 
-1. Record a user-run `T233-parity.py` or equivalent read-only contract result and its environment/command if that check is part of the intended reproduction scope. The six hash outputs are now present.
+1. Record Isidora's own successful `T233-parity.py` rerun and its command/output. The six user hash outputs and Codex's separate parity result are now present.
 2. Obtain and record a separate nonauthor's review, findings and disposition for the Feature 002 protocol, data, training and related metrics work that Isidora contributed to.
 3. Keep review duration as `not recorded` unless the reviewer supplies a truthful measured/remembered duration.
 4. Recheck the PR #3 head before applying the approval to any commit later than the recorded candidate; the 2026-11-22 remote check matched `d46699f`.
