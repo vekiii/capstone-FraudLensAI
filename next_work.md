@@ -1,5 +1,19 @@
 # Next work - FraudLens AI
 
+## Feature 06 — T004–T007 završeni, 22. novembar 2026.
+
+React Cases otvara istragu iz v2 detalja i proverava objavljeni snapshot
+pre pokretanja. Fixture regresija, 97 ciljanih backend i 210 web testova,
+Ruff, typecheck i build su prošli. Chrome sa testnim providerom potvrdio je
+isti skor i kontekst, otvaranje citata i ponovno učitavanje odluke. U
+izolovanom EV-08 scenariju istorija je nedostupna i nacrt traži dopunu.
+[Binding i provere](evidence/tasks/feature-006-phase-03-binding.md) ·
+[Browser dokaz](evidence/tasks/feature-006-dataset-smoke.md).
+
+Sledeći korak je T008 po potvrdi budžeta za žive pozive. U ovoj fazi je bilo
+nula živih poziva. T009 je otvoren, a puna backend regresija i nezavisna
+ljudska reprodukcija ostaju za naredne faze.
+
 ## Feature 06 — T002 i T003 završeni, 21. novembar 2026.
 
 Uz Milanovu potvrdu izgrađen je zaseban lokalni T098 indeks sa 5.078.345 redova.

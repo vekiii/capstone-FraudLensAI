@@ -193,11 +193,14 @@ export function CasesPage({ client = defaultClient, dataset = import.meta.env.VI
           <button className="button" type="button" onClick={() => { void loadList(); }}>Pokušaj ponovo</button></>}
         {"caseId" in state && <button className="button button-back" type="button"
           onClick={() => setState({ kind: "list" })}>← Nazad na listu</button>}
-        {state.kind === "detail" && ("contract_version" in state.detail
-          ? <DatasetDetail detail={state.detail} /> : <>
-            <FixtureDetail detail={state.detail} />
-            <InvestigationPanel key={state.detail.case_id} caseId={state.detail.case_id} />
-          </>)}
+        {state.kind === "detail" && ("contract_version" in state.detail ? <>
+          <DatasetDetail detail={state.detail} />
+          <InvestigationPanel key={`${state.detail.case_id}:${state.detail.snapshot_ref}`}
+            caseId={state.detail.case_id} snapshot={state.detail.snapshot_ref} />
+        </> : <>
+          <FixtureDetail detail={state.detail} />
+          <InvestigationPanel key={state.detail.case_id} caseId={state.detail.case_id} />
+        </>)}
         {state.kind === "stale" && <><p role="alert">Izabrani pregled više nije aktivan.</p>
           <button className="button" type="button" onClick={() => { void loadList(); }}>Osveži listu</button></>}
         {state.kind === "not-found" && <p role="alert">Slučaj nije pronađen.</p>}

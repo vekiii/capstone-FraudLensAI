@@ -56,7 +56,12 @@ export type Search = ReturnType<typeof decodeSearch> & { truncated?: boolean };
 const safeMax = Number.MAX_SAFE_INTEGER;
 function bool(v: unknown): boolean { return typeof v === 'boolean' ? v : fail(); }
 function id(v: unknown, prefix: string) { const t = text(v, prefix.length + 32); return new RegExp('^' + prefix + '[a-f0-9]{32}(?![\\s\\S])').test(t) ? t : fail(); }
-function caseId(v: unknown) { const t = text(v, 8); return /^CASE-[0-9]{3}(?![\s\S])/.test(t) ? t : fail(); }
+export type InvestigationSource = 'fixture' | 'dataset';
+function caseId(v: unknown, source: InvestigationSource) {
+  const pattern = source === 'dataset' ? /^C[0-9a-f]{32}(?![\s\S])/ : /^CASE-[0-9]{3}(?![\s\S])/;
+  const t = text(v, 33);
+  return pattern.test(t) ? t : fail();
+}
 const evidenceId = (v: unknown) => id(v, 'ev_');
 const attemptId = (v: unknown) => id(v, 'att_');
 function unique<T>(values: T[]) { return new Set(values).size === values.length ? values : fail(); }
@@ -92,7 +97,8 @@ export function decodeRun(value: unknown) {
   const v = closed(value, ['contract_version', 'run_id', 'attempt_id', 'parent_attempt_id', 'case_id', 'context_revision', 'source_mode', 'snapshot_ref', 'corpus_version', 'retrieval_version', 'provider_mode', 'requested_model', 'returned_model', 'state', 'revision', 'created_at', 'updated_at', 'budget', 'trace', 'report', 'review', 'failure']);
   if (v.contract_version !== 1) return fail();
   const b = closed(v.budget, ['provider_requests', 'tool_calls', 'repairs', 'transient_retries', 'deadline']);
-  const result = { contract_version: 1, run_id: id(v.run_id, 'inv_'), attempt_id: attemptId(v.attempt_id), parent_attempt_id: nullable(v.parent_attempt_id, attemptId), case_id: caseId(v.case_id), context_revision: digest(v.context_revision), source_mode: choice(v.source_mode, ['fixture', 'dataset']), snapshot_ref: text(v.snapshot_ref, 120), corpus_version: corpus(v.corpus_version), retrieval_version: digest(v.retrieval_version), provider_mode: choice(v.provider_mode, ['test', 'openai']), requested_model: nullable(v.requested_model, x => text(x, 200)), returned_model: nullable(v.returned_model, x => text(x, 200)), state: choice(v.state, ['created', 'gathering_evidence', 'drafting', 'ready_for_review', 'needs_information', 'failed', 'cancelled', 'reviewed']), revision: integer(v.revision, 1, safeMax), created_at: instant(v.created_at), updated_at: instant(v.updated_at),
+  const source_mode = choice(v.source_mode, ['fixture', 'dataset']);
+  const result = { contract_version: 1, run_id: id(v.run_id, 'inv_'), attempt_id: attemptId(v.attempt_id), parent_attempt_id: nullable(v.parent_attempt_id, attemptId), case_id: caseId(v.case_id, source_mode), context_revision: digest(v.context_revision), source_mode, snapshot_ref: text(v.snapshot_ref, 120), corpus_version: corpus(v.corpus_version), retrieval_version: digest(v.retrieval_version), provider_mode: choice(v.provider_mode, ['test', 'openai']), requested_model: nullable(v.requested_model, x => text(x, 200)), returned_model: nullable(v.returned_model, x => text(x, 200)), state: choice(v.state, ['created', 'gathering_evidence', 'drafting', 'ready_for_review', 'needs_information', 'failed', 'cancelled', 'reviewed']), revision: integer(v.revision, 1, safeMax), created_at: instant(v.created_at), updated_at: instant(v.updated_at),
     budget: { provider_requests: integer(b.provider_requests, 0, 8), tool_calls: integer(b.tool_calls, 0, 12), repairs: integer(b.repairs, 0, 1), transient_retries: integer(b.transient_retries, 0, 1), deadline: nullable(b.deadline, instant) },
     trace: array(v.trace, 12, item => { const t = closed(item, ['sequence', 'name', 'status', 'elapsed_ms', 'evidence_refs']); return { sequence: integer(t.sequence, 1, safeMax), name: choice(t.name, ['get_case_facts', 'get_account_history', 'search_procedures']), status: choice(t.status, ['completed', 'rejected', 'failed']), elapsed_ms: integer(t.elapsed_ms, 0, safeMax), evidence_refs: array(t.evidence_refs, 100, evidenceId) }; }),
     report: nullable(v.report, decodeReport), review: nullable(v.review, decodeReview), failure: nullable(v.failure, decodeFailure) };

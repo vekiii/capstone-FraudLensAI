@@ -30,14 +30,17 @@ export function createKnowledgeView(root: HTMLElement, actions: { search(query: 
   };
 }
 
-export function createReportView(root: HTMLElement, actions: { start(): void; refresh(): void; select(id: string): void; evidence(id: string): void; retry(reuse: boolean): void; cancel(): void; parent(): void; review(body: ReviewInput): void }) {
+export function createReportView(root: HTMLElement, actions: { start(): void; refresh(): void; select(id: string): void; evidence(id: string): void; retry(reuse: boolean): void; cancel(): void; parent(): void; review(body: ReviewInput): void }, sourceMode: Run['source_mode']) {
   const heading = node('h2', 'AI istraga'); heading.tabIndex = -1;
   const list = node('div'); const panel = node('section'); panel.setAttribute('aria-live', 'polite');
   const source = node('section'); source.setAttribute('aria-live', 'polite');
   const history = node('div');
   const start = node('button', 'Pokreni novu istragu'); start.type = 'button'; start.dataset.start = ''; start.addEventListener('click', actions.start); start.disabled = true;
   const refresh = node('button', 'Osveži sačuvano stanje'); refresh.type = 'button'; refresh.dataset.refresh = ''; refresh.addEventListener('click', actions.refresh);
-  root.replaceChildren(heading, node('p', 'Sintetički fixture podaci, bez ML predikcije. Skor nije verovatnoća prevare. AI nacrt podržava ljudsku odluku.'), start, refresh, list, history, panel, source);
+  const notice = sourceMode === 'dataset'
+    ? 'Objavljeni skor sintetičke transakcije. AI nacrt podržava ljudsku odluku.'
+    : 'Sintetički fixture podaci, bez ML predikcije. Skor nije verovatnoća prevare. AI nacrt podržava ljudsku odluku.';
+  root.replaceChildren(heading, node('p', notice), start, refresh, list, history, panel, source);
   const section = (title: string) => { panel.append(node('h3', title)); };
   function reviewForm(run: Run) {
     const report = run.report!;
@@ -124,7 +127,13 @@ export function createReportView(root: HTMLElement, actions: { start(): void; re
       if (item.history) source.append(node('p', `Istorija: ${item.history.availability}; pokrivenost: ${item.history.coverage}; do: ${item.history.cutoff ?? 'nepoznato'}; ${item.history.reason ?? ''}`));
       if (item.passage) { const p = item.passage, d = p.document; source.append(node('p', `Tačna sačuvana verzija | ${d.title} | ${d.version} | ${d.origin_kind} | ${d.jurisdiction} | ${p.section}`), node('p', `Korpus izveštaja: ${corpus}`), node('p', d.source_uri), node('p', d.applicability_notes), node('p', d.reuse_terms), node('p', `Objavljeno: ${d.published_at ?? d.unknown_date_reason}; preuzeto: ${d.retrieved_at}; pregledao: ${d.reviewed_by} (${d.reviewed_at})`), node('pre', p.text)); }
     },
-    error(code = 'unavailable') { start.disabled = true; const message = node('p', `Istraga nije spremna ili odgovor nije ispravan (${code}). Osvežite stanje.`); message.setAttribute('role', 'alert'); panel.replaceChildren(message); source.replaceChildren(); },
+    error(code = 'unavailable') {
+      start.disabled = true;
+      const text = code === 'stale_snapshot' && sourceMode === 'dataset'
+        ? 'Izabrani dataset pregled više nije aktivan (stale_snapshot). Osvežite stranicu i ponovo otvorite slučaj.'
+        : `Istraga nije spremna ili odgovor nije ispravan (${code}). Osvežite stanje.`;
+      const message = node('p', text); message.setAttribute('role', 'alert'); panel.replaceChildren(message); source.replaceChildren();
+    },
     evidenceError() { source.replaceChildren(node('p', 'Dokaz nije dostupan za ovaj izveštaj.')); },
   };
 }

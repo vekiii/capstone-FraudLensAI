@@ -1,19 +1,21 @@
 import { decodeDocuments, decodeKnowledgeError, decodePassage, decodeSearch } from './contracts';
 
 import { decodeRun, decodeRuns, decodeEvidence, decodeInvestigationError, investigationStatuses, decodeContextBinding } from './contracts';
-import type { Run } from './contracts';
+import type { InvestigationSource, Run } from './contracts';
 
 export class KnowledgeError extends Error {
   constructor(readonly code: string) { super('Pretraga nije spremna ili zahtev nije uspeo.'); }
 }
-async function request<T>(url: string, decode: (value: unknown, response: Response) => T, signal?: AbortSignal, options?: RequestInit, success = 200, investigation = false): Promise<T> {
+const DATASET_CONTEXT_TIMEOUT_MS = 60_000;
+
+async function request<T>(url: string, decode: (value: unknown, response: Response) => T, signal?: AbortSignal, options?: RequestInit, success = 200, investigation = false, timeoutMs = 5000): Promise<T> {
   if (signal?.aborted) throw new KnowledgeError('cancelled');
   const controller = new AbortController();
   let rejectStop: (error: Error) => void = () => {};
   const stop = new Promise<never>((_, reject) => { rejectStop = reject; });
   const cancel = () => { rejectStop(new KnowledgeError('cancelled')); controller.abort(); };
   signal?.addEventListener('abort', cancel, { once: true });
-  const timeout = setTimeout(() => { rejectStop(new KnowledgeError('timeout')); controller.abort(); }, 5000);
+  const timeout = setTimeout(() => { rejectStop(new KnowledgeError('timeout')); controller.abort(); }, timeoutMs);
   const receive = async () => {
     const response = await fetch(url, { ...options, signal: controller.signal });
     if (response.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') throw new KnowledgeError('invalid_response');
@@ -49,20 +51,20 @@ export function getPassage(id: string, corpus: string, signal?: AbortSignal) {
 }
 export const knowledgeClient = { documents: getDocuments, search: searchKnowledge, passage: getPassage };
 
-export function listInvestigations(caseId: string, signal?: AbortSignal) {
+export function listInvestigations(caseId: string, signal?: AbortSignal, sourceMode: InvestigationSource = 'fixture') {
   return request('/api/investigation/runs?' + new URLSearchParams({ case_id: caseId }), (value, response) => {
     const result = decodeRuns(value);
     const binding = decodeContextBinding(response.headers.get('x-investigation-snapshot'), response.headers.get('x-investigation-context'));
     if (result.items.some(run => run.case_id !== caseId || run.context_revision !== binding.context_revision || run.snapshot_ref !== binding.snapshot_ref)) throw new KnowledgeError('invalid_response');
     return { ...result, ...binding };
-  }, signal, undefined, 200, true);
+  }, signal, undefined, 200, true, sourceMode === 'dataset' ? DATASET_CONTEXT_TIMEOUT_MS : undefined);
 }
-export function createInvestigation(caseId: string, snapshot: string, revision: string, key: string, signal?: AbortSignal) {
+export function createInvestigation(caseId: string, snapshot: string, revision: string, key: string, signal?: AbortSignal, sourceMode: InvestigationSource = 'fixture') {
   return request('/api/investigation/runs', value => {
     const result = decodeRun(value);
-    if (result.case_id !== caseId || result.snapshot_ref !== snapshot || result.context_revision !== revision) throw new KnowledgeError('invalid_response');
+    if (result.case_id !== caseId || result.source_mode !== sourceMode || result.snapshot_ref !== snapshot || result.context_revision !== revision) throw new KnowledgeError('invalid_response');
     return result;
-  }, signal, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key }, body: JSON.stringify({ case_id: caseId, source_mode: 'fixture', snapshot_ref: snapshot }) }, 202, true);
+  }, signal, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key }, body: JSON.stringify({ case_id: caseId, source_mode: sourceMode, snapshot_ref: snapshot }) }, 202, true, sourceMode === 'dataset' ? DATASET_CONTEXT_TIMEOUT_MS : undefined);
 }
 export function getInvestigation(id: string, caseId: string, revision: string, signal?: AbortSignal) {
   return request('/api/investigation/attempts/' + encodeURIComponent(id), value => {

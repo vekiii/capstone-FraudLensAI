@@ -400,21 +400,25 @@ def scripted_draft(conversation, scenario):
     items = [e for item in conversation if item['type'] == 'tool_result'
              for e in item['result']['evidence']]
     case = next((item for item in items if item['kind'] == 'case_fact'), None)
+    values = {fact['path']: fact['value'] for fact in case['facts']} if case else {}
+    dataset = values.get('source_mode') == 'dataset'
     draft = dict(outcome='needs_information', summary=[], observed_facts=[], risk_indicators=[],
         alternative_explanations=[], missing_information=['Zanimanje, uredjaj i poreklo sredstava nisu dostupni.'],
         recommended_checks=[], limitations=['TEST provider: autorski scenario, nije stvaran AI izvestaj.',
-        'Sinteticki fixture skor nije kalibrisana verovatnoca; semanticki pregled nije obavljen.',
+        ('Objavljen sintetički skor ima ograničenja izvornog skoringa; semantički pregled nije obavljen.'
+         if dataset else 'Sinteticki fixture skor nije kalibrisana verovatnoca; semanticki pregled nije obavljen.'),
         HUMAN_AUTHORITY_NOTICE], citations=[])
     if scenario == 'needs_information' or case is None:
         draft['limitations'].append('Nema dovoljno dokaza za koristan zakljucak.')
         return validate('ReportDraft', draft)
-    values = {fact['path']: fact['value'] for fact in case['facts']}
-    required = ('transaction.amount', 'transaction.currency')
+    amount, currency = (('transaction.paid.amount', 'transaction.paid.currency') if dataset
+                        else ('transaction.amount', 'transaction.currency'))
+    required = (amount, currency)
     if not all(key in values for key in required):
         return validate('ReportDraft', draft)
     ref = case['evidence_id']
     assertions = [dict(evidence_ref=ref, path=key, value=values[key]) for key in required]
-    fact = _claim(ref, f"Zabelezena transakcija: {values[required[0]]} {values[required[1]]}.", assertions=assertions)
+    fact = _claim(ref, f"Zabelezena transakcija: {values[amount]} {values[currency]}.", assertions=assertions)
     draft.update(outcome='ready_for_review', summary=[copy.deepcopy(fact)], observed_facts=[fact], citations=[ref])
     procedure = next((item for item in items if item['kind'] == 'procedure'), None)
     if procedure:
@@ -423,8 +427,17 @@ def scripted_draft(conversation, scenario):
         draft['citations'].append(procedure['evidence_id'])
     else:
         draft['limitations'].append('Nema odgovarajuce proceduralne smernice; nema takve preporuke.')
-    if any(item['kind'] == 'history' and item['eligible_count'] is None for item in items):
+    missing_history = next((item for item in items if item['kind'] == 'history'
+                            and item['eligible_count'] is None), None)
+    if missing_history:
         draft['limitations'].append('Istorija nije dostupna; to ne znaci da nije bilo aktivnosti.')
+        if dataset:
+            draft['outcome'] = 'needs_information'
+            draft['missing_information'].append('Potrebna je dostupna istorija pošiljaoca.')
+            ref = missing_history['evidence_id']
+            draft['observed_facts'].append(_claim(ref, 'Istorija pošiljaoca nije dostupna.',
+                assertions=[dict(evidence_ref=ref, path='availability', value='unavailable')]))
+            draft['citations'].append(ref)
     if scenario == 'invalid_citation':
         draft['summary'][0]['evidence_refs'] = ['ev_' + 'f' * 32]
     return validate('ReportDraft', draft)

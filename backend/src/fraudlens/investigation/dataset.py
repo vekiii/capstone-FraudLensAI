@@ -11,10 +11,12 @@ import time
 from contextlib import ExitStack, contextmanager
 from datetime import datetime, timedelta
 from decimal import Decimal, localcontext
+from functools import lru_cache
 from pathlib import Path
 
 from fraudlens.cases import CaseNotFoundError
 from fraudlens.investigation.context import instant
+from fraudlens.investigation.history_index import HistoryIndex, signature
 from fraudlens.investigation.models import context_digest, validate
 
 
@@ -35,6 +37,13 @@ def unavailable():
                 returned_count=0, eligible_count=None, truncated=False, totals={})
 
 
+@lru_cache(maxsize=4)
+def _validated_index(source, index, digest, _source_signature, _index_signature):
+    # Readers in separate requests share the initial hash check. Every lookup
+    # still guards the index and source against changed signatures or a live WAL.
+    return HistoryIndex(source, index, digest)
+
+
 class DatasetReader:
     def __init__(self, run_store, dataset_store, score_source, *, history_index=None,
                  history_index_sha256=None):
@@ -45,16 +54,13 @@ class DatasetReader:
         if (history_index is None) != (history_index_sha256 is None):
             raise ValueError('History index requires an explicit digest')
         self.history_index_path = Path(history_index) if history_index is not None else None
-        self.history_index_sha256, self._history_index = history_index_sha256, None
+        self.history_index_sha256 = history_index_sha256
 
     def _index(self):
-        from fraudlens.investigation.history_index import HistoryIndex
-        if self._history_index is None:
-            self._history_index = HistoryIndex(self.dataset_store, self.history_index_path,
-                                              self.history_index_sha256)
-        if self._history_index.source != self.dataset_store.resolve():
-            raise ValueError('stale_snapshot')
-        return self._history_index
+        source = self.dataset_store.resolve()
+        index = self.history_index_path.resolve()
+        return _validated_index(source, index, self.history_index_sha256,
+                                tuple(signature(source)), tuple(signature(index)))
 
     @contextmanager
     def connection(self, path):
@@ -114,7 +120,7 @@ class DatasetReader:
         validate('CaseId', case_id)
         with self.connection(self.run_store) as db:
             run, version, scorer = self._active(db, snapshot_ref)
-            row = db.execute('''SELECT transaction_json,assessment_json FROM scored_assessments
+            row = db.execute('''SELECT transaction_json,assessment_json,score FROM scored_assessments
                 WHERE run_id=? AND case_id=? AND alert=1''', (run, case_id)).fetchone()
             if row is None:
                 raise CaseNotFoundError('Published case not found')
@@ -130,6 +136,7 @@ class DatasetReader:
         validate('InvestigationContext', context)
         if (tx['event_time_utc'] != risk['event_time_utc']
                 or tx['event_time_utc'] != risk['history_cutoff_exclusive_at']
+                or risk['score'] != row[2]
                 or risk['score_source'] != self.score_source or risk['scorer_version'] != scorer
                 or ((risk['score_source'] == 'rules') != (risk['score_kind'] == 'ordinal_rule_score'))):
             raise ValueError('Published assessment provenance mismatch')
