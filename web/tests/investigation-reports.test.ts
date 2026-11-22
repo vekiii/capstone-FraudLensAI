@@ -74,6 +74,33 @@ it('renders typed sections, literal text, notices and exact bound evidence on ex
   expect(el.textContent).toContain(evidence().text);
 });
 
+it('EV-13 clears a previously opened citation when its bound source is unavailable', async () => {
+  const run = ready();
+  const item = evidence();
+  const client = clientWith(run);
+  const fetcher = vi.fn()
+    .mockResolvedValueOnce(Response.json(item))
+    .mockResolvedValueOnce(Response.json({
+      contract_version: 1,
+      error: { code: 'evidence_not_found', message: 'Evidence unavailable', retryable: false },
+    }, { status: 404 }));
+  vi.stubGlobal('fetch', fetcher);
+  const el = root();
+  dispose = mountReports(el, 'CASE-001', { ...client, evidence: reportClient.evidence });
+  await tick();
+  const citation = el.querySelector<HTMLButtonElement>('[data-evidence]')!;
+  citation.click();
+  await tick();
+  expect(el.textContent).toContain(item.text);
+  citation.click();
+  await tick();
+  expect(el.textContent).toContain('Dokaz nije dostupan za ovaj izveštaj.');
+  expect(el.textContent).not.toContain(item.text);
+  const path = `/api/investigation/attempts/${run.attempt_id}/evidence/${item.evidence_id}`;
+  expect(fetcher.mock.calls.map(([url]) => url)).toEqual([path, path]);
+  expect(client.create).not.toHaveBeenCalled();
+});
+
 it('shows queued work, starts only on explicit action and stops bounded polling', async () => {
   vi.useFakeTimers();
   const run = ready(); run.state = 'created'; run.report = null; run.trace = [];

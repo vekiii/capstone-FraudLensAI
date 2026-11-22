@@ -1,5 +1,21 @@
 # Next work - FraudLens AI
 
+## Feature 06 — T009–T011 završeni, 22. novembar 2026.
+
+Pripremljeno je svih 16 [izvršnih ulaza](evals/capstone/inputs/cases.json) i
+odvojena [offline očekivanja](evals/capstone/reference/expectations.json).
+EV-06 koristi pokušaj EV-01 iz iste faze. Potvrđeni su T098 identiteti i
+izolovani EV-08 bez istorije. Šest lokalnih backend kontrola EV-11–EV-16
+i web provera nedostupnog citata prošli su. Šema i zbir provereni su na
+sintetičkim zapisima sa po 16 mesta. Ciljano je prošlo 64 backend i 21 web
+test. U ovoj celini bilo je nula živih poziva.
+[Komande, rezultati i preduslovi za T012](evidence/tasks/feature-006-ev-preparation.md).
+
+Sledeći korak je T012 po zasebnom nalogu. Pregledati EV-10 varijantu korpusa,
+potvrditi njeno izdanje, profil, budžet i početna stanja, pa zamrznuti manifest
+i protokol sa digestima. Primarna merenja, puna završna regresija i
+nezavisna reprodukcija ostaju otvoreni.
+
 ## Feature 06 — T008 završen, 22. novembar 2026.
 
 Posle odobrenja budžeta prošli su sintetička proba i ponovljeni živi
