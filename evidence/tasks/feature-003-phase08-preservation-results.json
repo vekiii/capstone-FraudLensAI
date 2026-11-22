@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "live_outputs_unchanged": 13,
+  "live_generation_source_hashes_unchanged": 16,
+  "retrieval_artifact_hashes_unchanged": 10,
+  "live_transport_attempts_still": 86,
+  "new_provider_calls": 0,
+  "human_reviews": "pending; not inferred",
+  "quality_rerun": false,
+  "original_audit_sha256": "b645d15db3f1ede8627cd4d6d68b9050d88a57934ec57533005f25f5adf4245c",
+  "live_freeze_sha256": "7b0066683ae945beb91f16c3deb818d52a2e6d601ec6333e165699cc35b1dee7"
+}

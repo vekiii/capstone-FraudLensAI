@@ -1,0 +1,299 @@
+{
+  "user_authorization": "potvrdjujem, mozes da nastavis",
+  "branch": "feature03",
+  "source_hashes_unchanged": true,
+  "maximum_authorized_total": 155,
+  "development_cap": 32,
+  "actual_transport_attempts": 6,
+  "completed_http200": 5,
+  "unknown_outcomes": 1,
+  "known_usage_total_tokens": 13912,
+  "unknown_usage_not_zero": true,
+  "application_dispatch_reservations": 7,
+  "blocked_retry_did_not_dispatch": true,
+  "provider_attempts": [
+    {
+      "sequence": 1,
+      "input_bytes": 8888,
+      "max_output_tokens": 4096,
+      "request_sha256": "50f144714e2cff04b547a682aa0d53b44412c3073353e8b7a88d9686b22fe211",
+      "http_status": 200,
+      "usage": {
+        "input_tokens": 1981,
+        "input_tokens_details": {
+          "cache_write_tokens": 1978,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 1978
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 33,
+        "output_tokens_details": {
+          "reasoning_tokens": 15
+        },
+        "total_tokens": 2014
+      },
+      "returned_model": "gpt-6-luna",
+      "outcome": "completed",
+      "is_semantic_selector": false
+    },
+    {
+      "sequence": 2,
+      "input_bytes": 14070,
+      "max_output_tokens": 4096,
+      "request_sha256": "dba6b971f66fd9f52656aa6ae58ce6183df146e11e93ae2712b83e9619d2f43b",
+      "http_status": 200,
+      "usage": {
+        "input_tokens": 2709,
+        "input_tokens_details": {
+          "cache_write_tokens": 728,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 728
+          },
+          "cached_tokens": 1978
+        },
+        "output_tokens": 20,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 2729
+      },
+      "returned_model": "gpt-6-luna",
+      "outcome": "completed",
+      "is_semantic_selector": false
+    },
+    {
+      "sequence": 3,
+      "input_bytes": 16826,
+      "max_output_tokens": 4096,
+      "request_sha256": "2d3cf77b935a8420e5cdbb45a4897044da3ae50ffc570f115dbd10adf0a5457c",
+      "http_status": 200,
+      "usage": {
+        "input_tokens": 3367,
+        "input_tokens_details": {
+          "cache_write_tokens": 658,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 658
+          },
+          "cached_tokens": 2706
+        },
+        "output_tokens": 20,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3387
+      },
+      "returned_model": "gpt-6-luna",
+      "outcome": "completed",
+      "is_semantic_selector": false
+    },
+    {
+      "sequence": 4,
+      "input_bytes": 19074,
+      "max_output_tokens": 4096,
+      "request_sha256": "f8667704c051374279a83478ab73cde3d5cab4bb403b182fdd4e29ccaee84908",
+      "http_status": 200,
+      "usage": {
+        "input_tokens": 3878,
+        "input_tokens_details": {
+          "cache_write_tokens": 511,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 511
+          },
+          "cached_tokens": 3364
+        },
+        "output_tokens": 55,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3933
+      },
+      "returned_model": "gpt-6-luna",
+      "outcome": "completed",
+      "is_semantic_selector": false
+    },
+    {
+      "sequence": 5,
+      "input_bytes": 7262,
+      "max_output_tokens": 2048,
+      "request_sha256": "bf64330d1fed3efd1390e5a52ae5fc3b0a9df73f387536ce51de39bec75203de",
+      "http_status": 200,
+      "usage": {
+        "input_tokens": 1468,
+        "input_tokens_details": {
+          "cache_write_tokens": 1465,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 1465
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 381,
+        "output_tokens_details": {
+          "reasoning_tokens": 140
+        },
+        "total_tokens": 1849
+      },
+      "returned_model": "gpt-6-luna",
+      "outcome": "completed",
+      "is_semantic_selector": true
+    },
+    {
+      "sequence": 6,
+      "input_bytes": 24506,
+      "max_output_tokens": 4096,
+      "request_sha256": "726cae816fe8c0e518fdb358a9561586da468cf05d7f09f0486b285f7ce3cc54",
+      "http_status": null,
+      "usage": null,
+      "returned_model": null,
+      "outcome": "unknown",
+      "is_semantic_selector": false
+    }
+  ],
+  "development_slots": [
+    {
+      "id": "DEVQ1-01",
+      "observation": {
+        "id": "DEVQ1-01",
+        "state": "failed",
+        "seconds": 45.65846850001253,
+        "report_validated": false,
+        "validation_error": null,
+        "error": null,
+        "attempt_id": "att_cca795d26b624dfdac429eff0855ef72",
+        "deadline_exceeded": false,
+        "stop_batch": false,
+        "poll_seconds": 0.25,
+        "http_observation_count": 173,
+        "http_observations_sha256": "e5ae842a607865118143a6b3507118250d29933bd296462495f0488f53f2681d"
+      },
+      "status": "failed"
+    },
+    {
+      "id": "DEVQ1-02",
+      "observation": null,
+      "status": "not_run"
+    },
+    {
+      "id": "DEVQ1-03",
+      "observation": null,
+      "status": "not_run"
+    },
+    {
+      "id": "DEVQ1-04",
+      "observation": null,
+      "status": "not_run"
+    }
+  ],
+  "terminal_seconds": 45.65846850001253,
+  "failure": {
+    "code": "provider_incomplete",
+    "message": "Investigation ended with a controlled limitation or failure.",
+    "outcome_unknown": true
+  },
+  "application_requests": {
+    "provider_requests": 7,
+    "tool_calls": 4,
+    "repairs": 0,
+    "transient_retries": 1,
+    "deadline": "2026-11-18T08:17:05.703144Z"
+  },
+  "tool_trace": [
+    {
+      "sequence": 1,
+      "name": "get_case_facts",
+      "status": "completed",
+      "elapsed_ms": 4,
+      "evidence_refs": [
+        "ev_42869cb50d8c4cd6a4d9e5cbd63a6d62"
+      ]
+    },
+    {
+      "sequence": 2,
+      "name": "get_account_history",
+      "status": "completed",
+      "elapsed_ms": 7,
+      "evidence_refs": [
+        "ev_547d71d2393f464b8e7270c3e66e679d"
+      ]
+    },
+    {
+      "sequence": 3,
+      "name": "get_account_history",
+      "status": "completed",
+      "elapsed_ms": 7,
+      "evidence_refs": [
+        "ev_1f1eb51b92144ad5be27f6080e4b1e80"
+      ]
+    },
+    {
+      "sequence": 4,
+      "name": "search_procedures",
+      "status": "completed",
+      "elapsed_ms": 6325,
+      "evidence_refs": [
+        "ev_b0980c9d4e194307adf27ad6e3f626a8",
+        "ev_f4d0e24051da4db99782cabf21a44fbb",
+        "ev_6cde9e7ec4f34887a675cb8b4e8b6845"
+      ]
+    }
+  ],
+  "dispatch_diagnostics": [
+    {
+      "sequence": 1,
+      "outcome": "completed",
+      "timestamp": "2026-11-18T08:15:10.375366Z",
+      "diagnostic": null
+    },
+    {
+      "sequence": 2,
+      "outcome": "completed",
+      "timestamp": "2026-11-18T08:15:12.172179Z",
+      "diagnostic": null
+    },
+    {
+      "sequence": 3,
+      "outcome": "completed",
+      "timestamp": "2026-11-18T08:15:13.240188Z",
+      "diagnostic": null
+    },
+    {
+      "sequence": 4,
+      "outcome": "completed",
+      "timestamp": "2026-11-18T08:15:14.784300Z",
+      "diagnostic": null
+    },
+    {
+      "sequence": 5,
+      "outcome": "completed",
+      "timestamp": "2026-11-18T08:15:21.106023Z",
+      "diagnostic": null
+    },
+    {
+      "sequence": 6,
+      "outcome": "unknown",
+      "timestamp": "2026-11-18T08:15:51.167589Z",
+      "diagnostic": {
+        "reason": "request_timeout"
+      }
+    },
+    {
+      "sequence": 7,
+      "outcome": "failed",
+      "timestamp": "2026-11-18T08:15:51.212833Z",
+      "diagnostic": null
+    }
+  ],
+  "report_present": false,
+  "quality_acceptance": "not_run",
+  "timing_acceptance": "not_run",
+  "new_tasks_added": 0,
+  "continuation": "Requires discussion after the predeclared unknown-outcome stop; do not replay DEVQ1-01",
+  "unabridged_local_snapshot": "evals/results/feature-003/acceptance-live-20261118/public-results-before-compaction/feature-003-t101-live-development-20261118-results.json",
+  "unabridged_snapshot_sha256": "8becd8b87e3056bd764961723c8dd273bb91c1d98765227f7cd2a68147ce744f",
+  "public_summary_note": "Repeated HTTP polling bodies remain in immutable ignored per-case archives; state/timing/errors/usage/counts retained here."
+}

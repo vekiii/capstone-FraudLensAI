@@ -1,0 +1,12 @@
+{
+  "actual_new_calls": 0,
+  "all_six_calibration_payloads_equal": true,
+  "judge_timeout_seconds": 60,
+  "judge_output_tokens": 8192,
+  "source_pool_count": 6,
+  "maximum_source_characters": 616,
+  "v8_payload_bytes": 8299,
+  "v6_policy": "413f9eb4f0363e05024eb7ef7171f069655d2fac19d3235fe14173645a3167ca",
+  "v8_policy": "610990e201245ce8a477ab6b6de03e4a8f640e5143c48ba2ee3e0b3c7afd353b",
+  "numerical_v8_retrieval_or_report_acceptance": false
+}

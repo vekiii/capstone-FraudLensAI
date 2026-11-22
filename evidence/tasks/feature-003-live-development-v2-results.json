@@ -1,0 +1,117 @@
+{
+  "status": "PASS",
+  "kind": "automated_development_check_not_release_or_human_validation",
+  "runtime_commit": "7ed606c91c0bdc8b44c7318d1ad1d87e8d1bc31e",
+  "setup_commit": "103c3c0",
+  "source_and_protocol_unchanged_during_batch": true,
+  "freeze_sha256": "2b866ac98576a16caf7ea2bd95ff78bba0e4645aad31bcf276eb401a97a8fefd",
+  "artifact_sha256": {
+    "freeze.json": "c6f420b76711d4025ee6982102904c1282d8771bae00c2bc1b7678706ec46d66",
+    "summary.json": "206574ce005cfc2a335b382162dc395285f9e74948162e6631eee6c771ba1f0f",
+    "transport-ledger.json": "d7ab2d4bccac179b193fce6153d6ab768454366ff39a57d77611e4ea2055ead1",
+    "judge-packets.json": "e2ab2666f5da5e396497b6fee82bc26e26ec839b2fe4beb284a99985b52689b5",
+    "judge-response.json": "cc230cc5f27f495d24fe38dc1931d85d5cd707a99c4fc61c9ebe2e1d896fc952",
+    "judge-result.json": "b081d708b201db0d18f5988f71980fea02c159101b9e1a1cb6cc09348b205428",
+    "DEV2-701.json": "4e703bf4895408be8856f8d0de79ab558c84b97d7635afab70896e54d2ec1aee",
+    "DEV2-702.json": "969889ac4f5d9ee6a3205fa4492e1180c96da5fb913dea828833e586e209df5e",
+    "DEV2-703.json": "b3f99e7e49cabccedab29e12c7b29ab35b940e8a1e601a555d8d8a701ae2d574"
+  },
+  "model": "gpt-6-luna",
+  "rows": [
+    {
+      "failure": "budget_exhausted",
+      "id": "DEV2-701",
+      "provider_requests": 5,
+      "repairs": 0,
+      "seconds": 37.971,
+      "state": "failed",
+      "tool_calls": 4
+    },
+    {
+      "failure": null,
+      "id": "DEV2-702",
+      "provider_requests": 5,
+      "repairs": 0,
+      "seconds": 21.054,
+      "state": "needs_information",
+      "tool_calls": 4
+    },
+    {
+      "failure": null,
+      "id": "DEV2-703",
+      "provider_requests": 6,
+      "repairs": 0,
+      "seconds": 21.051,
+      "state": "needs_information",
+      "tool_calls": 5
+    }
+  ],
+  "machine_quality": [
+    {
+      "id": "DEV2-701",
+      "failed_generation": true,
+      "passed": false
+    },
+    {
+      "id": "DEV2-702",
+      "failed_generation": false,
+      "supported_factual": 4,
+      "factual_count": 4,
+      "essential_present": 4,
+      "essential_count": 5,
+      "applicable_procedural": 1,
+      "procedural_count": 1,
+      "missingness_correct": true,
+      "critical_error": false,
+      "additional_issue_count": 0,
+      "passed": true
+    },
+    {
+      "id": "DEV2-703",
+      "failed_generation": false,
+      "supported_factual": 4,
+      "factual_count": 4,
+      "essential_present": 5,
+      "essential_count": 6,
+      "applicable_procedural": 0,
+      "procedural_count": 0,
+      "missingness_correct": true,
+      "critical_error": false,
+      "additional_issue_count": 0,
+      "passed": true
+    }
+  ],
+  "passing_development_reports": 2,
+  "successful_within_90": 2,
+  "all_terminal_within_120": true,
+  "transport_attempts": 17,
+  "generation_attempts": 16,
+  "judge_attempts": 1,
+  "http_status_counts": {
+    "200": 16,
+    "no_response": 1
+  },
+  "known_usage": {
+    "input_tokens": 56917,
+    "output_tokens": 7354,
+    "total_tokens": 64271
+  },
+  "unknown_usage_attempts": 1,
+  "spend": null,
+  "cited_ids_resolved": 8,
+  "unknown_citation_ids": 0,
+  "unknown_attempts": [
+    {
+      "sequence": 5,
+      "identity": "DEV2-701",
+      "phase": "generation",
+      "outcome": "unknown",
+      "headers_seconds": 29.987
+    }
+  ],
+  "independent_reference_review": "pending",
+  "secondary_judge": false,
+  "human_validation": false,
+  "original_release_targets_unchanged": true,
+  "additional_provider_calls_by_this_audit": 0
+}

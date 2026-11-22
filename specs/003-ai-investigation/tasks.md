@@ -1,0 +1,574 @@
+# Tasks: Evidence-backed AI Investigation
+
+**Input**: `specs/003-ai-investigation/` spec, plan, research, data model, contracts, evaluation and quickstart.
+
+**Prerequisites**: Design documents exist; actual producer/model/source/human gates remain explicit below. These unchecked tasks are planned work, not completed implementation.
+
+**Tests**: Constitution requires RED -> GREEN -> REFACTOR for critical behavior. Record actual commands, intended RED reason, GREEN results and limitations in the named evidence file. Collection/import/environment failures are not intended RED. Mechanical setup needs no artificial failure. After every implementation unit update next_work.md and preserve the original development prompt. Do not commit/push automatically.
+
+## Format and path conventions
+
+Every task uses `- [ ] Tnnn [P?] [USn?] description with exact path`. Paths are repository-relative. `[P]` means disjoint files after listed common prerequisites; it never authorizes concurrent writes to shared modules. All tasks require current AGENTS.md/next_work.md and the selected feature documents. Set `$env:SPECIFY_FEATURE_DIRECTORY = 'specs/003-ai-investigation'` for every Spec-kit session; this does not switch Git branches.
+
+## Phase 1: Setup (T001-T004)
+
+Goal: isolate this feature without changing foundation/ML behavior. Independent check: existing app still imports and feature stays disabled by default.
+
+- [x] T001 Create package/test/fixture/evaluation directories from `specs/003-ai-investigation/plan.md`, add `backend/src/fraudlens/investigation/__init__.py` and evidence convention at `evidence/tasks/feature-003-setup.md`; inspect existing Git work and lockfiles, preserve feature 002 files and tracked shared instructions. No runtime behavior yet. (FR-003, FR-028; no prerequisites.)
+- [x] T002 Write configuration RED tests in `backend/tests/unit/test_investigation_settings.py` for disabled-by-default startup without key/corpus/model, provider test|openai, source fixture|dataset, separate store, no key/model printing, bounded limits and required explicit real-model ID. (Depends: T001; FR-017-018, FR-024.)
+- [x] T003 Implement `backend/src/fraudlens/investigation/settings.py` and documented empty-value examples in `.env.example`; keep original Settings/APP_MODE unchanged. Freeze provider limits: '8 provider requests', '12 executed tool calls', '120 seconds', request <=30 s, input <=48,000 bytes, output <=4096 tokens, response <=2 MiB; reject larger overrides and unsupported modes. No provider initialization on import/startup. Record GREEN in `evidence/tasks/feature-003-setup.md`. (Depends: T002; FR-003, FR-017-018, FR-024.)
+- [x] T004 Define the runtime/evaluation file separation and synthetic-only outbound policy in `data/knowledge/README.md` and `evals/investigation/README.md`; create no actual held-out answers during setup and do not copy secrets or official content without provenance. Document `.cache` temp-path strategy and generated/local output exclusions in `evidence/tasks/feature-003-setup.md`. (Depends: T003; FR-004-006, FR-025, FR-028.)
+
+## Phase 2: Foundational boundaries (T005-T012)
+
+Status: complete by task type; original T012 RED is now GREEN after T019/T035.
+Historical phase-specific counts: ../../evidence/tasks/feature-003-phase-02-handoff.md.
+
+Goal: validated immutable contexts, typed reports and minimal durable repository. Blocks story implementation, but not external ML experiments. Independent check: schema examples, fixture context, CAS/idempotency/budget transactions all pass without network/model.
+
+- [x] T005 Write RED contract tests in `backend/tests/contracts/test_investigation_contracts.py` using `specs/003-ai-investigation/contracts/schemas.json`, the pinned producer snapshot and examples: all closed objects/required nullables, 'contract_version=1', UTC instants, opaque IDs/digests, 1-500 trimmed queries, 1-2000 rationale/text, actor 1-80, <=20 section items, unknown fields/versions, nonfinite scores and cross-object ID/run/dataset equality. Cover changed fixture metadata/score scale and explicit missing history. (Depends: T003, T004; FR-001-004, FR-013-015.)
+- [x] T006 Implement Pydantic domain/public models in `backend/src/fraudlens/investigation/models.py` and semantic validators matching `contracts/schemas.json`; original producer objects remain unchanged, exact money stays source strings, context digest excludes itself, provider draft contains no application IDs/permissions. Revalidate mutated/constructed instances. Record RED/GREEN in `evidence/tasks/feature-003-contracts.md`. (Depends: T005; FR-001-004, FR-013-015.)
+- [x] T007 [P] Write fixture-context RED tests in `backend/tests/unit/test_investigation_context.py`: frozen fixture snapshot digest, unchanged foundation CaseDetail, unavailable metadata without fake v2 fields, alias stability, history strictly before cutoff, same-minute exclusion, bank+account identity, future/focal exclusion, 7-day lookback, <=50 event return and distinct empty/unavailable/truncated states. (Depends: T006; FR-002-004, FR-011, FR-024.)
+- [x] T008 Implement fixture CaseContextReader/HistoryReader and outbound alias mapper in `backend/src/fraudlens/investigation/context.py`, with authored `data/fixtures/investigation/contexts.json` and `history.json`; preserve original `data/fixtures/cases.json`. Add field allowlist and honest missing provenance, never private labels. Record GREEN in `evidence/tasks/feature-003-context.md`. (Depends: T007; FR-001-004, FR-011, FR-024.)
+- [x] T009 [P] Write repository RED tests in `backend/tests/integration/test_investigation_store.py`: dedicated schema v1, immutable context/evidence/reports, request-key replay/conflict, state/revision CAS, atomic disposition/audit, budget reservation before dispatch, rollback, foreign keys, incompatible schema and concurrent claims without network. (Depends: T006; FR-018-020, FR-022-023.)
+- [x] T010 Implement minimal transaction repository in `backend/src/fraudlens/investigation/store.py`: 'schema version 1', 'one active worker claim globally', 'busy timeout <=1 second', unique actor/operation/request identity and attempt/sequence, parameterized SQL, optimistic revisions >=1, no write lock held across external I/O. Do not write feature 002 store or silently migrate unknown schemas. Record GREEN in `evidence/tasks/feature-003-state.md`. (Depends: T009; FR-018-020, FR-022-023.)
+- [x] T011 Freeze the initial application prompt and default non-tuned retrieval configuration in `prompts/application/investigation-v1.md` and `data/knowledge/fraudlens-aml-knowledge-v1/retrieval.json`; distinguish facts/guidance/hypotheses, source score meaning, tool scope, missing data, Serbian output and untrusted content. Runtime context cannot include original dev prompts/references. Record hashes as initial design, not human approval. (Depends: T006; FR-004, FR-012-017, FR-028.)
+- [x] T012 Write feature composition/error-isolation RED tests in `backend/tests/integration/test_investigation_feature_toggle.py` for disabled original fixture behavior, new-route errors distinct from foundation's case_not_found, no startup network, same-origin/JSON mutation guards and no permissive CORS; retain failures until T019/T035 implement matching routes. Record actual intended failure in `evidence/tasks/feature-003-api.md`. (Depends: T008, T010, T011; FR-003, FR-010, FR-021, FR-024.)
+
+## Phase 3: US1 - Knowledge search and sources (T013-T022, P1)
+
+Status (2026-11-14): complete, T013-T022. All six texts approved by Milan
+Gavrić; reviewed corpus published to the separate local store and actual-source
+API/proxy/Chrome verification PASS. All delivery dependencies met. See
+../../evidence/tasks/feature-003-phase-03-completion.md. Final backend 517 passed /
+3 deliberate future T035 failures; frontend 156 passed, Ruff/typecheck/build PASS.
+This is Phase 3 completion, not full Feature 003 acceptance or quality evaluation.
+T023+ was outside that Phase 3 verification; latest Phase 4 status follows.
+
+Goal: useful search/source screen without a provider. Independent test: six reviewed documents, expected passage/no-match, historical citation text and original fixture browsing. No held-out tuning in this phase.
+
+- [x] T013 [US1] Prepare six source documents and provenance manifest at `data/knowledge/fraudlens-aml-knowledge-v1/manifest.json` and `documents/`: three simulated procedures, IBM limitations guide and >=2 official sections; actual human source review, reuse terms, section/date/jurisdiction/context/hash metadata in `evidence/tasks/feature-003-corpus-review.md`. Do not invent reviewer/date/permission; pending source review remains pending. (Depends: T011; FR-005-007, SC-001.)
+- [x] T014 [P] [US1] Write knowledge RED tests in `backend/tests/unit/test_investigation_knowledge.py`: hash/date/review metadata checks, normalized LF without trimming, BOM/bare-CR rejection, 'passages <=2400 characters', <=200 initial passages, no cross-section chunks, stable subpassage identities, archived old versions and runtime exclusion of eval/reference/development-prompt paths. Use authored test sources independent of official downloads. (Depends: T006; FR-004-007, FR-025.)
+- [x] T015 [US1] Implement `backend/src/fraudlens/investigation/knowledge.py` and `prepare-knowledge` in `backend/src/fraudlens/investigation/cli.py`; stage/publish validated complete corpus to the separate store, reject changed reviewed hashes, persist exact historical passages/provenance and safe local paths. Record GREEN and actual six-document ingest only when T013 review exists in `evidence/tasks/feature-003-knowledge.md`. (Depends: T010, T013, T014; FR-005-007, SC-001.)
+- [x] T016 [P] [US1] Write deterministic BM25/search RED tests in `backend/tests/unit/test_investigation_retrieval.py`: fixed k1=1.2/b=0.75, NFKC/casefold tokens, <=5 ranked passages, stable passage-ID tie order, development-config cutoff, no adequate match, trimmed 1-500 queries, unsupported inputs and archived corpus identity. (Depends: T006, T011; FR-007-008.)
+- [x] T017 [US1] Implement baseline `backend/src/fraudlens/investigation/retrieval.py` with frozen version hashes and explicit no-match/truncation; no embeddings/network or relevance-probability claims. Use initial configuration only; tune no thresholds until the reviewed evaluation pack is frozen. Record GREEN in `evidence/tasks/feature-003-knowledge.md`. (Depends: T015, T016; FR-007-008.)
+- [x] T018 [P] [US1] Write knowledge API RED tests in `backend/tests/integration/test_investigation_knowledge_api.py` for document/search/passage endpoints, closed schemas, 404/422/503 safe errors, corpus pinning, no path traversal or runtime scraping and no provider call. (Depends: T006, T012; FR-005-008, FR-024.)
+- [x] T019 [US1] Implement knowledge routes in `backend/src/fraudlens/investigation/api.py` and minimal feature composition in `backend/src/fraudlens/main.py`; preserve old handlers/payloads and isolate new errors. Resolve knowledge/disabled cases of T012, leaving unrelated future cases honestly RED. Record targeted GREEN in `evidence/tasks/feature-003-api.md`. (Depends: T017, T018; FR-003, FR-005-008, FR-021.)
+- [x] T020 [P] [US1] Write frontend knowledge RED tests in `frontend/tests/investigation-knowledge.test.ts`: strict response decoder, relative encoded queries, source version/jurisdiction/simulation display, no-match/error/retry, safe literal text, keyboard focus, cancellation and stale-selection response suppression. (Depends: T006; FR-006-008, FR-012, FR-021.)
+- [x] T021 [US1] Add strict knowledge types/client/views in `frontend/src/investigation/contracts.ts`, `api.ts`, `views.ts`, `controller.ts` and integrate knowledge navigation minimally in `frontend/src/main.ts`; do not migrate feature 002 case decoding. Record GREEN/typecheck/build in `evidence/tasks/feature-003-ui.md`. (Depends: T019, T020; FR-006-008, FR-012, FR-021.)
+- [x] T022 [US1] Exercise search and exact historical source inspection through actual API/proxy/UI, include no-match and missing corpus, and recheck original three-case journey; record browser observations and limitations in `evidence/tasks/feature-003-knowledge.md`. No fixture search success is a live LLM evaluation. (Depends: T021; FR-005-008, FR-021, SC-001.)
+
+## Phase 4: US2 - Grounded report and controlled tools (T023-T038, P1)
+
+Status (2026-11-15): offline slice complete, T023-T032 and T034-T038. T033 was
+explicitly authorized and executed with root .env loading: two transport attempts
+total, first ConnectError, second actual HTTP 400 / unsupported_capability.
+Capability gate remains pending and T033 unchecked; no returned model/usage.
+Fresh backend 636 PASS and Ruff PASS; see
+../../evidence/tasks/feature-003-provider-access.md. No further provider calls.
+The following offline verification is historical:
+Final backend 629 PASS; frontend 166 PASS; Ruff/typecheck/build PASS; actual
+browser/API/proxy/worker journey 9 PASS. Reconciled saved T027-T030 code and RED
+cache evidence. See ../../evidence/tasks/feature-003-fixture-journey.md. No
+installation repeated, live API/ML/quality claim, Phase 5 work, commit or push.
+
+Goal: first end-to-end fixture investigation and separate opt-in real provider path. Independent test: actual tool trace, bound evidence, valid structured report/needs-information and rejected unsupported references; fixture slice does not wait for credentials.
+
+- [x] T023 [P] [US2] Write tool RED tests in `backend/tests/unit/test_investigation_tools.py`: exactly three strict closed tools, server-bound scope, case/history/procedure distinctions, source/time/currency semantics, <=12 executions, <=5 passages/search, <=50 history events, <=16,000-byte results with whole-item truncation, oversized-item failure and no label/secret/reference leakage. Reject URL/SQL/path/other-case/actor/model arguments and embedded instructions before execution. (Depends: T008, T010, T017; FR-004, FR-009-012, FR-018, FR-024.)
+- [x] T024 [US2] Implement `backend/src/fraudlens/investigation/tools.py`, typed evidence projection/aliasing and audited tool outcomes; preserve per-currency aggregate scope and unknown availability. Model cannot choose bank/account identity or corpus version. Record intended RED/GREEN in `evidence/tasks/feature-003-tools.md`. (Depends: T023; FR-009-012, FR-018, FR-024.)
+- [x] T025 [P] [US2] Write report RED tests in `backend/tests/unit/test_investigation_validation.py`: required typed sections, context/evidence ownership, allowed claim/evidence kinds, unknown citations, altered structured exact assertions/quotes, missing/excess fields, explanation limitations, supported hypotheses and valid limitations draft. Include a valid-ID false interpretation to demonstrate structural validity is not semantic faithfulness. (Depends: T006; FR-013-016.)
+- [x] T026 [US2] Implement `backend/src/fraudlens/investigation/validation.py` with source-bound exact-value/quote validation and explicit semantic_review=not_reviewed. Reject invalid drafts; do not claim arbitrary prose truth is deterministically guaranteed. Record GREEN in `evidence/tasks/feature-003-reports.md`. (Depends: T025; FR-013-016.)
+- [x] T027 [P] [US2] Write provider-boundary RED tests in `backend/tests/unit/test_investigation_provider.py` for scripted tool sequences, strict draft/refusal/incomplete outcomes, all-turn allowlist, preserved call IDs, private continuation items, bounded output and no initialization calls. (Depends: T006, T011; FR-004, FR-009, FR-012-018, FR-024.)
+- [x] T028 [US2] Implement Provider protocol and explicitly labeled test provider in `backend/src/fraudlens/investigation/provider.py` with authored `data/fixtures/investigation/provider-scripts.json`; scripts exercise tools, missing data and invalid citations without pretending to be real AI. Record GREEN in `evidence/tasks/feature-003-provider.md`. (Depends: T027; FR-009, FR-013-018.)
+- [x] T029 [P] [US2] Write first-workflow RED tests in `backend/tests/unit/test_investigation_workflow.py`: queued -> gathering -> drafting -> validated/needs-information, no tool authority from generated text, budget reservation before dispatch, 8/12/120 limits, one retry/repair maximum, report binding and controlled failures. (Depends: T010, T026, T028; FR-009-020.)
+- [x] T030 [US2] Implement bounded orchestration in `backend/src/fraudlens/investigation/workflow.py`; pin context/corpus/prompt/retrieval/provider configuration, persist actual tools/evidence, handle no-match/missing facts and validate before publishing. No exactly-once provider guarantee or automated disposition. Record GREEN in `evidence/tasks/feature-003-workflow.md`. (Depends: T024, T029; FR-009-020.)
+- [x] T031 [P] [US2] Write mocked HTTP/SDK RED tests in `backend/tests/unit/test_investigation_openai.py`: configurable ID, strict function/report schema compilation, parallel tools disabled, required continuation items, refusal/incomplete/access/capability errors, max_retries=0, <=30-second request and outer deadline, <=48,000 input bytes/4096 output tokens/2 MiB bounded response stream, one transient retry/repair and actual-or-unknown usage. No real key/network in default tests. (Depends: T028; FR-017-018, FR-024, FR-028.)
+- [x] T032 [US2] Add official OpenAI SDK to `pyproject.toml` with generated `uv.lock`, implement real provider in `backend/src/fraudlens/investigation/provider.py` and safe `probe-provider` command in `cli.py`; resolve supported version at implementation, use locked installs thereafter. Implement bounded reading, explicit capability outcomes and no silent fallback; record mock GREEN and dependency versions in `evidence/tasks/feature-003-provider.md`. (Depends: T031, T030; FR-017-018, FR-024, FR-028.)
+T033 update 2026-11-15: actual gpt-6-luna synthetic tool/report capability PASS;
+new budget used 4/4, no T058 authorization inferred. See ../../evidence/tasks/feature-003-t033-closure.md.
+
+- [x] T033 [US2] Run explicitly requested synthetic provider availability/tool/report-schema probe using `backend/src/fraudlens/investigation/cli.py`; record actual model/request ID, supported capabilities/limits and usage or unknown in `evidence/tasks/feature-003-provider-access.md`. No guessed Luna model ID, key output or case data; missing access remains pending and does not block T034-T038 offline. (Depends: T032; external actual key/model access; FR-017, SC-008.)
+  Attempted 2026-11-15 with configured `gpt-6-luna`: ConnectError, then HTTP 400
+  (`unsupported_capability`), actual request ID recorded; cumulative two-attempt
+  budget exhausted. Tools/report schema not verified; leave unchecked.
+- [x] T034 [P] [US2] Write run/worker API RED tests in `backend/tests/integration/test_investigation_api.py`: POST/GET/list/evidence schemas, source snapshot resolution, queued creation without provider call, fixed local actor, request identity, safe feature-specific errors, JSON/same-origin guards, <=20 list items/count/truncated, and GET with no dispatch. (Depends: T006, T012, T030; FR-001-004, FR-019-021, FR-024.)
+- [x] T035 [US2] Implement run/evidence/list routes in `backend/src/fraudlens/investigation/api.py`, explicit single-worker --once/--poll in `cli.py` and complete composition in `backend/src/fraudlens/main.py`; T012/T034 become GREEN. Separate long work from HTTP, use bounded polling and safe error/status agreement. Record in `evidence/tasks/feature-003-api.md`. (Depends: T034; FR-019-021, FR-024.)
+- [x] T036 [P] [US2] Write report UI RED tests in `frontend/tests/investigation-reports.test.ts`: strict new closed decoders, returned case/context/attempt identity, queued/progress/needs-information/failed states, typed sections/evidence links, safe literal text, source/score/semantic-review notices, bounded polling and cancellation of obsolete browser requests. (Depends: T006; FR-013-017, FR-021.)
+- [x] T037 [US2] Implement report client/view/controller in `frontend/src/investigation/contracts.ts`, `api.ts`, `views.ts`, `controller.ts` with minimal case-screen hooks in `frontend/src/main.ts`/`views.ts`; no v2 migration duplication. Preserve feature 001 fixtures and no-provider browser behavior; record GREEN in `evidence/tasks/feature-003-ui.md`. (Depends: T035, T036; FR-013-017, FR-021.)
+- [x] T038 [US2] Run fixture investigation through actual worker/API/proxy/UI, capture three actual tool types, report/evidence and invalid-citation refusal, run without ML/corpus/key for original browsing, and record `evidence/tasks/feature-003-fixture-journey.md`. Clearly label test-provider outputs; no live quality claim. (Depends: T037; FR-003, FR-009-021, SC-007.)
+
+## Phase 5: US3 - Durable recovery (T039-T044, P1)
+
+Status (2026-11-15): T039-T044 complete in fixture/test-provider scope.
+Executed RED/GREEN and atomic claim/read-view refactor; final backend 653 PASS,
+frontend 172 PASS, Ruff/typecheck/build PASS. Actual killed CLI/two-connection
+checks 6 PASS; Chrome/API/proxy/navigation/snapshot checks 8 PASS, cleanup PASS.
+Evidence: [recovery](../../evidence/tasks/feature-003-recovery.md).
+T033 remains unchecked with its unresolved capability gate; no actual .env read,
+OpenAI call, Phase 6+ work, commit or push in this scope.
+
+Goal: explicit recovery without silent spend or mixed versions. Independent test: process interruption and two connections, duplicate requests, stale snapshot/revision and late replies.
+
+- [x] T039 [P] [US3] Extend `backend/tests/integration/test_investigation_recovery.py` with RED fault-injection cases before/after dispatch intent/result, unknown spend, expired lease/deadline, one active worker, no network on reopen, duplicate same/different payload, late cancelled replies, explicit child retry/revalidated evidence and changed source/corpus. Cover persistence of all state transitions and timeout accounting across retries. (Depends: T035; FR-018-020.)
+- [x] T040 [US3] Harden `backend/src/fraudlens/investigation/store.py` and `workflow.py` for recovery: interrupted pending dispatch -> failed/outcome_unknown; no automatic replay; fresh child attempt limits with disclosed prior spend, preserved evidence/audit and compatible-version reuse only; CAS protects late results. API reads reconcile expiry without dispatch. Record GREEN in `evidence/tasks/feature-003-state.md`. (Depends: T039; FR-018-020.)
+- [x] T041 [P] [US3] Write recovery client/API RED tests in `frontend/tests/investigation-recovery.test.ts` and `backend/tests/integration/test_investigation_recovery_api.py`: retry/cancel If-Match and Idempotency-Key, stale source/revision, explicit refresh, same-case-new-context identity and zero GET spend. (Depends: T037; FR-019-021.)
+- [x] T042 [US3] Implement retry/cancel routes in `backend/src/fraudlens/investigation/api.py` and UI actions in `frontend/src/investigation/api.ts`/`controller.ts`/`views.ts`, preserving ended attempts and safe errors; record GREEN in `evidence/tasks/feature-003-state.md`. (Depends: T040, T041; FR-019-021.)
+- [x] T043 [US3] Exercise real process restart and two-connection CAS/idempotency/cancellation cases using `backend/src/fraudlens/investigation/cli.py`; record actual counters, unknown outcome, old/new attempt IDs and evidence binding in `evidence/tasks/feature-003-recovery.md`. This is workflow evidence, not live provider billing proof. (Depends: T042; FR-018-020, SC-005.)
+- [x] T044 [US3] Exercise UI navigation with queued/failed/retried runs and a controlled source-snapshot switch; verify saved historical report access, stale new reads and original fixture behavior, recording browser evidence in `evidence/tasks/feature-003-recovery.md`. (Depends: T043; FR-002-003, FR-020-021, SC-005, SC-007.)
+
+## Phase 6: US4 - Analyst review (T045-T051, P1)
+
+Status (2026-11-15): T045-T051 complete in the fixture/test-provider review scope.
+Vedran supplied actual manual citation/decision/required-field/two-session/
+correction/needs-information observations, corroborated by five persisted human
+review events across three drafts. The misleading duplicate stale_snapshot label
+found during that review was fixed with intended RED -> GREEN tests; 186 frontend
+tests, typecheck and build pass. This does not claim a fresh post-fix human browser
+run, independent reproduction, code-review signature or real LLM evaluation.
+Evidence: ../../evidence/tasks/feature-003-review.md. T033 remains unchecked;
+T052 preparation/independent-review status follows in Phase 7.
+
+Goal: explicit human disposition with immutable drafts and conflict detection. Independent test: all allowed actions, missing rationale, needs-information restriction, stale concurrent review and linked correction.
+
+- [x] T045 [P] [US4] Write review RED tests in `backend/tests/unit/test_investigation_review.py`: 'rationale 1-2000 after trim', 'actor 1-80', exact report revision, ready permits three dispositions, needs-information only request_more_information with saved draft, failed/cancelled none, immutable draft/correction events, review CAS and no generated-text authority. (Depends: T006, T040; FR-022-023.)
+- [x] T046 [US4] Implement `backend/src/fraudlens/investigation/review.py` and atomic store review operations; separate human notes from model input, append linked corrections and update reviewed state only through explicit authorized action. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T045; FR-022-024.)
+- [x] T047 [P] [US4] Write review API RED tests in `backend/tests/integration/test_investigation_review_api.py`: If-Match/key/report checks, empty/overlong rationale, forged actor, safe code/status errors, stale and superseded-review conflicts, same request replay. (Depends: T035, T045; FR-022-023.)
+- [x] T048 [US4] Implement POST reviews and amendment semantics in `backend/src/fraudlens/investigation/api.py`; actor from server demo settings, no AI tool route to disposition. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T046, T047; FR-022-023.)
+- [x] T049 [P] [US4] Write review UI RED tests in `frontend/tests/investigation-review.test.ts`: citation inspection, required rationale, allowed decisions by state, explicit submit, safe correction note, stale write recovery and unchanged original AI draft. (Depends: T037; FR-021-023.)
+- [x] T050 [US4] Implement review client/forms in `frontend/src/investigation/api.ts`/`controller.ts`/`views.ts`; retain draft/evidence, do not automatically select/submit a disposition, distinguish human review from semantic-evaluation rating. Record GREEN in `evidence/tasks/feature-003-review.md`. (Depends: T048, T049; FR-021-023.)
+- [x] T051 [US4] Exercise all three dispositions, needs-information restriction, two-browser stale review and linked correction through actual UI/API; record real analyst identity/date and audit evidence in `evidence/tasks/feature-003-review.md`, never inferred signatures. (Depends: T050; FR-022-023, SC-005.)
+
+## Phase 7: US5 - Evaluation (T052-T061, P2, required for release)
+
+Status (2026-11-15): T052 complete. Vedran explicitly confirms reviewing and
+approving the 12 scenario cards, completing the earlier approved retrieval,
+safety, rubric/splits/protocol review. Final whole-bundle approval/freeze is
+recorded in reference/review-record.json and protocol.json; structural checker
+PASS. T033 remains open. No T053+ work or actual model evaluation executed.
+
+Goal: independent measured retrieval/report quality, safety and latency. Independent test: frozen packs, separate reference joining, both configurations and all failures in denominators. Pack preparation may proceed after corpus passage identities stabilize, before the UI is finished; held-out execution waits for freeze.
+
+- [x] T052 [US5] Author/review `evals/investigation/inputs/`, `reference/`, `splits.json`, `protocol.json` and actual reviewer record in `evidence/tasks/feature-003-evaluation-protocol.md`: '30 retrieval questions (10 development, 20 held-out)', '12 investigation scenarios (4 development, 8 held-out)', >=4 no-answer held-out, bilingual questions and >=12 safety scenarios. Predeclare relevant passages/essential facts/missingness/critical errors, second-review subset >=4 and five ordinary live demo cases. Freeze inputs/references/corpus before tuning; no invented reviewer approval. (Depends: T015, T022; FR-025, FR-027.)
+Historical status before T054-T056 continuation: T053 complete; T054/T057/T060/T061 partial;
+Glossary approved by Vedran Mitic 2026-11-15; T055/T056 still await
+remaining T054/configuration-freeze prerequisites. T058 blocked
+by T033, T059 by actual live reports/ratings. No held-out evaluation or live call
+executed. See ../../evidence/tasks/feature-003-phase-07-handoff.md.
+
+- [x] T053 [P] [US5] Write evaluation RED tests in `backend/tests/unit/test_investigation_evaluation.py`: Recall@5/MRR@5 hand examples, no-answer denominator exclusion, zero-claim rubric, provider failure in denominator, disagreement preservation, hash/version mismatch, input-only generation and canary reference/label exclusion from tools/prompts/index. (Depends: T052, T028; FR-004, FR-025-028.)
+Current status: T054-T056 executed/completed; both held-out Recall/MRR 0.50
+(below target), no-match 4/4. See ../../evidence/tasks/feature-003-t054-t056.md.
+No live provider or T033 resolution claimed.
+
+- [x] T054 [US5] Implement metrics/input-only generation and offline reference join in `backend/src/fraudlens/investigation/evaluation.py`/`cli.py`, and one deterministic title/glossary improvement in `retrieval.py` with reviewed `data/knowledge/fraudlens-aml-knowledge-v1/glossary.json`. Use k1=1.2/b=0.75, title weight 2, original term 1/synonym 0.5; record GREEN in `evidence/tasks/feature-003-evaluation.md`. No hidden holdout reads. (Depends: T053; FR-025-028.)
+- [x] T055 [US5] Tune both adequacy cutoffs on the 10 development questions only, preselect deployment configuration from development, freeze corpus/tokenizer/glossary/rank/cutoff/prompt/model/settings/rubric hashes in `evals/investigation/protocol.json`; record development selection and no feasible cutoff as failure rather than tune held-out answers in `evidence/tasks/feature-003-evaluation-protocol.md`. (Depends: T054; FR-025-026.)
+- [x] T056 [US5] Run both frozen retrieval configurations on all 20 held-out questions and 20 timed local searches via `backend/src/fraudlens/investigation/cli.py`; save ranks/IDs/scores/raw latencies under `evals/results/feature-003/` and actual Recall/MRR/no-answer/count/p95 results in `evidence/tasks/feature-003-evaluation.md`. Report both including regressions; include overall and separate en/sr-Latn/sr-Cyrl retrieval metrics with split-specific denominators and N/A for empty groups; no new per-language quality gates or held-out-based deployment selection. (Depends: T055; FR-026, SC-002, SC-006.)
+T057 closure (2026-11-15): 52 safety subcases, 750 backend/186 frontend PASS;
+17 real browser and 6 process checks PASS. Unauthorized executions zero; mocked/
+test provider only. See ../../evidence/tasks/feature-003-t057-closure.md.
+
+- [x] T057 [P] [US5] Execute >=12 security/recovery scenarios and verify all actual outbound turns/continuations for canary secrets/labels/reference leakage, tool boundaries, altered assertions, injection, deadline and stale updates; use `backend/tests/integration/test_investigation_safety.py` for missing RED/GREEN coverage and record complete outcomes in `evidence/tasks/feature-003-safety.md`. Do not delete failing requirements. (Depends: T042, T051, T054; FR-004, FR-010-012, FR-015, FR-018, FR-024, FR-027, SC-004.)
+T058 execution closed 2026-11-15: actual 8 primary + 5 demos, 86/104 transport
+attempts; primary 2/8 valid needs_information, 6 failures; demo 2/5 within 90s,
+7496.290s outlier retained, quality/performance targets FAILED. Historical T059 human assignment superseded by user-approved report-judging-v2
+automated primary/secondary method; execution remains pending, T060/T061 partial. See ../../evidence/tasks/feature-003-t058-t061-handoff.md.
+
+- [x] T058 [US5] Generate the eight frozen held-out reports and five ordinary live demo cases with the actual verified model using `backend/src/fraudlens/investigation/cli.py`; save all attempts/errors/usage/durations/real tool traces under `evals/results/feature-003/`, safe summary in `evidence/tasks/feature-003-live-reports.md`. No reference access in generation or cherry-picking; missing access is explicitly pending, not fixture success. (Depends: T033, T038, T051, T055; FR-017, FR-027-028, SC-003, SC-006.)
+T059-T061 closure (2026-11-15): user approved max6 judge transports; actual3
+gpt-6-luna jobs/48 units completed, isolated secondary context. All8 primary/5
+secondary outcomes covered, failures retained. Conservative aggregate0/8 pass,
+6 generation failures, 1 unresolved report-level disagreement retained; automated
+post-hoc quality FAILED. 31,082 judge tokens reported; spend unknown. Audit PASS,
+13 old outputs/freeze preserved, no generation rerun/tuning. 15 targeted/791 full
+backend PASS. Checkboxes mean executed evaluation/audit, not feature acceptance.
+See ../../evidence/tasks/feature-003-automated-evaluation.md.
+
+- [x] T059 [US5] Execute automated LLM-as-judge primary ratings for all eight original outcomes and a secondary isolated-context pass on unchanged H02/H03/H04/H06/H08 under evals/investigation/amendments/report-judging-v2.json. Preserve raw ratings, prompt/model/settings/input/output hashes, machine identities, dates, disagreements and evidence-based resolution; assess unsupported interpretation, critical errors and essential facts. Save separately under evals/results/feature-003/judge-v2/; label automated/post-hoc, never Vedran/Milan signatures or original human validation. Failures remain in denominator; unresolved uncertainty/disagreement cannot pass. Record evidence in evidence/tasks/feature-003-automated-evaluation.md. Executed under approved separate six-attempt budget: three actual gpt-6-luna calls, raw sets/disagreement preserved; quality failed. (Depends: T058; amended FR-027, SC-003.)
+- [x] T060 [US5] Summarize review metrics, support/coverage denominators, critical errors, recommendation applicability, failures/unknown usage and live deadline results via offline `backend/src/fraudlens/investigation/judging.py` using existing seal helpers in `evaluation.py` (frozen original source preserved); persist immutable result hashes and honest below-target status in `evidence/tasks/feature-003-evaluation.md`. (Depends: T056, T057, T059; FR-026-028, SC-002-004, SC-006, SC-008.)
+- [x] T061 [US5] Review leakage/reproducibility evidence, corpus/question/report bindings and held-out exposure history in `evidence/tasks/feature-003-evaluation.md`; verify no runtime reference imports, no pricing/spend inventions, all quality target outcomes mapped to actual evidence and no workflow/ML evaluation conflation. (Depends: T060; FR-004, FR-025-028, SC-008.)
+
+Report-review amendment (2026-11-15): both planned human scoring roles replaced
+by automated primary/isolated secondary judging, post-hoc and explicitly labeled.
+Original frozen artifacts and thresholds unchanged; judge execution now complete,
+as recorded in the closure above (original authorization preceded execution).
+T060/T061 must aggregate/audit v2 identity and amendment lineage, without inferring
+human validation. T062/T066 human requirements are unaffected. See
+../../evidence/tasks/feature-003-judge-amendment.md.
+
+## Phase 8: Integration, regression and convergence (T062-T067)
+
+Final 2026-11-17 closure: Milan confirms combined code/contracts/evidence review
+and authorizes closing T066/publication. T066 and T067 executed; final Converge
+findings are in Phase16 and evidence/tasks/feature-003-convergence.md. Earlier
+pending statuses below are preserved history; no full acceptance inferred.
+
+2026-11-17 review update: T061 executed audit is complete with FAILED quality,
+distinct from unmet acceptance targets. Fresh AI regression939 backend/186
+frontend, 29 browser/API/proxy +6 process checks and pinned-producer controlled
+smoke PASS; see ../../evidence/tasks/feature-003-t066-review-20261117.md.
+Milan identifies himself as current manual operator; contributor self-review
+checks/sign-off remain pending. T066/T067 stay unchecked. T094 archive is now
+available and verified; actual independent rubric decision remains pending.
+
+2026-11-16 superseding update: T062 explicit user-conveyed team agreement recorded;
+T063 adapter RED/GREEN and T064 read-only dataset/history consumer implemented.
+Reviewed source487c427, explicit new context2/producer snapshot, actual producer-code
+store compatibility PASS for authored rules/model-shaped publications. Full IBM/
+trained-model validation remains unavailable/unrun; no full dataset acceptance
+claim. See evidence/tasks/feature-003-context.md. Historical status below retained.
+
+
+Goal: connect the real producer only when available, preserve original app, document actual reproduction and remaining gates. Dataset work may proceed alongside US5; it must not force ML completion just to deliver truthful fixture functionality.
+
+Phase 8 execution (2026-11-15): T062 source reconciliation prepared at local
+producer d9bd8a2; changed explanation enum and unreviewed bounded history port
+recorded. Actual producing/consuming review pending. T063 partial: 17 authored
+contract safeguards PASS, not reviewed/live adapter RED. T064 actual adapter and
+IBM rules/model smoke remain unstarted pending that gate; explicit unavailable
+behavior retained. T065 complete for available fixture/authored-contract scope:
+776 backend/186 frontend, Ruff/typecheck/build PASS; 29 automated browser and
+6 process checks PASS, actual dataset coverage pending and distinguished.
+T066 documentation/reproduction packet complete; actual teammate reproduction,
+human code/contracts/evidence review and full T061 pending. T067 not run.
+See ../../evidence/tasks/feature-003-phase-08-handoff.md. Phase 7 reports, frozen
+configuration and failed quality/time findings preserved; no new provider calls.
+
+- [x] T062 Reconcile current feature 002 API/history with `specs/003-ai-investigation/contracts/producer-v2.snapshot.json` and context schemas, record actual producing/affected-consuming review and source SHA/semantic differences in `evidence/tasks/feature-003-context-review.md`. Preserve old snapshot/history evidence; any approved update needs a new explicit version. No approval inferred from user role or test pass. (Depends: T008, T024; actual producer availability for real integration; FR-001-003, SC-007.)
+- [x] T063 Write dataset adapter RED tests in `backend/tests/integration/test_investigation_dataset_context.py`
+(historical guards) and `backend/tests/integration/test_investigation_dataset_adapter.py` (reviewed adapter) against pinned examples and reviewed current producer: case/run/dataset/transaction equality, unchanged exact paid/received currencies/time assumptions, truthful score/explanation scale, missing history vs empty, bank+account strict cutoff, source switch and no private labels. Authored contract examples are not real IBM results. (Depends: T062; FR-001-004, FR-011, FR-014, SC-007.)
+- [x] T064 Implement dataset CaseContextReader/HistoryReader adapter in `backend/src/fraudlens/investigation/context.py` only against the reviewed available producer, without changing scorer/database/contracts or silently querying private labels. Run contract GREEN and actual label-free rules/model-context smoke when available, recording `evidence/tasks/feature-003-context.md`; missing interface remains unavailable and real integration task pending. (Depends: T063; external producer interface; FR-001-004, FR-011, SC-007.)
+- [x] T065 Run complete backend/Ruff, frontend tests/typecheck/build, schema/model parity and real API/proxy/browser journeys with feature enabled/disabled, no corpus/key/model, errors/stale recovery/review and original fixture 404/422; record actual results in `evidence/tasks/feature-003-regression.md`. Dataset tests must be distinguished from pending live producer checks. (Depends: T051, T057; T064 for actual dataset coverage; FR-003, FR-021, SC-004-007.)
+- [x] T066 Replace planned placeholders in `specs/003-ai-investigation/quickstart.md`, `README.md`, `frontend/README.md`, `data/knowledge/README.md` with actual executable configuration/commands and pending gates; complete human deterministic retrieval/fixture reproduction and code/contracts/evidence review with Milan owning the remaining checks (user assignment2026-11-16; preserve prior user self-review separately; no independent-review claim inferred) in `evidence/tasks/feature-003-reproduction.md`. Do not call your own setup second-person reproduction. (Depends: T061, T065; FR-028, SC-008.)
+- [x] T067 Run actual Spec-kit Converge against feature 003 code/spec/plan/tasks, record incomplete/new work in `evidence/tasks/feature-003-convergence.md` and `specs/003-ai-investigation/tasks.md`, update `next_work.md` with one concrete next step. Final acceptance requires actual quality/human/producer evidence; pending access/producer/targets must remain unchecked and explicit. No automatic commit, push or scope expansion. (Depends: T066; T064 for full dataset integration acceptance; FR-001, FR-028, SC-001-008.)
+
+## Dependencies & execution order
+
+Setup -> foundational boundaries -> US1 source/search -> US2 offline report -> US3 recovery -> US4 review -> US5 actual evaluation -> regression/reproduction/convergence. Follow explicit task dependencies rather than phase numbers alone: test-authoring and eval-pack preparation can begin as soon as their listed prerequisites pass. T012 is completed RED work before route GREEN; it does not falsely require the whole app to be GREEN before adding stories. Real provider access T033 blocks T058, not the offline investigation T034-T038. Producer review/integration T062-T064 is a separate external gate, not permission to import unfinished ML.
+
+| Story | Entry / exit | Independent proof |
+|---|---|---|
+| US1 | Core models/store + reviewed source corpus -> T022 | Search, exact provenance, no-match without provider |
+| US2 | Context/store + retrieval -> T038; T033 separately | Actual permitted calls + structured bound test-provider report |
+| US3 | First run/API -> T044 | Restart, explicit retry, unknown dispatch, stale/cancel safety |
+| US4 | Bound report/store -> T051 | Human rationale/disposition with immutable draft and CAS |
+| US5 | Stable corpus + independent pack -> T061 | Held-out ranks/live reports/human reviews/safety/performance |
+
+### Parallel examples and shared-write rules
+
+- US1: T014/T016/T018/T020 test files can be authored separately after common prerequisites; T013 human source preparation can overlap. Serialize writes to knowledge/api/frontend composition files.
+- US2: T023/T025/T027/T036 use disjoint test modules; T031 mock transport tests can proceed while report UI is developed. Serialize provider.py changes T028 then T032, and API/frontend GREEN edits.
+- US3: T039 and T041 use disjoint tests after their prerequisites; core store/workflow GREEN T040 precedes route/UI GREEN T042.
+- US4: T045/T047/T049 tests can overlap when their prerequisite interfaces exist; store/review/API/UI implementations follow dependencies.
+- US5: pack preparation T052 may start once corpus is stable, before UI completion. T057 safety can run alongside T056 deterministic retrieval after prerequisites. Live reports T058 wait for T033 and frozen config; T059 requires real people, never automatic agent approval.
+- Across features: colleague owns ML/model-implementations, this feature owns investigation modules; coordinate pyproject.toml/uv.lock, main.py, frontend/src/main.ts/views.ts and next_work.md. Do not parallel-write those files or auto-merge remote work. Detailed history goes in evidence, not competing long current handoffs.
+
+## Implementation strategy / checkpoints
+
+1. First session: T001-T004 setup; then T005-T012 boundary RED/GREEN. Use one prompt/session per phase or smaller coherent RED/GREEN unit, reading current evidence first.
+2. First demonstrable MVP: T013-T022 independent knowledge/source screen. No ML or key required.
+3. Investigation MVP: US2-US4 with a labeled test provider, then verified live model once accessible. Provider test fixtures prove workflow, not LLM quality.
+4. Release: evaluate frozen retrieval/report/safety packs, obtain actual human reviews and separate producer integration evidence. If a gate is unavailable, hand off a truthful partial delivery; do not mark full feature complete.
+
+## Requirement coverage index
+
+| Requirements | Principal tasks |
+|---|---|
+| FR-001-003 | T005-T008, T034-T038, T062-T065 |
+| FR-004 | T004-T008, T023-T024, T031-T032, T052-T057, T061 |
+| FR-005-008 | T013-T022, T052-T056 |
+| FR-009-012 | T023-T024, T027-T030, T057 |
+| FR-013-016 | T005-T006, T025-T030, T036-T038, T058-T060 |
+| FR-017-018 | T002-T003, T027-T033, T039-T043, T057-T058 |
+| FR-019-020 | T009-T010, T029-T030, T034-T035, T039-T044 |
+| FR-021 | T012, T019-T022, T034-T038, T041-T044, T049-T051, T065 |
+| FR-022-023 | T009-T010, T045-T051 |
+| FR-024 | T002-T004, T007-T008, T023-T024, T031-T035, T057 |
+| FR-025-028 | T004, T011, T052-T061, T066-T067 |
+| SC-001 | T013-T015, T022 |
+| SC-002 | T052-T056, T060 |
+| SC-003 | T058-T060 |
+| SC-004 | T023-T032, T039-T050, T057, T065 |
+| SC-005 | T039-T051, T065 |
+| SC-006 | T056, T058, T060 |
+| SC-007 | T008, T038, T062-T065 |
+| SC-008 | T033, T052-T061, T066-T067 |
+
+All 67 tasks remain unchecked at generation. Checking a RED task means its intended failing cases were actually observed, not that feature behavior is implemented. A gate task is complete only when its actual evidence exists.
+
+## Phase 9: User-authorized reliability follow-up (2026-11-16)
+
+Scope/design: [reliability-v2.md](reliability-v2.md). This maintenance is separate
+from pending T062–T067 and does not close any failed quality criterion. All new
+checks use authored development fixtures, not the exposed holdout. No live calls.
+
+- [x] T068 Diagnose committed generation/retrieval/timing summaries without loading held-out references; record available/missing archives, immutable baseline hashes and defensible findings in evidence/tasks/feature-003-reliability-v2.md. (FR-025–028, SC-008.)
+- [x] T069 Add intended RED then GREEN tests for safe actionable report-repair diagnostics, reserving the final request for drafting and SDK serialization; implement allowlisted feedback, preserved single-repair/privacy controls and a separately versioned structural application prompt in provider.py/workflow.py. (Depends: T068; FR-013–018, FR-024.)
+- [x] T070 Reproduce asynchronous provider-cleanup timeout/error gaps; bound cleanup within remaining attempt time and preserve persisted state/cancellation/usage accounting. Record limitations without attributing the old outlier to an unproven cause. (Depends: T068; FR-018–020, SC-006.)
+- [x] T071 Add intended RED then GREEN script-equivalence/no-match/unknown-policy tests and implement opt-in versioned Serbian glossary lookup normalization in retrieval.py; supply an explicitly unvalidated separate development config, preserving legacy configuration behavior and old frozen results. (Depends: T068; FR-007–008, FR-025–028, SC-002.)
+- [x] T072 Run complete backend/Ruff, isolated local diagnostic journey and integrity checks; record commands/results/remaining evaluation needs, write milan/feature03-provere-v2.md below 200 lines with explained PowerShell commands, and update next_work.md. (Depends: T069–T071; FR-028, SC-004–008.)
+
+## Phase 10: Authorized live development check (2026-11-16)
+
+Scope: [live-development-v2.md](live-development-v2.md), three new authored
+development cases, not an independent holdout or replacement for failed targets.
+
+- [x] T073 Freeze new label-free inputs/separate expectations and protocol; implement/test durable25/global,8/case,1/judge transport caps, no ambiguous replay and reference separation in evidence/tasks/feature-003-live-development-v2.py. (FR-018, FR-024–028.)
+- [x] T074 Execute at most three actual-provider development investigations on the published reliability branch without intervening tuning; preserve all outcomes/usage/traces/errors under ignored development-v2, then perform at most one stateless batch judge call and conservative aggregation. Actual17/25 transports,2/3 development pass, one unknown-timeout failure retained. (Depends:T073; FR-013–018, FR-027–028.)
+- [x] T075 Audit actual results/source/input/output hashes and no-reference leakage; publish honest development metrics/evidence and update next_work.md on the new branch, preserving pending human/producer/release gates. Audit PASS; no full-feature acceptance claim. (Depends:T074; FR-024–028, SC-008.)
+
+## Phase 11: Timeout/quota follow-up (2026-11-16)
+
+Scope/design: [timeout-v3.md](timeout-v3.md); preserve all completed v2 outcomes.
+
+- [x] T076 Reproduce request-timeout retry asymmetry and HTTP429 credit/quota misclassification with authored SDK/workflow RED checks; implement safe private diagnostics and one bounded retry without raising existing ceilings or changing public contracts. (FR-017–020, FR-024.)
+- [x] T077 Run complete backend/Ruff and freeze a separate development-v3 input/reference/runner protocol with max25 transports; execute one unchanged batch, retaining all outcomes and stopping after reported quota/access errors. Actual16 transports,3 valid drafts, raw machine quality0/3; no live timeout observed. (Depends:T076; FR-018, FR-025–028.)
+- [x] T078 Audit v3 results/source/usage/diagnostics and preserve v2 hashes; record evidence, short local instructions and next_work.md with actual results and pending review/release limitations. Audit PASS; disputed judge state/disposition interpretation retained without score correction. (Depends:T077; FR-024–028, SC-008.)
+
+## Phase 12: Coverage/judge calibration (2026-11-16)
+
+Scope: [coverage-v4.md](coverage-v4.md). New development protocol, no old regrading.
+
+- [x] T079 Add RED→GREEN calibration-gate and prompt-binding regressions; implement application prompt v3 and judge prompt v3 with explicit identity/coverage and draft/human-review semantics, preserving every required limitation and numerical threshold. (FR-013–017, FR-022–028.)
+- [x] T080 Freeze separate development-v4 inputs/atomic references/calibration packets and expected labels; test exclusion from generation, strict role/unit binding and calibration-failure gating; run full regression and one max25 actual batch. Actual17 transports, calibration3/3, development pass2/3; controlled repair-size failure retained. (Depends:T079; FR-018, FR-024–028.)
+- [x] T081 Audit actual metrics, calibration results, prior artifact preservation and limitations; update evidence, local guide and next_work.md without human/release/publication claims. Audit PASS; next repair-context work explicitly pending. (Depends:T080; FR-024–028, SC-008.)
+
+## Phase 13: Repair serialization maintenance (2026-11-16)
+
+Scope/design: [repair-v5.md](repair-v5.md). Completed work committed as eedbe72;
+no old live batch replay or regrading, and no change to release gates.
+
+- [x] T082 Reproduce repair-context exhaustion through the actual SDK with authored continuation; add expanded-schema equivalence/negative and strict single-repair workflow checks. Preserve pre-change source/output hashes. RED4 failures/8 passes observed before implementation. (FR-013–020, FR-024.)
+- [x] T083 Share repeated Claim definitions in the provider schema, retaining every continuation/evidence byte and all validation/budget limits; verify the preserved failed repair offline through mocked SDK transport without real API calls. GREEN32; pending repair46,148<48,000 bytes, old invalid assertion still rejected. (Depends:T082; FR-015, FR-017–020.)
+- [x] T084 Run backend/Ruff and integrity checks; record original/current payload sizes, honest test limitations and one next step in evidence and next_work.md. Full882/Ruff/integrity PASS; separate actual synthetic capability2/2 HTTP200, not report-quality evidence. See evidence/tasks/feature-003-repair-v5.md. (Depends:T083; FR-024–028, SC-008.)
+
+## Phase 14: Live full-report/controlled repair check (2026-11-16)
+
+Scope: [live-repair-v6.md](live-repair-v6.md); production runtime4262193 unchanged.
+
+- [x] T085 Add intended RED/GREEN harness checks for one scoped invalid candidate with raw continuation preserved, diagnostic/primary denominator separation and calibration gating; freeze new inputs/references/protocol and max25 ledger. RED6 intended failures; GREEN11 new/42 related, frozen3 inputs and32 prior artifact hashes verified. (FR-013–020, FR-024–028.)
+- [x] T086 Run full regression and one frozen actual-model batch: two ordinary cases plus one controlled application-candidate repair, followed by at most one calibrated judge request. Preserve all failures and unknown usage; no intervening tuning or old replay. Full893 PASS; actual17/25 HTTP200, ordinary quality1/2, controlled repair/final report PASS, calibration3/3. (Depends:T085; FR-018, FR-025–028.)
+- [x] T087 Audit source/output/usage/citation/diagnostic bindings; record separate ordinary/diagnostic results, limitations and next concrete step in evidence/next_work. Audit PASS:13 cited IDs,32 prior hashes preserved; missing human-authority disclosure retained as failure. See evidence/tasks/feature-003-live-repair-v6.md. (Depends:T086; FR-024–028, SC-008.)
+
+## Remaining defect found by development-v6
+
+- [x] T088 Reproduce omitted human-final-authority disclosure in no-guidance drafts with an authored RED regression; design/version a correction preserving original model outputs, immutable reports and all semantic quality requirements before a fresh separately scoped evaluation. RED9 failed/1 passed, scoped human-authority-v7.md design; DEV6-762 remains failed, no historical regrading. (Depends:T087; FR-013–017, FR-022–028.)
+
+## Phase 15: Human-authority protocol correction (2026-11-16)
+
+Design: [human-authority-v7.md](human-authority-v7.md). No old scoring changes.
+
+- [x] T089 Implement pinned prompt v4/private human_authority_notice_v1 for new attempts, exact-item validation and fixed safe repair hint; retain legacy/retry pinning, raw response/report immutability and existing budgets. Add negative/SDK/recovery regressions. GREEN18 new/82 related; full protocol guard without raw draft edits. (Depends:T088; FR-013–020, FR-022–024.)
+- [x] T090 Run full backend/Ruff and offline prior artifact/source preservation checks; record actual evidence, local guide and handoff, keeping model-quality verification pending. Full911/Ruff PASS; offline32 prior+10 v6 hashes/13 citations PASS; no live calls. See evidence/tasks/feature-003-human-authority-v7.md. (Depends:T089; FR-024–028, SC-008.)
+
+## Final reliability follow-up and merge preparation
+
+Scope: [final-live-check.md](final-live-check.md). User requires waiting before merge.
+
+- [x] T091 Prepare/test new policy-aware three-case development pack and one-shot notice-omission diagnostic; freeze source/prompt/config and separate references/calibrations, max25 ledger. RED1/4pass, GREEN8, full919 backend/186 frontend/build/Ruff PASS;44 earlier artifact hashes verified. (Depends:T090; FR-013–020, FR-024–028.)
+- [x] T092 Execute one bounded unchanged actual-model batch and calibrated judge; audit ordinary/diagnostic results, bindings, usage, citations and old artifact preservation. Actual18HTTP200,3 valid reports and real notice repair; calibration2/3 FAILED, quality unavailable, raw ratings retained. Integrity PASS44 prior hashes/13 cited IDs. (Depends:T091; FR-018, FR-025–028.)
+- [x] T093 Review branch diff and target ancestry/merge preview; run backend/frontend regression, record remaining feature gates, commit evidence/handoff and WAIT for user's merge decision. Source919/frontend186/build PASS; conflict-free preview, focused agent review complete; full quality/human/producer gates remain open. This is not T067/full acceptance or human sign-off. (Depends:T092; FR-028, SC-004–008.)
+
+- [x] T094 Review the CAL8-B missingness/contradiction rubric disagreement and design any new calibration protocol before fresh quality evaluation; preserve frozen v8 labels/ratings and unavailable quality result. Technical review and proposed predicate/control matrix prepared in `specs/003-ai-investigation/calibration-clarification-proposal.md`, with actual evidence in `evidence/tasks/feature-003-offline-review-20261116.md`. User delegated this decision to LLM review on 2026-11-17: four bounded calls produced one incomplete and three request_changes; corrected successor plan/validation explicitly accepted by user on 2026-11-17 ("Okej, prihvatam, sada implementiraj T096"). Team acceptance resolves T094; it is not external-model approval. See `evidence/tasks/feature-003-t094-t096-review-20261117.md`. Raw v8 judge archive absent locally; no replay/regrading. (FR-025–028.)
+
+## Phase 16: Convergence
+
+**Current status after user acceptance2026-11-17:** T094/T095/T096/T097/T099/T100 complete.
+T094 resolved by explicit team acceptance of corrected protocol; T096 implemented
+and tested offline. Evidence: `evidence/tasks/feature-003-t096-20261117.md`.
+T097 offline reconciliation/protocol complete; no live SC-006 acceptance implied.
+Open: T098 (actual producer assembly). Detailed dated progress below is
+historical; earlier T095-open statements are superseded by its acceptance.
+
+Recommended order: T094 -> T096; T097 can proceed in parallel without changing
+quality labels or spending on a new live batch. T098 requires the real producer
+stores/artifacts; successful controlled fixtures are insufficient. Retrieval LLM
+judge approval does NOT authorize report regrading or another paid experiment.
+
+
+Actual assessment 2026-11-17: see `evidence/tasks/feature-003-convergence.md`.
+T066 reproduction/contributor review is complete; this assessment records remaining
+work, not full acceptance. T094 stays open (raw archive now verified; independent
+rubric decision still pending). New live/provider/evaluation execution requires
+separate explicit scope/budget; these tasks do not authorize replay or regrading.
+
+- [x] T095 Implement and evaluate the separately versioned retrieval improvement per SC-002, FR-008, FR-025?028. Completed semantic v6 core/API/worker integration with pinned policies, shared dispatch budgets, cancellation/source guards and approved blind LLM reference review. Frozen20-question evaluation (16 answerable+4 no-answer): Recall@5 .864583, MRR@5 .9375, no-answer4/4, calibration4/4; failed503 retained, zero retries,44-call cap. User reviewed and accepted2026-11-17. Preserve original .50/.50 results and all v4/v5 failures. Evidence: `evidence/tasks/feature-003-v6-integration-judge-20261117.md`; method/limits: `retrieval-v6-judge-decision.md`. Does not close report-quality, timing or real-data gates.
+
+  T095 partial progress (2026-11-17): versioned design/review packet
+  `retrieval-development-v3.md` prepared; existing v2 candidate reused, no runtime
+  change or new threshold. AI technical self-review only; independent teammate
+  plan/novelty/reference decision, fresh pack/runner/freeze and separately
+  authorized acceptance evidence remain pending.135 relevant regressions/4
+  mechanical controls/Ruff PASS; no old holdout replay/tuning. SC-002 UNMET.
+  Actual scope/results: `evidence/tasks/feature-003-t095-20261117.md`.
+
+  T095 authorized continuation (2026-11-17): Milan Gavrić/milangavric2003 approved
+  the v3 plan and new feature03-retrieval-v3 branch from18e930a. Implement a
+  separate offline evaluator through intended RED/GREEN; author fresh development
+  inputs/references for human review; preserve the fresh held-out boundary.
+  Actual question/reference review and sealed acceptance execution remain gated.
+
+  Continuation implementation: separate evaluator and27 synthetic RED/GREEN
+  tests implemented;18 development question/reference proposals and readable
+  review packet at `evals/investigation/retrieval-fresh-v3/`. Actual development
+  scoring refused before search while concrete reference review is pending;
+  fresh held-out authoring remains separate. Evidence:
+  `evidence/tasks/feature-003-t095-v3-implementation-20261117.md`.
+
+  Reviewed development continuation: Milan accepted the18-row table/references;
+  actual one-shot B3/C3 selection both Recall/MRR0.25/0.25,6/6 no-answer, baseline
+  wins tie; no default change. Bookkeeping RED1/28pass -> GREEN29; final backend
+  968 PASS/Ruff PASS. T095 OPEN/SC-002 UNMET; no held-out run or English-only change.
+  `evidence/tasks/feature-003-t095-development-selection-20261117.md`.
+
+  Subsequent decision2026-11-17: Milan approved English-only procedure retrieval
+  for the first MVP; Serbian retrieval deferred, UI/report scope separate.
+  See `retrieval-english-mvp-decision.md`. Next prepare a separate English-only
+  development design/query contract/fresh reviewed pack; retain all old results
+  and SC-002 thresholds/counts. Planning recorded only, no runtime change or
+  acceptance experiment; T095 remains OPEN.
+
+- [x] T096 After the T094 decision (corrected protocol explicitly accepted by user2026-11-17), implement/test any approved new rubric/control version and necessary grounded-report quality corrections in `backend/src/fraudlens/investigation/` with new authored development controls; define a separately reviewed validation path before any explicitly authorized new actual-provider evaluation. Preserve original 0/8 quality, raw v8 ratings, failed calibration/unavailable quality, critical-error requirements and support/coverage thresholds; no old replay/regrading or acceptance from structural PASS. HIGH per SC-003, FR-013–017, FR-025–028 (partial).
+  T096 completion: separate offline rubric/prompt/schema/6 authored controls, exact calibration gate,
+  packet/witness binding, paired8+5 aggregation and exclusive CLI. Final39 new tests/71 related
+  regression PASS; full1043 before final bridge correction;14 protected hashes unchanged.
+  Zero provider calls, no actual model calibration/report quality or SC-003 claim.
+  Evidence: `evidence/tasks/feature-003-t096-20261117.md`.
+
+- [x] T097 Reconcile current workflow/provider deadline behavior with the preserved failed five-case live timing/outlier evidence, add meaningful offline regression for any demonstrated remaining cause, and document a fresh frozen five-case demonstration protocol in `specs/003-ai-investigation/` before requesting a separate execution budget; retain failures in denominators and original 90/120-second targets. Do not substitute three development examples or claim current timeout failure solely from an old outlier. HIGH per SC-006, FR-018–020, FR-028 (partial).
+  T097 completion2026-11-17: historical demo2/5/outlier7496.290s preserved;
+  worker-only old timing distinguished from future UI-visible measurement.
+  Current timeout/cleanup guards reconciled, no new runtime defect demonstrated.
+  New `timing-v1-protocol.md` + offline fixed5/20 timing evaluator;19new tests,
+  targeted102/full1067 PASS;58 historical/source hashes unchanged. Zero API calls;
+  no new actual-provider performance result or SC-006 claim. Evidence:
+  `evidence/tasks/feature-003-t097-20261117.md`.
+
+- [x] T098 Coordinate and exercise the existing reviewed adapter with actual published producer rules/model stores through investigation API and matching worker, bounded history/source-switch/archive checks and the agreed application assembly boundary; record actual producer/run/dataset/model identities and source hashes in `evidence/tasks/feature-003-context.md`. Preserve T062–T064 completed controlled scope; no ML training, producer schema changes, automatic merge, label access, fixture fallback or live-provider execution. Full population/model validation remains unrun until real stores and assembly are available. HIGH per SC-007, FR-001–004, FR-011, plan: producer integration (partial).
+  T098 availability2026-11-18: configured dataset/scored-run paths absent; cached
+  producer-shaped files match historical authored-smoke hashes. Reachable local
+  investigation/evaluation stores are not producer publications; old cache scan
+  has explicit access limitations. Actual rules/model identities and API/worker
+  assembly remain unrun. Existing controlled regression44PASS does not close this
+  task. Exact required producer delivery/launch packet and evidence:
+  `evidence/tasks/feature-003-t098-20261118.md`. SC-003/SC-006 remain separate.
+  User-authorized local preparation continuation2026-11-18: exact CSV/model
+  verified, isolated producer93d387e exported with locked dependencies; full IBM
+  import/history preparation and actual bounded20-row inference planned/running.
+  Demonstrated5s partial-source metadata timeout led to optional consumer-owned
+  history-index design/implementation, RED7 -> full backend1081PASS. Actual
+  completed-source/index/API/matching-worker checks remain pending; keep OPEN.
+  `evidence/tasks/feature-003-t098-local-20261118.md` and `history-index-v1.md`.
+  Completion2026-11-18: actual full5,078,345-row canonical/history source; original
+  producer20 genuine model predictions/publications with0.0 saved-score difference,
+  separate policy run and20 real rule assessments at frozen no_alert. Full-population
+  ML evaluation/merged UI remain Feature002 scope. Optional read-only history index
+  solves demonstrated5s scan cap without modifying source/schema;1081backend PASS.
+  Independent full-source oracle10 histories EXACT; actual API/CLI-worker2 test-provider
+  attempts,409 switches/archive equality/404 rules/unavailable source PASS. All frozen
+  source/run/index hashes unchanged. T098 complete for this actual bounded-model/full-
+  history assembly; SC-003/SC-006 quality/performance remain separate and unmet.
+- [x] T099 Separate historical-attempt display from changed-source-context display in `frontend/src/investigation/controller.ts` and `views.ts`; reproduce same-context retry-parent labeling with an intended RED regression, retain read-only historical actions and actual source-switch warnings, then verify GREEN plus relevant stale-navigation/recovery checks. Same-context cancelled parents must not claim a previous source context or an existing report. MEDIUM per FR-002, FR-021, US3/AC1, plan: historical evidence (partial).
+- [x] T100 Add an explicit current context-v2/reviewed-producer addendum to `specs/003-ai-investigation/contracts/api.md`, linking `dataset-adapter-agreement-v2.md`, both historical/current snapshot identities and actual implemented read-only composition; preserve old v1 report/schema meanings and distinguish fixture UI from unrun full producer assembly. Check documentation/schema/example consistency without rewriting historical contracts or results. LOW per FR-001–003, FR-028, plan: versioned boundaries (partial).
+
+T099/T100 completion evidence (2026-11-17):
+`evidence/tasks/feature-003-t099-t100-20261117.md`. Intended RED2 failures/14 passes,
+GREEN/refactor16 passes; final frontend193/backend939/typecheck/build/Ruff PASS;
+schema/pin/example/API documentation checks PASS. T094–T098 remain open; no live
+call/evaluation, historical result change or full producer assembly acceptance.
+
+
+## T095 implementation update - 2026-11-17, English v4/v5 candidate
+
+T095 remains unchecked. On feature03-retrieval-v4 from68aa027, implemented opt-in
+runtime English coverage/inflection variants using RED/GREEN; default and old
+config meanings retained. Exposed English development Recall/MRR.75/.75 ->1/1
+with2/2 no-answer maintained. Full backend974 PASS; final16 API/candidate tests
+PASS. See evidence/tasks/feature-003-retrieval-v5-20261117.md. Concrete proposed
+10+20 English reference packet NOT reviewed/frozen/executed; English-count runner
+adaptation and actual fresh acceptance remain. No whole-RAG quality or SC-002 pass,
+merge/commit/push or task closure inferred from small development improvement.
+
+
+## T095 semantic v6 update - 2026-11-17
+
+T095 remains unchecked. Explicit bounded async semantic answerability core and
+reservation adapter implemented through RED/GREEN; authorized30-call gpt-6-luna
+challenge diagnostics achieved1/1 Recall/MRR and15/15 insufficient; no errors/
+retries. See evidence/tasks/feature-003-retrieval-v6-20261117.md. Author-proposed
+labels/tiny corpus are not independent acceptance. Runtime/prompt frozen before
+calls; prior v5 failure preserved; no post-result policy tuning. Full992 backend
+PASS plus final19 focused core/adapter PASS. Existing API/worker NOT switched to
+paid search: budget-aware async integration and cancellation/source pinning remain,
+along with reviewed fresh English acceptance. No merge/commit/push or T095 closure.
+
+
+## T095 integrated runtime + approved automated judge outcome, 2026-11-17
+
+API/worker integration COMPLETE and numeric retrieval gate PASS under user-approved
+blind LLM reference-review method:4/4 calibrations,20 previously unexecuted inputs,
+16answerable+4no-answer, Recall.864583/MRR.9375/all4 no-answer. Exactly44 intents,
+zero retries; failedEN5-020 retained, continuation only10 undispatched rows. Same
+model/context-separated judge is not human/model-independent review. Detailed
+execution and limits: evidence/tasks/feature-003-v6-integration-judge-20261117.md;
+method: retrieval-v6-judge-decision.md. Default mode still opt-in; free GET unchanged.
+Full1008 backend+final34 related tests/193 frontend/typecheck/build/Ruff PASS.
+Post-eval privacy/audit/language corrections offline verified, executed snapshot
+preserved, semantic classifier policy unchanged. No live report-quality/full-data
+acceptance inferred. T095 marker remains unchecked for user's reserved acceptance
+and merge decision; other convergence tasks unchanged. No merge/commit/push.
+
+
+## T095 user review and completion - 2026-11-17
+
+User explicitly stated they reviewed the work and requested checking T095.
+T095 now complete under the approved automated blind-judge retrieval method.
+Evidence: evidence/tasks/feature-003-v6-integration-judge-20261117.md and frozen
+complete evaluation; Recall.864583/MRR.9375,4/4 no-answer,4/4 calibrations, retained
+503failure, offline verifier PASS. No independent-human/model or zero-overfit claim.
+Historical pending notes above describe prior states. Other task markers unchanged.
+This approval is for T095 completion only; no commit/push/merge or further API spend.
+
+## Phase 17: Convergence
+
+2026-11-18 post-T098 assessment: actual bounded20-model-row/full5,078,345-row
+history integration passes; T094–T100 retain their recorded scopes. The following
+are existing pre-release acceptance gaps, not new product scope or permission to
+spend. Prior quality/timing outcomes remain unchanged. No new live budget exists.
+
+- [x] T101 Prepare reviewed fresh report inputs/private references and an explicitly bounded, version-frozen execution path under `specs/003-ai-investigation/report-quality-v4-validation.md`; only after separate explicit provider/judge authorization execute actual six-control calibration (exact6/6), all8 primary reports and the same paired5 secondary reports, then aggregate with `backend/src/fraudlens/investigation/judging_v4.py` and record immutable outputs, usage/failures/disagreements and actual SC-003 results in `evidence/tasks/`. Retain support>=90%, coverage>=80%, >=7/8 pass, zero unsupported critical claims across all8 and no invented no-guidance procedures. Do not replay/regrade old outputs, use fixture calibration as model evidence, tune on unblinded holdout or reuse exhausted budgets. HIGH per SC-003, FR-013–017, FR-025–028, plan: mandatory actual report evaluation (partial).
+- [x] T102 Materialize/review five fresh ordinary cases and20 local search queries under `specs/003-ai-investigation/timing-v1-protocol.md`, freeze actual source/model/corpus/dirty-code/machine/observer identities, and prepare the bounded external POST-to-visible-terminal observer/watchdog; only after separate explicit execution authorization run the frozen batch and assess with `backend/src/fraudlens/investigation/timing_evaluation.py`. Record all5/20 outcomes/errors, >=4/5 useful results<=90s, all5 visibly terminal<=120s and search p95<=2s in `evidence/tasks/`, preserving old2/5/outlier failures. No cached/scripted/three-case replacement, old batch replay or automatic provider spend; proposed40-request timing cap is not approved. HIGH per SC-006, FR-018–021, FR-028, plan: measured demonstration (partial).
+
+### Authorized v8 cycle update, 2026-11-18
+
+User approved v8/reportv5 and153new/279total. Transferred5 T098 stores match
+original hashes; no re-import. Fresh4-case development executed24HTTP200,
+3valid drafts/1incomplete max_output_tokens. Session150/279. Development gate
+FAILED; no retrieval/heldout/judging started. T101/T102 remain unchecked.
+Source-minute wording conflict also recorded; no post-result correction/regrading.
+Next-cycle decision required under approved stop rule; do not spend remaining129
+automatically. Evidence: `evidence/tasks/feature-003-v8-development-20261118.md`.
+
+### Authorized generator correction, 2026-11-18
+
+Explicit reportv6/8192 output profile and deterministic history-minute evidence
+bounds implemented/tested.7new/74related/full1157PASS, zero API calls. Defaults
+and previous failed outputs unchanged; T101/T102 stay OPEN. Exact72old execution
+source files archived/hash-verified. Current source hashes versioned separately.
+Evidence: `evidence/tasks/feature-003-report-v6-output-bounds-20261118.md`.
+Next paid cycle remains separately gated; actual150/279 retained.
+
+Report v6 cycle, 2026-11-18. The user approved 303 total requests. Development
+2/4 valid, one unknown timeout and one unstarted. 18 new intents, 168/303 overall.
+The failed gate prevented retrieval and final evaluation. T101/T102 stay open.
+Evidence: `evidence/tasks/feature-003-report-v6-development-20261118.md`.
+
+T102 actual completion in the frozen report v6 grouped-tool cohort: 5/5 useful
+within90s, 5/5 terminal within120s, local search p95 4.498ms on20 queries.
+T101 remains open at4/8 final quality versus7/8 required. Current 300/303.
+Offline successor prepared after packet/typed-wire fixes, pending ceiling361
+and fresh exact6/6 calibration. See `evidence/tasks/feature-003-report-v6-latency-recovery-20261118.md`.
+
+T101 actual completion, 2026-11-18: fresh sections-profile cohort passed SC-003
+8/8 with exact6/6 calibration, all13 isolated ratings, zero critical flags, invalid
+ratings or unresolved disagreements. T102 completion remains recorded above.
+Final ledger total419/433. See `evidence/tasks/feature-003-t101-final-20261118.md`.

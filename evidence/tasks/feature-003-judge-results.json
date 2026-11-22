@@ -1,0 +1,542 @@
+{
+  "evaluation_kind": "automated_llm_as_judge_post_hoc",
+  "human_validation": false,
+  "report_count": 8,
+  "failed_reports": 6,
+  "passing_reports": 0,
+  "quality_pass": false,
+  "reports": [
+    {
+      "id": "INV-H01",
+      "failed": true,
+      "support_rate": null,
+      "essential_coverage": null,
+      "passed": false,
+      "factual_count": 0,
+      "essential_count": 0
+    },
+    {
+      "id": "INV-H02",
+      "failed": false,
+      "support_rate": 1.0,
+      "essential_coverage": 0.8461538461538461,
+      "passed": false,
+      "critical_error": false,
+      "missingness_correct": false,
+      "additional_issues": [
+        "The limitation stating that a procedure search returned no results (and the corresponding no-procedure recommendation claim) is not substantiated by any supplied procedure-search evidence."
+      ],
+      "factual_count": 4,
+      "essential_count": 13,
+      "procedural_count": 0,
+      "applicable_count": 0
+    },
+    {
+      "id": "INV-H03",
+      "failed": true,
+      "support_rate": null,
+      "essential_coverage": null,
+      "passed": false,
+      "factual_count": 0,
+      "essential_count": 0
+    },
+    {
+      "id": "INV-H04",
+      "failed": true,
+      "support_rate": null,
+      "essential_coverage": null,
+      "passed": false,
+      "factual_count": 0,
+      "essential_count": 0
+    },
+    {
+      "id": "INV-H05",
+      "failed": false,
+      "support_rate": 1.0,
+      "essential_coverage": 0.6666666666666666,
+      "passed": false,
+      "critical_error": false,
+      "missingness_correct": false,
+      "additional_issues": [],
+      "factual_count": 5,
+      "essential_count": 9,
+      "procedural_count": 0,
+      "applicable_count": 0
+    },
+    {
+      "id": "INV-H06",
+      "failed": true,
+      "support_rate": null,
+      "essential_coverage": null,
+      "passed": false,
+      "factual_count": 0,
+      "essential_count": 0
+    },
+    {
+      "id": "INV-H07",
+      "failed": true,
+      "support_rate": null,
+      "essential_coverage": null,
+      "passed": false,
+      "factual_count": 0,
+      "essential_count": 0
+    },
+    {
+      "id": "INV-H08",
+      "failed": true,
+      "support_rate": null,
+      "essential_coverage": null,
+      "passed": false,
+      "factual_count": 0,
+      "essential_count": 0
+    }
+  ],
+  "disagreements": [
+    {
+      "id": "INV-H02",
+      "unit_id": null,
+      "originals": [
+        {
+          "additional_issues": [
+            "The limitation stating that a procedure search returned no results (and the corresponding no-procedure recommendation claim) is not substantiated by any supplied procedure-search evidence."
+          ],
+          "critical_error": false,
+          "missingness_correct": false,
+          "missingness_reason": "The listed gaps about occupation, source of funds, device evidence, and unavailable account history are disclosed, and no laundering finding is made. However, the predeclared limitation that the evaluation is not an actual producer/model observation is not stated explicitly; nor does the draft explicitly preserve human final decision-making and state that there is no automatic intervention or submission.",
+          "units": [
+            {
+              "critical_error": false,
+              "judgment": "supported",
+              "reason": "/observed_facts/0 matches the assessment’s full coverage window and distinguishes it from both account-history views, which are unavailable and return zero events (ev_303f3adb1f9f41e19a189036c18e8a40; ev_109ed06f6b824045ae32d00df1b7fea9; ev_dd66e50e5af04f588f480250c8c5bfb2).",
+              "unit_id": "fd7f46228ac1a3f404dfb1fd"
+            },
+            {
+              "critical_error": false,
+              "judgment": "supported",
+              "reason": "/risk_indicators/0 accurately reports both increasing rule conditions and observed counts of 3, while noting history cannot be independently verified (ev_303f3adb1f9f41e19a189036c18e8a40; ev_109ed06f6b824045ae32d00df1b7fea9; ev_dd66e50e5af04f588f480250c8c5bfb2).",
+              "unit_id": "22988d7ff78d052722c43ef5"
+            },
+            {
+              "critical_error": false,
+              "judgment": "supported",
+              "reason": "/summary/0 preserves the synthetic-benchmark framing, both directional amounts and currencies, raw time, and explicit assumed-UTC interpretation (ev_303f3adb1f9f41e19a189036c18e8a40).",
+              "unit_id": "c943abb61edfcd5dd1dd7ebe"
+            },
+            {
+              "critical_error": false,
+              "judgment": "supported",
+              "reason": "/summary/1 accurately states score 0.65, rule provenance, ordinal/non-probability meaning, available complete explanation, scale, base/remainder, and both contributions and observed counts (ev_303f3adb1f9f41e19a189036c18e8a40).",
+              "unit_id": "19c5953abb46ad778282f58b"
+            },
+            {
+              "critical_error": false,
+              "judgment": "missing",
+              "reason": "The report does not state the selected case ID C419b117958dca71a69e12a3169e56623 in its draft.",
+              "unit_id": "0aa2f1dfb3459b9eb2d00a78"
+            },
+            {
+              "critical_error": false,
+              "judgment": "missing",
+              "reason": "The report does not state transaction ID D28c2b283d1eb62e79a6d473c1f04e684 in its draft.",
+              "unit_id": "2b37bbde27d62d45d35bb5b8"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/1 explicitly reports 0.65 and says it is not a calibrated probability or ML prediction.",
+              "unit_id": "aa1783d8284135f15ebe65a4"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/1 explicitly identifies the score as originating from rules.",
+              "unit_id": "e2feb9ab1c7f84c7e97f78c9"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/observed_facts/0 and /limitations/3 explicitly say separate account histories are unavailable, not independently verifiable.",
+              "unit_id": "67a4fd3c433e48878fe29452"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/0 preserves the paid amount as 1250.000.",
+              "unit_id": "ee44eb15148677dbb1a3b7bf"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/0 preserves the paid currency as Australian Dollar.",
+              "unit_id": "731aae7d9bece69873ea1075"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/0 preserves the received amount as 1250.000.",
+              "unit_id": "f72f7719f0fd8d2ff28e88d3"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/0 preserves the received currency as Australian Dollar.",
+              "unit_id": "00dec82bf10a0429b336d00b"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/0 preserves the raw time 2026/01/01 10:00.",
+              "unit_id": "0613dd12650ee48f2b27d5f8"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/0 explicitly presents UTC as an assumption and gives the corresponding synthetic UTC time.",
+              "unit_id": "343e1b3bfc7e7895ebea5de1"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/1 identifies an ordinal rule score and rejects interpreting it as a calibrated probability.",
+              "unit_id": "9e312d420653a5bd063728cb"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "/summary/1 states the explanation is available and complete.",
+              "unit_id": "d333d5b9074f124976590341"
+            }
+          ]
+        },
+        {
+          "additional_issues": [],
+          "critical_error": false,
+          "missingness_correct": false,
+          "missingness_reason": "Occupation, device, source of funds, account-history unavailability, and the absence of a client finding are disclosed. However, the predeclared limitation that a human analyst retains the final decision and that there is no automatic intervention or submission is not explicitly stated.",
+          "units": [
+            {
+              "critical_error": false,
+              "judgment": "supported",
+              "reason": "The report distinguishes assessment coverage and its UTC window from both unavailable account-history views with zero returned events; it does not treat them as independent history evidence (/observed_facts/0; ev_303f3adb1f9f41e19a189036c18e8a40, ev_109ed06f6b824045ae32d00df1b7fea9, ev_dd66e50e5af04f588f480250c8c5bfb2).",
+              "unit_id": "fd7f46228ac1a3f404dfb1fd"
+            },
+            {
+              "critical_error": false,
+              "judgment": "supported",
+              "reason": "The report accurately describes both rule conditions as increasing the score and notes that the account-history claims are not independently confirmed; observed values are 3 for each (/risk_indicators/0; ev_303f3adb1f9f41e19a189036c18e8a40).",
+              "unit_id": "22988d7ff78d052722c43ef5"
+            },
+            {
+              "critical_error": false,
+              "judgment": "supported",
+              "reason": "Synthetic-benchmark qualification, both directional amounts and currencies, raw time, and explicit assumed-UTC time are accurately reported (/summary/0; ev_303f3adb1f9f41e19a189036c18e8a40).",
+              "unit_id": "c943abb61edfcd5dd1dd7ebe"
+            },
+            {
+              "critical_error": false,
+              "judgment": "supported",
+              "reason": "The report preserves score 0.65, rule provenance, ordinal/un-calibrated meaning, explanation availability/completeness, scale, base, remainder, and both contributions and observed values (/summary/1; ev_303f3adb1f9f41e19a189036c18e8a40).",
+              "unit_id": "19c5953abb46ad778282f58b"
+            },
+            {
+              "critical_error": false,
+              "judgment": "missing",
+              "reason": "The draft does not state the selected case ID C419b117958dca71a69e12a3169e56623; evidence references are not a substitute for the ID.",
+              "unit_id": "0aa2f1dfb3459b9eb2d00a78"
+            },
+            {
+              "critical_error": false,
+              "judgment": "missing",
+              "reason": "The draft does not state transaction ID D28c2b283d1eb62e79a6d473c1f04e684.",
+              "unit_id": "2b37bbde27d62d45d35bb5b8"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "The score is explicitly reported as 0.65 and is not characterized as guilt or probability (/summary/1).",
+              "unit_id": "aa1783d8284135f15ebe65a4"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "Rule provenance is explicitly stated (/summary/1).",
+              "unit_id": "e2feb9ab1c7f84c7e97f78c9"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "The report explicitly says both account-history views are unavailable and distinguishes that from the assessment's coverage (/observed_facts/0; limitations).",
+              "unit_id": "67a4fd3c433e48878fe29452"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "The paid amount is stated exactly as 1250.000 (/summary/0).",
+              "unit_id": "ee44eb15148677dbb1a3b7bf"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "Paid currency is stated as Australian Dollar (/summary/0).",
+              "unit_id": "731aae7d9bece69873ea1075"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "The received amount is stated exactly as 1250.000 (/summary/0).",
+              "unit_id": "f72f7719f0fd8d2ff28e88d3"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "Received currency is stated as Australian Dollar (/summary/0).",
+              "unit_id": "00dec82bf10a0429b336d00b"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "The raw minute timestamp 2026/01/01 10:00 is preserved (/summary/0; limitations).",
+              "unit_id": "0613dd12650ee48f2b27d5f8"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "UTC is explicitly presented as an assumption for the synthetic benchmark, not as a confirmed time basis (/summary/0; limitations).",
+              "unit_id": "343e1b3bfc7e7895ebea5de1"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "The score is identified as ordinal and rule-based, and distinguished from a calibrated probability (/summary/1; limitations).",
+              "unit_id": "9e312d420653a5bd063728cb"
+            },
+            {
+              "critical_error": false,
+              "judgment": "present",
+              "reason": "The explanation is explicitly described as available and complete (/summary/1; ev_303f3adb1f9f41e19a189036c18e8a40).",
+              "unit_id": "d333d5b9074f124976590341"
+            }
+          ]
+        }
+      ],
+      "resolution": "conservative report flags",
+      "unresolved": true
+    }
+  ],
+  "protocol": "report-judging-v2",
+  "post_hoc": true,
+  "judge_transport_attempts": 3,
+  "judged_outputs": [
+    {
+      "file": "primary-INV-H02.json",
+      "sha256": "ce7f908ec7a3c23502485ed041553210f2fc519b22f2204813eb2be58b255575",
+      "role": "primary",
+      "scenario_id": "INV-H02",
+      "model": "gpt-6-luna"
+    },
+    {
+      "file": "primary-INV-H05.json",
+      "sha256": "a9d4e060333e67ab3bc7144b111cf09bc9c0d9514230023df2a001b2556913e7",
+      "role": "primary",
+      "scenario_id": "INV-H05",
+      "model": "gpt-6-luna"
+    },
+    {
+      "file": "secondary-INV-H02.json",
+      "sha256": "546f9609917f5c5caa398b795f8d4554de5146b0d763a15e428aeadf393d37cc",
+      "role": "secondary",
+      "scenario_id": "INV-H02",
+      "model": "gpt-6-luna"
+    }
+  ],
+  "known_judge_usage": {
+    "input_tokens": 25159,
+    "output_tokens": 5923,
+    "total_tokens": 31082
+  },
+  "judge_dispatches_without_usage": 0,
+  "spend": null,
+  "citations": {
+    "resolved": 6,
+    "count": 6,
+    "rate": 1.0,
+    "meaning": "Exact saved evidence identity; semantic support is separately graded"
+  },
+  "retrieval": {
+    "baseline": {
+      "held_out": {
+        "en": {
+          "answerable_count": 8,
+          "correct_no_match": 2,
+          "false_answer": 0,
+          "mrr_at_5": 1.0,
+          "no_answer_count": 2,
+          "recall_at_5": 1.0
+        },
+        "overall": {
+          "answerable_count": 16,
+          "correct_no_match": 4,
+          "false_answer": 0,
+          "mrr_at_5": 0.5,
+          "no_answer_count": 4,
+          "recall_at_5": 0.5
+        },
+        "sr-Cyrl": {
+          "answerable_count": 2,
+          "correct_no_match": 1,
+          "false_answer": 0,
+          "mrr_at_5": 0.0,
+          "no_answer_count": 1,
+          "recall_at_5": 0.0
+        },
+        "sr-Latn": {
+          "answerable_count": 6,
+          "correct_no_match": 1,
+          "false_answer": 0,
+          "mrr_at_5": 0.0,
+          "no_answer_count": 1,
+          "recall_at_5": 0.0
+        }
+      },
+      "file_sha256": "8c1af8a766381b92faf2587b2d5f8aef41bc95799810a3e01a18698802a0f716"
+    },
+    "improved": {
+      "held_out": {
+        "en": {
+          "answerable_count": 8,
+          "correct_no_match": 2,
+          "false_answer": 0,
+          "mrr_at_5": 1.0,
+          "no_answer_count": 2,
+          "recall_at_5": 1.0
+        },
+        "overall": {
+          "answerable_count": 16,
+          "correct_no_match": 4,
+          "false_answer": 0,
+          "mrr_at_5": 0.5,
+          "no_answer_count": 4,
+          "recall_at_5": 0.5
+        },
+        "sr-Cyrl": {
+          "answerable_count": 2,
+          "correct_no_match": 1,
+          "false_answer": 0,
+          "mrr_at_5": 0.0,
+          "no_answer_count": 1,
+          "recall_at_5": 0.0
+        },
+        "sr-Latn": {
+          "answerable_count": 6,
+          "correct_no_match": 1,
+          "false_answer": 0,
+          "mrr_at_5": 0.0,
+          "no_answer_count": 1,
+          "recall_at_5": 0.0
+        }
+      },
+      "file_sha256": "8c1af8a766381b92faf2587b2d5f8aef41bc95799810a3e01a18698802a0f716"
+    }
+  },
+  "live_generation_summary_sha256": "5d1940e2b6eb416843278fbaa313ddec00c1e6dcdb03f947e0bc30718444f87c",
+  "live_generation_performance": {
+    "count": 5,
+    "rows": [
+      {
+        "id": "INV-D01",
+        "attempt_id": "att_4e17edd2a509417fa173d2aa7b8b9138",
+        "state": "needs_information",
+        "report_id": "a4a38ac08c6364d972ae174915525e345f4b7ea376f28f7fe2906713e080a89d",
+        "seconds": 30.36544590000085,
+        "failure": null,
+        "budget": {
+          "deadline": "2026-11-15T14:08:04.816128Z",
+          "provider_requests": 7,
+          "repairs": 0,
+          "tool_calls": 6,
+          "transient_retries": 0
+        }
+      },
+      {
+        "id": "INV-D02",
+        "attempt_id": "att_3362125850ed4ca5ae8b4c1f7f30a136",
+        "state": "failed",
+        "report_id": null,
+        "seconds": 7496.290298100001,
+        "failure": {
+          "code": "budget_exhausted",
+          "message": "Investigation ended with a controlled limitation or failure.",
+          "outcome_unknown": true
+        },
+        "budget": {
+          "deadline": "2026-11-15T14:08:35.205247Z",
+          "provider_requests": 6,
+          "repairs": 0,
+          "tool_calls": 5,
+          "transient_retries": 0
+        }
+      },
+      {
+        "id": "INV-D03",
+        "attempt_id": "att_176ccb199e354d02b1fe4a3bf9f75a71",
+        "state": "failed",
+        "report_id": null,
+        "seconds": 41.68632559999969,
+        "failure": {
+          "code": "budget_exhausted",
+          "message": "Investigation ended with a controlled limitation or failure.",
+          "outcome_unknown": false
+        },
+        "budget": {
+          "deadline": "2026-11-15T16:13:25.428767Z",
+          "provider_requests": 8,
+          "repairs": 1,
+          "tool_calls": 7,
+          "transient_retries": 0
+        }
+      },
+      {
+        "id": "INV-H01",
+        "attempt_id": "att_050958876cce45538aef0367b7608110",
+        "state": "needs_information",
+        "report_id": "a5a4d9d9f81357221bc2392b76f2d288a209a8fd7c58b0d552a78f1038f165d2",
+        "seconds": 25.47902310000063,
+        "failure": null,
+        "budget": {
+          "deadline": "2026-11-15T16:14:07.059620Z",
+          "provider_requests": 6,
+          "repairs": 0,
+          "tool_calls": 5,
+          "transient_retries": 0
+        }
+      },
+      {
+        "id": "INV-H05",
+        "attempt_id": "att_c9e661cf1bb34f1d90027ab856d2c2fd",
+        "state": "failed",
+        "report_id": null,
+        "seconds": 44.78607810000176,
+        "failure": {
+          "code": "output_invalid",
+          "message": "Investigation ended with a controlled limitation or failure.",
+          "outcome_unknown": false
+        },
+        "budget": {
+          "deadline": "2026-11-15T16:14:32.543031Z",
+          "provider_requests": 6,
+          "repairs": 1,
+          "tool_calls": 4,
+          "transient_retries": 0
+        }
+      }
+    ],
+    "validated_or_needs_information": 2,
+    "failures": 3,
+    "successful_within_90": 2,
+    "all_terminal_within_120": false
+  },
+  "preserved_live_outcomes": 13,
+  "no_generation_rerun": true,
+  "no_holdout_tuning": true,
+  "status": "completed_automated_post_hoc_quality_failed"
+}

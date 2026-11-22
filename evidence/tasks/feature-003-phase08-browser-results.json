@@ -1,0 +1,64 @@
+{
+  "mode": "Automated local browser/process regression, no human review or real provider calls",
+  "status": "PASS",
+  "real_provider_calls": 0,
+  "results": [
+    {
+      "source": "feature-003-knowledge-smoke.mjs",
+      "source_sha256": "1331a87556acf7bdd270dc3f7af10bc65339ccae18272dfe93a8b53e78220f84",
+      "generated_sha256": "ff11e5bfd75e5c6b1de0bce4d6fe6a83aabb529f961efac31c9e9d088aa587e5",
+      "command": [
+        "node",
+        "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-4aa682f4cef143828d971a2c1aa28749\\feature-003-knowledge-smoke.mjs",
+        "--reviewed"
+      ],
+      "exit_code": 0,
+      "result": "feature-003-phase08-knowledge-results.json",
+      "status": "PASS",
+      "checks": 10,
+      "log": "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-4aa682f4cef143828d971a2c1aa28749\\knowledge.log"
+    },
+    {
+      "source": "feature-003-t057-review-browser.mjs",
+      "source_sha256": "622ea98c7fc7eac7d5b7a9774938b964b1216c3f8e9433dac9d6566e5ff92754",
+      "generated_sha256": "1c8badd808e9eee45989e84c375efbf62af5415d516ecbc8a7fd77e14808e7bf",
+      "command": [
+        "node",
+        "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-4aa682f4cef143828d971a2c1aa28749\\feature-003-t057-review-browser.mjs"
+      ],
+      "exit_code": 0,
+      "result": "feature-003-phase08-review-results.json",
+      "status": "PASS",
+      "checks": 9,
+      "log": "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-4aa682f4cef143828d971a2c1aa28749\\review.log"
+    },
+    {
+      "source": "feature-003-t057-recovery-browser.mjs",
+      "source_sha256": "504bd87f07b31c822438cecf262ec05789bdeddbc0ec1108751865cc23fbe947",
+      "generated_sha256": "4128160cf27e15700600a26f9697817f1eb886b19b2758345e52a53bc3c1075e",
+      "command": [
+        "node",
+        "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-4aa682f4cef143828d971a2c1aa28749\\feature-003-t057-recovery-browser.mjs"
+      ],
+      "exit_code": 0,
+      "result": "feature-003-phase08-recovery-results.json",
+      "status": "PASS",
+      "checks": 10,
+      "log": "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-4aa682f4cef143828d971a2c1aa28749\\recovery.log"
+    },
+    {
+      "source": "feature-003-t057-process.py",
+      "source_sha256": "bc0bd340b03a6d869ccbbdc0619045c66d63d1be5b159c3018e1a5ef139ffda6",
+      "generated_sha256": "b03f3ee99ec97fadbb0bf372786432476ced05c2aafec6089c4f501418450dd7",
+      "command": [
+        "D:\\AIBootcamp\\capstone\\.venv\\Scripts\\python.exe",
+        "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-4aa682f4cef143828d971a2c1aa28749\\feature-003-t057-process.py"
+      ],
+      "exit_code": 0,
+      "result": "feature-003-phase08-process-results.json",
+      "status": "PASS",
+      "checks": 6,
+      "log": "D:\\AIBootcamp\\capstone\\.cache\\phase08-browser-4aa682f4cef143828d971a2c1aa28749\\process.log"
+    }
+  ]
+}

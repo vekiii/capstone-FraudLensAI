@@ -1,0 +1,505 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "ready_for_review",
+        "needs_information"
+      ]
+    },
+    "summary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "observation",
+              "hypothesis",
+              "procedure"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^ev_[0-9a-f]{32}$"
+            },
+            "maxItems": 20,
+            "minItems": 1
+          },
+          "exact_assertions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "path",
+                "value"
+              ]
+            },
+            "maxItems": 20
+          },
+          "quotes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "text"
+              ]
+            },
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "text",
+          "kind",
+          "evidence_refs",
+          "exact_assertions",
+          "quotes"
+        ]
+      },
+      "maxItems": 20
+    },
+    "observed_facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "observation",
+              "hypothesis",
+              "procedure"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^ev_[0-9a-f]{32}$"
+            },
+            "maxItems": 20,
+            "minItems": 1
+          },
+          "exact_assertions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "path",
+                "value"
+              ]
+            },
+            "maxItems": 20
+          },
+          "quotes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "text"
+              ]
+            },
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "text",
+          "kind",
+          "evidence_refs",
+          "exact_assertions",
+          "quotes"
+        ]
+      },
+      "maxItems": 20
+    },
+    "risk_indicators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "observation",
+              "hypothesis",
+              "procedure"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^ev_[0-9a-f]{32}$"
+            },
+            "maxItems": 20,
+            "minItems": 1
+          },
+          "exact_assertions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "path",
+                "value"
+              ]
+            },
+            "maxItems": 20
+          },
+          "quotes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "text"
+              ]
+            },
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "text",
+          "kind",
+          "evidence_refs",
+          "exact_assertions",
+          "quotes"
+        ]
+      },
+      "maxItems": 20
+    },
+    "alternative_explanations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "observation",
+              "hypothesis",
+              "procedure"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^ev_[0-9a-f]{32}$"
+            },
+            "maxItems": 20,
+            "minItems": 1
+          },
+          "exact_assertions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "path",
+                "value"
+              ]
+            },
+            "maxItems": 20
+          },
+          "quotes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "text"
+              ]
+            },
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "text",
+          "kind",
+          "evidence_refs",
+          "exact_assertions",
+          "quotes"
+        ]
+      },
+      "maxItems": 20
+    },
+    "missing_information": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "maxItems": 20
+    },
+    "recommended_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "observation",
+              "hypothesis",
+              "procedure"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^ev_[0-9a-f]{32}$"
+            },
+            "maxItems": 20,
+            "minItems": 1
+          },
+          "exact_assertions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "path",
+                "value"
+              ]
+            },
+            "maxItems": 20
+          },
+          "quotes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "pattern": "^ev_[0-9a-f]{32}$"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2400
+                }
+              },
+              "required": [
+                "evidence_ref",
+                "text"
+              ]
+            },
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "text",
+          "kind",
+          "evidence_refs",
+          "exact_assertions",
+          "quotes"
+        ]
+      },
+      "maxItems": 20
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "maxItems": 20
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ev_[0-9a-f]{32}$"
+      },
+      "maxItems": 100
+    }
+  },
+  "required": [
+    "outcome",
+    "summary",
+    "observed_facts",
+    "risk_indicators",
+    "alternative_explanations",
+    "missing_information",
+    "recommended_checks",
+    "limitations",
+    "citations"
+  ]
+}

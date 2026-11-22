@@ -1,0 +1,142 @@
+{
+  "mode": "Phase 4 automated headless Chrome/API/proxy/worker; reviewed corpus; authored TEST provider, no live quality claim",
+  "work": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-smoke-dad8399b-217c-479d-b0b4-5093f30fc839",
+  "checks": [
+    {
+      "name": "Opening report panel reads only; no automatic enqueue",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Explicit browser start -> proxy/API queued attempt; no dispatch",
+      "detail": "att_52891d86028d492d81203fc539b3ff98",
+      "status": "PASS"
+    },
+    {
+      "name": "Actual separate worker executes three tools and persists validated report",
+      "detail": {
+        "provider_requests": 4,
+        "tool_calls": 3,
+        "repairs": 0,
+        "transient_retries": 0,
+        "deadline": "2026-11-14T23:02:01.009219Z"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "API exact bound facts/history/procedure; browser inspects exact cited text and provenance",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Browser reload opens saved report with zero new provider requests",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Invalid citation: one repair then controlled failed state, no report",
+      "detail": "att_880bacc6bee24af6b9ea715a6cbf8dae",
+      "status": "PASS"
+    },
+    {
+      "name": "Actual no-match/missing-information report visible for a separate case",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Original three-case list/detail/back and API/proxy 404/422; feature off, no corpus/key/model",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "No uncaught browser exceptions",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_52891d86028d492d81203fc539b3ff98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_52891d86028d492d81203fc539b3ff98/evidence/ev_d721382b712c4d32a46a87025cfece1c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_52891d86028d492d81203fc539b3ff98/evidence/ev_e0d3a73dd5af4b84a0330048757d945e",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_880bacc6bee24af6b9ea715a6cbf8dae",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-002",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_a97b3f51266d4462b13d5663b4c1bd4f",
+      "status": 200
+    }
+  ],
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "retrieval_version": "071f1a593fa17471295860bb5abc3a0064261a7e159bdf3d530494881001bccb",
+  "chrome_stderr": "\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/daf19192-6f0c-4b30-a2f4-6c7dba17bcdd\r\n",
+  "browser": "Chrome/157.0.8103.52",
+  "attempt_id": "att_52891d86028d492d81203fc539b3ff98",
+  "trace": [
+    {
+      "sequence": 1,
+      "name": "get_case_facts",
+      "status": "completed",
+      "elapsed_ms": 2,
+      "evidence_refs": [
+        "ev_d721382b712c4d32a46a87025cfece1c"
+      ]
+    },
+    {
+      "sequence": 2,
+      "name": "get_account_history",
+      "status": "completed",
+      "elapsed_ms": 2,
+      "evidence_refs": [
+        "ev_66592e26400c462ba8294d67e0cd3a88"
+      ]
+    },
+    {
+      "sequence": 3,
+      "name": "search_procedures",
+      "status": "completed",
+      "elapsed_ms": 4,
+      "evidence_refs": [
+        "ev_e0d3a73dd5af4b84a0330048757d945e",
+        "ev_a360a48a8f7d452bbcd6cd1915169617",
+        "ev_c96f9e0bcf5d46bcb4e71c143e0c0840"
+      ]
+    }
+  ],
+  "status": "PASS",
+  "owned_process_cleanup": "PASS"
+}

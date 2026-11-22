@@ -1,0 +1,158 @@
+{
+  "status": "PASS",
+  "kind": "development_v8_audit_not_release_acceptance",
+  "summary": {
+    "all_terminal_within_120": true,
+    "calibration": {
+      "cases": [
+        {
+          "matched": true,
+          "scenario_id": "CAL8-A"
+        },
+        {
+          "matched": false,
+          "scenario_id": "CAL8-B"
+        },
+        {
+          "matched": true,
+          "scenario_id": "CAL8-C"
+        }
+      ],
+      "passed": false
+    },
+    "controlled_repair": {
+      "excluded_from_primary_quality": true,
+      "id": "DEV8-783",
+      "injected": true,
+      "injection_kind": "application_candidate_fault",
+      "intended_rejection_observed": true,
+      "mechanism_pass": true,
+      "natural_model_error_claimed": false,
+      "repair_request_bytes": [
+        35580
+      ],
+      "repair_transport_attempts": 1,
+      "subsequent_real_llm_report_valid": true
+    },
+    "controlled_report_quality_pass": null,
+    "controlled_report_raw_rating": {
+      "additional_issues": [],
+      "applicable_count": 2,
+      "critical_error": false,
+      "essential_count": 7,
+      "essential_coverage": 1.0,
+      "factual_count": 3,
+      "failed": false,
+      "id": "DEV8-783",
+      "missingness_correct": true,
+      "passed": true,
+      "procedural_count": 2,
+      "support_rate": 1.0
+    },
+    "freeze_sha256": "653cbf176401256b4a5c9c5492663f112064f24da0f05cad61a0dac4c9d28e07",
+    "human_validation": false,
+    "judge_status": "calibration_failed_or_unavailable",
+    "judged_reports": [
+      {
+        "additional_issues": [],
+        "applicable_count": 1,
+        "critical_error": false,
+        "essential_count": 11,
+        "essential_coverage": 1.0,
+        "factual_count": 3,
+        "failed": false,
+        "id": "DEV8-781",
+        "missingness_correct": true,
+        "passed": true,
+        "procedural_count": 1,
+        "support_rate": 1.0
+      },
+      {
+        "additional_issues": [],
+        "applicable_count": 0,
+        "critical_error": false,
+        "essential_count": 8,
+        "essential_coverage": 1.0,
+        "factual_count": 3,
+        "failed": false,
+        "id": "DEV8-782",
+        "missingness_correct": true,
+        "passed": true,
+        "procedural_count": 0,
+        "support_rate": 1.0
+      }
+    ],
+    "kind": "two_ordinary_reports_plus_separate_controlled_repair",
+    "known_usage": {
+      "input_tokens": 86241,
+      "output_tokens": 15376,
+      "total_tokens": 101617
+    },
+    "maximum_transport_attempts": 25,
+    "model": "gpt-6-luna",
+    "not_executed_ids": [],
+    "old_release_targets_unchanged": true,
+    "ordinary_case_count": 2,
+    "ordinary_successful_within_90": 2,
+    "passing_development_reports": null,
+    "quality_assessment_valid": false,
+    "raw_passing_development_reports": 2,
+    "rows": [
+      {
+        "failure": null,
+        "id": "DEV8-781",
+        "provider_requests": 6,
+        "repairs": 1,
+        "seconds": 46.789,
+        "state": "ready_for_review",
+        "tool_calls": 4
+      },
+      {
+        "failure": null,
+        "id": "DEV8-782",
+        "provider_requests": 5,
+        "repairs": 0,
+        "seconds": 26.687,
+        "state": "needs_information",
+        "tool_calls": 4
+      },
+      {
+        "failure": null,
+        "id": "DEV8-783",
+        "provider_requests": 6,
+        "repairs": 1,
+        "seconds": 38.841,
+        "state": "needs_information",
+        "tool_calls": 4
+      }
+    ],
+    "spend": null,
+    "stopped_for": null,
+    "successful_within_90": 3,
+    "transient_retries": {
+      "DEV8-781": 0,
+      "DEV8-782": 0,
+      "DEV8-783": 0
+    },
+    "transport_attempts": 18,
+    "unknown_usage_attempts": 0
+  },
+  "cited_ids_resolved": 13,
+  "prior_artifacts_preserved": true,
+  "runtime_unchanged": true,
+  "http_status_counts": {
+    "200": 18
+  },
+  "artifact_sha256": {
+    "controlled-fault.json": "8e0e9afa213670ff8ec2b9d3dcec368b52bd42c58e200555f4062f6604dda905",
+    "DEV8-781.json": "d88c04f097e18d58b3db9482bbf340e9d0d413cfa063e5c4701a99edcfbf71f2",
+    "DEV8-782.json": "09a608a6375d47f080d86e409c23af9af6becee19f13072db17f6a4502f9b5a2",
+    "DEV8-783.json": "876bfe5770ce39089527947c84c2a4bce0cf0694fa1c796d7a3d0288f9c060b6",
+    "freeze.json": "3e3070ff947dbc787af1fd57418d2518148b5303ccf3a06f6fb97c0704c249e3",
+    "judge-packets.json": "2b6a5050c4ca40e17909c4a0cc5e62c48ee418df153e0b592b35f78fc333fa90",
+    "judge-response.json": "6a684fc0bdf97d77c77cfac9bad1c4e2a50e1b9ba241b8a7923a07abf3870710",
+    "judge-result.json": "b2742354a2bf83c411d4087580e7d5f99ed8cb6ebfc5f373325552d8245e4db1",
+    "summary.json": "0a9aaf54abd0fc9e1e2492d4947c79063b80bc05136b3a727cf9a6fb9fc4f438",
+    "transport-ledger.json": "869b7dc7b55add5ee48bbfceb57a9f2374296966851aa526ca04d2ad889fb12f"
+  }
+}

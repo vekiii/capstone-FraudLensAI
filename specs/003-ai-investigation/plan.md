@@ -1,0 +1,190 @@
+# Implementation Plan: Evidence-backed AI Investigation
+
+Authorized2026-11-18: [reportv6 output/bounds correction](report-v6-output-bounds.md),
+explicit8192-output profile and code-computed exclusive history-minute bounds.
+Offline implementation only; no new live acceptance or default activation.
+
+2026-11-18 actual RUN3 addendum: v7/request45 completed, qualified calibration6/6,
+report quality1/8 and useful timing3/5 FAIL. Originals preserved. An explicit v8
+source-map/reportv5 candidate is offline implemented/tested (1150backend PASS),
+defaults/contracts unchanged; no live acceptance or automatic activation. New
+versions/source review and bounded execution decision remain pending in
+[the continuation proposal](t101-t102-source-map-v8-proposal-20261118.md).
+T101/T102 remain open; no new task or relaxed requirement.
+
+2026-11-18 T101/T102 reviewed corrective implementation: preserve default semantic
+v6/policy identity; explicit private semantic_profile=v7 strengthens output format
+instructions only. Strict unique-ID/verbatim-citation checks unchanged. Actual
+original calibration2/6/timing2/5 retained; reviewed controls-v2 calibrated exact6/6.
+User accepted a separately bound45s drafting cap for new v7 attempts after repeated
+30s report timeouts. Legacy/default30, semantic30, useful90/total120 remain.
+Fresh shared8/5 RUN3 cohort and fixed paired-five roles reduce duplicate generation
+inside155 total; no independent-sample claim. No new tasks or marker changes.
+Actual new quality/performance acceptance is still pending in next_work/evidence.
+
+2026-11-18 T098: [optional consumer history index](history-index-v1.md) addresses
+the demonstrated five-second scan interruption on actual partial IBM data.
+Explicit offline preparation and hash-pinned read-only activation preserve producer
+files/schema, original history semantics/deadlines and historical context contracts.
+Actual completed-source/API/worker validation remains required; no live quality claim.
+
+2026-11-17 T097: [timing-v1 protocol](timing-v1-protocol.md) reconciles original
+failed five-case worker timings with current deadline/cleanup guards and defines
+fresh external visible-terminal measurement. Separate offline timing_evaluation
+arithmetic and regression checks do not execute/accept a new live performance run.
+
+2026-11-17 T094/T096 addendum: user accepted the corrected
+[successor rubric](report-quality-v4-plan.md) and
+[validation path](report-quality-v4-validation.md). The separate
+[offline v4 contract](contracts/report-quality-v4.md) is implemented/tested.
+This is prospective evaluation tooling, not new report-quality acceptance;
+old v8/SC-003 results and runtime behavior remain unchanged.
+
+2026-11-17 T095 semantic integration/evaluation addendum:
+[runtime/evaluation design](retrieval-v6-integration.md),
+[actual user-approved LLM review method](retrieval-v6-judge-decision.md).
+Explicit paid POST and budget-accounted worker stage preserve deterministic GET
+browsing and legacy attempts. Retrieval acceptance evidence is separate from
+unchanged failed/unconfirmed report-quality/performance/full-data criteria.
+
+2026-11-16 T062-T064 implementation addendum:
+[accepted producer/consumer boundary and version2 design](dataset-adapter-agreement-v2.md).
+History is implemented by the feature003 read-only adapter over reviewed existing
+stores, without importing or modifying producer code or databases. Historical
+source pins/evaluation bindings remain intact; controlled producer compatibility
+is distinguished from unavailable full IBM/model validation.
+
+**Branch**: `feature03` | **Date**: 2026-11-13 | **Spec**: [spec.md](spec.md)
+
+**Input**: `specs/003-ai-investigation/spec.md`; all runtime behavior below is planned, not implemented.
+
+## Summary
+
+Current language scope, approved2026-11-17 by Milan:
+[English-only procedure retrieval MVP](retrieval-english-mvp-decision.md).
+Prepare a separate T095 English-only development design/pack and analyst/worker
+query contract; Serbian retrieval is deferred. UI/report language remains
+separate. Existing v3 language counts/runner and past results are historical;
+no code adaptation or new acceptance execution is claimed by this plan update.
+
+T095 continuation2026-11-17: Milan approved
+[retrieval development v3](retrieval-development-v3.md). Its separate offline
+module `backend/src/fraudlens/investigation/retrieval_fresh_v3.py` implements
+reviewed development selection, a version-bound freeze, explicitly authorized
+input-only prediction and sealed private reference joining. The new pack root is
+`evals/investigation/retrieval-fresh-v3/`; Milan subsequently accepted the18-row
+development references and one comparison ran below targets (both0.25/0.25,
+6/6 no-answer). Held-out authoring remains separate. This does not change the
+original evaluator/CLI, runtime defaults or historical results. SC-002 is unmet.
+
+Maintenance follow-up (2026-11-16): [reliability-v2.md](reliability-v2.md) defines
+the user-authorized post-evaluation development revision and preservation boundary.
+
+Deliver curated knowledge search, a bounded tool-using investigation, immutable evidence-backed reports and explicit human disposition. Work from authored fixtures before dataset/model integration. Add feature-local modules and a separate SQLite store; preserve foundation response contracts and do not import unfinished ML code. The first useful increment is US1 search/source inspection; the complete investigation MVP includes US2-US4, and US5 evaluation is mandatory for release.
+
+## Technical Context
+
+**Language/Version**: Existing Python >=3.14,<3.15 and Node >=24,<25; vanilla TypeScript/Vite.
+
+**Primary Dependencies**: Existing FastAPI/Pydantic/Uvicorn; add the official OpenAI Python SDK at implementation-time resolution and commit generated uv.lock. No dependency installation in this planning task. Standard-library SQLite, hashing, Unicode/tokenization and BM25 calculations; no vector database or workflow framework.
+
+**Storage**: Separate ignored `data/processed/investigations.sqlite`, schema version 1, parameterized queries, foreign keys, short explicit write transactions, optimistic revisions and unique request identities. Reviewed corpus sources/config are tracked only where reuse terms permit; exact run evidence and generated indices remain local. No writes to feature 002's store.
+
+**Testing**: Existing pytest/jsonschema/Ruff and Vitest/jsdom/typecheck/build. RED -> GREEN -> REFACTOR for contracts, tool access, retrieval, budgets, state, review and UI races; no artificial RED for directories/locked installs. Runtime provider tests opt-in and excluded from default unit suite.
+
+**Target Platform**: Windows/macOS local demonstration, loopback backend/proxy; one explicit CLI worker process, one active attempt globally. No background distributed workers, public hosting or enterprise auth.
+
+**Project Type**: Existing web application plus local corpus/evaluation/worker CLI.
+
+**Performance Goals**: SC-006: 20-query local search p95 <=2 s; >=4/5 ordinary live cases produce a validated/needs-information result <=90 s; every attempt visibly ends <=120 s.
+
+**Constraints**: At most 8 dispatched provider requests, 12 tool executions, 5 passages/search, 50 history events/result, 1 transient retry and 1 output repair per attempt; all share 120 s. Per-request timeout <=min(30 s, remaining deadline), max output tokens 4096, serialized input <=48,000 UTF-8 bytes, total transport response <=2 MiB. Disable SDK automatic retries. If the selected model cannot meet required tool/schema controls, stop at an explicit capability gate. No silent model substitution.
+
+**Scale/Scope**: At least six reviewed thematic documents, <=200 initial passages, one local analyst identity and one active attempt; 30 retrieval questions, 12 report scenarios, >=12 safety scenarios. Queries 1-500 trimmed Unicode characters. Corpus passages <=2400 characters and tool-result bodies <=16,000 UTF-8 bytes; oversize individual facts cause controlled failure, never silent alteration.
+
+## Constitution Check
+
+Pre-research and post-design assessments both pass at design level; actual acceptance remains pending.
+
+| Principle | Design evidence / enforcement |
+|---|---|
+| I scope | Existing four screens, synthetic data, no excluded product techniques. |
+| II specification | Spec -> this design/contracts -> tasks -> implementation. |
+| III TDD | Separate intended RED and GREEN tasks with negative/regression evidence. |
+| IV purposeful AI | Model chooses permitted evidence queries and synthesizes; math, scope, persistence and disposition deterministic. |
+| V verifiable claims | Typed evidence/citations, exact-value checks, human semantic review. |
+| VI human authority | Separate explicit reviewed disposition, never tool access to decisions. |
+| VII independent evaluation | Private reference pack; runtime cannot open it; frozen development/held-out partitions. |
+| VIII parallel development | Fixture context + proposed dataset boundary, separately reviewed before real integration. |
+| IX reproducibility | Hashed versions, bounded trace, no credentials, explicit unknown outcomes. |
+| X minimum complexity | SQLite + one worker + standard-library retrieval; no framework/graph/vector service. |
+
+External gates are not design violations: actual provider/model access, corpus selection/human review and current feature 002 contract review. They block the related live tasks, not fixture development. No exceptions to constitution requested.
+
+## Project Structure
+
+### Documentation (this feature)
+
+`spec.md`, `plan.md`, `research.md`, `data-model.md`, `quickstart.md`, `tasks.md`, `evaluation.md`, `checklists/requirements.md`; `contracts/api.md`, `contracts/tools-and-provider.md`, `contracts/schemas.json`, pinned `contracts/producer-v2.snapshot.json` and `contracts/examples/*.json`.
+
+### Source Code (repository root; planned paths)
+
+```text
+backend/src/fraudlens/investigation/
+  __init__.py  models.py  settings.py  context.py  knowledge.py  retrieval.py
+  store.py  tools.py  provider.py  validation.py  workflow.py  review.py
+  api.py  cli.py  evaluation.py
+backend/tests/contracts/test_investigation_contracts.py
+backend/tests/unit/test_investigation_*.py
+backend/tests/integration/test_investigation_*.py
+frontend/src/investigation/{contracts,api,views,controller}.ts
+frontend/tests/investigation-*.test.ts
+data/knowledge/fraudlens-aml-knowledge-v1/{manifest.json,documents/,glossary.json}
+data/fixtures/investigation/{contexts.json,history.json,provider-scripts.json}
+prompts/application/investigation-v1.md
+evals/investigation/{inputs/,reference/,splits.json,protocol.json}
+evals/results/feature-003/                 # ignored
+data/processed/investigations.sqlite       # ignored
+evidence/tasks/feature-003-*.md
+```
+
+**Structure Decision**: Keep feature modules isolated. Only final composition modifies `backend/src/fraudlens/main.py` and `frontend/src/main.ts`/`views.ts`; coordinate these edits with feature 002. New investigation routes use their own error handling so existing 404 behavior is not reused incorrectly. Do not widen `APP_MODE` or feature 002 contracts. New feature settings are separate from existing fixture Settings.
+
+## Phase 0: Research decisions
+
+See [research.md](research.md). Decisions: local BM25 baseline; one frozen title-weight/bilingual-glossary improvement; immutable corpus versions; official SDK Responses with configurable model and strict tools/report; separate durable store and explicit worker; no hidden retries. Source/model capability checks are opt-in future tasks, never claimed executed in planning.
+
+## Phase 1: Design and contracts
+
+See [data-model.md](data-model.md), [API](contracts/api.md), [tools/provider](contracts/tools-and-provider.md), [schemas](contracts/schemas.json), [evaluation](evaluation.md), [quickstart](quickstart.md).
+
+### Flow and failure boundaries
+
+1. Knowledge preparation validates hashes/metadata, chunks by section with a 2400-character ceiling and no overlap across sections, then publishes an immutable corpus version. Query normalization is NFKC + casefold, Latin/Cyrillic handling through a versioned reviewed glossary, Unicode alphanumeric tokens, no hidden network embedding calls.
+2. POST creates a case/snapshot-bound run from an authorized context adapter, copies the immutable context, pins corpus/retrieval/prompt/provider settings and reserves a request identity. No provider call in HTTP creation or polling.
+3. Explicit local worker claims one queued run with transactional compare-and-swap. Tools use server-bound scope. Tool outcomes and authorized evidence become durable; no model-generated SQL or cross-case IDs are accepted.
+4. Reserve provider budget and persist dispatch intent before each request. Update outcome after return. All request/retry/repair time counts toward the attempt's single deadline. On restart interrupted dispatch is outcome_unknown and attempt fails as interrupted; GET never replays it. Explicit retry creates a linked attempt with fresh limits and disclosed possible prior spend, reusing only saved valid evidence with matching context/corpus.
+5. Model requests tools in sequence, then submits structured report. Validate schema, source identity, required evidence types, structured exact-value assertions and exact source quotes. Numbers hidden in prose cannot be reliably proven by schema; semantic support is explicitly unchecked until human evaluation. Unsupported drafts cannot be accepted through unknown citations or changed structured facts.
+6. Persist a valid ready-for-review report or limitations draft/needs-information. No unsupported draft is published as ready. Explicit review transaction records actor/rationale/disposition/report revision; stale writes conflict. Cancelled/failed attempts cannot resume from late replies.
+
+### Parallel ownership / current producer reconciliation
+
+Baseline is main `0fbe313`; selected producer contract was inspected at `2dd815d`. A documentation-only snapshot of that producer schema is pinned here so fixture adapter tests use current meanings without merging ML. Feature 003 context embeds the producer's CaseDetailV2 unchanged or the existing foundation CaseDetail for fixture mode; context metadata explains unavailable fixture history/time provenance instead of fabricating v2 fields.
+
+Dataset equality checks include context case_id = payload case_id, transaction ID agreement, context snapshot_ref = payload snapshot_ref = assessment run_id, and context dataset_version = payload/assessment dataset_version. Time assumptions, raw minutes, source-supported currency/amount precision and explanation scale remain unchanged. Tools query no private labels. Producer history is a separate interface whose accepted behavior is strict pre-cutoff bank+account history; no adapter is labeled real until reviewed and exercised against the actual producer.
+
+Freeze context API with producing/consuming teammates before real integration. Do not wait for trained-model accuracy to develop fixtures or a truthful rules-backed context. If producer advances, record new SHA/schema diff and re-review affected consumers; do not silently replace this pinned snapshot.
+
+### Delivery stages / ordering
+
+- Setup/foundation: settings, closed schemas, fixture adapters, minimal transaction store and corpus inputs.
+- US1: source preparation/search/inspection and knowledge UI; first independent MVP.
+- US2: bounded tools, test provider, report validation, worker and report UI. Live provider adapter follows opt-in probe; credentials do not block offline slice.
+- US3: explicit restart/retry/cancel/stale-snapshot recovery and persistence evidence.
+- US4: human review and correction UI with optimistic revisions.
+- US5: frozen retrieval/report/safety packs, baseline/improved evaluation, actual-provider automated primary/secondary scoring under the user-approved post-hoc report-judging-v2 amendment and measured demonstration. Human analyst dispositions/source/producer reviews remain separate.
+- Integration/convergence: dataset adapter review/live integration when producer exists; full foundation regressions, quickstart reproduction and actual acceptance. No automatic completion of ML gates.
+
+## Complexity Tracking
+
+No constitution violations or additional services. A separate SQLite file avoids shared schema migrations. One worker is the smallest durable execution mechanism here; a queue service and framework are rejected as unnecessary. Lexical retrieval keeps baseline offline and transparent; embeddings remain a separately justified later choice if this bounded comparison is insufficient, not an implicit task.

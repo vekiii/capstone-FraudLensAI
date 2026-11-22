@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fraudlens.local/specs/003/contracts/context-v2.json",
+  "$defs": {
+    "InvestigationContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": 2
+        },
+        "context_revision": {
+          "$ref": "schemas.json#/$defs/Digest"
+        },
+        "source_mode": {
+          "const": "dataset"
+        },
+        "case_id": {
+          "$ref": "schemas.json#/$defs/CaseId"
+        },
+        "snapshot_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^dv_[0-9a-f]{64}(?![\\s\\S])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_at": {
+          "$ref": "schemas.json#/$defs/Instant"
+        },
+        "source_payload": {
+          "type": "object"
+        },
+        "history": {
+          "$ref": "schemas.json#/$defs/History"
+        }
+      },
+      "required": [
+        "contract_version",
+        "context_revision",
+        "source_mode",
+        "case_id",
+        "snapshot_ref",
+        "dataset_version",
+        "observed_at",
+        "source_payload",
+        "history"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source_mode": {
+                "const": "fixture"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "case_id": {
+                "type": "string",
+                "pattern": "^CASE-[0-9]{3}(?![\\s\\S])"
+              },
+              "snapshot_ref": {
+                "type": "string",
+                "pattern": "^fixture_[0-9a-f]{64}(?![\\s\\S])"
+              },
+              "dataset_version": {
+                "type": "null"
+              },
+              "source_payload": {
+                "$ref": "../../001-project-foundation/contracts/schemas.json#/$defs/CaseDetail"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "case_id": {
+                "type": "string",
+                "pattern": "^C[0-9a-f]{32}(?![\\s\\S])"
+              },
+              "dataset_version": {
+                "type": "string",
+                "pattern": "^dv_[0-9a-f]{64}(?![\\s\\S])"
+              },
+              "source_payload": {
+                "$ref": "producer-v2-reviewed-20261116.snapshot.json#/$defs/CaseDetailV2"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

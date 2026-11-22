@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-15",
+  "status": "capability_verified",
+  "model": "gpt-6-luna",
+  "provider_source_sha256": "a6e99864a1406f1847dacfa3ca31749f699eae9574151caa2901dfbad82aef9c",
+  "provider_schema_sha256": "82c812097e243153b0ffba80cec7259a6ca6afd285ee59c013c7df5e1ca9b7bb",
+  "probe_record_sha256": "53228ae1be8ae7df3bc3d35658bdb56e7bb9245e8762ecbc971382ad631cd4d2",
+  "compatibility_changes": [
+    "provider-only uniqueItems omission; unchanged local validator",
+    "provider-only portable end anchor; unchanged strict local ID validation"
+  ],
+  "frozen_retrieval_artifacts_unchanged": true,
+  "T058": "not_started"
+}

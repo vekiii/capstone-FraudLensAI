@@ -1,0 +1,63 @@
+{
+  "mode": "automated headless Chrome; six human-reviewed source texts; isolated TEST replacement only for historical-version check",
+  "work": "D:\\AIBootcamp\\capstone\\.cache\\003-smoke-1766e195-3a5a-4718-a29b-36151441dab7",
+  "checks": [
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:8000",
+      "status": "PASS"
+    },
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:5174",
+      "status": "PASS"
+    },
+    {
+      "name": "Original three-case list/detail/back",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Reviewed simulated missing-facts procedure and simulation provenance",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Exact historical source/provenance inspected after controlled corpus replacement",
+      "detail": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+      "status": "PASS"
+    },
+    {
+      "name": "No-match UI",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Actual missing-store UI, no fabricated hits",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Missing-store Retry recovery to new corpus",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Real backend shutdown/restart original Retry",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "No uncaught browser exceptions",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "retrieval_version": "071f1a593fa17471295860bb5abc3a0064261a7e159bdf3d530494881001bccb",
+  "chrome_stderr": "\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/4f16466b-4758-4035-99f8-bba68dee2a08\r\n",
+  "browser": "Chrome/157.0.8103.52",
+  "status": "PASS",
+  "owned_process_cleanup": "PASS"
+}

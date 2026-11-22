@@ -1,0 +1,24 @@
+{
+  "mode": "automated headless Chrome; six human-reviewed source texts; isolated TEST replacement only for historical-version check",
+  "work": "D:\\AIBootcamp\\capstone\\.cache\\003-smoke-5e98d325-edf2-4b04-926e-55ca66e89e3d",
+  "checks": [
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:8000",
+      "status": "PASS"
+    },
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:5173",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "retrieval_version": "071f1a593fa17471295860bb5abc3a0064261a7e159bdf3d530494881001bccb",
+  "chrome_stderr": "[9928:14444:1116/121745.739:ERROR:components\\os_crypt\\async\\browser\\os_crypt_win.cc:63] Failed to encrypt: The system cannot find the file specified. (0x2)\r\n[9928:16908:1116/121745.802:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/ac4af957-7117-46d0-a770-4cd2055493e7\r\n[9928:18344:1116/121745.962:ERROR:components\\password_manager\\core\\browser\\password_store\\login_database_async_helper.cc:100] Encryption is not available.\r\n[9928:26408:1116/121745.965:ERROR:components\\password_manager\\core\\browser\\password_store\\login_database_async_helper.cc:100] Encryption is not available.\r\n[9928:14444:1116/121746.081:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[9928:16864:1116/121746.082:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\AIBootcamp\\capstone\\.cache\\003-smoke-5e98d325-edf2-4b04-926e-55ca66e89e3d\\chrome-profile\\GPUPersistentCache\\DawnGraphiteCache\\OMXJKWSVDDS6L3YMYJJRNHVYDBSO7SEM\", error: 0: The process cannot access the file because it is being used by another process. (0x20)\r\n[9928:14444:1116/121746.162:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[9928:14444:1116/121746.188:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[9928:16908:1116/121746.190:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\AIBootcamp\\capstone\\.cache\\003-smoke-5e98d325-edf2-4b04-926e-55ca66e89e3d\\chrome-profile\\GPUPersistentCache\\DawnGraphiteCache\\OMXJKWSVDDS6L3YMYJJRNHVYDBSO7SEM\", error: 0: The process cannot access the file because it is being used by another process. (0x20)\r\n[9928:14444:1116/121746.235:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[9928:14444:1116/121746.268:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[9928:18752:1116/121746.269:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\AIBootcamp\\capstone\\.cache\\003-smoke-5e98d325-edf2-4b04-926e-55ca66e89e3d\\chrome-profile\\GPUPersistentCache\\DawnGraphiteCache\\OMXJKWSVDDS6L3YMYJJRNHVYDBSO7SEM\", error: 0: The process cannot access the file because it is being used by another process. (0x20)\r\n[9928:26396:1116/121746.274:ERROR:services\\device\\public\\cpp\\geolocation\\system_geolocation_source_win.cc:251] Failed to get location access status: The parameter is incorrect. (0x80070057)\r\n[9928:14444:1116/121746.290:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1042] GPU process exited unexpectedly: exit_code=-1073741790\r\n[9928:14444:1116/121746.290:FATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:385] GPU process isn't usable. Goodbye.\r\n",
+  "browser": "Chrome/157.0.8103.52",
+  "status": "FAIL",
+  "failure": "Error: CDP timeout: Page.enable\n    at Timeout._onTimeout (file:///D:/AIBootcamp/capstone/.cache/phase08-browser-05a0742749c9453a8ae5cac61c3e3adb/feature-003-knowledge-smoke.mjs:31:241)\n    at listOnTimeout (node:internal/timers:685:17)\n    at process.processTimers (node:internal/timers:618:7)",
+  "cleanup_error": "Error: listen EADDRINUSE: address already in use 127.0.0.1:8000"
+}

@@ -1,0 +1,28 @@
+{
+  "status": "Blind judge gold frozen before candidate; author proposals retained",
+  "differences": [
+    {
+      "id": "EN5-019",
+      "author_documents": [
+        "sim-missing"
+      ],
+      "blind_judge_documents": [
+        "sim-missing",
+        "sim-review"
+      ],
+      "reason": "The simulated procedure says to request more information when a useful grounded conclusion is impossible. It also specifies that requesting more information requires an explicit analyst decision and rationale."
+    },
+    {
+      "id": "EN5-022",
+      "author_documents": [
+        "sim-review"
+      ],
+      "blind_judge_documents": [
+        "sim-citation",
+        "sim-missing",
+        "sim-review"
+      ],
+      "reason": "The simulated guidance directly says to consider alternative explanations without inventing customer facts, and further explains how to handle observations, hypotheses, missing evidence, and uncertainty."
+    }
+  ]
+}

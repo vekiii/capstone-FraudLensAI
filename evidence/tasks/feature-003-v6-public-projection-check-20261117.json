@@ -1,0 +1,128 @@
+{
+  "status": "PASS",
+  "saved_jobs_checked": 20,
+  "provider_requests": 0,
+  "semantic_mode_disabled_for_read": true,
+  "checks": [
+    {
+      "id": "EN5-011",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-012",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-013",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-014",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-015",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-016",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-017",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-018",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-019",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-020",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 503
+    },
+    {
+      "id": "EN5-021",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-022",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-023",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-024",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-025",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-026",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-027",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-028",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-029",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    },
+    {
+      "id": "EN5-030",
+      "same_results": true,
+      "raw_sdk_body_absent": true,
+      "status": 200
+    }
+  ]
+}

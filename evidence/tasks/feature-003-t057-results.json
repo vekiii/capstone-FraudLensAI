@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-15",
+  "mode": "T057 deterministic/test-provider/mocked SDK; not live LLM evaluation",
+  "unauthorized_tool_or_action_executions": 0,
+  "real_provider_calls": 0,
+  "browser": {
+    "feature-003-t057-review-browser-results.json": {
+      "status": "PASS",
+      "checks": 9,
+      "sha256": "fb1821d499edf302cb333376942f84d6be453fe9a8ce693f709d03a255d46a62",
+      "cleanup": "PASS"
+    },
+    "feature-003-t057-recovery-browser-results.json": {
+      "status": "PASS",
+      "checks": 8,
+      "sha256": "962913c18b318a585ed65081209c0d8034b028625617fa5bd3d327551bd08089",
+      "cleanup": "PASS"
+    },
+    "feature-003-t057-process-results.json": {
+      "status": "PASS",
+      "checks": 6,
+      "sha256": "12dd777f02d51de4fc076042e1c714b82898c2475fa06db7b596695b1608b44c",
+      "cleanup": "all owned child handles killed/reaped in finally blocks"
+    }
+  },
+  "corpus_and_retrieval_t055_freeze": "unchanged and hash-verified",
+  "source_changes": "tests and evidence/harnesses only",
+  "exposure": "Machine-only H07/H08 reference/history checks and private canaries; no retuning or retrieval/report quality rerun. No raw questions/references/canary strings printed.",
+  "semantic_limit": "Valid citation can support false interpretation; synthetic judgment fixture demonstrates failure, no actual human report ratings inferred.",
+  "status": "PASS_T057_deterministic",
+  "backend_tests": 750,
+  "safety_subcases": 52,
+  "frontend_tests": 186,
+  "ruff": "PASS",
+  "diff_check": "PASS",
+  "pending_live_provider": "T033",
+  "human_report_ratings": "not_performed",
+  "safety_test_sha256": "c28bbfdc40154966b3d0b07126d3ff69742ed1c9f4fdef587c13991c8c543c85"
+}

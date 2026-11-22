@@ -1,0 +1,112 @@
+{
+  "mode": "Actual local CLI fault processes; authored fixture/test provider; no LLM quality or billing evidence",
+  "work": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-recovery-5ccb742aacab4c3294d6f6b95ea3c5dc",
+  "checks": [
+    {
+      "boundary": "intent",
+      "parent_attempt_id": "att_c7f2720f56864a5fbef69cbd53d13037",
+      "child_attempt_id": "att_c6a576d54c624193b7e6dbc617c3b6ff",
+      "parent_state": "failed",
+      "outcome_unknown": true,
+      "parent_requests": 1,
+      "child_requests": 4,
+      "parent_outcomes": [
+        [
+          1,
+          "unknown"
+        ]
+      ],
+      "copied_evidence": 0,
+      "child_report_id": "8996950bcb97d09683c228a7909e2ec0fc8334aec203cb1fddcf4e19d6630439",
+      "status": "PASS"
+    },
+    {
+      "boundary": "result",
+      "parent_attempt_id": "att_a875a45af7e24630901d817f344bcfe1",
+      "child_attempt_id": "att_4c4079e5b9c94d6ebf680c6ea4cabc45",
+      "parent_state": "failed",
+      "outcome_unknown": false,
+      "parent_requests": 1,
+      "child_requests": 4,
+      "parent_outcomes": [
+        [
+          1,
+          "completed"
+        ]
+      ],
+      "copied_evidence": 0,
+      "child_report_id": "4e2dbdd7bf8b949fac9648270f79b0e9a8290254cdf5af166b60d072a2528499",
+      "status": "PASS"
+    },
+    {
+      "boundary": "evidence",
+      "parent_attempt_id": "att_247bf875c88445a1b2ccd7d48a20cd19",
+      "child_attempt_id": "att_fbcfef603cf946818b082d9c503855df",
+      "parent_state": "failed",
+      "outcome_unknown": true,
+      "parent_requests": 2,
+      "child_requests": 4,
+      "parent_outcomes": [
+        [
+          1,
+          "completed"
+        ],
+        [
+          2,
+          "unknown"
+        ]
+      ],
+      "copied_evidence": 1,
+      "child_report_id": "decc714a4471ecd30e9d9b9a03c050c8e6b25ce4f9ec026f53dbd391d08a808a",
+      "status": "PASS"
+    },
+    {
+      "boundary": "drafting",
+      "parent_attempt_id": "att_2f9ac4de1fb74d96ae2df268c87173e1",
+      "child_attempt_id": "att_934ab082520c4836ac65a1b96a1e81f9",
+      "parent_state": "failed",
+      "outcome_unknown": false,
+      "parent_requests": 4,
+      "child_requests": 4,
+      "parent_outcomes": [
+        [
+          1,
+          "completed"
+        ],
+        [
+          2,
+          "completed"
+        ],
+        [
+          3,
+          "completed"
+        ],
+        [
+          4,
+          "completed"
+        ]
+      ],
+      "copied_evidence": 7,
+      "child_report_id": "e57e8790c4920c386975fcfbb35ed83b4ae853753fd9dbcf6c58f50e545ff814",
+      "status": "PASS"
+    },
+    {
+      "name": "actual late CLI response after two-connection idempotent cancel",
+      "attempt_id": "att_e369ba6358954eaea25e2ce95627ab7e",
+      "requests": 1,
+      "outcome_unknown": true,
+      "report": null,
+      "state": "cancelled",
+      "status": "PASS"
+    },
+    {
+      "name": "two-connection distinct-key CAS",
+      "results": [
+        "revision_conflict",
+        "att_bb1c9e44a43c417488e530556e41b139"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "status": "PASS"
+}

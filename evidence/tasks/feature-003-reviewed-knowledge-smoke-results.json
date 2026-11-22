@@ -1,0 +1,62 @@
+{
+  "mode": "automated headless Chrome; six human-reviewed source texts; isolated TEST replacement only for historical-version check",
+  "work": "C:\\Users\\gm220391d\\Carrier\\AIBootcamp2026\\capstone\\capstone-FraudLensAI\\.cache\\003-smoke-625aff23-b698-4407-a6d9-98904dd9c35e",
+  "checks": [
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:8000",
+      "status": "PASS"
+    },
+    {
+      "name": "Real API/proxy search, 404/422",
+      "detail": "http://127.0.0.1:5173",
+      "status": "PASS"
+    },
+    {
+      "name": "Original three-case list/detail/back",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Reviewed simulated missing-facts procedure and simulation provenance",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Exact historical source/provenance inspected after controlled corpus replacement",
+      "detail": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+      "status": "PASS"
+    },
+    {
+      "name": "No-match UI",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Actual missing-store UI, no fabricated hits",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Missing-store Retry recovery to new corpus",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Real backend shutdown/restart original Retry",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "No uncaught browser exceptions",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "retrieval_version": "071f1a593fa17471295860bb5abc3a0064261a7e159bdf3d530494881001bccb",
+  "chrome_stderr": "\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/0415fd42-397d-4b20-b469-249d3e40abdd\r\n",
+  "browser": "Chrome/157.0.8103.52",
+  "status": "PASS"
+}

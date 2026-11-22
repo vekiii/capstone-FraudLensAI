@@ -1,0 +1,202 @@
+{
+  "date": "2026-11-18",
+  "previous_actual": 300,
+  "actual": 352,
+  "ceiling": 361,
+  "stage_dispatches": {
+    "calibration": 6,
+    "final": 33,
+    "judging": 13
+  },
+  "calibration": {
+    "passed": true,
+    "cases": [
+      {
+        "scenario_id": "C1",
+        "matched": true
+      },
+      {
+        "scenario_id": "C2",
+        "matched": true
+      },
+      {
+        "scenario_id": "C3",
+        "matched": true
+      },
+      {
+        "scenario_id": "C4",
+        "matched": true
+      },
+      {
+        "scenario_id": "C5",
+        "matched": true
+      },
+      {
+        "scenario_id": "C6",
+        "matched": true
+      }
+    ],
+    "denominator": 6
+  },
+  "timing_pass": true,
+  "quality_pass": false,
+  "passing": 6,
+  "reports": [
+    {
+      "id": "NEXT-FINAL-01",
+      "failed": true,
+      "support_rate": null,
+      "essential_coverage": null,
+      "passed": false,
+      "factual_count": 0,
+      "essential_count": 0
+    },
+    {
+      "id": "NEXT-FINAL-02",
+      "failed": false,
+      "support_rate": 0.9130434782608695,
+      "essential_coverage": 1.0,
+      "passed": false,
+      "critical_error": false,
+      "missingness_correct": true,
+      "additional_issues": [],
+      "factual_count": 23,
+      "essential_count": 7,
+      "procedural_count": 0,
+      "applicable_count": 0
+    },
+    {
+      "id": "NEXT-FINAL-03",
+      "failed": false,
+      "support_rate": 1.0,
+      "essential_coverage": 1.0,
+      "passed": true,
+      "critical_error": false,
+      "missingness_correct": true,
+      "additional_issues": [],
+      "factual_count": 25,
+      "essential_count": 7,
+      "procedural_count": 4,
+      "applicable_count": 4
+    },
+    {
+      "id": "NEXT-FINAL-04",
+      "failed": false,
+      "support_rate": 1.0,
+      "essential_coverage": 1.0,
+      "passed": true,
+      "critical_error": false,
+      "missingness_correct": true,
+      "additional_issues": [],
+      "factual_count": 26,
+      "essential_count": 7,
+      "procedural_count": 0,
+      "applicable_count": 0
+    },
+    {
+      "id": "NEXT-FINAL-05",
+      "failed": false,
+      "support_rate": 1.0,
+      "essential_coverage": 1.0,
+      "passed": true,
+      "critical_error": false,
+      "missingness_correct": true,
+      "additional_issues": [],
+      "factual_count": 34,
+      "essential_count": 7,
+      "procedural_count": 3,
+      "applicable_count": 3
+    },
+    {
+      "id": "NEXT-FINAL-06",
+      "failed": false,
+      "support_rate": 1.0,
+      "essential_coverage": 1.0,
+      "passed": true,
+      "critical_error": false,
+      "missingness_correct": true,
+      "additional_issues": [],
+      "factual_count": 27,
+      "essential_count": 7,
+      "procedural_count": 0,
+      "applicable_count": 0
+    },
+    {
+      "id": "NEXT-FINAL-07",
+      "failed": false,
+      "support_rate": 1.0,
+      "essential_coverage": 1.0,
+      "passed": true,
+      "critical_error": false,
+      "missingness_correct": true,
+      "additional_issues": [],
+      "factual_count": 25,
+      "essential_count": 7,
+      "procedural_count": 4,
+      "applicable_count": 4
+    },
+    {
+      "id": "NEXT-FINAL-08",
+      "failed": false,
+      "support_rate": 1.0,
+      "essential_coverage": 1.0,
+      "passed": true,
+      "critical_error": false,
+      "missingness_correct": true,
+      "additional_issues": [],
+      "factual_count": 28,
+      "essential_count": 7,
+      "procedural_count": 0,
+      "applicable_count": 0
+    }
+  ],
+  "disagreements": [
+    {
+      "id": "NEXT-FINAL-02",
+      "unit_id": "u002",
+      "originals": [
+        {
+          "unit_id": "u002",
+          "judgment": "unsupported",
+          "reason": "The history is unavailable, but the source records procedure selection as insufficient with no selected passages; it does not establish that the search returned no match.",
+          "critical_error": false
+        },
+        {
+          "unit_id": "u002",
+          "judgment": "uncertain",
+          "reason": "Nedostupnost istorije je potkrepljena. Evidencija kaže da je izbor procedure ocenjen kao nedovoljan i da nema izabranih odlomaka, ali ne prikazuje izričito rezultat pretrage kao no_match.",
+          "critical_error": false
+        }
+      ],
+      "resolution": "unresolved; conservative not-supported/not-present",
+      "unresolved": true
+    },
+    {
+      "id": "NEXT-FINAL-02",
+      "unit_id": "u014",
+      "originals": [
+        {
+          "unit_id": "u014",
+          "judgment": "unsupported",
+          "reason": "The source records an insufficient procedure-selection result and empty selected passage IDs, not an explicit no_match result.",
+          "critical_error": false
+        },
+        {
+          "unit_id": "u014",
+          "judgment": "uncertain",
+          "reason": "Izvor beleži nedovoljan izbor procedure i praznu listu izabranih odlomaka, ali ne potvrđuje izričito no_match kao rezultat pretrage.",
+          "critical_error": false
+        }
+      ],
+      "resolution": "unresolved; conservative not-supported/not-present",
+      "unresolved": true
+    }
+  ],
+  "artifact_sha256": {
+    "quality-results.json": "8dc78730c44d64a0adf45cc5f84ad9aa083ec9610977be2aa47adf73e19f4dcb",
+    "timing-results.json": "a6764d0688fc1247a0c14fd19a8bbfe61f420276f3777f7735216f2c7d85179d",
+    "final/dispatch.sqlite": "80f0123f1c870a884c9ece0ea1616aa8b2c4a3e7d343790553d553c6d73e9fe7",
+    "calibration/dispatch.sqlite": "3f1ef08044dbc469c0ea3c0a075ca7369449f6f3a3bae1c13f00b7f8eecd134c",
+    "judging/dispatch.sqlite": "b7a7be1d38b1730cf2d829f89888c824d836ddfb938a0ea98ad26e7820ee3e1e"
+  }
+}

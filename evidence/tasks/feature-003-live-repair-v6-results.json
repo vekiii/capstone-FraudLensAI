@@ -1,0 +1,158 @@
+{
+  "status": "PASS",
+  "kind": "development_v6_audit_not_release_acceptance",
+  "summary": {
+    "all_terminal_within_120": true,
+    "calibration": {
+      "cases": [
+        {
+          "matched": true,
+          "scenario_id": "CAL6-A"
+        },
+        {
+          "matched": true,
+          "scenario_id": "CAL6-B"
+        },
+        {
+          "matched": true,
+          "scenario_id": "CAL6-C"
+        }
+      ],
+      "passed": true
+    },
+    "controlled_repair": {
+      "excluded_from_primary_quality": true,
+      "id": "DEV6-763",
+      "injected": true,
+      "injection_kind": "application_candidate_fault",
+      "intended_rejection_observed": true,
+      "mechanism_pass": true,
+      "natural_model_error_claimed": false,
+      "repair_request_bytes": [
+        37169
+      ],
+      "repair_transport_attempts": 1,
+      "subsequent_real_llm_report_valid": true
+    },
+    "controlled_report_quality_pass": true,
+    "controlled_report_raw_rating": {
+      "additional_issues": [],
+      "applicable_count": 1,
+      "critical_error": false,
+      "essential_count": 7,
+      "essential_coverage": 1.0,
+      "factual_count": 4,
+      "failed": false,
+      "id": "DEV6-763",
+      "missingness_correct": true,
+      "passed": true,
+      "procedural_count": 1,
+      "support_rate": 1.0
+    },
+    "freeze_sha256": "201913a36218a2a846fcd26840e43634b1cbec6d7043c3ec050fe266b55cce2a",
+    "human_validation": false,
+    "judge_status": "completed",
+    "judged_reports": [
+      {
+        "additional_issues": [],
+        "applicable_count": 1,
+        "critical_error": false,
+        "essential_count": 11,
+        "essential_coverage": 1.0,
+        "factual_count": 3,
+        "failed": false,
+        "id": "DEV6-761",
+        "missingness_correct": true,
+        "passed": true,
+        "procedural_count": 1,
+        "support_rate": 1.0
+      },
+      {
+        "additional_issues": [],
+        "applicable_count": 0,
+        "critical_error": false,
+        "essential_count": 8,
+        "essential_coverage": 1.0,
+        "factual_count": 3,
+        "failed": false,
+        "id": "DEV6-762",
+        "missingness_correct": false,
+        "passed": false,
+        "procedural_count": 0,
+        "support_rate": 1.0
+      }
+    ],
+    "kind": "two_ordinary_reports_plus_separate_controlled_repair",
+    "known_usage": {
+      "input_tokens": 73054,
+      "output_tokens": 13630,
+      "total_tokens": 86684
+    },
+    "maximum_transport_attempts": 25,
+    "model": "gpt-6-luna",
+    "not_executed_ids": [],
+    "old_release_targets_unchanged": true,
+    "ordinary_case_count": 2,
+    "ordinary_successful_within_90": 2,
+    "passing_development_reports": 1,
+    "quality_assessment_valid": true,
+    "raw_passing_development_reports": 1,
+    "rows": [
+      {
+        "failure": null,
+        "id": "DEV6-761",
+        "provider_requests": 5,
+        "repairs": 0,
+        "seconds": 27.194,
+        "state": "needs_information",
+        "tool_calls": 4
+      },
+      {
+        "failure": null,
+        "id": "DEV6-762",
+        "provider_requests": 5,
+        "repairs": 0,
+        "seconds": 26.171,
+        "state": "needs_information",
+        "tool_calls": 4
+      },
+      {
+        "failure": null,
+        "id": "DEV6-763",
+        "provider_requests": 6,
+        "repairs": 1,
+        "seconds": 43.954,
+        "state": "needs_information",
+        "tool_calls": 4
+      }
+    ],
+    "spend": null,
+    "stopped_for": null,
+    "successful_within_90": 3,
+    "transient_retries": {
+      "DEV6-761": 0,
+      "DEV6-762": 0,
+      "DEV6-763": 0
+    },
+    "transport_attempts": 17,
+    "unknown_usage_attempts": 0
+  },
+  "cited_ids_resolved": 13,
+  "prior_artifacts_preserved": true,
+  "runtime_unchanged": true,
+  "http_status_counts": {
+    "200": 17
+  },
+  "artifact_sha256": {
+    "controlled-fault.json": "b690abeef29c152701178bc441472d8ae9cac0cf0612d24c6f888f1f503c99c2",
+    "DEV6-761.json": "c8c06f412f8ceac924ff255c80ffdf42c33d2e55cf82a345b140ddc96dbb9d71",
+    "DEV6-762.json": "4597620bc9378d33b873a4ff5230c37be04d3a4ab3bd422471d7693a133ee1e3",
+    "DEV6-763.json": "93b64d853f5a6778e57505fa2c3ce9452486cb9c92990bb5115cc9bdabbbeef4",
+    "freeze.json": "75a3ccbb7ddbf230f1d00d144b2f2051cb4b477af2b0f0927e4e4963abc3f37c",
+    "judge-packets.json": "f3df012601d4dd2b3aeabe37b878e50d80854b2b3276aa36c7d523cc00b4d15f",
+    "judge-response.json": "a6dc446eb12839683023cc10c784771c8839481a20503dfac220a87183956f15",
+    "judge-result.json": "2753dc866830cb63ed4f17b005b25784715c4cdbca9bf3ff7331bd3f78edf66c",
+    "summary.json": "8680bd1c4c7546e7366299147c30753b534ca3edbc07ceb8cbaaf5e67fa0898e",
+    "transport-ledger.json": "f8f062d98dbb11d616257dd0bccbe8506603c775bae0abb84e13e4c38a4d32cd"
+  }
+}

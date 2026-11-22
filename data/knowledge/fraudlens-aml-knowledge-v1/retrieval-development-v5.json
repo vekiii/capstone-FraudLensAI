@@ -1,0 +1,13 @@
+{
+  "configuration_version": 5,
+  "algorithm": "bm25",
+  "variant": "english_coverage_v5",
+  "supported_query_language": "en",
+  "status": "development_candidate_not_accepted",
+  "k1": 1.2,
+  "b": 0.75,
+  "maximum_results": 5,
+  "adequacy_cutoff": 0.5,
+  "coverage_policy": "distinct informative query terms, at least one half present in passage; no automatic translation",
+  "cutoff_status": "Inherited demo heuristic, not held-out selected; coverage rule predeclared in v4 design."
+}
