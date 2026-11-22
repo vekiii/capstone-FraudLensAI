@@ -1,5 +1,15 @@
 # Next work - FraudLens AI
 
+## Feature 06 — T012 završen, 22. novembar 2026.
+
+Ponovljene provere T009–T011, T098 binding i EV-08 bez istorije su potvrđeni.
+Milan je pregledao dodatni EV-10 red, a postojeći loader je objavio zasebnu
+verziju korpusa. Zamrznut je paket sa 16 scenarija, odvojenom rubrikom i
+plafonom 19 zahteva po fazi. Nula živih poziva u zamrzavanju.
+[Dokaz spremnosti](evidence/tasks/feature-006-phase-04-freeze.md).
+
+Sledeći korak je T013 i T014 na tačnom SHA čistog baseline checkouta.
+
 ## Feature 06 — T009–T011 završeni, 22. novembar 2026.
 
 Pripremljeno je svih 16 [izvršnih ulaza](evals/capstone/inputs/cases.json) i
