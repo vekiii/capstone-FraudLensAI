@@ -1,6 +1,6 @@
 # Execution evidence
 
-[T252 user-reported approval attestation](tasks/T252-independent-approval-attestation-2026-11-22.md) records the user's reported checklist completion and team-representative approval, supporting evidence, missing reproduction details, and why T252 remains open.
+[T252 governance reconciliation](tasks/T252-governance-reconciliation-2026-11-22.md) verifies team approval, Git authorship, frozen hashes and aggregate arithmetic, and limits the open T252 record to its own actual reviewer/reproduction criteria; no Vedran-specific or project-wide gate is found. [The earlier approval attestation](tasks/T252-independent-approval-attestation-2026-11-22.md) preserves Isidora's checklist, Windows hashes and parity output.
 
 [Codex tehnički pregled završnog PR #3 kandidata](tasks/pr3-final-codex-technical-review-2026-11-22.md) bilježi tačan merge commit, izolovanu Mac reprodukciju, hash/paritet/regresiju, HTTP test-provider tok, ograničenje browser alata i otvoren T252. To nije ljudsko odobrenje. [T252 review zapis](tasks/feature-002-review.md) zasebno bilježi korisnički dostavljen ručni pregled aplikacije/rezultata/ograničenja na istom commitu; preostali nezavisni pregled i dalje je otvoren.
 

@@ -2,6 +2,8 @@
 
 ## Record status
 
+**Current reconciliation (2026-11-22):** The user clarified that they are reporting a team decision as its representative and are not Vedran or a personal attestor for him. Team approval of the reviewed local work is recognized. Vedran's own T252 review is **not independently verified**, and no written project rule requires his personal signature. [The governance and verification record](T252-governance-reconciliation-2026-11-22.md) limits the open T252 item to its own actual reviewer/reproduction evidence; it does not block unrelated authorized work. Historical statements below remain as the sequence in which evidence arrived.
+
 **User-reported disposition: APPROVED on behalf of the team. T252 remains open.** In this conversation the user states that they performed the T252 manual checklists and approve the reviewed scope on behalf of the whole team. They initially identified as an independent reviewer, but later identified as Isidora Popovic and answered a direct question about Feature 002 authorship with `i did all as a team`. This document records those statements as user attestations; it does not convert assistant-prepared summaries into reviewer actions or record separate approvals from unnamed team members.
 
 The T252 acceptance record calls for actual reviewer scope and reproduction details. The conversation now includes six user-supplied Windows PowerShell SHA-256 results and a successful user-reported parity output from the reviewed checkout. It does not provide the exact elapsed review time or a separate nonauthor's findings. The user-reported approval is recorded, but the missing independent review prevents marking T252 complete under the existing review gate. No duration is estimated.
