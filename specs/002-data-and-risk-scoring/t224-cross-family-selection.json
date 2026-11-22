@@ -1,0 +1,43 @@
+{
+  "format": "t224-cross-family-selection-v1",
+  "status": "frozen_before_comparison_results_not_applied",
+  "eligible_families": [
+    "prevalence_constant",
+    "decision_tree",
+    "logistic_regression",
+    "hist_gradient_boosting",
+    "lightgbm"
+  ],
+  "partition": "validation_only",
+  "threshold_per_candidate": {
+    "objective": "maximize_positive_class_f1_over_distinct_validation_scores",
+    "ties": ["higher_precision", "higher_threshold"]
+  },
+  "rank": [
+    "higher_validation_positive_class_f1_at_selected_threshold",
+    "higher_validation_average_precision",
+    "higher_validation_precision_at_20",
+    "earlier_family_in_family_tie_order",
+    "family_specific_tie_order"
+  ],
+  "family_tie_order": [
+    "prevalence_constant",
+    "decision_tree",
+    "logistic_regression",
+    "hist_gradient_boosting",
+    "lightgbm"
+  ],
+  "family_specific_tie_order": {
+    "hist_gradient_boosting": ["earlier_declared_candidate"],
+    "lightgbm": [
+      "fewer_num_leaves",
+      "higher_min_child_samples",
+      "lower_learning_rate",
+      "earlier_best_iteration",
+      "earlier_declared_candidate"
+    ]
+  },
+  "precision_at_20_score_ties": "transaction_id_unicode_codepoint_ascending",
+  "test_and_showcase_for_selection": false,
+  "activation": "separate_reviewed_decision_after_current_lightgbm_phase"
+}

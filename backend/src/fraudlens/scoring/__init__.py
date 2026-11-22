@@ -1,15 +1,19 @@
 """Deterministic illustrative scoring, with no model or external service."""
-from typing import Protocol
+from typing import Protocol, TypeVar
 
 from fraudlens.contracts import RiskAssessment, Transaction
 
 _DEMO_SCORES = (0.75, 0.40, 0.10)
 
 
-class Scorer(Protocol):
+InputT = TypeVar('InputT', contravariant=True)
+OutputT = TypeVar('OutputT', covariant=True)
+
+
+class Scorer(Protocol[InputT, OutputT]):
     """Replaceable synchronous assessment boundary; delivery validates its result."""
 
-    def score(self, transaction: Transaction) -> RiskAssessment: ...
+    def score(self, transaction: InputT) -> OutputT: ...
 
 
 class ScoringError(Exception):

@@ -1,224 +1,79 @@
-# Feature 002 data model and invariants
+# Data Model: Dataset, Risk Scoring and EDA
 
-Status: technical design, not implemented. Source-specific mappings are frozen
-only after the authorized IBM file audit. Public wire details are in
-[contracts/api.md](contracts/api.md) and [contracts/schemas.json](contracts/schemas.json).
+All records are local development artifacts unless explicitly designated as runtime output. Closed contracts reject unknown fields. Ground-truth visibility is stated per entity.
 
-## Identity and version rules
+## Raw IBM transaction
 
-- **SourceRowRef:** one-based CSV record ordinal assigned before validation;
-  a quoted multiline record is one record, not several physical lines.
-  For a multi-file release, include a declared member key. A source row can
-  produce one event, one event rejection, or a file-level failure that leaves
-  the import incomplete.
-- **Source namespace:** reviewed release identifier plus source member. It
-  cannot be inferred from a target label. A changed event fact under the
-  same namespace/row key is a collision requiring review, not a silent update.
-- **Transaction ID:** prefix D followed by 32 lowercase hexadecimal digits,
-  the first 128 bits of SHA-256 over a length-delimited source namespace,
-  member, and source-row ordinal. **Case ID:** prefix C with the same digest
-  input plus a distinct domain separator. Full input is retained locally
-  for collision checks. These IDs are opaque URL-safe keys, not source
-  accounts or labels. A same-file reimport yields the same IDs; equal-valued
-  distinct rows remain distinct.
-- **DatasetVersion ID:** prefix dv_ plus a digest of the raw content SHA-256,
-  mapping hash and time-policy hash. Unlike transaction ID, this changes
-  when a label-only file edit changes raw content. The underlying event
-  identity can remain stable, and histories must remain unchanged.
-- **Run ID:** unique local execution identifier. Reproduction compares
-  semantic fingerprint, predictions and metrics rather than requiring
-  wall-clock execution timestamps or run IDs to match.
-- **Snapshot reference:** the active run ID in v2 responses. Detail lookup
-  requires that reference and succeeds only while it still names the active
-  complete run. A switch yields a controlled stale-snapshot error.
+One CSV row as source text, with `source_row_number: uint64` (1-based data row after header) and exact original field text. Preserve raw bytes/checksum separately. Expected named positions must be verified from the selected source revision; two `Account` columns are mapped by index into `sender_account_raw` and `receiver_account_raw`. Raw `Is Laundering` is restricted label material, never part of runtime transaction.
 
-The digest scheme is a proposed reviewed contract choice. Do not implement
-it before the source audit confirms a stable source namespace/member/row
-reference. The full SHA-256 is checked for collisions even though public IDs
-are shorter. No target label, raw file hash or accepted-row position appears
-in the transaction/case identity input.
+## Canonical transaction (restricted local dataset)
 
-## DatasetVersion
+| Field | Type / rule | Notes |
+|---|---|---|
+| `transaction_id` | string, stable and unique | Derived deterministically from source file identity + source row number; no label-based component. |
+| `source_row_number` | positive integer | Stable provenance/order tie-break. |
+| `occurred_at_utc` | UTC instant at verified source precision | Explicit offsets normalize; timezone-naive policy recorded. |
+| `sender_bank_id`, `sender_account_id` | exact nonempty source text | Leading zeros preserved. |
+| `receiver_bank_id`, `receiver_account_id` | exact nonempty source text | Bank-qualified identities. |
+| `amount_received` | nonnegative decimal text / canonical decimal | Precision verified from source; no float parsing for identity. |
+| `receiving_currency` | source category string | Never merged with payment currency. |
+| `amount_paid` | nonnegative decimal text / canonical decimal | As above. |
+| `payment_currency` | source category string | Sender-side paid aggregation currency. |
+| `payment_format` | source category string | Unknown values recorded/handled by frozen policy. |
+| `is_laundering` | binary 0/1, restricted | Isolated label store/access layer; absent from public/runtime record. |
 
-| Field | Meaning / validation |
+Canonical sender and receiver account keys are tuples `(bank_id, account_id)`, preserving exact text. Transaction IDs remain stable only for an identical source hash and row mapping; protocol stores the source hash.
+
+## Historical feature vector
+
+Ordered fields: eight FR-011 features, then frozen current-transaction features. Counts are nonnegative integers; distinct counterparties are counts over distinct bank-qualified counterparty keys; sums use decimal arithmetic and are currency-homogeneous. The history interval is `[t−24h,t)`, grouped by canonical account and side-specific currency for amount fields. No event at `t` contributes. Empty counts/sums are zero. Null or invalid required source fields reject the row rather than impute silently. Feature schema/version/hash is stored with each dataset snapshot and model.
+
+| Feature | Formula |
 |---|---|
-| dataset_version | Stable digest of source content and reviewed mapping/time policy; unique in local store. |
-| source_name, release_id, member | Declared local IBM AML HI-Small distribution and file member; no secret URL/token. |
-| source_sha256, source_size_bytes | Hash/size of unmodified local source. |
-| license_reference | Reviewed source-data license reference, distinct from repository code license. |
-| mapping_version, mapping_sha256, time_policy | Exact mapping/parse policy used for this import. |
-| observed_schema, time_span, currencies | Results of actual source audit, never populated from assumptions. |
-| status | staged, complete, failed; only complete is selectable. |
-| imported_at, row_counts | Actual execution time and report reference. |
+| `sender_out_count_24h` | count earlier transactions with same sender key |
+| `sender_distinct_receivers_24h` | distinct receiver keys among those rows |
+| `sender_paid_count_same_currency_24h` | count those rows matching current payment currency |
+| `sender_paid_sum_same_currency_24h` | sum their `amount_paid` in that payment currency |
+| `receiver_in_count_24h` | count earlier transactions with same receiver key |
+| `receiver_distinct_senders_24h` | distinct sender keys among those rows |
+| `receiver_received_count_same_currency_24h` | count those rows matching current receiving currency |
+| `receiver_received_sum_same_currency_24h` | sum their `amount_received` in that receiving currency |
 
-Different source or mapping versions coexist by ID; no operation overwrites a
-complete version. An incomplete import is invisible to dataset selection.
+T212 froze the current-feature tail as `current_amount_paid_log1p`, `current_payment_currency`, `current_payment_format`, following the eight historical fields in exactly that order under `hi-small-temporal-v1`. The [protocol](protocol.md#t212-frozen-temporal-feature-contract-2026-11-19) specifies the Decimal-to-log transform, source precision, missing-value rejection and train-only categorical vocabularies with reserved unknown buckets. Currency remains a categorical identity, not a conversion factor. Implementation and stored feature-schema hash remain pending T213/T219.
 
-## ImportReport and row accounting
+## Dataset manifest
 
-For each CSV record, record a source-row reference and one event status:
-event_valid or event_rejected with a reason. Event-valid rows receive one
-private label status: eligible_positive, eligible_negative, missing, invalid
-or unsupported. The exact source label mapping is part of the reviewed
-mapping. Counts obey:
+`manifest_version`, dataset/source/release, acquisition timestamp/method, source URL/license text reference, source filename/size/SHA-256, schema/header positional map, parser/code revision, config hash, UTC/timezone policy, source/accepted/rejected counts and rejection counts by reason, warm-up/scoreable counts, timestamp min/max, category counts, restricted label audit reference, processed file names/sizes/hashes, checkpoint hashes, and completion state. Incomplete staging manifests cannot be consumed by training or scoring.
 
-    source_records = event_valid + event_rejected
-    event_valid = label_eligible + label_ineligible
-    label_eligible = positives + negatives
+## Chronological partition
 
-File-level parse failure before a trustworthy total row count marks the whole
-attempt failed; it cannot publish a partial report as a complete import.
-The report also records duplicate/unknown headers, field mapping, missingness,
-timestamp/currency coverage, rejected reasons, class denominator and examples
-sanitized of sensitive paths/values. Unknown fields are never predictors by
-default. Raw source remains unchanged.
+`partition_id ∈ {development, showcase, train, validation, test}`; UTC start/end instants and inclusivity, row count, scoreable count, timestamp-group boundary, scoreable-ID hash, and parent partition. Development/showcase are contiguous by source-row cumulative boundary at whole timestamp. Train/validation/test divide scoreable development rows 70/15/15. Partition entities carry counts and hashes; labels are not fields. Allowed aggregate label audit is stored separately with query log and approval reference.
 
-## CanonicalTransaction
+## Frozen training protocol and model metadata
 
-Operational projection, with no target or label-validity field:
+Protocol fields: dataset/source hash; time/warm-up rules; exact partition boundaries, counts/hashes and allowed prevalence summary; feature schema/version; seed 42; tie rules; training preprocessing; class strategy; fixed candidate grid; metrics; threshold objective; resource ceilings; label access policy; showcase role; protocol hash and freeze timestamp. No model fitting until protocol validates.
 
-| Field | Meaning / validation |
+Model metadata fields: `model_id`, model type/config, model artifact format/version/hash, preprocessing hash, Python and dependency versions, training-code revision, dataset/protocol/partition hashes, feature order/version, seed, selected validation AP/P@20/simplicity rationale, validation threshold and method, calibration status, permitted evaluation references, and creation time. Never embed record-level labels in runtime metadata.
+
+## Prediction result (runtime)
+
+| Field | Type / constraint |
 |---|---|
-| transaction_id, dataset_version, source_row_ref | Stable identity and provenance; source-row reference stays internal. |
-| event_time_raw | Exact source timestamp text. |
-| event_time_utc, event_time_epoch_ns | Lossless interpreted UTC time and sortable integer nanoseconds under the reviewed policy. If source precision cannot be represented losslessly, block mapping/import until resolved. |
-| sender_bank, sender_account | Nonempty source values preserved with reviewed normalization; qualified join key is derived with unambiguous length-delimited encoding. |
-| receiver_bank, receiver_account | Same, separately directed; never swapped or inferred. |
-| paid_amount, paid_currency | Exact nonnegative decimal text and source currency. No binary float or FX conversion in canonical storage. |
-| received_amount, received_currency | Separate exact decimal/currency; never collapsed into paid values. |
-| payment_format | Optional source value only when actually present and reviewed. |
-| event_fact_digest | Digest of normalized observable facts, excluding label, for cross-version collision checks. |
+| `transaction_id` | opaque stable string; must match request |
+| `risk_score` | finite number in `[0,1]`; not called probability absent calibration evidence |
+| `review_status` | `review_recommended` or `below_threshold` from frozen threshold |
+| `source` | `fixture`, `rules`, or `model` |
+| `model_version`, `feature_version` | nonempty identifiers; fixture may identify fixture scorer |
+| `scored_at` | RFC3339 UTC |
+| `explanation` | bounded text, observed facts and defensible values only |
+| `eligibility` | eligible result only; ineligible requests use explicit error contract |
 
-The mapping declares supported decimal scale/magnitude, zero policy, currency
-syntax, timestamp timezone/granularity and optional field behavior after
-source inspection. Unsupported/nonfinite/negative/overflowing input receives
-a row rejection reason, not a rounded value. Event time, feature cutoff and
-actual scored time are separate fields in downstream records.
+No `is_laundering`, label, target-derived indicator or analyst conclusion appears in this or transaction UI model.
 
-## PrivateEvaluationLabel
+## Evaluation summary
 
-Keyed by dataset version and transaction ID, stored in a private table read
-only by offline fit/evaluation code. Fields: label value (0/1 when eligible),
-eligibility/reason, source-row reference, and source label mapping version.
-The operational repository, ScoreRequest, feature snapshot, explanation,
-public API and UI models do not contain this entity. An event with an invalid
-label can still contribute its observable facts to history.
+Partition and authorization reference; model/protocol hashes; metric names/values/denominators; prevalence; threshold; confusion counts; top-k precision/recall; PR curve points (bounded); daily alert counts; calibration status; synthetic-data caveat; execution evidence reference. No record-level IDs/labels in public summary. Test summary exists only after explicit authorization.
 
-## FeatureDefinition and HistoricalFeatureSnapshot
+## EDA summary and chart series
 
-The versioned catalog gives each feature a key, meaning, input fields,
-availability time, lookback [t−24h,t), direction, unit/currency, null/unknown
-semantics, lineage, and visibility to rule/model/UI. Initial catalog:
-
-| Feature key | Meaning and type |
-|---|---|
-| sender_out_count_24h | Integer count of earlier outgoing events for the bank-qualified sender. |
-| sender_distinct_receivers_24h | Integer distinct bank-qualified receivers in earlier sender outgoing history. |
-| sender_paid_count_same_currency_24h | Integer count of earlier sender outgoing paid amounts with current paid currency. |
-| sender_paid_sum_same_currency_24h | Exact Decimal sum in current paid currency; mean is sum/count only when count > 0. |
-| receiver_in_count_24h | Integer count of earlier incoming events for the bank-qualified receiver. |
-| receiver_distinct_senders_24h | Integer distinct bank-qualified senders in earlier receiver incoming history. |
-| receiver_received_count_same_currency_24h | Integer count of earlier receiver incoming received amounts with current received currency. |
-| receiver_received_sum_same_currency_24h | Exact Decimal sum in current received currency. |
-| current_paid_amount, current_paid_currency | Current observable paid side, preserving unit; float/model transform occurs only after canonical validation. |
-| current_payment_format | Optional categorical value if actual source mapping supports it; otherwise absent from the frozen feature schema. |
-
-Snapshot fields: transaction ID, dataset/feature version, event time, as-of
-cutoff, coverage_start, coverage_state (full, incomplete, unavailable),
-typed feature values, currency units, feature-input digest and creation time.
-The first 24h of source observation is context-only warm-up. After that
-point, a new account can have a measured zero; missing prior source coverage
-is never represented as a measured zero. All events at one timestamp use
-the same earlier history, then update later history as a group.
-
-## RulePolicy and ScorerArtifact
-
-**RulePolicy v1** has the three conditions/weights in research.md, a score
-aggregation rule, comparison boundaries, missing-feature treatment, reason
-templates and a policy hash. It is frozen before evaluation. Rules accept
-only current canonical facts and the matching feature snapshot.
-
-**ScorerArtifact** stores scorer source (rules/model), version, exact feature
-schema and transform version, training/data/protocol references, selected
-hyperparameters/seed, calibration status, local artifact path and SHA-256
-where applicable, dependency versions and trusted-origin record. Loading
-an artifact with a mismatched hash, schema, dataset role or version fails.
-The fixture scorer is a separate Foundation v1 artifact-free mode.
-
-## SplitManifest and EvaluationProtocol
-
-Manifest fields: dataset version, observable benchmark-view rule, warm-up
-cutoff, whole-timestamp train/validation/test boundaries, exact transaction
-IDs and class/eligibility counts per partition, protocol hash and freeze
-time. The split algorithm chooses nearest 70/15/15 row counts with whole
-timestamp groups, breaking equal-distance choices toward the earlier
-boundary. Boundaries are chosen before target labels are joined; class
-counts are then checked for eligibility.
-
-Protocol fields: feature allowlist/lineage, candidate grids, seed, train-only
-transform policy, validation AP/P@K/simplicity selection, AP tolerance,
-calibration role (initially none), K=20, per-scorer validation F0.5 threshold
-policy, positive label 1, metric implementation/dependency version,
-resource budget and holdout disclosure status. Training labels fit
-supervised models; validation labels select/tune; test labels join only
-frozen predictions. A consumed holdout can be reused only with
-exploratory status.
-
-## ScoreRequest, RiskAssessment and Explanation
-
-ScoreRequest contains one CanonicalTransaction, matching
-HistoricalFeatureSnapshot, dataset version, run ID, scorer version and
-feature as-of cutoff. It has no label. The scorer validates identity,
-schema and coverage before returning an assessment.
-
-RiskAssessment contains transaction/run/dataset identity, source
-(rules/model), finite score in [0,1], score interpretation
-(ordinal_rule_score or uncalibrated_probability_estimate or
-calibrated_probability), scorer/feature/artifact versions, event/as-of/
-actual scored times, and a matching Explanation or explicit unavailable
-reason. Never clamp a bad score.
-
-Explanation stores method, explained output scale, exact input snapshot
-digest, up to three strongest items with observed value/unit/direction and
-contribution/condition, plus base/remainder when additive reconstruction
-is claimed. Rule items cite fired conditions and weights. Linear model
-items explain log odds, not the displayed sigmoid score; tree path items
-explain positive-class leaf output. A top-three subset is labeled partial
-unless base/remainder permit exact method-specific reconstruction.
-
-## ScoredRun, ReviewCaseSnapshot and EvaluationReport
-
-ScoredRun fields: unique run ID, semantic fingerprint, dataset/feature/scorer/
-artifact/protocol references, frozen threshold policy/value, score population
-count, alert count, status (staging, completed, failed), created/completed/
-activated times, artifact hashes and validation summary. Rows and
-assessments are immutable after completed. A failed run cannot activate.
-
-ReviewCaseSnapshot contains one stable case ID per threshold alert, its
-transaction ID, run ID, immutable assessment reference, event time, rank
-used for display selection, total alert count, displayed count, selected
-time range and truncation. Select most recent 100 by descending event
-time and ascending transaction ID at ties; display selected rows in
-ascending event time/ID. An alert that vanishes under a later scorer
-vanishes from the active list, while its stable case ID remains reserved
-for that source event.
-
-EvaluationReport stores exact row IDs/denominators, baseline/model
-predictions and metrics, tie groups, scorer-specific thresholds/alert
-counts, Brier/reliability status where model output is a probability
-estimate, uncertainty status/limits, class and seen/unseen-account
-coverage, machine/time/resource facts, hashes, test-holdout disclosure
-state and limitations. It is separate from public case payloads.
-
-## State transitions and invariants
-
-    DatasetVersion: staged -> complete | failed
-    ScoredRun: staging -> completed | failed
-    ActiveRunPointer: none | one completed run ID
-
-Only complete imports may feed a run. Only a completed run may become
-active. Active pointer replacement and its visibility happen atomically.
-On process failure before activation, the old pointer remains unchanged.
-At read time, both list and detail bind one complete active run; detail
-requires the list's snapshot reference and returns stale-snapshot when
-it no longer matches. No public projection contains PrivateEvaluationLabel.
+Summary: dataset version, snapshot time, UTC range, source/accepted/rejected/warm-up/scoreable counts, quality categories and bounded categorical counts. Public summary excludes target distribution. Chart series have `series_id`, `label`, `unit`, `bucket_labels`, numeric `values`, denominator definition, currency (required for monetary values), UTC timezone where applicable, and bounded point/category count. No transaction row, account identifier, target label, or label-derived prevalence is included.

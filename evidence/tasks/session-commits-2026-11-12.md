@@ -96,3 +96,35 @@ identity and is pushed normally to the same branch. Its own revision is availabl
 in Git history under that exact subject; final remote/HEAD comparison is performed
 after publication. This receipt reports the observed six-commit push above and
 does not fabricate a result for a command that has not yet run.
+
+## Feature 002 specification commit (local only)
+
+Date: 2026-11-18, Europe/Budapest. Branch: `feature/002-clean-start`.
+Starting revision: `33bcf628ec4325d386117f72378e79835194e772`.
+Commit: `df4dabf36b9f4ff7b3a66d9de011ce29fbcbbed1` —
+`docs(feature-002): specify dataset risk scoring and EDA`.
+Author and committer: Isidora Popovic <popovicisidora17@gmail.com>.
+This commit contains the Feature 002 specification package, the verbatim original
+prompt at `prompts/development/002-dataset-ml-eda.md`, and its index link in
+`prompts/README.md`. It does not contain `artifacts/` or `data/artifacts/`, which
+were already untracked and were left untouched. No push was requested or performed.
+
+Specification checks actually performed:
+
+- Spec-kit `spec-template` resolution succeeded after invoking the reviewed
+  PowerShell script with the repository-documented `-ExecutionPolicy Bypass` form.
+- `contracts/schemas.json` parsed and passed JSON Schema meta-validation using the
+  workspace `.venv` Python environment.
+- Static review counted 39 functional requirements and 55 unique implementation
+  tasks; all requirements are linked in the task traceability index, and every
+  implementation task remains unchecked.
+- `git diff --cached --check` passed before commit.
+
+Not performed: application tests, real-source acquisition/schema/count checks,
+record-level or aggregate label audit, model training/evaluation, frontend/browser
+execution, human review, peer reproduction, and remote push. A first `uv run`
+schema-check attempt could not acquire the user-level uv cache lock; the schema
+meta-check then passed with the already-installed workspace interpreter. This is
+a specification-only package and makes no implementation or model-quality claim.
+`next_work.md` was not changed. Team review/approval remains pending for the EDA
+screen and the other decision gates recorded in the Feature 002 plan.

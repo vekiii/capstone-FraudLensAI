@@ -1,0 +1,7 @@
+# T229 unweighted model freeze/export decision — 2026-11-20
+
+The user selected the **existing**, already fitted unweighted LightGBM from the approved FR-023 validation comparison for a new artifact freeze and later separately authorized final test evaluation. Exact selected native model SHA-256: `3b4e4019312d60610dd0094c6697897a061611a60e7777ed7be35e133af9451c`. Fixed validation threshold: `0.2489517623052024`.
+
+The model originated in the separately approved five-arm diagnostic (`scale_pos_weight=1` arm; diagnostic protocol canonical SHA-256 `22a4e6c8efe744de7d4d9b5304a8252f144ffa532037d7f0d8a5a83c66951b5b`). The approved FR-023 cross-family comparison protocol canonical SHA-256 `7fd4e7349b2ef4921166d008f5c3b7e147c21a6554eae5160f33948d323bac32` included this exact model without refit. Its completed validation ranking placed this model first; [execution evidence](T224-stagec-cross-family-execution-2026-11-20.md) retains the scores, limitations and full output hashes. Validation was already used for development and diagnosis, so this choice is not independent generalization evidence.
+
+The user authorized preparation of a new trusted manifest and **label-free** frozen test-prediction export using the exact model and threshold, without fitting, relearning preprocessing or modifying prior outputs. This decision does **not** authorize T230, test/showcase label access, test metrics, application acceptance/activation, commit or push. The historical weighted LightGBM freeze and its sealed predictions remain intact as a different model/result lineage.

@@ -10,7 +10,8 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; }
-button { font: inherit; cursor: pointer; }
+button, input { font: inherit; }
+button { cursor: pointer; }
 button, h2, dd, p { overflow-wrap: anywhere; }
 button:focus-visible, h2:focus-visible { outline: 3px solid #145cb4; outline-offset: 4px; }
 h1, h2, h3, h4, p { margin: 0 0 0.8rem; }
@@ -59,6 +60,26 @@ dt { color: #4c6271; font-size: 0.9rem; }
 dd { margin: 0; font-weight: 550; }
 .risk-score { color: var(--accent); font-size: 2rem; font-weight: 750; margin-bottom: 0.2rem; }
 .explanation { white-space: pre-wrap; margin-bottom: 0; }
+.risk-workspace { margin-top: 1.5rem; padding: 1.5rem; background: white; border: 1px solid var(--border); border-radius: 12px; }
+.risk-workspace form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; margin: 1rem 0; align-items: end; }
+.risk-workspace label { grid-column: 1 / -1; font-weight: 600; }
+.risk-workspace input { min-width: 0; width: 100%; min-height: 44px; padding: 0.65rem; border: 1px solid var(--border); border-radius: 7px; }
+.risk-workspace input:focus-visible { outline: 3px solid #145cb4; outline-offset: 2px; }
+.risk-workspace .risk-score { margin-top: 1rem; }
+.site-nav { display: flex; gap: 1rem; margin-top: 1rem; }
+.site-nav a { color: var(--accent); font-weight: 650; }
+.site-nav a:focus-visible { outline: 3px solid #145cb4; outline-offset: 4px; }
+.eda-series { margin: 1.5rem 0; max-width: 100%; overflow-x: auto; }
+.eda-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.eda-table caption { text-align: left; font-weight: 600; margin-bottom: 0.5rem; }
+.eda-table th, .eda-table td { border-bottom: 1px solid var(--border); padding: 0.35rem 0.6rem; text-align: left; vertical-align: top; }
+.eda-table th { max-width: 24rem; overflow-wrap: anywhere; }
+.eda-table td { min-width: 10rem; }
+.eda-value { display: block; }
+.eda-bar { display: block; height: 0.45rem; max-width: 100%; background: var(--accent); border-radius: 0.2rem; }
+.eda-disclosure { border-top: 1px solid var(--border); padding: 0.8rem 0; }
+.eda-disclosure summary { cursor: pointer; font-weight: 650; min-height: 44px; }
+.eda-disclosure summary:focus-visible { outline: 3px solid #145cb4; outline-offset: 3px; }
 
 @media (max-width: 700px) {
   #app { padding: 1.5rem 1rem 2rem; }
@@ -66,4 +87,6 @@ dd { margin: 0; font-weight: 550; }
   .case-navigation, .case-panel { padding: 1rem; }
   .fields > div { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
   .synthetic-notice { padding: 0.8rem 1rem; }
+  .risk-workspace { padding: 1rem; }
+  .risk-workspace form { grid-template-columns: minmax(0, 1fr); }
 }

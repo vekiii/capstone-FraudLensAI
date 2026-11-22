@@ -71,7 +71,7 @@ def test_factory_reads_environment_and_default_health():
         assert client.get('/api/health').json() == {'status': 'ok', 'mode': 'fixture'}
 
 
-@pytest.mark.parametrize('mode', ['model', 'rules', '', 'FIXTURE'])
+@pytest.mark.parametrize('mode', ['rules', '', 'FIXTURE'])
 def test_factory_rejects_unsupported_environment_mode(monkeypatch, mode):
     from fraudlens.main import create_app
 
