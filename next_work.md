@@ -13,8 +13,12 @@ baseline EV-06. Prihvatanje feature-a ostaje otvoreno.
 [CAP mapa](evidence/tasks/feature-006-capstone-evidence-map.md) ·
 [Predaja faze 6](evidence/tasks/feature-006-phase-06-handoff.md).
 
-Naredni tehnički korak je uskladiti očekivanu granicu pristupa Cases
-sa opsegom Feature 05 T028, koji planira autorizaciju live API-ja.
+Dogovoreno je da se Cases koristi bez prijave u lokalnom demou, kada su
+aplikacija i API dostupni samo preko `127.0.0.1`. Odluka je zabeležena u
+[quickstart-u](specs/006-capstone-evaluation/quickstart.md#3-proba-bez-naplate-kroz-api-vite-i-worker).
+Backend testovi nisu ponovljeni povodom dokumentovanja odluke.
+Kada se nastavi rad na Feature 06, prvo uskladiti test pristupa za
+`GET /api/cases` sa ugovorom lokalnog demoa i ponoviti ciljane provere.
 
 ## Feature 06 — Faza 5 završena, 22. novembar 2026.
 

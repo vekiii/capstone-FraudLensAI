@@ -83,6 +83,11 @@ proveri treba da bude dostupna. [Izvorni digesti i T002 nalaz](../../evidence/ta
 
 ## 3. Proba bez naplate kroz API, Vite i worker
 
+U lokalnom capstone demou Cases se koristi bez prijave radi demonstracije i
+testiranja. Odluka važi kada su React aplikacija i API dostupni samo sa istog
+računara preko `127.0.0.1` (loopback). Autorizacija budućeg API-ja za live
+upozorenja ostaje u [opsegu Feature 05 T028](../005-real-time-fraud-detection-mlops/contracts/live-alert-api.md).
+
 Otvori tri PowerShell terminala u korenu istog checkout-a. Izaberi jedno
 slobodno ime za probu i upiši ga kao `$runName` u **oba backend terminala**.
 U oba izvrši blok podešavanja ispod. Za ovu probu koristi checkout bez
