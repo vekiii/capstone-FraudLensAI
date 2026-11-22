@@ -16,9 +16,12 @@ baseline EV-06. Prihvatanje feature-a ostaje otvoreno.
 Dogovoreno je da se Cases koristi bez prijave u lokalnom demou, kada su
 aplikacija i API dostupni samo preko `127.0.0.1`. Odluka je zabeležena u
 [quickstart-u](specs/006-capstone-evaluation/quickstart.md#3-proba-bez-naplate-kroz-api-vite-i-worker).
-Backend testovi nisu ponovljeni povodom dokumentovanja odluke.
-Kada se nastavi rad na Feature 06, prvo uskladiti test pristupa za
-`GET /api/cases` sa ugovorom lokalnog demoa i ponoviti ciljane provere.
+Test za `GET /api/cases` sada potvrđuje HTTP 200 i listu sintetičkih
+slučajeva bez prijave u lokalnom demou. Prošla su 72 ciljana backend testa
+i Ruff. Puna regresija i živo EV merenje nisu ponovljeni.
+[Provera lokalnog pristupa](evidence/tasks/feature-006-local-cases-access.md).
+Pri nastavku Feature 06, pregledati blokirani baseline EV-06 i doneti
+odluku o razrešenju otvorenog kriterijuma SC-002 pre integracije.
 
 ## Feature 06 — Faza 5 završena, 22. novembar 2026.
 

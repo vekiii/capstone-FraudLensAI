@@ -33,13 +33,19 @@ def _assert_generic_error(response, expected_status: int) -> None:
     assert "sqlite" not in response.text.lower()
 
 
-def test_case_listing_requires_an_authenticated_principal() -> None:
-    """RED until the API has the analyst access boundary planned by T028."""
-    with _client() as client:
+def test_local_demo_case_listing_works_without_sign_in() -> None:
+    """The loopback demo serves fixture cases without user credentials."""
+    with TestClient(
+        create_app(settings=Settings(mode="fixture")),
+        base_url="http://127.0.0.1:8000",
+        client=("127.0.0.1", 50000),
+    ) as client:
         response = client.get("/api/cases")
 
-    assert response.status_code in {401, 403}
-    assert "items" not in response.text
+    assert response.status_code == 200
+    items = response.json()["items"]
+    assert isinstance(items, list)
+    assert any(item["case_id"] == "CASE-001" for item in items)
 
 
 def test_hostile_origin_preflight_receives_no_cross_origin_permission() -> None:
