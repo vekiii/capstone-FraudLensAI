@@ -1,5 +1,11 @@
 # Feature 06 · T025 · Završni audit dokaza
 
+**Dopuna od 22. novembra 2026.** [Ponovljeno živo poređenje](feature-006-sc002-live-v2.md)
+ispunjava SC-002 i CAP-05. Oba merenja imaju svih 16 stvarnih ishoda,
+uključujući EV-06 iz EV-01 iste faze. Ispod su nalazi originalnog audita i
+regresije za originalni kandidat. Novi kandidat je zadržan u odvojenom
+commitu i njegova slabija ukupna ocena je deo dokaza.
+
 22. novembar 2026, Europe/Belgrade. Testirani kandidat
 `d8acc2a335d95e2402f586006925949f4d9f7739` (D), baseline
 `5974f94f68c2a1fd1e42b9b2d01d438c30bd8dca` (B), dokumentacioni HEAD na

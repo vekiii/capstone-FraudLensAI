@@ -8,6 +8,12 @@ Referentni testirani kandidat je `d8acc2a335d95e2402f586006925949f4d9f7739`.
 Baseline poređenja je `5974f94f68c2a1fd1e42b9b2d01d438c30bd8dca`.
 [Pinovi kandidata](feature-006-release-candidate.md).
 
+**Dopuna za CAP-05, 22. novembar 2026.** [Ponovljeno živo poređenje](feature-006-sc002-live-v2.md)
+zatvara CAP-05 i SC-002 sa 16 stvarnih parova na `d8acc2a` i `a814eb0`.
+U obe faze EV-06 je potvrđen bez dodatnog LLM zahteva. Poređenje beleži
+EV-07 kao poboljšanje i EV-01 i EV-08 kao regresije. Tabela ispod čuva
+originalno merenje i zaključke za tadašnji referentni kandidat `d8acc2a`.
+
 | CAP | Zahtev | Testirani SHA | Dokaz i način provere | Stanje i ograničenje |
 | --- | --- | --- | --- | --- |
 | CAP-01 | Specifikacija, tehnički dogovor i glavni tok (FR-008). | Final `d8acc2a` | Pratiti identitet i scorovani snapshot iz Cases kroz kreiranje pokušaja, evidence, review i reload. [Specifikacija](../../specs/006-capstone-evaluation/spec.md) · [Plan](../../specs/006-capstone-evaluation/plan.md) · [Ugovor](../../specs/006-capstone-evaluation/contracts/evaluation.md) · [Browser trag](feature-006-final-live.md). | Dokaz povezan. Prihvatanje celog feature-a ostaje otvoreno. |

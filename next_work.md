@@ -1,16 +1,27 @@
 # Next work - FraudLens AI
 
-## Feature 06 — dopunski EV-06 par prošao
+## Feature 06 — SC-002 i CAP-05 ispunjeni
+
+Dva validirana merenja imaju po 16 stvarnih ishoda. Početna revizija
+`d8acc2a` ima 15/16 prolaza, a kandidat `a814eb0` 14/16. EV-06 je u obe
+faze ponovo otvorio nacrt, citat i odluku iz EV-01 iste faze bez novih
+LLM zahteva. EV-07 je popravljen, dok su EV-01 i EV-08 pali u završnoj
+fazi. Utrošeno je 38 zahteva. Izmena ostaje u odvojenom commitu zbog
+slabijeg ukupnog rezultata. [Zapis ciklusa](evidence/tasks/feature-006-sc002-live-v2.md).
+
+Sledeći korak za Feature 06 je pregled otvorenih nalaza iz završnog audita
+pre odluke o verziji za predaju. Za T252 i dalje je potreban stvarni
+nezavisni ljudski pregled. [Završni audit](evidence/tasks/feature-006-final-audit.md).
+
+## Feature 06 — prethodni dopunski EV-06 par
 
 Isti checkpointovani T098 test-provider pokušaj i odluka obnovljeni su u
 Chrome-u i kroz direktni HTTP na `5974f94` i `d8acc2a`. Oba citata su
 otvorena, hash radne baze ostao je isti i nije bilo novih provider
 zahteva. [Dopunski dokaz](evidence/tasks/feature-006-sc002-ev06-supplement.md).
 
-Originalni SC-002 ostaje otvoren zbog istorijskog blokiranog EV-06.
-Sledeći korak: potvrditi obim novog živog uporedivog ciklusa na istih
-16 slučajeva. Predlog je baseline `d8acc2a` i do 38 novih zahteva za obe
-faze uz postojeći budžetski protokol.
+U tom istorijskom paru SC-002 je ostao otvoren zbog blokiranog EV-06.
+Noviji živi ciklus dokumentovan je na vrhu fajla.
 
 ## T252 i SC-002 — priprema dopunskih dokaza
 
@@ -41,8 +52,9 @@ T024 i T025 su izvršeni. Kandidat `d8acc2a335d95e2402f586006925949f4d9f7739`
 ima 796 pytest prolaza, 72 pada, 24 preskoka i 4 greške pri postavci.
 Ciljano poređenje na baseline-u reprodukuje svih 76 problematičnih node ID-jeva.
 Ruff, 211 Vitest testova i produkcijski build su prošli.
-Final ostaje 13/16 (EV-01/04/07 fail), SC-002 i CAP-05 su otvoreni zbog
-baseline EV-06. Prihvatanje feature-a ostaje otvoreno.
+Tadašnji final je imao 13/16 (EV-01/04/07 fail). U tom merenju su SC-002
+i CAP-05 ostali otvoreni zbog baseline EV-06. Prihvatanje feature-a
+ostaje otvoreno.
 [Regresija](evidence/tasks/feature-006-regression.md) ·
 [Audit](evidence/tasks/feature-006-final-audit.md) ·
 [CAP mapa](evidence/tasks/feature-006-capstone-evidence-map.md) ·
