@@ -1,5 +1,28 @@
 # Next work - FraudLens AI
 
+## T252 i SC-002 — priprema dopunskih dokaza
+
+Originali iz `new_folders/` uklonjeni su nakon ponovne provere kopija.
+Artefakti i prateći manifesti su u izolovanom checkoutu.
+[Tehnički T252 nalaz](evidence/tasks/t252-technical-findings-for-review.md)
+čeka stvarnu ljudsku potvrdu. [Dopunski EV-06 protokol](specs/006-capstone-evaluation/contracts/sc-002-supplemental-ev06.md)
+definiše uporediv par ponovnog otvaranja bez poziva modelu. Protokol još nije
+izvršen i istorijski rezultati ostaju sačuvani.
+
+Naredni korak: materijalizovati i zamrznuti jedno početno stanje za obe revizije.
+
+## T252 — Windows tehnička reprodukcija, 22. novembar 2026.
+
+Paket iz `new_folders/` je hashiran i njegovi data artefakti kopirani su u
+izolovani checkout na `d46699f`. Python 3.14.10, zaključane zavisnosti,
+paritet skora i automatizovani model → case → test worker → dokaz →
+sačuvana odluka su provereni. Ljudski pregled T252 je otvoren.
+[Zapis reprodukcije](evidence/tasks/t252-windows-reproduction-2026-11-22.md).
+
+Naredni korak za Feature 06 je dogovor o dopunskom uporedivom dokazu za
+SC-002. Baseline EV-06 zavisio je od neuspešnog EV-01, dok final EV-06
+već ima potvrđen prolaz bez dodatnog modelskog zahteva.
+
 ## Feature 06 — Faza 6 proverena, 22. novembar 2026.
 
 T024 i T025 su izvršeni. Kandidat `d8acc2a335d95e2402f586006925949f4d9f7739`
