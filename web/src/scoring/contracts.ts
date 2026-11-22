@@ -83,6 +83,32 @@ export function decodeCanonicalTransactionId(value: unknown): string {
   return [...id].length <= 160 ? id : invalid();
 }
 
+export function decodeModelCaseBinding(value: unknown) {
+  const v = closedObject(value, ['contract_version', 'canonical_transaction_id', 'case_id',
+    'transaction_id', 'case_digest', 'transaction_digest', 'snapshot_ref', 'dataset_version',
+    'model_sha256', 'feature_version', 'feature_manifest_sha256', 'source_sha256',
+    'threshold', 'risk_score', 'review_status', 'event_time_utc', 'assessed_at_utc']);
+  if (v.contract_version !== 1 || v.review_status !== 'review_recommended') invalid();
+  const canonical_transaction_id = decodeCanonicalTransactionId(v.canonical_transaction_id);
+  const case_id = patternedText(v.case_id, /^C[0-9a-f]{32}$/);
+  const transaction_id = patternedText(v.transaction_id, /^D[0-9a-f]{32}$/);
+  const case_digest = patternedText(v.case_digest, /^[0-9a-f]{64}$/);
+  const transaction_digest = patternedText(v.transaction_digest, /^[0-9a-f]{64}$/);
+  const source_sha256 = patternedText(v.source_sha256, /^[0-9a-f]{64}$/);
+  const model_sha256 = patternedText(v.model_sha256, /^[0-9a-f]{64}$/);
+  const feature_manifest_sha256 = patternedText(v.feature_manifest_sha256, /^[0-9a-f]{64}$/);
+  const threshold = score(v.threshold), risk_score = score(v.risk_score);
+  if (canonical_transaction_id.split(':')[1] !== source_sha256 || risk_score < threshold
+      || case_id.slice(1) !== case_digest.slice(0, 32)
+      || transaction_id.slice(1) !== transaction_digest.slice(0, 32)) invalid();
+  return { contract_version: 1 as const, canonical_transaction_id, case_id, transaction_id,
+    case_digest, transaction_digest, snapshot_ref: patternedText(v.snapshot_ref, /^run_[A-Za-z0-9_-]{1,64}$/),
+    dataset_version: patternedText(v.dataset_version, /^dv_[0-9a-f]{64}$/), model_sha256,
+    feature_version: boundedText(v.feature_version, 80), feature_manifest_sha256, source_sha256,
+    threshold, risk_score, review_status: 'review_recommended' as const,
+    event_time_utc: timestamp(v.event_time_utc), assessed_at_utc: timestamp(v.assessed_at_utc) };
+}
+
 export function decodePredictionResult(value: unknown): PredictionResult {
   const object = closedObject(value, [
     'transaction_id', 'risk_score', 'review_status', 'source', 'model_version',

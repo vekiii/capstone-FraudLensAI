@@ -30,14 +30,16 @@ export function createKnowledgeView(root: HTMLElement, actions: { search(query: 
   };
 }
 
-export function createReportView(root: HTMLElement, actions: { start(): void; refresh(): void; select(id: string): void; evidence(id: string): void; retry(reuse: boolean): void; cancel(): void; parent(): void; review(body: ReviewInput): void }) {
+export function createReportView(root: HTMLElement, actions: { start(): void; refresh(): void; select(id: string): void; evidence(id: string): void; retry(reuse: boolean): void; cancel(): void; parent(): void; review(body: ReviewInput): void }, sourceMode: 'fixture' | 'dataset' = 'fixture') {
   const heading = node('h2', 'AI istraga'); heading.tabIndex = -1;
   const list = node('div'); const panel = node('section'); panel.setAttribute('aria-live', 'polite');
   const source = node('section'); source.setAttribute('aria-live', 'polite');
   const history = node('div');
   const start = node('button', 'Pokreni novu istragu'); start.type = 'button'; start.dataset.start = ''; start.addEventListener('click', actions.start); start.disabled = true;
   const refresh = node('button', 'Osveži sačuvano stanje'); refresh.type = 'button'; refresh.dataset.refresh = ''; refresh.addEventListener('click', actions.refresh);
-  root.replaceChildren(heading, node('p', 'Sintetički fixture podaci, bez ML predikcije. Skor nije verovatnoća prevare. AI nacrt podržava ljudsku odluku.'), start, refresh, list, history, panel, source);
+  root.replaceChildren(heading, node('p', sourceMode === 'dataset'
+    ? 'Modelom preporučen slučaj iz proverenog izvoda. Skor nije kalibrisana verovatnoća prevare. AI nacrt podržava ljudsku odluku.'
+    : 'Sintetički fixture podaci, bez ML predikcije. Skor nije verovatnoća prevare. AI nacrt podržava ljudsku odluku.'), start, refresh, list, history, panel, source);
   const section = (title: string) => { panel.append(node('h3', title)); };
   function reviewForm(run: Run) {
     const report = run.report!;

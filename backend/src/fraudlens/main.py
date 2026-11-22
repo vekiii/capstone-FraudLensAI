@@ -91,6 +91,8 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None,
                results_service: ResultsService | None = None,
                eda_service: EdaService | None = None) -> FastAPI:
     app = FastAPI(title='FraudLens AI')
+    from fraudlens.bridge_api import router as model_case_router
+    app.include_router(model_case_router)
     app.include_router(knowledge_router)
     app.include_router(investigation_router)
     app.include_router(simulation_router)

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fraudlens.local/specs/003/contracts/model-case-bridge-v1.json",
+  "title": "Additive frozen Feature 002 model case binding",
+  "$defs": {
+    "Digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "CanonicalId": {"type": "string", "maxLength": 160, "pattern": "^ibm-hi-small:[0-9a-f]{64}:row:[1-9][0-9]*$"},
+    "Binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["contract_version", "canonical_transaction_id", "case_id", "transaction_id", "case_digest", "transaction_digest", "snapshot_ref", "dataset_version", "model_sha256", "feature_version", "feature_manifest_sha256", "source_sha256", "threshold", "risk_score", "review_status", "event_time_utc", "assessed_at_utc"],
+      "properties": {
+        "contract_version": {"const": 1},
+        "canonical_transaction_id": {"$ref": "#/$defs/CanonicalId"},
+        "case_id": {"pattern": "^C[0-9a-f]{32}$", "type": "string"},
+        "transaction_id": {"pattern": "^D[0-9a-f]{32}$", "type": "string"},
+        "case_digest": {"$ref": "#/$defs/Digest"},
+        "transaction_digest": {"$ref": "#/$defs/Digest"},
+        "snapshot_ref": {"type": "string", "pattern": "^run_[A-Za-z0-9_-]{1,64}$"},
+        "dataset_version": {"type": "string", "pattern": "^dv_[0-9a-f]{64}$"},
+        "model_sha256": {"$ref": "#/$defs/Digest"},
+        "feature_version": {"type": "string", "minLength": 1, "maxLength": 80},
+        "feature_manifest_sha256": {"$ref": "#/$defs/Digest"},
+        "source_sha256": {"$ref": "#/$defs/Digest"},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "risk_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "review_status": {"const": "review_recommended"},
+        "event_time_utc": {"type": "string", "format": "date-time"},
+        "assessed_at_utc": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}

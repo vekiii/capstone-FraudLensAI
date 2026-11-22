@@ -1,5 +1,36 @@
 # Feature 003 validation quickstart
 
+## PR #4 frozen model-case bridge on Windows
+
+The frozen LightGBM artifact requires **Python 3.14.10** and the locked
+`dev`, `ml` and `investigation` dependency groups. Use the exact interpreter
+path with `uv sync --locked --python <path-to-python.exe> --group dev --group ml --group investigation`.
+Verify the transferred artifacts against the recorded digests before use.
+
+For the verified publication from the PR #4 transfer, set these PowerShell
+environment variables in both the API and worker terminals.
+
+```powershell
+$env:APP_MODE = 'model'
+$env:MODEL_CASE_BRIDGE_ROOT = 'data/processed/model-case-bridge-v1'
+$env:MODEL_CASE_BRIDGE_MANIFEST_SHA256 = '16760ba36a2b36e6f144730c7afae7c855e34b2897166920bc6d185fcf9d2004'
+$env:INVESTIGATION_ENABLED = 'true'
+$env:INVESTIGATION_SOURCE = 'dataset'
+$env:INVESTIGATION_DATASET_SCORE_SOURCE = 'model'
+$env:INVESTIGATION_MODEL_CASE_BRIDGE_ROOT = $env:MODEL_CASE_BRIDGE_ROOT
+$env:INVESTIGATION_PROVIDER = 'test'
+$env:INVESTIGATION_TEST_SCENARIO = 'grounded'
+$env:INVESTIGATION_SEMANTIC_RETRIEVAL = 'false'
+```
+
+The expected SHA-256 comes from the trusted handoff for that exact publication.
+Both consumers require it in addition to the `COMPLETE` marker and the two
+SQLite digests. When receiving a new publication, get its expected digest
+through the trusted handoff before changing the configured value. A missing or
+mismatched digest makes bridge model cases and their investigations unavailable.
+Prepare a fresh investigation store and run the browser flow with the test
+provider as recorded in the transfer verification. [Windows reproduction](../../evidence/tasks/pr4-windows-review-2026-11-22.md)
+
 ## Explicit corrective v7 / request45 profile (2026-11-18)
 
 For NEW attempts only, in BOTH matching API and worker terminals:

@@ -1,5 +1,7 @@
 # Execution evidence
 
+The [2026-11-22 model–RAG integration handoff](tasks/model-rag-handoff-2026-11-22.md) records the frozen Feature 002→003 mapping, versioned bridge contract, user-conveyed Feature 003 acceptance, the user's Feature 002 role confirmation, and T103–T109 implementation evidence. The earlier proposal and pre-implementation evidence in that record remain historical. T252 independent review remains open.
+
 The [project evidence and contribution plan as of 12 November 2026](tasks/project-evidence-plan-2026-11-12.md)
 consolidates the historical work, named contributors, validation and provisional
 time calculation. Its estimates are separate from measured working hours; source
@@ -38,6 +40,7 @@ documentation or ignore-policy setup must state that no data/model checks were r
 
 ## Feature 002 current evidence index
 
+- [Model–RAG integration handoff, 2026-11-22](tasks/model-rag-handoff-2026-11-22.md): separate PR #3 worktree, hash-verified frozen artifact transfer, exact score/HTTP parity, real React fixture/model/results/EDA checks, subsequent Feature 002/003 bridge implementation and owner decisions, and the user-reported [Feature 006 exclusion decision](../prompts/development/2026-11-22-model-rag-feature006-decision.md). No live provider call, merge or T252 completion.
 - [T243 EDA decision proposal and T252–T255 preparation](tasks/T243-T255-planning.md): fifth-screen benefit/schedule/allowed-aggregate proposal, human-review packet, completed design-only T253 showcase contract, and separately gated replay plan. The later [user-reported team approval](tasks/T243.md) unlocked Stage F UI; no human reproduction or replay is claimed.
 - [T244 synthetic EDA RED tests](tasks/T244.md): five expected missing-module failures for aggregate correctness, bounds, denominators, currency separation and refusal of label-bearing input; T245 later turned them GREEN.
 - [T245 Python EDA aggregates](tasks/T245.md) and [T246 endpoint history](tasks/T246.md): bounded closed label-free summaries and a hash-pinned read-only route passed synthetic checks before the later full-source publication below.
@@ -76,6 +79,7 @@ The [T228 transfer record](tasks/T228-transfer.md) identifies the request, recor
 - [T227 artifact integrity](tasks/T227.md): native-text writer, independently anchored manifest digest, metadata/version/path validation and no deserialization; synthetic byte checks only.
 - [T228 task evidence](tasks/T228.md) and [local training handout](tasks/T228-local-runbook.md): historical no-fit implementation checks plus a link to the later completed Stage C experiment; the old command in the handout is historical and is not the approved second command.
 - [Current handoff](../next_work.md), [data card](../data/README.md) and [protocol](../specs/002-data-and-risk-scoring/protocol.md): current status, local data limitations and next action.
+- [Model–RAG bridge implementation and browser proof](tasks/model-rag-handoff-2026-11-22.md): user-conveyed Feature 003 acceptance and user-stated Feature 002 owner decision, validated additive binding, T210 label-free publication, backend/React adapter, exact frozen-score parity, test-provider evidence and isolated test decision; T103 is complete, T252 independent review remains open. Local browser screenshot remains outside Git.
 - [2026-11-19 local commit receipt](tasks/session-commits-2026-11-19.md): reviewed file scope, commit identity, checks and publication status.
 
 The raw CSV, snapshot, stage and quality report live in ignored `data/` paths and are not part of Git. No feature/model evaluation or authorized restricted label audit has been reported for T210.

@@ -409,13 +409,19 @@ def scripted_draft(conversation, scenario):
         draft['limitations'].append('Nema dovoljno dokaza za koristan zakljucak.')
         return validate('ReportDraft', draft)
     values = {fact['path']: fact['value'] for fact in case['facts']}
-    required = ('transaction.amount', 'transaction.currency')
+    dataset_case = (values.get('assessment.score_source') == 'model'
+                    and 'transaction.paid.amount' in values)
+    required = ('transaction.paid.amount', 'transaction.paid.currency') if dataset_case else (
+        'transaction.amount', 'transaction.currency')
     if not all(key in values for key in required):
         return validate('ReportDraft', draft)
     ref = case['evidence_id']
     assertions = [dict(evidence_ref=ref, path=key, value=values[key]) for key in required]
     fact = _claim(ref, f"Zabelezena transakcija: {values[required[0]]} {values[required[1]]}.", assertions=assertions)
     draft.update(outcome='ready_for_review', summary=[copy.deepcopy(fact)], observed_facts=[fact], citations=[ref])
+    if dataset_case:
+        draft['limitations'][1] = ('Sinteticki modelski risk score nije kalibrisana verovatnoca; '
+                                   'doprinosi modelskih obelezja nisu dostupni.')
     procedure = next((item for item in items if item['kind'] == 'procedure'), None)
     if procedure:
         draft['recommended_checks'] = [_claim(procedure['evidence_id'],
@@ -425,6 +431,9 @@ def scripted_draft(conversation, scenario):
         draft['limitations'].append('Nema odgovarajuce proceduralne smernice; nema takve preporuke.')
     if any(item['kind'] == 'history' and item['eligible_count'] is None for item in items):
         draft['limitations'].append('Istorija nije dostupna; to ne znaci da nije bilo aktivnosti.')
+    if any(item['kind'] == 'history' and any(fact['path'] == 'coverage' and fact['value'] == 'incomplete'
+           for fact in item['facts']) for item in items):
+        draft['limitations'].append('Sedmodnevna istorija je nepotpuna u dostupnom sintetickom izvoru.')
     if scenario == 'invalid_citation':
         draft['summary'][0]['evidence_refs'] = ['ev_' + 'f' * 32]
     return validate('ReportDraft', draft)
