@@ -1,5 +1,17 @@
 # Next work - FraudLens AI
 
+## Feature 06 — dopunski EV-06 par prošao
+
+Isti checkpointovani T098 test-provider pokušaj i odluka obnovljeni su u
+Chrome-u i kroz direktni HTTP na `5974f94` i `d8acc2a`. Oba citata su
+otvorena, hash radne baze ostao je isti i nije bilo novih provider
+zahteva. [Dopunski dokaz](evidence/tasks/feature-006-sc002-ev06-supplement.md).
+
+Originalni SC-002 ostaje otvoren zbog istorijskog blokiranog EV-06.
+Sledeći korak: potvrditi obim novog živog uporedivog ciklusa na istih
+16 slučajeva. Predlog je baseline `d8acc2a` i do 38 novih zahteva za obe
+faze uz postojeći budžetski protokol.
+
 ## T252 i SC-002 — priprema dopunskih dokaza
 
 Originali iz `new_folders/` uklonjeni su nakon ponovne provere kopija.
