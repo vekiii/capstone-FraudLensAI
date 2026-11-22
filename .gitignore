@@ -43,6 +43,10 @@ junit.xml
 
 # Local colleague transfer bundle contains generated transaction features and labels
 /T228-colleague-transfer-*.zip
+/T230-test-evaluation-snapshot.zip
+/T230-test-evaluation-snapshot.zip.sha256
+/T230-snapshot-completion-files.zip
+/T230-snapshot-completion-files.zip.sha256
 
 third_party/Multi-GNN/
 third_party/TabGT/
