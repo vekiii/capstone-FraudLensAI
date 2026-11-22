@@ -17,7 +17,7 @@ For an existing checkout, install the committed locked dependencies:
 ```powershell
 $env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'
 uv sync --locked --group dev
-npm.cmd --prefix frontend ci
+npm.cmd --prefix web ci
 ```
 The workspace-local uv cache avoids machine-cache access restrictions. npm.cmd
 avoids npm.ps1 execution-policy restrictions without changing system policy.
@@ -26,8 +26,8 @@ need no provider key, model, RAG corpus, dataset or external AI service.
 No .env file or fixture data file is needed for health.
 
 Lockfile creation was performed during initial setup with `uv lock` and
-`npm.cmd --prefix frontend install`; those resolve dependencies and generate
-uv.lock / frontend/package-lock.json. Do not repeat them for routine installs or
+`npm.cmd --prefix web install`; those resolve dependencies and generate
+uv.lock / web/package-lock.json. Do not repeat them for routine installs or
 hand-edit lockfile hashes. Use locked installs above; intentional dependency
 changes require review and genuine lockfile regeneration.
 
@@ -38,9 +38,9 @@ uv run --locked uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.
 ```
 In terminal 2, from repository root:
 ```powershell
-npm.cmd --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort
+npm.cmd --prefix web run dev -- --host 127.0.0.1 --port 5173 --strictPort
 ```
-Open http://127.0.0.1:5173 for the synthetic case inspection UI. Vite forwards relative
+Open http://127.0.0.1:5173 for the local React app. Cases includes Feature 002 risk and aggregate results. The EDA route and the previous dataset-overview URL show the same approved EDA summary. Vite forwards relative
 /api requests to http://127.0.0.1:8000. Both services bind to loopback only;
 this is a local demo, with no production multi-user security or ML-ready claim.
 Stop your own foreground servers with Ctrl+C.
@@ -87,9 +87,9 @@ and health do not open it. T014's three synthetic cases are stored there without
 uv run --locked pytest backend/tests/integration/test_startup.py
 uv run --locked pytest backend/tests
 uv run --locked ruff check backend
-npm.cmd --prefix frontend run test -- --run
-npm.cmd --prefix frontend run typecheck
-npm.cmd --prefix frontend run build
+npm.cmd --prefix web run test -- --run
+npm.cmd --prefix web run typecheck
+npm.cmd --prefix web run build
 git diff --check
 ```
 All 310 backend tests pass (phase 6, 2026-11-12), including the unchanged 49 T012 API/scorer tests and

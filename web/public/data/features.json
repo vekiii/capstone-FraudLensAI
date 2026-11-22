@@ -1,0 +1,18 @@
+{
+  "status": "contract_reference",
+  "source_version": "history-v1",
+  "generated_at": "2026-11-16T10:34:51Z",
+  "features": [
+    {"name":"sender_out_count_24h","definition":"Count of earlier outgoing sender events."},
+    {"name":"sender_distinct_receivers_24h","definition":"Distinct bank-qualified receivers in earlier sender events."},
+    {"name":"sender_paid_count_same_currency_24h","definition":"Earlier outgoing paid events in current paid currency."},
+    {"name":"sender_paid_sum_same_currency_24h","definition":"Decimal sum of earlier paid amounts in current paid currency."},
+    {"name":"receiver_in_count_24h","definition":"Count of earlier incoming receiver events."},
+    {"name":"receiver_distinct_senders_24h","definition":"Distinct bank-qualified senders in earlier receiver events."},
+    {"name":"receiver_received_count_same_currency_24h","definition":"Earlier incoming received events in current received currency."},
+    {"name":"receiver_received_sum_same_currency_24h","definition":"Decimal sum of earlier received amounts in current received currency."},
+    {"name":"current_paid_amount","definition":"Current exact paid amount, with no currency conversion."},
+    {"name":"current_paid_currency","definition":"Current source currency name."},
+    {"name":"current_payment_format","definition":"Current optional format; null when absent."}
+  ]
+}
