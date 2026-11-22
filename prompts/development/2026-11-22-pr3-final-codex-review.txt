@@ -1,0 +1,265 @@
+Nastavljamo FraudLensAI integraciju nakon što je Milan doradio i mergeovao
+PR #4 u integration/capstone-mvp.
+
+Želim da uradiš završnu reprodukciju na mom Mac-u i detaljan Codex
+tehnički pregled završnog kandidata, uključujući kod, protokol,
+porijeklo podataka, metrike i model–RAG tok.
+
+Radni folder:
+ /Users/ladylazarus/Desktop/FraudLensAI-Integration
+
+Izvorni ML checkout koji treba sačuvati:
+ /Users/ladylazarus/Desktop/FraudLensAI-StageC
+
+PR #3:
+https://github.com/vekiii/capstone-FraudLensAI/pull/3
+
+Posljednji poznati integracioni HEAD:
+d46699fbd11219ebc92c6ef002d4924a4c7d4b34
+
+Ovaj zadatak uključuje stvarno izvršavanje tehničkih provjera.
+Tvoj pregled jasno označi kao agentski/Codex pregled, nikada kao
+ljudski pregled. Ne pripisuj nikome pregled, potpis ili odobrenje
+koje nije stvarno dostavljeno.
+
+1. UPUTE I ZAŠTITA POSTOJEĆEG RADA
+
+Pročitaj primjenjive AGENTS.md i aktuelni next_work.md prije rada.
+Provjeri Git status, grane i remote.
+
+Sačuvaj sve postojeće lokalne izmjene, evidence zapise, screenshot
+i ignorisane artefakte. Bez reset --hard, git clean, automatskog
+stasha, brisanja ili prepisivanja postojećeg rada.
+
+Fetchuj origin i provjeri aktuelni HEAD PR-a #3 i grane
+integration/capstone-mvp. Ako je HEAD napredovao od navedenog,
+pregledaj nove promjene i evidentiraj tačan kandidat koji testiraš.
+
+Napravi zaseban review worktree i radnu granu iz provjerenog kandidata:
+ /Users/ladylazarus/Desktop/FraudLensAI-Integration-Review
+
+Ako lokacija već postoji, prvo provjeri stanje; ne briši je.
+Originalni Integration i StageC checkout ostaju sačuvani.
+
+2. PREGLED MILANOVIH DORADA
+
+Pročitaj:
+- evidence/tasks/pr4-windows-review-2026-11-22.md
+- evidence/tasks/pr4-windows-fixes-2026-11-22.md
+- evidence/tasks/model-rag-handoff-2026-11-22.md
+- evidence/tasks/feature-002-review.md
+- relevantne Feature 002/003 specifikacije, ugovore i quickstart.
+
+Pregledaj stvarni diff, posebno:
+- zatvaranje SQLite konekcija prije rename/delete operacija;
+- direktne sintetičke testove publikatora;
+- nezavisni pin bridge manifesta u API i investigation/worker toku;
+- očuvanje postojećih ugovora, fixture toka i zamrznutog modela.
+
+Provjeri da Feature 006 nije uključen.
+Ne uvodi staru modelsku implementaciju iz model-implementations grane.
+
+3. OKRUŽENJE I POSTOJEĆI ARTEFAKTI
+
+Postavi izolovano zaključano okruženje prema aktuelnom lockfile-u
+i projektnim uputama. Zamrznuti model zahtijeva Python 3.14.10.
+Ne mijenjaj lockfile ili verzijske provjere da instalacija prođe.
+
+Pronađi potrebne postojeće artefakte u Integration/StageC checkout-ima
+i omogući ih review worktree-u kopiranjem uz provjeru hash-eva.
+Ne prepisuj postojeće različite fajlove.
+Provjeri Git ignore pravila.
+
+Potrebni su:
+- frozen model, trusted manifest i prateći freeze fajlovi;
+- T219 label-free feature particije;
+- sealed prediction CSV za paritet;
+- gotova model-case-bridge-v1 publikacija;
+- postojeći validation/test agregatni izvještaji;
+- postojeći EDA sažetak;
+- odobreni knowledge izvori i izolovano investigation skladište.
+
+Ne kopiraj label-bearing T210 accepted.jsonl, raw CSV ili direktorijume
+labela u review/aplikacijski tok. Ne regeneriši punu publikaciju.
+
+Očekivani model SHA-256:
+3b4e4019312d60610dd0094c6697897a061611a60e7777ed7be35e133af9451c
+
+Trusted model manifest SHA-256:
+c766e90159a70eff2d1f29d5ff425029af20ff123f1fad08e45f9fc416076d45
+
+Sealed prediction CSV SHA-256:
+99727d426f78698ee9a0f37ec50c1c900dc848f13bed6ef0756544f76c3f04f7
+
+T230 agregatni izvještaj SHA-256:
+5027dae9354796718a080086a6cadc0319d1b376336ad4dac8d93b4e534d9cdb
+
+EDA sažetak SHA-256:
+b8900338ca375b2d632b260a794634fb19408012a1c14fc66e2f7b097a111820
+
+Očekivani bridge manifest SHA-256:
+16760ba36a2b36e6f144730c7afae7c855e34b2897166920bc6d185fcf9d2004
+
+Zamrznuti prag:
+0.2489517623052024
+
+Ako identitet nije saglasan, zaustavi zavisne provjere i objasni nalaz.
+Nemoj prilagođavati očekivani hash prema neprovjerenom fajlu.
+
+4. TEHNIČKI PREGLED PROTOKOLA, PODATAKA I METRIKA
+
+Pregledaj izvršeni protokol i porijeklo izabranog neponderisanog modela:
+- hronološke particije i njihove identitete;
+- train-only preprocessing, vokabulare i 32 model kolone;
+- izbor modela i praga na validation skupu;
+- kasniju dijagnostiku i ponovljeno korišćenje validation skupa;
+- tačno jedan postojeći autorizovani T230 rezultat;
+- vezu modela, manifesta, predikcija i agregatnih izvještaja.
+
+Provjeri data card i postojeća ograničenja porijekla.
+Nedostajuću izvornu informaciju označi kao nepoznatu; ne popunjavaj je
+pretpostavkom.
+
+Iz već sačuvanih agregata provjeri:
+- TP/FP/TN/FN zbir i denominatore;
+- precision, recall i F1;
+- P@K brojioce i imenioce;
+- broj upozorenja i vremenski obuhvat;
+- podudaranje API/UI prikaza sa postojećim izvještajima.
+
+Ne računaj ponovo test metrike iz pojedinačnih labela i ne pokreći T230.
+AP, ROC AUC i Brier ne predstavljaj kao nezavisno ponovo izračunate
+ako si samo provjerio zapisane vrijednosti i njihov prenos.
+
+Provjeri da prikaz jasno navodi:
+- sintetičko porijeklo;
+- nekalibrisani risk score;
+- P@K nad cijelom particijom, a ne dnevni top-K;
+- ograničen test period;
+- odsustvo dnevnog capa;
+- nedostupne doprinose obilježja;
+- nepotpunu istoriju;
+- razliku između test providera i stvarnog LLM-a.
+
+5. AUTOMATIZOVANE PROVJERE
+
+Pokreni postojeći evidence/tasks/T233-parity.py.
+Potvrdi tačan offline/aplikacijski i HTTP paritet.
+
+Pokreni relevantne bridge, publisher, API i investigation regresije.
+Provjeri da:
+- nedostajući, neispravan ili pogrešan manifest pin odbija publikaciju;
+- ponovno zapečaćen izmijenjeni manifest ne prolazi sa originalnim pinom;
+- API i worker koriste isti pouzdani pin;
+- pogrešni ID-jevi, run/snapshot veze i cutoff ne prolaze;
+- nema fixture zamjene pri grešci;
+- publikator zatvara konekcije i objavljuje samo završeni izlaz;
+- djelimičan posao ne postaje aktivna publikacija;
+- privatni label sadržaj ne ulazi u objavljene podatke ili kontekst.
+
+Negativne provjere radi na privremenim kopijama ili sintetičkim ulazima,
+ne mijenjanjem originalnih artefakata.
+
+Pokreni punu backend i React regresiju, typecheck, build, Ruff
+i git diff --check prema projektnim komandama.
+Postojeći mali sintetički fit testovi iz regresije su dozvoljeni;
+trening na projektnim podacima nije.
+
+Bilježi stvarne rezultate, preskočene testove, upozorenja i ograničenja.
+Ako provjera padne zbog okruženja, utvrdi uzrok i ispravno ponovi;
+ne uklanjaj test ili zaštitu samo radi prolaza.
+
+6. CIJELI APLIKACIJSKI TOK NA MAC-U
+
+Pripremi novo izolovano knowledge/investigation skladište iz odobrenih
+izvora i pokreni aplikaciju sa test providerom.
+Ne koristi postojeće sačuvane odluke kao dokaz novog izvršavanja.
+
+Koristi slučaj iz prethodne browser provjere:
+
+transaction_id:
+ibm-hi-small:b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040:row:1500153
+
+case_id:
+C0674a2484035b8a21df34cbd69f3a38b
+
+run/snapshot:
+run_bridge_d9bf94d28561f10315a190a0
+
+očekivani skor:
+0.9267620061893889
+
+Provjeri u stvarnom browseru, ako imaš dostupan browser alat:
+- risk lookup i binding;
+- tačan povezani slučaj;
+- isti skor u svim slojevima;
+- pokretanje investigation workera i završetak pokušaja;
+- izvještaj i otvaranje stvarnih citiranih dokaza;
+- oznaku test providera i ograničenja;
+- testnu odluku request_more_information u izolovanom skladištu;
+- ponovno učitavanje i očuvanu odluku;
+- očuvane fixture, results, EDA i Simulation Lab tokove.
+
+Odluku koristi isključivo kao automatizovani test pod jasno označenim
+test identitetom, ne kao stvarnu analitičku odluku.
+
+Ako browser alat nije dostupan, uradi HTTP/automatizovane provjere
+i izričito navedi da browser provjera nije izvršena.
+
+7. NALAZI I DORADE
+
+Za svaki pregledani zahtjev navedi:
+- dokaz/fajl;
+- stvarno izvršenu provjeru;
+- status: potvrđeno / problem / nije provjereno;
+- nalaz i praktičnu posljedicu.
+
+Rutinske ispravke unutar postojećeg odobrenog obima možeš napraviti
+u review grani, uz relevantne regresione testove.
+Ne mijenjaj zamrznuti model, podatke, prag ili istorijske rezultate.
+Za nekompatibilne ugovorne ili šire promjene prvo pripremi nalaz
+i konkretan prijedlog; ne proširuj obim samostalno.
+
+Ako mijenjaš kod, razlikuj rezultat izvornog PR kandidata od rezultata
+lokalne popravljene verzije. Ne predstavljaj lokalni fix kao već objavljen.
+
+8. EVIDENCIJA I STVARNI LJUDSKI PREGLED
+
+Sačuvaj prompt i detaljan izvještaj prema repo konvencijama.
+Naslov pregleda mora jasno reći „Codex tehnički pregled”.
+Ažuriraj evidence indeks i next_work.md u review worktree-u.
+
+Ne zatvaraj T252 samo na osnovu svog pregleda.
+Milanovu automatizovanu Windows provjeru navedi kao tehničku
+reprodukciju, bez izmišljanja ljudskog odobrenja.
+
+Pripremi kratku checklistu koju stvarni član tima može proći:
+protokol, porijeklo, metrike, ograničenja i aplikacijski tok.
+Navedi koji dio treba pregledati osoba koja nije autor tog dijela.
+
+Na kraju ostavi lokalnu aplikaciju dostupnu za moj ručni pregled
+ako okruženje to dopušta, i navedi URL, aktivne procese i komande
+za uredno zaustavljanje.
+
+GRANICE
+
+- Feature 006 ostaje isključen.
+- Bez mergea ili prenosa stare model-implementations implementacije.
+- Bez treninga na projektnim podacima.
+- Bez promjene modela, preprocessinga, praga i zamrznutih rezultata.
+- Bez ponavljanja T230 ili pristupa test/showcase labelama.
+- Bez punog ponovnog generisanja bridge publikacije ili EDA agregata.
+- Bez showcase replaya i live LLM/provider poziva.
+- Bez commita, pusha, promjene PR statusa ili mergea.
+
+ZAVRŠNI ODGOVOR
+
+Vrati:
+1. Tačan pregledani commit i review folder/granu.
+2. Ocjenu tehničke spremnosti uz konkretne dokaze i ograničenja.
+3. Nalaze rangirane po značaju, sa putanjama fajlova.
+4. Rezultate testova, pariteta i browser/HTTP provjera.
+5. Šta je eventualno lokalno popravljeno i još nije objavljeno.
+6. Šta tačno ostaje za stvarni T252 ljudski pregled.
+7. Lokalni URL i kratke korake koje ja ručno prolazim.
+8. Jedan konkretan naredni korak za PR #3.
