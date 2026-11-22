@@ -109,9 +109,15 @@ def outbound_context(context, run_id):
             assessment=copy.deepcopy(context['source_payload']['risk_assessment']))
         if context['contract_version'] == 2:
             result['context_contract_version'] = 2
-            result['notice'] = ('Synthetic benchmark; preserve score kind and limitations. '
-                                'Boosted contributions are sequential, order/baseline dependent, '
-                                'not causal/SHAP or calibrated probability. Human decision required.')
+            explanation = result['assessment']['explanation']
+            result['notice'] = (
+                'Synthetic benchmark; model feature contributions unavailable. '
+                'Score is not a calibrated probability. Human decision required.'
+                if explanation['status'] == 'unavailable' else
+                'Synthetic benchmark; preserve score kind and limitations. '
+                'Boosted contributions are sequential, order/baseline dependent, '
+                'not causal/SHAP or calibrated probability. Human decision required.'
+            )
         validate_outbound_dataset(result, context['contract_version'])
         return result
     tx, risk = context['source_payload']['transaction'], context['source_payload']['risk_assessment']
