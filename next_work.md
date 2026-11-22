@@ -1,3 +1,38 @@
+## Latest handoff: 2026-11-22 pending documentation committed and master ledger refreshed
+
+Committed the T230 transfer preparation and local archive ignore rules separately from the final unweighted LightGBM configuration record. Updated [the master commit and branch record](evidence/commit-master.md) against fetched refs: 303 reachable commits before this ledger commit, with Git author, committer, timestamp, branch tips and recorded merges. Deleted branch names remain unverified without repository audit data. The T230 transfer notes describe historical local archive preparation; no transfer or new evaluation occurred in this update. JSON parsing, referenced freeze/evaluation values, commit-count comparison and documentation diff checks were performed; no application tests were run. Earlier handoff counts below are historical snapshots.
+
+**One concrete next step:** review the pushed documentation branch and provide an agreed destination if the T230 archives still need transfer.
+
+## Final unweighted LightGBM configuration note
+
+Added [the recorded final model configuration](evidence/tasks/model-config-final-unweighted-lightgbm.json), with model/artifact hashes, training parameters, class counts, imbalance handling, threshold, feature lineage and evaluation references. The record states that imbalance was compared during development, while the selected final model used scale_pos_weight=1.0, class_weight=null and sample_weight=null. JSON parsing succeeded. No model was retrained and no tests were run.
+
+**One concrete next step:** independent reviewer checks the configuration file against the frozen experiment and T252 evidence.
+
+## Latest handoff: 2026-11-22 commit time detail
+
+Updated [master commit and branch record](evidence/commit-master.md) to include each commit's Git committer timestamp in ISO 8601 with its recorded timezone, plus separate committer and author names. The complete history still contains 287 commits; current branch tips and merge commits also include commit times. git diff --check passed. No tests were run for this documentation update.
+
+**One concrete next step:** obtain repository audit records if the team needs authoritative deleted-branch names or identity verification beyond available Git metadata.
+
+## Latest handoff: 2026-11-22 master commit record
+
+Created [master commit and branch record](evidence/commit-master.md), starting with Feature 002 and then listing the full 287-commit history reachable from local/fetched remote refs, with commit dates, Git authors, IDs and subjects. Recorded current branch refs and available merge commits. No branch-deletion events appear in available reflogs; deleted-branch names therefore remain unverifiable from this checkout. No tests were run for this documentation update.
+
+**One concrete next step:** provide a branch deletion record or repository audit log if a definitive deleted-branch list is required.
+
+## Latest handoff: 2026-11-21 T230 snapshot completion-files supplement
+
+Prepared local ignored `T230-snapshot-completion-files.zip` with original `COMPLETE` (65 bytes) and empty `rejections.jsonl` (0 bytes); ZIP CRC passed. Archive SHA-256: `bffbcc350d45c02969b11d384fdb3ba1ba359086b69a9a24467d74842fb34cd2`. No `accepted.jsonl` was reopened or included. Transfer is still pending the agreed channel/destination; no transfer connector is available in this session. No evaluation ran and test labels remain unread. Details: [T230 completion-files transfer evidence](evidence/tasks/T230-transfer-completion-files.md).
+
+**One concrete next step:** provide the agreed transfer destination to deliver the two-file supplement and its checksum.
+## Latest handoff: 2026-11-20 T230 evaluation snapshot transfer preparation
+
+Prepared local ignored `T230-test-evaluation-snapshot.zip` containing only the requested original `accepted.jsonl` and `manifest.json`. Manifest and accepted data SHA-256 values matched the pinned manifest; ZIP CRC passed. Archive SHA-256 is `c76ab04410a24a150a9e525b23a4f14e980f73394afcc7c2e54ef471705b3ee3`. The user explicitly authorized final T230 evaluation on frozen predictions (SHA-256 `99727d426f78698ee9a0f37ec50c1c900dc848f13bed6ef0756544f76c3f04f7`, threshold `0.2489517623052024`). No prediction file is present here, so no evaluation ran. `accepted.jsonl` was hashed and zipped as bytes only; labels were not parsed. Transfer is pending because the request contains a placeholder for the agreed channel and no transfer connector is available. Showcase labels remain unopened. Details: [T230 transfer evidence](evidence/tasks/T230-transfer.md).
+
+**One concrete next step:** provide the agreed transfer destination so the ZIP and checksum can be delivered.
+
 # Next work — FraudLens AI
 
 ## Latest handoff: 2026-11-21 Stage F EDA page and full regression completed
