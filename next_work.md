@@ -9,9 +9,14 @@ LLM zahteva. EV-07 je popravljen, dok su EV-01 i EV-08 pali u završnoj
 fazi. Utrošeno je 38 zahteva. Izmena ostaje u odvojenom commitu zbog
 slabijeg ukupnog rezultata. [Zapis ciklusa](evidence/tasks/feature-006-sc002-live-v2.md).
 
-Sledeći korak za Feature 06 je pregled otvorenih nalaza iz završnog audita
-pre odluke o verziji za predaju. Za T252 i dalje je potreban stvarni
-nezavisni ljudski pregled. [Završni audit](evidence/tasks/feature-006-final-audit.md).
+Za predaju i demonstraciju izabran je `d8acc2a`, koji je prošao glavni
+tok sa proceduralnim citatom i traženje dopune kad istorija nedostaje.
+EV-07 ostaje zabeleženo ograničenje.
+[Odluka o predaji](evidence/tasks/feature-006-release-candidate.md).
+
+Sledeći korak je priprema predaje sa izabranim SHA-om i pratećom
+evidencijom sa grane `006-capstone-evaluation`. Za T252 i dalje je
+potreban nezavisni ljudski pregled. [Završni audit](evidence/tasks/feature-006-final-audit.md).
 
 ## Feature 06 — prethodni dopunski EV-06 par
 

@@ -1,5 +1,21 @@
 # Feature 06 · T016 · Završna revizija za merenje
 
+## Verzija za predaju
+
+Za predaju i demonstraciju Feature 06 izabrana je aplikaciona revizija
+`d8acc2a335d95e2402f586006925949f4d9f7739`. U ponovljenom poređenju
+prošla je 15 od 16 scenarija, uključujući glavni tok sa proceduralnim
+citatom (EV-01) i zahtev za dopunu kad istorija nedostaje (EV-08).
+Preostalo ograničenje je EV-07, gde nejasan upit može da vrati opšte
+procedure. Kandidat `a814eb0` popravio je EV-07 i završio sa 14 od 16
+prolaza zbog slabijih ishoda na EV-01 i EV-08. [Poređenje](feature-006-sc002-live-v2.md).
+
+Uputstvo za demonstraciju koristi izabrani SHA. Evidencija poređenja
+SC-002 i CAP-05 pripada pratećoj dokumentaciji na grani
+`006-capstone-evaluation`. [Uputstvo](../../specs/006-capstone-evaluation/quickstart.md).
+
+## Pinovi originalnog merenja
+
 22. novembar 2026, Europe/Belgrade. Iz čistog stabla grane
 `006-capstone-evaluation` kandidat je vezan na
 `d8acc2a335d95e2402f586006925949f4d9f7739`.

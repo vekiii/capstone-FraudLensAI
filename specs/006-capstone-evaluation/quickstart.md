@@ -1,6 +1,6 @@
 # Reprodukcija kandidata — Feature 06
 
-Testirani aplikacioni kandidat je `d8acc2a335d95e2402f586006925949f4d9f7739`.
+Aplikaciona revizija za predaju i demonstraciju je `d8acc2a335d95e2402f586006925949f4d9f7739`.
 Baseline `5974f94f68c2a1fd1e42b9b2d01d438c30bd8dca` služi za poređenje.
 Ovo uputstvo i [mapu dokaza](../../evidence/tasks/feature-006-capstone-evidence-map.md)
 čitaj iz dokumentacione revizije, a komande izvršavaj iz korena zasebnog
