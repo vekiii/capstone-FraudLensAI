@@ -47,12 +47,12 @@ description: "Implementation and verification tasks for the Capstone evaluation"
 
 ## Faza 5 — US3: Reprodukcija i predaja (P1)
 
-**Nezavisna provera**. Drugi član iz čistog checkouta izvršava dogovoreni tok i pronalazi CAP dokaze i individualne doprinose na referentnoj reviziji.
+**Provera iz čistog checkouta**. Vedran Mitic izvršava dogovoreni tok prema odluci u US3 i pronalazi CAP dokaze i individualne doprinose na referentnoj reviziji.
 
 - [X] T020 [US3] U `specs/006-capstone-evaluation/quickstart.md` ažurirati stvarne komande i preduslove za završnu reviziju, uključujući proveru izvora i artefakata, server, worker i pregled. Povezati uspešan prolaz, slučaj za dopunu i kontrolisanu grešku sa stvarnim rezultatima predaje.
-- [ ] T021 [US3] Organizovati i zabeležiti stvarnu reprodukciju drugog člana iz čistog checkouta u `evidence/tasks/feature-006-peer-reproduction.md`. Sačuvati člana, reviziju, komande, nalaze i eventualne blokade. Ako su potrebni dodatni živi pozivi, uračunati ih u ovlašćeni obim.
-- [ ] T022 [P] [US3] Prikupiti i povezati potvrde sva četiri člana u `evidence/tasks/feature-006-cap08-contributions.md`. Za svakog zapisati tehnički doprinos, odluku sa stvarnom proverom, vezu sa glavnim tokom i primer pregleda rada kolege, uz reference na predatu reviziju.
-- [ ] T023 [US3] Sastaviti `evidence/tasks/feature-006-capstone-evidence-map.md` sa svih osam CAP stavki, referentnim commitom ili tagom, statusima, dokazima i tri scenarija za odbranu. Potvrditi da završna živa i negativna provera i final EV rezultati upućuju na isti testirani SHA.
+- [X] T021 [US3] Organizovati i zabeležiti stvarnu reprodukciju Vedrana Mitica iz čistog checkouta u `evidence/tasks/feature-006-peer-reproduction.md`. Sačuvati izvršioca, reviziju, komande, nalaze i eventualne blokade. Ako su potrebni dodatni živi pozivi, uračunati ih u ovlašćeni obim.
+- [X] T022 [P] [US3] Zabeležiti četiri tehnička doprinosa i objedinjenu potvrdu Vedrana Mitica u `evidence/tasks/feature-006-cap08-contributions.md`. Za svakog zapisati doprinos, odluku sa stvarnom proverom i vezu sa glavnim tokom uz reference na predatu reviziju. Zabeležiti postojeće preglede rada kolega prema dostupnom dokazu.
+- [X] T023 [US3] Sastaviti `evidence/tasks/feature-006-capstone-evidence-map.md` sa svih osam CAP stavki, referentnim commitom ili tagom, statusima, dokazima i tri scenarija za odbranu. Potvrditi da završna živa i negativna provera i final EV rezultati upućuju na isti testirani SHA.
 
 ## Faza 6 — Završna provera i predaja rada
 

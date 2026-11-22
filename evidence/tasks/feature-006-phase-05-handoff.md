@@ -8,16 +8,16 @@ je sačuvan pre izmena kao identična kopija primljenog fajla.
 | Task | Stanje |
 | --- | --- |
 | T020 | Završeno i čekirano. Uputstvo za čist checkout, lokalni indeks, API/worker/Vite i tri scenarija iz finalnih dokaza. [Quickstart](../../specs/006-capstone-evaluation/quickstart.md). |
-| T021 | Čeka nalaz drugog člana iz čistog checkout-a. [Zapis i koraci](feature-006-peer-reproduction.md). |
-| T022 | Popisana četiri dokaziva tehnička doprinosa; čekaju individualne potvrde i konkretni pregledi rada kolega. [Doprinosi](feature-006-cap08-contributions.md). |
-| T023 | Mapa pokriva osam CAP stavki i tri scenarija za odbranu; završetak zavisi od T021/T022. [CAP mapa](feature-006-capstone-evidence-map.md). |
+| T021 | Završeno. Vedran Mitic je proverio citate i sačuvao odluku iz čistog checkout-a. Naknadni GET je potvrdio sačuvanu odluku. [Zapis i koraci](feature-006-peer-reproduction.md). |
+| T022 | Završeno i čekirano prema izmenjenom US3. Vedran potvrdio četiri zapisa doprinosa. [Doprinosi](feature-006-cap08-contributions.md). |
+| T023 | Završeno. Mapa pokriva osam CAP stavki i tri scenarija za odbranu, uz isti finalni SHA u živom, negativnom i uporednom zapisu. [CAP mapa](feature-006-capstone-evidence-map.md). |
 
 Testirani kandidat je `d8acc2a335d95e2402f586006925949f4d9f7739`.
 Poređenje sa baseline-om `5974f94f68c2a1fd1e42b9b2d01d438c30bd8dca`
 ostaje 11/16 → 13/16. Finalni EV-01 (procedura `no_match`), EV-04
 (`citation_set_mismatch`) i EV-07 (generički pogoci bez razjašnjenja)
 ostaju neuspešni. SC-001 i SC-003 imaju izvršen dokaz. SC-002 ostaje
-otvoren zbog baseline EV-06; SC-004 čeka reprodukciju i potvrde.
+otvoren zbog baseline EV-06. SC-004 je potvrđen prema izmenjenom US3.
 [Istorijski nalazi](feature-006-before-after.md).
 
 ## Šta je provereno u ovoj sesiji
@@ -49,7 +49,7 @@ sekcije nacrta. Obe probe imaju exit 1 u skripti. Završni prolaz poredi
 isti report ID, nacrt i review i proverava sve ugovorene sekcije. Izlazi
 su lokalni u `.cache/006-t020-api-7b0a7d5676d348598550d7fd25cd31d2/`.
 Procesi su zaustavljeni. Ovo je automatizovana HTTP provera sa Vite proxy-jem.
-Browser ponavljanje i nezavisni čist checkout idu kroz T021.
+Browser ponavljanje iz čistog checkout-a ide kroz T021.
 
 T001 i T003 beleže ranije zaključane instalacije. T002 i T007 beleže
 raniju izgradnju indeksa i browser izvršavanje. U ovoj sesiji korišćene su
@@ -62,5 +62,38 @@ agregacija iz sirovih rezultata.
 RED nije primenljiv na dokumentaciju. Novih plaćenih poziva i novog
 živog merenja nije bilo. T024/T025 su van ove faze.
 
-Sledeći korak je stvarni nalaz drugog člana prema quickstart-u, iz
-sopstvenog čistog checkout-a kandidata, sa testnim providerom i novim store-om.
+Sledeći korak je zasebna završna regresija T024 na kandidatu.
+
+## Nastavak istog dana · promena izvršioca i priprema
+
+Početni `56f216714081eddaa57c09be06e5b9de56f47c1d`, grana
+`006-capstone-evaluation`, čisto radno stablo. Vedran je preuzeo T021
+jer je prvobitno planirani izvršilac zauzet. Odluka je upisana u US3,
+SC-004 i T021. Checklist od 21. novembra je istorijski zapis pregleda
+prvobitnog nacrta. Vedran je zatim potvrdio sva četiri zapisa u T022 i
+odobrio objedinjeni pregled jer ostali rade na drugim zadacima. To je
+evidentirano u US3, FR-008, SC-004 i T022. Zapis obuhvata raniji Milanov
+pregled EV-10 i Isidorinu proveru preduslova Eleninog modela.
+[Dopuna zahteva](../../prompts/development/006-capstone-phase-05.md) ·
+[CAP-08](feature-006-cap08-contributions.md).
+
+| Priprema T021 | Opaženi ishod |
+| --- | --- |
+| `git clone --local --no-hardlinks --no-checkout -- <repo> .cache/006-t021/vedran-checkout` i `git -C <checkout> switch --detach d8acc2a335d95e2402f586006925949f4d9f7739` | Exit 0. Tačan SHA, prazan `git status --porcelain`, bez lokalnog `.env`. Glavni checkout ostao na istoj grani i HEAD-u. |
+| `uv sync --locked --group dev --offline` i `npm.cmd --prefix web ci --offline --no-audit` iz tog checkout-a | uv exit 0, Python 3.14.3 i 55 instaliranih paketa. Prvi npm keš nema `tldts-core` 7.5.4 (exit 1); ponavljanje sa već dostupnim `.cache/npm-simulation-web` daje exit 0 i 91 paket. Node v24.20.0, npm 11.19.0, uv 0.10.9. |
+| Lokalne kopije tri autorizovana T098 artefakta, pa `.venv/Scripts/python.exe -m fraudlens.investigation.cli prepare-history-index --source-store data/processed/feature-003-t098-20261118/source.sqlite --output data/processed/feature-003-t098-20261118/history-index-feature006-local.sqlite` uz `PYTHONPATH=backend/src` | Exit 0. Indeks vezan za kopiju izvora ima 5.078.345 redova i SHA-256 `b014156a1ebe4b3c53985bffa6e1a1e7b1ef8022249d8381576ffd4cb2251efb`. |
+| `.venv/Scripts/python.exe evidence/tasks/feature-006-t098-local-check.py` | Exit 0, tri transfer digesta odgovaraju [T002 manifestu](feature-006-t098-inputs.md). Oba slučaja na istom `run_boosted_candidate_smoke` imaju poklapajući javni payload i `available/full` istoriju. |
+| `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .cache/006-t021/start-vedran.ps1 -VerifyStartup` iz korena glavnog repo-a | Exit 0. Korpus i retrieval odgovaraju T020. API i proxy vratili `ok dataset run_boosted_candidate_smoke`, testni worker je pokrenut, pokrenuti procesi potom zaustavljeni. Pojedinačni browser prolaz čeka Vedrana. |
+
+Podaci, launcher i logovi ove pripreme su lokalni i ignorisani u Git-u.
+Nula pravih provider poziva. [Nalaz iz browsera](feature-006-peer-reproduction.md#browser-nalaz--22-novembar-2026).
+
+Vedranov prvi pokušaj iste komande prekinuo je Git zbog
+`dubious ownership`, jer izdvojenu kopiju poseduje sandbox nalog.
+Launcher koristi `git -c safe.directory=<tačna-putanja>` samo za
+`rev-parse HEAD` i `status --porcelain`. Ponovljena provera
+`-VerifyStartup` vratila je exit 0 i oba health odgovora sa istim
+objavljenim run-om. Vedranov browser prolaz stigao je do nacrta i oba
+citata. Odluka je upisana u narednom pokušaju istog slučaja i konteksta.
+API log potvrđuje POST 201, SQLite vezu odluke i nacrta, a naknadni GET
+kroz Vite vraća istu odluku i obrazloženje. Time su završeni T021 i T023.

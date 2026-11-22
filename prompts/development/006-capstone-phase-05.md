@@ -224,3 +224,15 @@ Bez subagenata osim ako ih primenljive instrukcije zahtevaju. Bez commit-a, tago
 Završni odgovor: status T020–T023, šta je pripremljeno i stvarno potvrđeno, izvršene provere, nedostajuće ljudske/live stavke, otvoreni EV/SC nalazi i handoff putanja. Sledeći korak je prvi stvarno nedovršen uslov ove faze; tek nakon njenog završetka zasebno pokrenuti T024–T025.
 
 Ne započinji T024.
+
+## Dopuna — 22. novembar 2026.
+
+Na sledeći korak „Sledeći korak je da drugi član izvrši odeljke 1–3 quickstart-a sa testnim providerom i dostavi nalaz za T021.” korisnik je odgovorio:
+
+> Hajde da promenimo, to cu odraditi isto ja jer on radi sada na drugoj stvari a moramo da nastavimo sa radom.
+
+> Odradi fazu 5 dok je ne zavrsis.
+
+Na zahtev za četiri potvrde T022 korisnik je odgovorio:
+
+> Nece biti pregleda rada drugih kolega jer oni sada rade druge stvari i moramo da menajamo plan jer nemaju vremena za pereglede. Ja sam pregeldao i potvrdjujem.

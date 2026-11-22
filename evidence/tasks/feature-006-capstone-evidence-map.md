@@ -1,7 +1,7 @@
 # Feature 06 · T023 · CAP-01–CAP-08 mapa dokaza
 
-**Status: delimično.** Mapa pokriva svih osam stavki. Završetak čeka
-nezavisnu reprodukciju T021 i četiri individualne potvrde T022.
+**Status: završeno.** Mapa pokriva svih osam stavki i beleži rezultate
+T021 i T022, kao i otvorene kriterijume evaluacije.
 Referentni testirani kandidat je `d8acc2a335d95e2402f586006925949f4d9f7739`.
 Baseline poređenja je `5974f94f68c2a1fd1e42b9b2d01d438c30bd8dca`.
 [Pinovi kandidata](feature-006-release-candidate.md).
@@ -14,8 +14,8 @@ Baseline poređenja je `5974f94f68c2a1fd1e42b9b2d01d438c30bd8dca`.
 | CAP-04 | Stanje, deterministički alat i obnovljiva odluka analitičara (FR-002). | Final `d8acc2a` | EV-01 proveriti `ready_for_review`, validaciju `schema_reference_passed`, trag `get_case_facts {}` i oba `get_account_history` poziva. EV-06 poredi iste ID-jeve pokušaja, nacrta, citata i odluke posle ponovnog otvaranja. Ledger 19 → 19. [Browser i audit](feature-006-final-live.md#react-cases-citat-i-sačuvana-odluka). | Izvršeno. Stanje obnovljeno bez novih poziva. |
 | CAP-05 | Zamrznutih 16 redova pre/posle, ciljana izmena i odstupanja (FR-003–005). | Baseline `5974f94` i final `d8acc2a` | Uporediti **svih 16 redova** sa istim ID-jem, digestima ulaza/seed-a i pravilom ocenjivanja. T015 vezuje ulazni limit za transportnu deduplikaciju i RED/GREEN. [Manifest](../../evals/capstone/manifest.json) · [Parovi i zbir](feature-006-before-after.md) · [Ciljana izmena](feature-006-targeted-change.md). | **Delimično.** Baseline 11 pass / 4 fail / 1 blocked, final 13 pass / 3 fail, oba od 16. Baseline EV-06 blokiran, pa SC-002 ostaje otvoren. EV-01/04/07 ostaju finalni padovi. |
 | CAP-06 | Šest završnih negativnih kontrola (FR-006). | Final `d8acc2a` | Uporediti ishode EV-11–EV-16 sa kontrolama: zahtev, nacrt, nedostupan citat, nepoznat alat, timeout i kvar istorije. [Final negative](feature-006-final-negative.md). | **6/6** prošlo. Kontrole koriste lokalne simulacije sa nula pravih provider poziva. |
-| CAP-07 | Jedna revizija, uputstvo, lokalni artefakti i nezavisna reprodukcija (FR-007). | Final `d8acc2a` | Proveriti SHA, transfer digeste i lokalni indeks, potom reprodukovati dataset binding, citat i ponovno otvaranje odluke. [Quickstart](../../specs/006-capstone-evaluation/quickstart.md) · [Peer zapis](feature-006-peer-reproduction.md). | **Delimično.** Uputstvo je spremno. Čeka se nalaz drugog člana i njegovi stvarni ishodi. |
-| CAP-08 | Doprinos, odluka, provera i pregled kolege za sva četiri člana (FR-008). | Final `d8acc2a` | Uporediti dokumentovane doprinose sa commitima koji su u kandidatu, pa potvrditi individualnu odluku, njenu proveru i konkretan pregled. [Četiri pripremljena reda](feature-006-cap08-contributions.md). | **Delimično.** Četiri dokumentovana predloga, individualne potvrde čekaju. |
+| CAP-07 | Jedna revizija, uputstvo, lokalni artefakti i reprodukcija (FR-007). | Final `d8acc2a` | Proveriti SHA, transfer digeste i lokalni indeks, potom reprodukovati dataset binding, citat i ponovno otvaranje odluke. [Quickstart](../../specs/006-capstone-evaluation/quickstart.md) · [Zapis reprodukcije](feature-006-peer-reproduction.md). | **Potvrđeno prema izmenjenom US3.** Vedran je iz čistog checkout-a proverio citate i sačuvao odluku. Naknadni GET je vratio istu odluku. |
+| CAP-08 | Doprinos, odluka, provera i veza sa tokom za sva četiri člana, uz objedinjenu potvrdu i dostupne primere pregleda (FR-008, US3). | Final `d8acc2a` | Povezati četiri zapisa sa commitima i izvršenim proverama. [Potvrda i dokazi](feature-006-cap08-contributions.md). | **Potvrđeno prema izmenjenom US3.** Vedran je 22. novembra pregledao i potvrdio sva četiri zapisa. |
 
 ## Revizije, granice merenja i odbrana
 
@@ -45,4 +45,4 @@ oba merena SHA zadržavaju isti stari blob i originalne statuse.
    [Final negative](feature-006-final-negative.md).
 
 SC-001 i SC-003 imaju dokumentovan dokaz. SC-002 je otvoren zbog baseline
-EV-06, a SC-004 čeka T021/T022. [Predaja faze](feature-006-phase-05-handoff.md).
+EV-06. SC-004 je potvrđen prema izmenjenom US3. [Predaja faze](feature-006-phase-05-handoff.md).

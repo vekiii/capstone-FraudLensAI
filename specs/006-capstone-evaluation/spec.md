@@ -28,15 +28,15 @@ Tim evidentira stvarni početni rezultat za 16 unapred definisanih slučajeva, b
 2. Za EV-01–EV-10 aplikacija je podešena za stvarni model. Opravdano zaustavljanje pre poziva modela ima razlog i trag izvršavanja. EV-11–EV-16 koriste determinističke provere ili simulirane kvarove prema slučaju.
 3. Završni prolaz ponavlja iste ulaze, kriterijume i uporedive uslove. Rezultat zadržava neuspehe i blokade, pokazuje razliku po slučaju i povezuje ciljanu izmenu sa početnim tragom. Ako je ispravljen sam slučaj, sačuvati obe verzije i izdvojiti njihov rezultat iz direktnog poređenja, osim ako su oba merenja ponovljena na istoj ispravljenoj verziji.
 
-### US3 — Drugi član reprodukuje predaju (P1)
+### US3 — Izvršilac reprodukuje predaju (P1)
 
-Drugi član tima iz čistog checkouta pokreće označenu verziju i nalazi dokaze za timsku i individualnu ocenu.
+Imenovani član tima iz čistog checkouta pokreće označenu verziju i nalazi dokaze za timsku i individualnu ocenu. Za ovu predaju Vedran Mitic preuzima izvođenje jer je planirani izvršilac zauzet. Odluka od 22. novembra 2026. dopušta da izvršilac bude prethodni učesnik. [Dopuna zahteva](../../prompts/development/006-capstone-phase-05.md).
 
-**Nezavisna provera**. Drugi član pokreće aplikaciju iz uputstva, proverava završni prolaz i nalazi svih osam CAP stavki na istoj označenoj reviziji.
+**Provera iz čistog checkouta**. Imenovani izvršilac pokreće aplikaciju iz uputstva, proverava sačuvani tok i nalazi svih osam CAP stavki na istoj označenoj reviziji.
 
 1. Završni živi prolaz, završni EV rezultati i negativne provere referenciraju isti commit ili tag za predaju. Početno merenje zasebno navodi reviziju i podešavanja koja su stvarno korišćena.
-2. Uputstvo iz čistog checkouta obuhvata preduslove, dostupnost potrebnih lokalnih artefakata, pokretanje aplikacije i početni slučaj. Drugi član beleži stvarnu reprodukciju i sve preostale prepreke.
-3. Za probnu odbranu su spremni uspešna istraga, stanje sa nedovoljno dokaza ili potrebom za dopunom i kontrolisana greška. Sva četiri člana povezuju svoj doprinos, odluku, proveru i pregled rada kolege sa predatom verzijom.
+2. Uputstvo iz čistog checkouta obuhvata preduslove, dostupnost potrebnih lokalnih artefakata, pokretanje aplikacije i početni slučaj. Imenovani izvršilac beleži stvarnu reprodukciju i sve preostale prepreke.
+3. Za probnu odbranu su spremni uspešna istraga, stanje sa nedovoljno dokaza ili potrebom za dopunom i kontrolisana greška. Predaja povezuje doprinos, odluku i stvarnu proveru svakog od četiri člana sa predatom verzijom. Vedran Mitic za ovu predaju preuzima i potvrđuje zajednički pregled sva četiri zapisa jer ostali članovi rade druge zadatke. Postojeći pregledi rada kolega navode se prema dostupnom dokazu. [Dopuna zahteva](../../prompts/development/006-capstone-phase-05.md).
 
 ### Rubni slučajevi
 
@@ -56,7 +56,7 @@ Drugi član tima iz čistog checkouta pokreće označenu verziju i nalazi dokaze
 - **FR-005** (CAP-05) Jedan konkretan početni trag mora da obrazloži ciljanu izmenu. Poređenje mora da pokaže šta se promenilo na pogođenom slučaju i da prijavi eventualne regresije na ostalim slučajevima. Ovaj skup služi poređenju pre i posle, dok se postojeći nezavisni holdout koristi u granicama sopstvenog protokola.
 - **FR-006** (CAP-06) Završna revizija mora da ima stvarne negativne provere za nevalidan ulaz ili izlaz, nedostupan izvor, izlazak iz opsega, nedostupnost modela i grešku alata. Objavljeni dokazi moraju biti očišćeni od tajni i privatnih podataka. Test scenariji i simulirani kvarovi moraju biti kontrolisani.
 - **FR-007** (CAP-07) Priložiti jedan završni commit ili tag, komande proverene iz čistog checkouta, evidenciju potrebnih preduslova i rezultate završnog prolaza i negativnih provera sa te revizije. Mapa CAP-01–CAP-08 mora da pokaže dokaze i status za svaku stavku.
-- **FR-008** (CAP-01, CAP-08) U mapi povezati specifikaciju, tehnički dogovor i glavne kriterijume prihvatanja. Za svakog od četiri člana zabeležiti suštinski tehnički doprinos, odluku i njenu proveru, kako se doprinos uklapa u glavni tok i primer pregleda rada kolege. Sačuvati stvarnu potvrdu člana kada je primenljivo.
+- **FR-008** (CAP-01, CAP-08) U mapi povezati specifikaciju, tehnički dogovor i glavne kriterijume prihvatanja. Za svakog od četiri člana zabeležiti suštinski tehnički doprinos, odluku, njenu proveru i vezu sa glavnim tokom. Priložiti dokumentovane primere pregleda rada kolega gde postoje i stvarnu objedinjenu potvrdu imenovanog pregledaoca iz US3.
 
 ### Matrica EV-01–EV-16
 
@@ -95,7 +95,7 @@ Ovo je raspodela scenarija i očekivanih ishoda. Konkretne identifikatore sluča
 - **SC-001**. Na završnom commitu zabeležen je bar jedan živi prolaz označene transakcije do validiranog nacrta i obnovljive odluke, sa najmanje jednim sadržajno proverenim citatom i jednim izvršenim determinističkim alatom. Zabeležen je i slučaj nedovoljnih dokaza.
 - **SC-002**. Svaki od 16 fiksiranih ID-jeva ima stvarni početni i završni rezultat. Bar jedna izmena ima vezu do početnog traga i ponovljene provere. Uporedni prikaz sadrži promene, regresije i ukupne ishode sa imeniteljem 16.
 - **SC-003**. Izvršeno je svih šest završnih negativnih provera EV-11–EV-16 na završnom commitu. Rezultati jasno beleže da li je očekivana kontrola prošla. Za prihvatanje sve predviđene kontrole moraju proći.
-- **SC-004**. Drugi član reprodukovao je pokretanje iz čistog checkouta, svih osam CAP stavki ima evidentiran status, a sva četiri člana imaju zapis doprinosa i pregleda. Tri scenarija za odbranu koriste isti označeni commit.
+- **SC-004**. Imenovani izvršilac iz US3 reprodukovao je pokretanje iz čistog checkouta, svih osam CAP stavki ima evidentiran status, a zapisi o doprinosima sva četiri člana imaju objedinjenu potvrdu prema US3. Tri scenarija za odbranu koriste isti označeni commit.
 
 ## Pretpostavke i zavisnosti
 

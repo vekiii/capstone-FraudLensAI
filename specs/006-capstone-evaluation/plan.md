@@ -25,7 +25,7 @@ Na jednoj verziji aplikacije povezati postojeći React prikaz označene dataset 
 | TDD i ugovori | Kritične integracione granice proveriti prvo testovima. | RED slučajevi pokrivaju identitet snapshot-a, zastareli kontekst i nedostupnost izvora. Validirani API odgovori i postojeći fixture tok ostaju regresioni kriterijumi. |
 | Dokazi i autoritet | LLM daje potkrepljeni nacrt. Analitičar odlučuje. | Proveriti tačnu verziju izvora, opseg alata i sačuvanu odluku. Za score i ovlašćenja koristi se deterministički kod. |
 | Nezavisnost | Očekivanja i labele van izvršnog konteksta. | Izvršni ulazi odvojeni od offline reference. EV pre/posle predstavlja regresionu evaluaciju, a postojeći holdout ima sopstveni protokol. |
-| Reprodukcija | Sačuvati stvarne nalaze i njihove verzije. | Dve faze i jedna označena završna revizija. Drugi član potvrđuje pokretanje iz čistog checkouta. |
+| Reprodukcija | Sačuvati stvarne nalaze i njihove verzije. | Dve faze i jedna označena završna revizija. Imenovani izvršilac iz US3 potvrđuje pokretanje iz čistog checkouta. |
 
 Dizajn prolazi proveru obima i načela. Dostupan dataset snapshot, potvrđen model i završna revizija su preduslovi izvršavanja.
 
@@ -47,6 +47,6 @@ Implementacija dodiruje postojeće `web/src/pages/Cases.tsx`, `InvestigationPane
 | 2. Zamrzavanje paketa | Konkretne vrednosti svih 16 ulaza, identiteti korpusa i početnih stanja, odvojena očekivanja i rubrika. Uslovi revizije, budžet, postupak ocene i eventualno nedostupni ulazi dokumentovani. | FR-003–004 |
 | 3. Početno merenje i ciljana izmena | Jedan primarni ishod po EV slučaju. Trag objašnjava izbor jedne izmene. Dodati nameravani RED kada je u pitanju poslovno ponašanje, zatim GREEN i regresiju. Verzije svega što izmena dotiče dokumentovane. | FR-004–006, SC-002 |
 | 4. Završno merenje | Ista matrica i kriterijumi na kandidatu za predaju. Živi browser prolaz, ponovljene negativne provere, uporedni rezultat sa imeniteljem 16. | FR-001–007, SC-001–003 |
-| 5. Predaja | Jedna revizija, čist checkout, tri scenarija za odbranu i CAP-01–CAP-08 mapa sa po jednim stvarnim zapisom za četiri člana. | FR-007–008, SC-004 |
+| 5. Predaja | Jedna revizija, čist checkout, tri scenarija za odbranu i CAP-01–CAP-08 mapa sa stvarnim zapisima za četiri člana i objedinjenom potvrdom prema US3. | FR-007–008, SC-004 |
 
 Priprema scenarija i determinističkih provera može da ide paralelno sa povezivanjem izvora. Stabilizacija i probni pozivi pripadaju pripremi. Početno merenje počinje tek kada se zamrznu ulazi i potvrde preduslovi. Cilj je paket do 24. novembra i demo 25. novembra.

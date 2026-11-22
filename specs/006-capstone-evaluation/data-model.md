@@ -8,7 +8,7 @@
 | Očekivanje | EV ID, verifikabilne činjenice, prihvatljivi ishodi, obavezni kontrolni signali, postupak ocene i dokazi za neuspeh. Pristupa mu offline ocenjivač posle snimanja rezultata. |
 | Zapis izvršavanja | EV ID, faza `baseline` ili `final`, commit, verzija paketa i digest ulaza, režim, stvarni ishod, status, trag, binding, verzije korpusa/modela/konfiguracije, broj zahteva i eventualna nepoznata potrošnja. |
 | Ciljana izmena | Početni trag i EV ID, hipoteza o uzroku, tačna promena, commit ili diff, očekivani uticaj i rezultat ponovljene provere. |
-| Predaja | Završni commit/tag, uputstvo i stvarni zapis reprodukcije drugog člana, tri scenarija za demo, osam CAP stavki i četiri potvrđena zapisa doprinosa. |
+| Predaja | Završni commit/tag, uputstvo i stvarni zapis reprodukcije imenovanog izvršioca iz US3, tri scenarija za demo, osam CAP stavki, četiri zapisa doprinosa i objedinjena potvrda po US3. |
 
 Dozvoljeni statusi rezultata su `pass`, `fail`, `blocked` i `not_run`.
 Jedna ispravka ili ponavljanje unutar dozvoljenog workflow-a ostaje deo jednog
