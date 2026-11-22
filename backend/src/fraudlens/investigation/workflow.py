@@ -69,7 +69,9 @@ class InvestigationService:
         if self.settings.source == 'dataset':
             if self.settings.model_case_bridge_root is not None:
                 from fraudlens.bridge_reader import BridgeReader
-                dataset_reader = BridgeReader(self.settings.model_case_bridge_root)
+                dataset_reader = BridgeReader(
+                    self.settings.model_case_bridge_root, self.settings.model_case_bridge_manifest_sha256,
+                )
             else:
                 from fraudlens.investigation.dataset import DatasetReader
                 dataset_reader = DatasetReader(self.settings.dataset_run_store, self.settings.dataset_store,

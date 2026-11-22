@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import sqlite3
+from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -130,7 +131,7 @@ def publish(source_root: Path, feature_root: Path, artifact_root: Path,
     stage.mkdir(parents=True)
     try:
         dataset_path, runs_path = stage / 'dataset.sqlite', stage / 'runs.sqlite'
-        with sqlite3.connect(dataset_path) as db:
+        with closing(sqlite3.connect(dataset_path)) as db, db:
             db.executescript('''CREATE TABLE dataset_versions(id TEXT PRIMARY KEY,status TEXT,rejected_records INTEGER);
                 CREATE TABLE active_dataset(singleton INTEGER PRIMARY KEY,version TEXT);
                 CREATE TABLE operational_events(version TEXT,transaction_id TEXT,case_id TEXT,payload_json TEXT);
@@ -161,7 +162,7 @@ def publish(source_root: Path, feature_root: Path, artifact_root: Path,
         now = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
         start = '2022-09-01T00:00:00Z'  # verified T210 source start; conservative incomplete coverage below
         bindings = []
-        with sqlite3.connect(runs_path) as db:
+        with closing(sqlite3.connect(runs_path)) as db, db:
             db.executescript('''CREATE TABLE scored_runs(run_id TEXT PRIMARY KEY,dataset_version TEXT,score_source TEXT,scorer_version TEXT,status TEXT);
                 CREATE TABLE active_run(singleton INTEGER PRIMARY KEY,run_id TEXT);
                 CREATE TABLE scored_assessments(run_id TEXT,case_id TEXT,transaction_json TEXT,assessment_json TEXT,alert INTEGER,

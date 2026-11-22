@@ -27,6 +27,7 @@ class InvestigationSettings(BaseModel):
     dataset_store: Path = ROOT / 'data/processed/dataset.sqlite'
     dataset_score_source: Literal['rules', 'model'] = 'rules'
     model_case_bridge_root: Path | None = None
+    model_case_bridge_manifest_sha256: str | None = None
     dataset_history_index: Path | None = None
     dataset_history_index_sha256: str | None = Field(default=None, pattern='^[0-9a-f]{64}$')
     analyst: str = Field(default='local-demo-analyst', min_length=1, max_length=80)
@@ -90,8 +91,11 @@ def load_settings() -> InvestigationSettings:
     environment = read_environment()
     values = {}
     for name in InvestigationSettings.model_fields:
-        variable = {'api_key': 'OPENAI_API_KEY', 'model': 'OPENAI_MODEL'}.get(
-            name, 'INVESTIGATION_' + name.upper())
+        variable = {
+            'api_key': 'OPENAI_API_KEY',
+            'model': 'OPENAI_MODEL',
+            'model_case_bridge_manifest_sha256': 'MODEL_CASE_BRIDGE_MANIFEST_SHA256',
+        }.get(name, 'INVESTIGATION_' + name.upper())
         if variable in environment:
             raw = environment[variable]
             if name.startswith('max_') or name.endswith('_seconds'):

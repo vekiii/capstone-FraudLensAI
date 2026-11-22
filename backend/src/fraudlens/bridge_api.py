@@ -27,7 +27,7 @@ def _reader(request):
     root = os.environ.get('MODEL_CASE_BRIDGE_ROOT')
     if not root:
         raise BridgeUnavailable('Bridge path not configured')
-    return BridgeReader(Path(root))
+    return BridgeReader(Path(root), os.environ.get('MODEL_CASE_BRIDGE_MANIFEST_SHA256'))
 
 
 def _response(request, operation, value=None):

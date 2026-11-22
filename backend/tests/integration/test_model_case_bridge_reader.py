@@ -2,13 +2,18 @@
 
 import json
 import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 import pytest
+from fastapi.testclient import TestClient
 
 from fraudlens.bridge_reader import BridgeNotFound, BridgeReader, BridgeUnavailable
 from fraudlens.data.manifest import canonical_json_bytes, sha256_file
 from fraudlens.investigation.context import CaseContextReader
+from fraudlens.investigation.knowledge import KnowledgeStore
+from fraudlens.main import create_app
+from fraudlens.settings import Settings
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -19,7 +24,7 @@ def published(tmp_path):
     binding = json.loads((contract / 'model-case-binding-v1.json').read_text())
     context = json.loads((contract / 'model-context-v2.json').read_text())
     runs, source = tmp_path / 'runs.sqlite', tmp_path / 'dataset.sqlite'
-    with sqlite3.connect(runs) as db:
+    with closing(sqlite3.connect(runs)) as db, db:
         db.executescript('''CREATE TABLE scored_runs(run_id TEXT,dataset_version TEXT,score_source TEXT,scorer_version TEXT,status TEXT);
           CREATE TABLE active_run(singleton INTEGER,run_id TEXT);
           CREATE TABLE scored_assessments(run_id TEXT,case_id TEXT,transaction_json TEXT,assessment_json TEXT,alert INTEGER);
@@ -31,7 +36,7 @@ def published(tmp_path):
             json.dumps(context['source_payload']['transaction']), json.dumps(context['source_payload']['risk_assessment'])))
         db.execute('INSERT INTO bridge_crosswalk VALUES(?,?,?,?)', (binding['canonical_transaction_id'], binding['case_id'],
             binding['transaction_id'], json.dumps(binding)))
-    with sqlite3.connect(source) as db:
+    with closing(sqlite3.connect(source)) as db, db:
         db.executescript('''CREATE TABLE dataset_versions(id TEXT,status TEXT,rejected_records INTEGER);
           CREATE TABLE active_dataset(singleton INTEGER,version TEXT);
           CREATE TABLE operational_events(version TEXT,transaction_id TEXT,case_id TEXT,payload_json TEXT);
@@ -59,9 +64,55 @@ def published(tmp_path):
     return tmp_path,binding
 
 
+def _reader(root):
+    return BridgeReader(root, sha256_file(root / 'manifest.json'))
+
+
+@pytest.mark.parametrize('pin', [None, '', 'malformed', '0' * 64])
+def test_both_bridge_consumers_require_trusted_manifest_pin(published, monkeypatch, pin):
+    root, binding = published
+    monkeypatch.delenv('MODEL_CASE_BRIDGE_MANIFEST_SHA256', raising=False)
+    if pin is not None:
+        monkeypatch.setenv('MODEL_CASE_BRIDGE_MANIFEST_SHA256', pin)
+    _assert_bridge_route_statuses(root, binding, monkeypatch, 503)
+
+
+def test_both_bridge_consumers_accept_pin_and_reject_resealed_manifest(published, monkeypatch):
+    root, binding = published
+    manifest = root / 'manifest.json'
+    monkeypatch.setenv('MODEL_CASE_BRIDGE_MANIFEST_SHA256', sha256_file(manifest))
+    _assert_bridge_route_statuses(root, binding, monkeypatch, 200)
+
+    # Preserve the manifest's meaning and its self-consistency, but change the approved bytes.
+    manifest.write_bytes(manifest.read_bytes() + b'\n')
+    (root / 'COMPLETE').write_text(sha256_file(manifest) + '\n', encoding='ascii')
+    _assert_bridge_route_statuses(root, binding, monkeypatch, 503)
+
+
+def _assert_bridge_route_statuses(root, binding, monkeypatch, status):
+    store = root / 'investigations.sqlite'
+    KnowledgeStore(store)
+    monkeypatch.setenv('MODEL_CASE_BRIDGE_ROOT', str(root))
+    monkeypatch.setenv('INVESTIGATION_MODEL_CASE_BRIDGE_ROOT', str(root))
+    monkeypatch.setenv('INVESTIGATION_SOURCE', 'dataset')
+    monkeypatch.setenv('INVESTIGATION_DATASET_SCORE_SOURCE', 'model')
+    monkeypatch.setenv('INVESTIGATION_ENABLED', 'true')
+    monkeypatch.setenv('INVESTIGATION_PROVIDER', 'test')
+    monkeypatch.setenv('INVESTIGATION_STORE', str(store))
+    app = create_app(settings=Settings(mode='model'), model_scorer=object(), feature_store=object())
+    with TestClient(app) as client:
+        case = client.get('/api/model/cases/by-transaction/' + binding['canonical_transaction_id'])
+        runs = client.get('/api/investigation/runs', params={'case_id': binding['case_id']})
+        assert (case.status_code, runs.status_code) == (status, status)
+        if status == 503:
+            assert case.json()['error']['code'] == 'run_unavailable'
+            assert runs.json()['error']['code'] == 'context_unavailable'
+        assert client.get('/api/cases/CASE-001').status_code == 200
+
+
 def test_context_history_strict_cutoff_incomplete_and_no_labels(published):
     root,binding = published
-    reader=BridgeReader(root)
+    reader=_reader(root)
     ctx=CaseContextReader(dataset_reader=reader).resolve(binding['case_id'],'dataset',binding['snapshot_ref'])
     assert ctx['history']['coverage']=='incomplete'
     history=reader.read(ctx,'sender')
@@ -72,7 +123,7 @@ def test_context_history_strict_cutoff_incomplete_and_no_labels(published):
 
 def test_unknown_stale_and_missing_never_fall_back_to_fixture(published):
     root,binding=published
-    reader=BridgeReader(root)
+    reader=_reader(root)
     with pytest.raises(BridgeNotFound):
         reader.binding(binding['canonical_transaction_id'][:-1]+'9')
     with pytest.raises(ValueError,match='stale_snapshot'):
@@ -85,26 +136,26 @@ def test_unknown_stale_and_missing_never_fall_back_to_fixture(published):
 def test_changed_binding_and_private_field_fail_closed(published):
     root,binding=published
     for changed in ({**binding,'case_id':'C'+'0'*32}, {**binding,'is_laundering':1}):
-        with sqlite3.connect(root/'runs.sqlite') as db:
+        with closing(sqlite3.connect(root/'runs.sqlite')) as db, db:
             db.execute('UPDATE bridge_crosswalk SET binding_json=?',(json.dumps(changed),))
         manifest=json.loads((root/'manifest.json').read_text())
         manifest['runs_sha256']=sha256_file(root/'runs.sqlite')
         (root/'manifest.json').write_bytes(canonical_json_bytes(manifest)+b'\n')
         (root/'COMPLETE').write_text(sha256_file(root/'manifest.json')+'\n')
         with pytest.raises(ValueError):
-            BridgeReader(root).resolve(binding['case_id'],None)
+            _reader(root).resolve(binding['case_id'],None)
 
 
 def test_duplicate_case_identity_rejected_by_unique_index(published):
     root,binding=published
-    with sqlite3.connect(root/'runs.sqlite') as db, pytest.raises(sqlite3.IntegrityError):
+    with closing(sqlite3.connect(root/'runs.sqlite')) as db, db, pytest.raises(sqlite3.IntegrityError):
         db.execute('INSERT INTO bridge_crosswalk VALUES(?,?,?,?)',
             (binding['canonical_transaction_id']+':copy',binding['case_id'],'D'+'0'*32,json.dumps(binding)))
 
 
 def test_wrong_history_cutoff_and_label_table_access_denied(published):
     root,binding=published
-    with sqlite3.connect(root/'runs.sqlite') as db:
+    with closing(sqlite3.connect(root/'runs.sqlite')) as db, db:
         row=db.execute('SELECT assessment_json FROM scored_assessments').fetchone()
         assessment=json.loads(row[0])
         assessment['history_cutoff_exclusive_at']='2022-09-06T11:59:00Z'
@@ -114,8 +165,8 @@ def test_wrong_history_cutoff_and_label_table_access_denied(published):
     (root/'manifest.json').write_bytes(canonical_json_bytes(manifest)+b'\n')
     (root/'COMPLETE').write_text(sha256_file(root/'manifest.json')+'\n')
     with pytest.raises(ValueError):
-        BridgeReader(root).resolve(binding['case_id'],None)
-    reader=BridgeReader(root).reader
+        _reader(root).resolve(binding['case_id'],None)
+    reader=_reader(root).reader
     with reader.connection(root/'dataset.sqlite') as db, pytest.raises(sqlite3.DatabaseError):
         db.execute('SELECT secret FROM private_evaluation_labels').fetchone()
 
@@ -129,7 +180,7 @@ def test_rehashed_manifest_cannot_substitute_frozen_inputs(published, field):
     (root/'manifest.json').write_bytes(canonical_json_bytes(manifest)+b'\n')
     (root/'COMPLETE').write_text(sha256_file(root/'manifest.json')+'\n')
     with pytest.raises(BridgeUnavailable):
-        BridgeReader(root).resolve(binding['case_id'], None)
+        _reader(root).resolve(binding['case_id'], None)
 
 
 def _reseal(root, database):
@@ -141,27 +192,27 @@ def _reseal(root, database):
 
 def test_stale_active_run_and_score_mismatch_fail_closed(published):
     root, binding = published
-    with sqlite3.connect(root/'runs.sqlite') as db:
+    with closing(sqlite3.connect(root/'runs.sqlite')) as db, db:
         db.execute('UPDATE active_run SET run_id=?', ('run_other',))
     _reseal(root, 'runs')
     with pytest.raises(ValueError, match='stale_snapshot'):
-        BridgeReader(root).resolve(binding['case_id'], None)
-    with sqlite3.connect(root/'runs.sqlite') as db:
+        _reader(root).resolve(binding['case_id'], None)
+    with closing(sqlite3.connect(root/'runs.sqlite')) as db, db:
         db.execute('UPDATE active_run SET run_id=?', (binding['snapshot_ref'],))
         assessment = json.loads(db.execute('SELECT assessment_json FROM scored_assessments').fetchone()[0])
         assessment['score'] = 0.9
         db.execute('UPDATE scored_assessments SET assessment_json=?', (json.dumps(assessment),))
     _reseal(root, 'runs')
     with pytest.raises(ValueError, match='Binding/assessment mismatch'):
-        BridgeReader(root).resolve(binding['case_id'], None)
+        _reader(root).resolve(binding['case_id'], None)
 
 
 def test_available_empty_history_is_distinct_from_missing_source(published):
     root, binding = published
-    with sqlite3.connect(root/'dataset.sqlite') as db:
+    with closing(sqlite3.connect(root/'dataset.sqlite')) as db, db:
         db.execute("UPDATE operational_events SET payload_json=json_set(payload_json, '$.sender_bank', 'OTHER', '$.receiver_bank', 'OTHER')")
     _reseal(root, 'dataset')
-    reader = BridgeReader(root)
+    reader = _reader(root)
     ctx = reader.resolve(binding['case_id'], binding['snapshot_ref'])
     history = reader.read(ctx, 'sender')
     assert history['availability'] == 'available' and history['eligible_count'] == 0

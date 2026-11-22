@@ -1,6 +1,7 @@
 """Read-only verified bridge consumer; never accepts caller paths or SQL."""
 
 import json
+import re
 import sqlite3
 from contextlib import closing
 from pathlib import Path
@@ -8,7 +9,7 @@ from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
 
 from fraudlens.bridge import validate_binding, validate_crosswalk
-from fraudlens.data.manifest import sha256_file
+from fraudlens.data.manifest import sha256_bytes, sha256_file
 from fraudlens.investigation.dataset import DatasetReader
 from fraudlens.investigation.models import PRODUCER_V2
 from fraudlens.scoring.model_scorer import (
@@ -32,17 +33,22 @@ class BridgeNotFound(ValueError):
 
 
 class BridgeReader:
-    def __init__(self, root: Path):
+    def __init__(self, root: Path, expected_manifest_sha256: str | None):
         self.root = Path(root)
+        self.expected_manifest_sha256 = expected_manifest_sha256
         self.runs = self.root / 'runs.sqlite'
         self.dataset = self.root / 'dataset.sqlite'
         self.reader = DatasetReader(self.runs, self.dataset, 'model')
 
     def _check(self):
+        expected = self.expected_manifest_sha256
+        if not expected or re.fullmatch(r'[0-9a-f]{64}', expected) is None:
+            raise BridgeUnavailable('Bridge source unavailable')
         try:
             raw = (self.root / 'manifest.json').read_bytes()
-            if (self.root / 'COMPLETE').read_text().strip() != sha256_file(self.root / 'manifest.json'):
-                raise ValueError('Completion marker mismatch')
+            if (sha256_bytes(raw) != expected
+                    or (self.root / 'COMPLETE').read_text(encoding='ascii').strip() != expected):
+                raise ValueError('Bridge manifest digest or completion marker mismatch')
             manifest = json.loads(raw)
             if (manifest['bridge_version'] != 1 or manifest['status'] != 'complete'
                     or manifest['source_sha256'] != SOURCE_SHA256
