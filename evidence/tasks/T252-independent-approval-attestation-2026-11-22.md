@@ -8,8 +8,8 @@ The T252 acceptance record calls for actual reviewer scope and reproduction deta
 
 ## Review identity and scope
 
-- **Reviewer:** user in this conversation; personal name not stated in the approval message.
-- **Independence:** user states they are an independent reviewer. The prior T252 record scoped the user's earlier manual application confirmation as not independent of that user's own Feature 002 model work. The conversation does not reconcile that contribution/identity boundary. Record this as an open verification item, not as evidence of bad faith.
+- **Reviewer:** user in this conversation, who subsequently answered `isidora as a team`; record the supplied first name as Isidora. The reply did not supply a surname.
+- **Independence:** user states they are an independent reviewer, but did not answer which Feature 002 work they authored. Git history in the reviewed `d46699f` ancestry attributes protocol, data and training work to `Isidora Popovic LUKOWA`, including `70f3019` (T212 temporal protocol), `937beec` (T219 partition hashes), `03c69c2` (T226 validation evaluation), and `14fede4` (IBM-day split/LightGBM pipeline). If that Git author is the same Isidora, these areas need review by a different nonauthor. The prior T252 record also scoped the user's manual confirmation as not independent of their own Feature 002 model work. The exact identity/contribution boundary remains an open verification item.
 - **Team representation:** user expressly says the approval is on behalf of the whole team. No other team member is named and no separate individual responses are in this conversation; this record attributes the representative approval to the user.
 - **Decision date:** 2026-11-22 (conversation date); exact time not supplied.
 - **Review duration:** not stated in the conversation; not estimated.
@@ -38,10 +38,14 @@ After a PowerShell `Get-FileHash -Algorithm SHA256 -LiteralPath` check was sugge
 
 The user then stated, "everythign is approved by me in the name of the team". This renews the representative approval attestation without adding named individual team approvals. In the separate T252 worktree at commit `d46699f`, the ignored feature files, frozen model/prediction files and T230 aggregate report were still absent when checked by Codex. No user-run parity or report-hash result has been supplied, so this single source-file hash does not establish complete independent reproduction.
 
+## Follow-up identity and reproduction response
+
+Asked for the reviewer's name and which Feature 002 work they personally authored, the user replied `isidora as a team`. This identifies the team representative by first name but does not answer the authorship question. Asked whether the remaining frozen model/prediction/report hashes and `T233-parity.py` had been completed, with a request to paste observed results or list missing files, the user replied `yes`. Record that as a claim of completion, not as observed hash or parity results. A fresh local check of the separate Windows T252 worktree still found the ignored model, prediction, aggregate report and test feature file absent; the conversation does not identify a different checkout or provide the actual outputs. No assumption is made about what Isidora ran elsewhere.
+
 ## Open closure items
 
-1. Add the user's complete environment, read-only commands, remaining verified hashes/contract results, and reproduction date, or explicitly state which reproduction step was not performed and disposition the gap.
-2. Reconcile the current claim of independent reviewer status with the prior record's Feature 002 authorship caveat; identify which portions the reviewer authored, if any.
+1. Add Isidora's actual checkout/environment, read-only commands, remaining observed hashes/contract results, and reproduction date; the reply `yes` does not supply these values.
+2. Confirm whether the Git author `Isidora Popovic LUKOWA` is this reviewer. If so, obtain and record a separate nonauthor's review and disposition for Isidora-authored Feature 002 protocol, data, training and related metrics work.
 3. Keep review duration as `not recorded` unless the reviewer supplies a truthful measured/remembered duration.
 4. Recheck the PR #3 head before applying the approval to any commit later than the recorded candidate; the 2026-11-22 remote check matched `d46699f`.
 

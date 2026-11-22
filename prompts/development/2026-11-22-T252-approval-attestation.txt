@@ -22,3 +22,7 @@ Later user-supplied Windows result and renewed approval:
 - The user pasted a PowerShell `Get-FileHash` result table: `SHA256 693320617CD8FF05C3BA177FCF9E3447BD2F7B92C5B29736FCE304D60023C9E0`; the displayed path was truncated after `C:\Users\IsidoraPopovicLUKOWA\OneDrive - LUKOWA\Documents\sita-capsto..`.
 - Latest user approval (verbatim): "everythign is approved by me in the name of the team".
 - This one matching hash is a partial reproduction record. The remaining hash/contract outputs, full environment, specific findings, reviewer name/contribution boundary and review duration were not supplied in the conversation.
+
+Follow-up user replies to two specific evidence questions:
+- Asked for the reviewer name and personal Feature 002 contributions, the user answered verbatim: "isidora as a team". This provides a first name and representative role but does not list contributions.
+- Asked whether the remaining frozen model/prediction/report hash checks and `T233-parity.py` were completed, and to paste results or identify missing files, the user answered verbatim: "yes". No output or checkout path accompanied the answer.
