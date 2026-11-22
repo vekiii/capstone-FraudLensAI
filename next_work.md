@@ -1,5 +1,21 @@
 # Next work - FraudLens AI
 
+## Feature 06 — Faza 6 proverena, 22. novembar 2026.
+
+T024 i T025 su izvršeni. Kandidat `d8acc2a335d95e2402f586006925949f4d9f7739`
+ima 796 pytest prolaza, 72 pada, 24 preskoka i 4 greške pri postavci.
+Ciljano poređenje na baseline-u reprodukuje svih 76 problematičnih node ID-jeva.
+Ruff, 211 Vitest testova i produkcijski build su prošli.
+Final ostaje 13/16 (EV-01/04/07 fail), SC-002 i CAP-05 su otvoreni zbog
+baseline EV-06. Prihvatanje feature-a ostaje otvoreno.
+[Regresija](evidence/tasks/feature-006-regression.md) ·
+[Audit](evidence/tasks/feature-006-final-audit.md) ·
+[CAP mapa](evidence/tasks/feature-006-capstone-evidence-map.md) ·
+[Predaja faze 6](evidence/tasks/feature-006-phase-06-handoff.md).
+
+Naredni tehnički korak je uskladiti očekivanu granicu pristupa Cases
+sa opsegom Feature 05 T028, koji planira autorizaciju live API-ja.
+
 ## Feature 06 — Faza 5 završena, 22. novembar 2026.
 
 T020–T023 su završeni i čekirani. Vedran je u T021 proverio oba citata

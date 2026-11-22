@@ -56,8 +56,8 @@ description: "Implementation and verification tasks for the Capstone evaluation"
 
 ## Faza 6 — Završna provera i predaja rada
 
-- [ ] T024 Izvršiti završne pytest, Ruff, Vitest i produkcijski build komande iz `specs/006-capstone-evaluation/quickstart.md` na kandidatu i zapisati stvarne izlaze u `evidence/tasks/feature-006-regression.md`. Uporediti zabeležene padove sa polaznim stanjem. Ponoviti pogođene provere ako se kandidat menja.
-- [ ] T025 Proveriti pokrivenost FR-001–FR-008 i SC-001–SC-004, usklađenost SHA referenci, svih 16 EV i osam CAP stavki i da deljeni dokazi nemaju tajne ili zaštićene podatke. U `next_work.md` upisati stvarno stanje, link na `evidence/tasks/feature-006-capstone-evidence-map.md` i naredni korak. Git objavljivanje ide po dogovoru tima.
+- [X] T024 Izvršiti završne pytest, Ruff, Vitest i produkcijski build komande iz `specs/006-capstone-evaluation/quickstart.md` na kandidatu i zapisati stvarne izlaze u `evidence/tasks/feature-006-regression.md`. Uporediti zabeležene padove sa polaznim stanjem. Ponoviti pogođene provere ako se kandidat menja.
+- [X] T025 Proveriti pokrivenost FR-001–FR-008 i SC-001–SC-004, usklađenost SHA referenci, svih 16 EV i osam CAP stavki i da deljeni dokazi nemaju tajne ili zaštićene podatke. U `next_work.md` upisati stvarno stanje, link na `evidence/tasks/feature-006-capstone-evidence-map.md` i naredni korak. Git objavljivanje ide po dogovoru tima.
 
 ## Zavisnosti i paralelan rad
 

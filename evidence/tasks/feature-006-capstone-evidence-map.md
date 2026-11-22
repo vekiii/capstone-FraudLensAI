@@ -2,6 +2,8 @@
 
 **Status: završeno.** Mapa pokriva svih osam stavki i beleži rezultate
 T021 i T022, kao i otvorene kriterijume evaluacije.
+[Završna regresija T024](feature-006-regression.md) ·
+[Završni audit T025](feature-006-final-audit.md).
 Referentni testirani kandidat je `d8acc2a335d95e2402f586006925949f4d9f7739`.
 Baseline poređenja je `5974f94f68c2a1fd1e42b9b2d01d438c30bd8dca`.
 [Pinovi kandidata](feature-006-release-candidate.md).
