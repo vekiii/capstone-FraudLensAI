@@ -1,5 +1,17 @@
 # Next work - FraudLens AI
 
+## Feature 06 — T008 završen, 22. novembar 2026.
+
+Posle odobrenja budžeta prošli su sintetička proba i ponovljeni živi
+browser preflight sa `gpt-6-luna`, semantic v8/report v6. Prvi izdvojeni
+slučaj je stao na lokalnom ulaznom limitu. Slučaj sa manjom istorijom je
+prošao do validiranog nacrta, otvorenog odlomka i odluke ponovo učitane
+posle osvežavanja. Ukupno 9 potvrđenih provider zahteva i jedna lokalno
+odbijena rezervacija. [T008 dokaz](evidence/tasks/feature-006-live-preflight.md).
+
+Sledeći korak je T009 po zasebnom nalogu, priprema javnih EV ulaza i
+odvojenih očekivanja. Primarno merenje je otvoreno.
+
 ## Feature 06 — T004–T007 završeni, 22. novembar 2026.
 
 React Cases otvara istragu iz v2 detalja i proverava objavljeni snapshot
