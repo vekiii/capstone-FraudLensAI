@@ -18,4 +18,10 @@
 | Second-person reproduction | Pending | Pending |
 | Findings and disposition | Pending | Pending |
 
-T252 stays unchecked until actual reviewers, reviewed scope and reproduction evidence are recorded. This packet is preparation only; no new tests or data evaluation were run for it.
+## Technical contribution — 2026-11-22
+
+The [PR #4 Windows run](pr4-windows-review-2026-11-22.md) verified the transferred artifact hashes and frozen-score parity on exact commit `c0d59f2`. It exercised one local test-provider investigation and found a Windows SQLite activation failure in the offline publisher, a Windows SQLite test failure and an open manifest trust issue. The run did not repeat T230 or use record-level labels. An automated technical contribution supplies reproducible evidence for a future human reviewer. The entries above remain pending for an actual independent contributor's review, reproduction and disposition. T252 stays unchecked.
+
+The follow-up fixed the SQLite failures and required an independent bridge manifest
+digest in both runtime consumers. Windows checks again reproduced frozen-score
+parity and the test-provider browser flow. [Fixes and execution evidence](pr4-windows-fixes-2026-11-22.md)
