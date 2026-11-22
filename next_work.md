@@ -1,5 +1,19 @@
 # Next work - FraudLens AI
 
+## Feature 06 — Faza 5 delimična, 22. novembar 2026.
+
+T020 je završen. Provereni su T098 digesti, Cases/Investigation binding,
+isti korpus i dve lokalne HTTP probe kroz API, proxy i worker bez naplate.
+T021 čeka stvarnu reprodukciju drugog člana. T022 čeka četiri individualne
+potvrde doprinosa i pregleda. T023 [mapa](evidence/tasks/feature-006-capstone-evidence-map.md)
+pokriva svih osam CAP stavki, uz otvorene CAP-05, CAP-07 i CAP-08.
+Final ostaje 13/16, a SC-002 otvoren zbog baseline EV-06.
+[Predaja i provere](evidence/tasks/feature-006-phase-05-handoff.md).
+
+Sledeći korak je da drugi član izvrši [quickstart](specs/006-capstone-evaluation/quickstart.md)
+sa testnim providerom iz svog čistog checkout-a kandidata
+`d8acc2a335d95e2402f586006925949f4d9f7739` i dostavi nalaz za T021.
+
 ## Feature 06 — Faza 4 završena, 22. novembar 2026.
 
 T009–T019 su potvrđeni i čekirani. Isti zamrznuti paket ima baseline
