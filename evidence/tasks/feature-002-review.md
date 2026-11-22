@@ -1,6 +1,6 @@
 # Feature 002 human review and reproduction (T252)
 
-**Status:** T252 remains open. On 2026-11-22 the user supplied a positive manual review of the local application flow, results and limitations in the test-provider scope for the reviewed session commit `d46699fbd11219ebc92c6ef002d4924a4c7d4b34`. This is a scoped human confirmation, not independent review of the user's own Feature 002 model work, a line-by-line code review, or a review of a later commit. Independent human protocol/data-card/model-metrics review and confirmed independent reproduction/disposition for the remaining T252 scope are still pending. [Verbatim user confirmation](../../prompts/development/2026-11-22-T252-user-manual-review.txt).
+**Status:** User attests on 2026-11-22 that they completed the T252 manual checklist, identify as an independent reviewer, and approve the reviewed scope on behalf of the team. The user-reported disposition is recorded in [the approval attestation](T252-independent-approval-attestation-2026-11-22.md) with supporting repository evidence. T252 remains open because the conversation lacks the user's actual independent reproduction environment, commands, observed hashes/results and review duration; the prior authorship/independence boundary also needs reconciliation. No duration or unreported finding is inferred.
 
 ## Review packet and requested scope
 
@@ -15,8 +15,8 @@
 | Item | Actual reviewer / date | Scope, commands, observed result |
 |---|---|---|
 | Manual application flow, results and limitations | User-provided confirmation, 2026-11-22; no personal name inferred | The user states she completed the agreed checklist, found the reviewed local test-provider application flow and results satisfactory and had no objections. Bound to the reviewed session at commit `d46699fbd11219ebc92c6ef002d4924a4c7d4b34` from the [Codex Mac evidence](pr3-final-codex-technical-review-2026-11-22.md). The user did not supply individual clicks, commands, screenshots or a claim of a newer commit; none are inferred. |
-| Independent human protocol, data-card, model metrics and limits review | Pending | Requires a person independent of the Feature 002 work to record actual scope, findings and disposition, including provenance gaps, frozen model/threshold, validation reuse, T230 aggregate interpretation and limitations. The user's own review does not satisfy this item. |
-| Independent second-person reproduction and disposition | Pending confirmation for T252 | [Milan's Windows technical run](pr4-windows-review-2026-11-22.md) and [fix verification](pr4-windows-fixes-2026-11-22.md) document automated reproduction on earlier PR #4 revisions; they are technical evidence, not a recorded independent human sign-off on the complete T252 scope of this reviewed PR #3 commit. Record an actual independent person's environment, read-only commands, verified hashes/results and disposition before closure. |
+| Independent human protocol, data-card, model metrics and limits review | User-attested approved (2026-11-22; no personal name or review duration supplied) | User states they completed and approved this checklist on behalf of the team. Supporting repository evidence is summarized in [attestation](T252-independent-approval-attestation-2026-11-22.md). Specific findings and the reviewer contribution boundary are not supplied/reconciled. |
+| Independent second-person reproduction and disposition | User-attested completed; execution details not recorded | User says the full manual checklist was performed. The conversation provides no independent environment, read-only commands, observed hashes/results, or date/time for that reproduction. Prior Windows evidence covers earlier PR #4 revisions, not this user's own reproduction. See [attestation](T252-independent-approval-attestation-2026-11-22.md); keep T252 open pending the required record. |
 
 ### Scope separation
 
@@ -24,8 +24,13 @@ The [Codex technical review](pr3-final-codex-technical-review-2026-11-22.md) ind
 
 ## Technical contribution — 2026-11-22
 
-The [PR #4 Windows run](pr4-windows-review-2026-11-22.md) verified the transferred artifact hashes and frozen-score parity on exact commit `c0d59f2`. It exercised one local test-provider investigation and found a Windows SQLite activation failure in the offline publisher, a Windows SQLite test failure and an open manifest trust issue. The run did not repeat T230 or use record-level labels. An automated technical contribution supplies reproducible evidence for a future human reviewer. The independent protocol/data-card/model-metrics review and final second-person reproduction/disposition entries above remain pending. T252 stays unchecked.
+The [PR #4 Windows run](pr4-windows-review-2026-11-22.md) verified the transferred artifact hashes and frozen-score parity on exact commit `c0d59f2`. It exercised one local test-provider investigation and found a Windows SQLite activation failure in the offline publisher, a Windows SQLite test failure and an open manifest trust issue. The run did not repeat T230 or use record-level labels. An automated technical contribution supplies reproducible evidence for a future human reviewer. The user now attests that the protocol/data-card/model-metrics review and second-person reproduction are complete and approved. The actual reproduction record and reviewer-independence boundary remain undocumented; T252 stays unchecked pending those details.
 
 The follow-up fixed the SQLite failures and required an independent bridge manifest
 digest in both runtime consumers. Windows checks again reproduced frozen-score
 parity and the test-provider browser flow. [Fixes and execution evidence](pr4-windows-fixes-2026-11-22.md)
+
+
+## User-reported checklist completion and approval — 2026-11-22
+
+[Approval attestation](T252-independent-approval-attestation-2026-11-22.md) records the user's statement that they performed and approved the full checklist on behalf of the team. The exact duration, independent reproduction details, and reviewer/contributor boundary were not provided in the conversation. T252 remains unchecked until its evidence criteria are documented; no task marker is changed to bypass the gate.

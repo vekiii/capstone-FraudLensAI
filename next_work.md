@@ -1,3 +1,7 @@
+## T252 user-reported approval attestation — 2026-11-22
+
+Recorded the user's statement that they completed the T252 checklist and approve the reviewed scope on behalf of the team in [T252 approval attestation](evidence/tasks/T252-independent-approval-attestation-2026-11-22.md); linked the source statement and updated the review record/index. The record distinguishes user attestation from repository technical evidence. Review duration and the user's own reproduction environment, commands, hashes/results were not supplied; independence also needs reconciliation with the earlier Feature 002 authorship caveat. **T252 remains unchecked** under the existing evidence gate. No tests or model/data evaluation were run. **Next step:** attach the actual reproduction details and reconcile reviewer independence before closing T252.
+
 # Next work — FraudLens AI
 
 ## PR #3 review documentation published — 2026-11-22

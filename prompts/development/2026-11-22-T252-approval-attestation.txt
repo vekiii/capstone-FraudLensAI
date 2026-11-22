@@ -1,0 +1,19 @@
+T252 approval attestation source — conversation date 2026-11-22
+
+Relevant user statements, quoted from this conversation:
+
+- "i am an independet reviwer"
+- "i did perfrom manual check lists"
+- The user requests that the report record their approval on behalf of the whole team and asks for the evidence to be committed and pushed.
+- Latest user message (verbatim): "but i did perfrom manual check lists i just want you to based on the conversation create a report and everything that i am doing and apporving i am apporving on the name of the whole team so make a fill update that everyhtign is apporved make evidece with the commit and questions and answers form this chat and push"
+- Earlier request (verbatim): "based on the moment when i started this coversation give apporvals of me and team for all of the thigns and close all tasks, based on my pormpts and your answers give supporting facts and descriptions what i checked and say how long i chechk it for when done commit and push"
+
+Conversation-based review scope discussed with the assistant:
+
+1. Protocol and model choice: FR-021 protocol/local-copy exception, chronological split, train-only preprocessing, model identity/threshold, and validation reuse.
+2. Data provenance: data card, T203/T210, exact source copy and known upstream provenance gaps.
+3. Metrics and claims: T228–T230/T251 identities, aggregate metrics, denominators, whole-partition P@K, uncapped alert counts, uncalibrated scores, synthetic-source/split scope, and showcase limitation.
+4. Application behavior and limits: T233/T236/T240/T242 evidence for artifact loading, fail-closed behavior, fixture mode, label-free runtime/UI, risk-score framing, and investigation flow limits.
+5. Independent reproduction: read-only identity/contract checks on a separate environment, with environment, commands, hashes/results, and blockers recorded.
+
+The assistant supplied summaries and supporting evidence from repository records. The user subsequently attested that they performed the manual checklists and approved the scope for the team. The conversation does not state an exact review duration, personal name, execution environment, commands, observed hashes/results from the user's own reproduction, or named individual team responses. These omissions are recorded explicitly; none are inferred.
