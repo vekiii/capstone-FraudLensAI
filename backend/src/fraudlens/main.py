@@ -38,6 +38,7 @@ from fraudlens.scoring.model_scorer import (
     valid_canonical_id,
 )
 from fraudlens.settings import Settings, load_settings
+from fraudlens.simulation.api import router as simulation_router
 from fraudlens.training.results import ResultsNotAuthorized, ResultsService, ResultsUnavailable
 
 logger = logging.getLogger(__name__)
@@ -92,6 +93,7 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None,
     app = FastAPI(title='FraudLens AI')
     app.include_router(knowledge_router)
     app.include_router(investigation_router)
+    app.include_router(simulation_router)
     app.state.settings = settings if settings is not None else load_settings()
     app.state.scorer = scorer if scorer is not None else FixtureScorer()
     app.state.model_scorer = model_scorer

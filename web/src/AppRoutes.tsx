@@ -10,6 +10,8 @@ const CasesPage = lazy(() => import("./pages/Cases").then(({ CasesPage }) => ({ 
 const EdaPage = lazy(() => import("./pages/Scoring").then(({ EdaPage }) => ({ default: EdaPage })));
 const RiskTools = lazy(() => import("./pages/Scoring").then(({ RiskTools }) => ({ default: RiskTools })));
 
+const SimulationPage = lazy(() => import("./pages/Simulation").then(({ SimulationPage }) => ({ default: SimulationPage })));
+
 function loadPage(page: ReactNode) {
   return <Suspense fallback={<p className="route-loading" role="status">Loading page…</p>}>{page}</Suspense>;
 }
@@ -24,6 +26,7 @@ export function AppRoutes() {
         <Route path="/cases" element={loadPage(<><CasesPage /><RiskTools /></>)} />
         <Route path="/dataset-overview" element={loadPage(<EdaPage />)} />
         <Route path="/eda" element={loadPage(<EdaPage />)} />
+        <Route path="/simulation" element={loadPage(<SimulationPage />)} />
         <Route path="*" element={loadPage(<Overview />)} />
       </Route></Routes>
   );

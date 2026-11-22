@@ -14,6 +14,7 @@ const links = [
   ["/live", "Live demo"],
   ["/cases", "Cases"],
   ["/eda", "Dataset overview"],
+  ["/simulation", "Simulation Lab"],
 ] as const;
 
 export function SiteFrame() {
