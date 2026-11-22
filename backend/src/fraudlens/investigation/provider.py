@@ -152,11 +152,16 @@ class OpenAIProvider:
         messages = project_conversation(conversation)
         if tools != definitions() or len(messages) < self.seen:
             raise ProviderError('provider_input_invalid')
+        compact_history = self.parallel_tools and any(
+            item['type'] == 'context' and item['data']['source_mode'] == 'dataset' for item in messages
+        )
         pending = copy.deepcopy(self.history)
         for item in messages[self.seen:]:
             if item['type'] == 'context':
                 pending.append(dict(role='user', content=canonical(item['data']).decode()))
             elif item['type'] == 'tool_result':
+                if compact_history:
+                    _deduplicate_history_facts(item['result'])
                 pending.append(dict(type='function_call_output', call_id=item['call_id'],
                                     output=canonical(item['result']).decode()))
             elif item['type'] == 'repair':
@@ -331,6 +336,25 @@ def _provider_result(result):
             _keys(item['provenance'], ('doc_id', 'title', 'origin_kind', 'source_uri', 'published_at',
                 'unknown_date_reason', 'retrieved_at', 'jurisdiction', 'version', 'content_sha256',
                 'applicability_notes', 'reuse_terms', 'passage_id', 'section', 'corpus_version'))
+
+
+def _deduplicate_history_facts(result):
+    """Keep the exact history JSON and omit its redundant per-event fact entries."""
+    from fraudlens.investigation.tools import facts
+
+    for item in result['evidence']:
+        if item['kind'] != 'history':
+            continue
+        try:
+            history = json.loads(item['text'])
+            if not isinstance(history, dict) or not isinstance(history.get('events'), list):
+                continue
+            source_facts = {(fact['path'], fact['value']) for fact in facts(history['events'], 'events')}
+        except ValueError:
+            continue
+        event_facts = {(fact['path'], fact['value']) for fact in item['facts'] if fact['path'].startswith('events.')}
+        if event_facts == source_facts:
+            item['facts'] = [fact for fact in item['facts'] if not fact['path'].startswith('events.')]
 
 
 def project_conversation(conversation):

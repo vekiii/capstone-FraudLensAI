@@ -1,5 +1,19 @@
 # Next work - FraudLens AI
 
+## Feature 06 — T013–T015 završeni, 22. novembar 2026.
+
+Baseline `5974f94` ima 11 prolaza, četiri pada i jedan blokiran red.
+Potvrđeno je 17 živih HTTP zahteva i dve lokalno odbijene rezervacije.
+EV-01 i EV-04 stali su na prevelikom zahtevu za nacrt. Uklonjene su duple
+transportne stavke događaja istorije uz očuvane podatke i validaciju.
+Ciljani RED/GREEN i 66 backend regresionih provera su gotovi.
+[Živi baseline](evidence/tasks/feature-006-baseline-live.md) ·
+[Negativni baseline](evidence/tasks/feature-006-baseline-negative.md) ·
+[Ciljana izmena](evidence/tasks/feature-006-targeted-change.md).
+
+Sledeći korak je vezivanje tačnog SHA finalnog kandidata u T016 i
+ponavljanje istih scenarija uz sveža stanja.
+
 ## Feature 06 — T012 završen, 22. novembar 2026.
 
 Ponovljene provere T009–T011, T098 binding i EV-08 bez istorije su potvrđeni.

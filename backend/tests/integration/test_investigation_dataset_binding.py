@@ -6,15 +6,20 @@ import sqlite3
 from pathlib import Path
 from uuid import uuid4
 
+import httpx2
 import pytest
 from backend.tests.phase7_samples import VERSION, entry
 from fastapi.testclient import TestClient
 
 from fraudlens.data_store import RunStore
 from fraudlens.investigation import history_index
+from fraudlens.investigation.context import outbound_context
 from fraudlens.investigation.dataset import DatasetReader
 from fraudlens.investigation.knowledge import KnowledgeStore
+from fraudlens.investigation.models import SCHEMA, canonical
+from fraudlens.investigation.provider import OpenAIProvider
 from fraudlens.investigation.settings import load_settings
+from fraudlens.investigation.tools import definitions, facts
 from fraudlens.investigation.workflow import InvestigationService
 from fraudlens.main import create_app
 from fraudlens.settings import Settings
@@ -56,6 +61,57 @@ def dataset_runtime(tmp_path, knowledge_factory, monkeypatch):
 
 def create(client, request):
     return client.post(ROUTE, json=request, headers={'Idempotency-Key': str(uuid4())})
+
+
+@pytest.mark.parametrize('parallel', [True, False])
+def test_dataset_history_at_provider_boundary_retains_events_and_exact_facts(dataset_runtime, parallel):
+    client, service, _, request = dataset_runtime
+    attempt = create(client, request).json()
+    context = service.context(attempt['attempt_id'])
+    messages = [dict(type='context', data=outbound_context(context, attempt['run_id']))]
+    history = []
+    for side in ('sender', 'receiver'):
+        body = dict(account_side=side, availability='available', eligible_count=40, returned_count=17,
+                    truncated=True, totals={'US Dollar': '500.00'}, events=[
+                        dict(transaction_id=f'D{number:032x}', account_alias='account_' + 'c' * 24,
+                             occurred_at='2022-08-31T23:00:00Z', event_time_raw='2022/08/31 23:00',
+                             amount='100.00', currency='US Dollar', direction='outgoing',
+                             time_basis='assumed_utc_for_synthetic_benchmark')
+                        for number in range(17)
+                    ])
+        evidence = dict(evidence_id='ev_' + uuid4().hex, kind='history', text=canonical(body).decode(),
+                        facts=facts(body), returned_count=17, eligible_count=40, truncated=True)
+        history.append(evidence)
+        messages.append(dict(type='tool_result', call_id=side, result=dict(
+            status='completed', evidence=[evidence], returned_count=17, eligible_count=40, truncated=True)))
+    sent = []
+
+    def respond(request):
+        sent.append((len(request.content), json.loads(request.content)))
+        return httpx2.Response(200, json=dict(status='completed', model='unit-test', output=[]))
+
+    async def turn():
+        adapter = OpenAIProvider('local-test-key', 'unit-test', transport=httpx2.MockTransport(respond),
+                                 parallel_tools=parallel)
+        try:
+            return await adapter.next_turn(messages, definitions(), SCHEMA['$defs']['ReportDraft'],
+                dict(max_input_bytes=36000 if parallel else 48000, max_output_tokens=4096,
+                     max_response_bytes=2097152, request_timeout=10))
+        finally:
+            await adapter.aclose()
+
+    before = canonical(messages)
+    assert asyncio.run(turn()).kind == 'draft'
+    assert canonical(messages) == before
+    (size, payload), = sent
+    assert size <= (36000 if parallel else 48000)
+    for item, source in zip(payload['input'][1:], history, strict=True):
+        returned, = json.loads(item['output'])['evidence']
+        assert returned['text'] == source['text']
+        assert returned['eligible_count'] == 40
+        assert returned['returned_count'] == 17 and returned['truncated'] is True
+        assert returned['facts'] == [fact for fact in source['facts']
+                                     if not parallel or not fact['path'].startswith('events.')]
 
 
 @pytest.mark.parametrize('history_available', [True, False])
