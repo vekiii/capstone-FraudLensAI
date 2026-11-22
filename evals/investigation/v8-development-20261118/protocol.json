@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "profile": "v8",
+  "report": "v5",
+  "cap": 32,
+  "order": [
+    "DEV8N-01",
+    "DEV8N-02",
+    "DEV8N-03",
+    "DEV8N-04"
+  ],
+  "historical_actual": 126,
+  "total_cap": 279,
+  "decision": "User Potvrdjujem; explicit candidate153new approved2026-11-18",
+  "gate": "All4 valid; support>=.90/coverage>=.80; faithful limits; zero critical/unsupported guidance"
+}

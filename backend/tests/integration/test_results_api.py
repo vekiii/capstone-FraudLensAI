@@ -1,7 +1,8 @@
 """Synthetic results API gates; no project labels or prediction rows are read."""
 
-from dataclasses import replace
+from dataclasses import fields, replace
 
+import pytest
 from fastapi.testclient import TestClient
 
 from fraudlens.main import create_app
@@ -47,6 +48,10 @@ def test_results_query_is_refused_without_calling_report_loader():
     assert service.calls == 0
 
 
+@pytest.mark.skipif(
+    not all(getattr(ResultsPaths(), field.name).is_file() for field in fields(ResultsPaths)),
+    reason='requires the local frozen model, manifest and authorized aggregate reports',
+)
 def test_verified_existing_reports_return_only_bounded_aggregates():
     with TestClient(create_app(settings=Settings(mode='model'))) as client:
         response = client.get('/api/model/results')
@@ -84,7 +89,7 @@ def test_missing_approval_and_report_are_controlled(tmp_path):
 def test_report_byte_change_is_rejected_before_parsing(tmp_path):
     paths = ResultsPaths()
     altered = tmp_path / 'altered.json'
-    altered.write_bytes(paths.report.read_bytes() + b'\n')
+    altered.write_bytes(b'{not a frozen report}\n')
     with TestClient(create_app(settings=Settings(mode='model'),
                                results_service=ResultsService(replace(paths, report=altered)))) as client:
         response = client.get('/api/model/results')

@@ -1,0 +1,197 @@
+[
+  {
+    "id": "SEC-DEVELOPMENT-01",
+    "source_input_sha256": "3bd7f357c64078a60fe47a17c602462ac8ac99d06e88b1448b1dcf012c863e4e",
+    "essential_facts": [
+      "Transaction identifier is TX-701.",
+      "Amount is exactly 617.45 EUR.",
+      "Event time is 2026-11-18T09:18:43Z.",
+      "Illustrative fixture risk score is 0.42; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"EUR\": \"113.08\"}; focal minute and future excluded.",
+      "Receiver history is incomplete; 1 eligible events; separate currency totals {\"EUR\": \"41.92\"}; focal minute and future excluded."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:18:43Z",
+        "start": "2026-11-11T09:18:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-501",
+            "occurred_at": "2026-11-16T09:18:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-DEVELOPMENT-01-S",
+            "amount": "83.47",
+            "currency": "EUR"
+          },
+          {
+            "transaction_id": "TX-601",
+            "occurred_at": "2026-11-17T09:18:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-DEVELOPMENT-01-S",
+            "amount": "29.61",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "EUR": "113.08"
+        }
+      },
+      "receiver": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:18:43Z",
+        "start": "2026-11-11T09:18:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-401",
+            "occurred_at": "2026-11-18T06:18:43Z",
+            "bank": "AUTHORED-R",
+            "account": "SEC-DEVELOPMENT-01-R",
+            "amount": "41.92",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 1,
+        "eligible_count": 1,
+        "truncated": false,
+        "totals": {
+          "EUR": "41.92"
+        }
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-DEVELOPMENT-02",
+    "source_input_sha256": "3e2b71ac8f57e45ccdf9528d01e4b6a99af5f8cbcab239f8de8389c2e541b4eb",
+    "essential_facts": [
+      "Transaction identifier is TX-702.",
+      "Amount is exactly 129.07 GBP.",
+      "Event time is 2026-11-18T09:19:43Z.",
+      "Illustrative fixture risk score is 0.28; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-DEVELOPMENT-03",
+    "source_input_sha256": "bdc357a65cebaa360e4831ce3a14b628ef442f4849c863992f791460095086ae",
+    "essential_facts": [
+      "Transaction identifier is TX-703.",
+      "Amount is exactly 4218.31 USD.",
+      "Event time is 2026-11-18T09:20:43Z.",
+      "Illustrative fixture risk score is 0.68; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"EUR\": \"29.61\", \"USD\": \"83.47\"}; focal minute and future excluded.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:20:43Z",
+        "start": "2026-11-11T09:20:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-503",
+            "occurred_at": "2026-11-16T09:20:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-DEVELOPMENT-03-S",
+            "amount": "83.47",
+            "currency": "USD"
+          },
+          {
+            "transaction_id": "TX-603",
+            "occurred_at": "2026-11-17T09:20:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-DEVELOPMENT-03-S",
+            "amount": "29.61",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "USD": "83.47",
+          "EUR": "29.61"
+        }
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-DEVELOPMENT-04",
+    "source_input_sha256": "740d678ae536b0e7e2badd2c019fc4484e5403078dd81f7fe1a137e07dc0df48",
+    "essential_facts": [
+      "Transaction identifier is TX-704.",
+      "Amount is exactly 570.11 EUR.",
+      "Event time is 2026-11-18T09:21:43Z.",
+      "Illustrative fixture risk score is 0.35; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  }
+]

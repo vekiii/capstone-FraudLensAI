@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "status": "proposed_pending_independent_human_review",
+  "unit": "Atomic factual assertion across all report sections; split compound claims. Do not double count identical repeated propositions; preserve occurrence locations.",
+  "rating_record_fields": [
+    "scenario_id",
+    "attempt_id",
+    "report_id",
+    "report_sha256",
+    "context_revision",
+    "reviewer_identity",
+    "reviewed_at",
+    "role",
+    "claim_id",
+    "report_location",
+    "claim_text",
+    "claim_kind",
+    "evidence_ids",
+    "judgment",
+    "reason",
+    "critical_error",
+    "essential_fact_id"
+  ],
+  "claim_kinds": [
+    "observation",
+    "hypothesis",
+    "procedure"
+  ],
+  "factual_judgments": [
+    "supported",
+    "unsupported",
+    "uncertain"
+  ],
+  "uncertain_policy": "Count uncertain as unsupported until resolved with evidence; preserve original judgment.",
+  "hypothesis_policy": "Must be tentative with cited supported premises; invented guilt/identity/funds is critical even when hedged.",
+  "procedure_judgments": [
+    "applicable",
+    "unsupported",
+    "uncertain"
+  ],
+  "essential_fact_judgments": [
+    "present_supported",
+    "missing",
+    "present_unsupported"
+  ],
+  "missingness_record": [
+    "expected_field",
+    "correctly_disclosed",
+    "fabricated_value",
+    "reason"
+  ],
+  "limitation_record": [
+    "expected_limitation",
+    "properly_handled",
+    "reason"
+  ],
+  "support_rate": {
+    "numerator": "supported atomic observational claims",
+    "denominator": "all atomic observational claims including uncertain",
+    "zero_denominator": "N/A; cannot pass when essential facts exist"
+  },
+  "essential_coverage": {
+    "numerator": "present supported applicable essential facts",
+    "denominator": "predeclared applicable essential facts; no post-hoc deletion of missing facts"
+  },
+  "recommendation_applicability": "Report applicable/unsupported/uncertain counts and rate separately; uncertain treated as unsupported. No-guidance expected limitations/missingness assessed explicitly; no fabricated factual denominator.",
+  "report_pass": {
+    "support_rate_min": 0.9,
+    "essential_coverage_min": 0.8,
+    "critical_unsupported_claims_max": 0,
+    "missing_information_and_uncertainty_handling": "all predeclared gaps correctly disclosed without invented replacements",
+    "no_guidance_unsupported_recommendations_max": 0
+  },
+  "pack_pass": {
+    "primary_reports": 8,
+    "passing_reports_min": 7,
+    "critical_unsupported_claims_across_all_eight_max": 0,
+    "no_guidance_unsupported_recommendations_max": 0
+  },
+  "failure_policy": "Refusal, provider failure, validation failure or absent report counts failed in the eight-report denominator; retain every attempt including repairs. Never silently drop.",
+  "disagreements": "Keep both dated original ratings immutable, then append discussion/evidence/resolution record with both identities and unresolved flag. Do not overwrite originals. LLM judge optional, supplementary only.",
+  "reviewer_policy": "One actual human rates all eight; a different teammate independently rates preselected five before seeing first ratings. Agent authorship, UI review or valid citations are not human semantic evaluation.",
+  "critical_categories": [
+    "invented guilt/identity/source_of_funds",
+    "altered exact money/currency/time",
+    "invented explanation contributions",
+    "unauthorized account action/submission",
+    "invented current legal obligation"
+  ],
+  "citation_validity": "Measure resolved authorized citations/all cited references independently; valid ID with false interpretation remains unsupported."
+}

@@ -1,0 +1,200 @@
+[
+  {
+    "id": "DEV8-781",
+    "language": "sr-Latn",
+    "instruction": "Napiši kratak izveštaj na srpskom koristeći samo dostupne činjenice i dozvoljene alate. Proveri istoriju obe strane i primenljive procedure. Ne donosi odluku umesto analitičara.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-781",
+      "snapshot_ref": "fixture_4dfbc9f5130fa9bad6c54e6df87563c7d4a88bd4d00c5e40a89547461ced8627",
+      "dataset_version": null,
+      "observed_at": "2026-11-16T00:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-781",
+        "transaction": {
+          "transaction_id": "TX-781",
+          "occurred_at": "2026-11-14T10:30:45Z",
+          "sender_account": "AUTHORED-A:DEV8-SENDER-781",
+          "receiver_account": "AUTHORED-B:DEV8-RECEIVER-781",
+          "amount": "7428.16",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-781",
+          "score": 0.54,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-14T10:31:00Z",
+          "explanation": "Authored fixture illustration; not ML inference or calibrated probability."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-14T10:30:45Z",
+        "start": "2026-11-07T10:30:45Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored incomplete sender history; receiver not supplied."
+      },
+      "context_revision": "39481086c1ca9c22820c6a90e866b06051f95f5f14f6dc1770b21870b082073d"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-781": {
+          "sender": {
+            "bank": "DEV-BANK-A",
+            "account": "DEV8-781"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-851",
+          "occurred_at": "2026-11-12T09:00:00Z",
+          "amount": "162.80",
+          "currency": "EUR",
+          "bank": "DEV-BANK-A",
+          "account": "DEV8-781"
+        },
+        {
+          "transaction_id": "TX-852",
+          "occurred_at": "2026-11-13T12:00:00Z",
+          "amount": "57.35",
+          "currency": "USD",
+          "bank": "DEV-BANK-A",
+          "account": "DEV8-781"
+        },
+        {
+          "transaction_id": "TX-853",
+          "occurred_at": "2026-11-14T10:30:05Z",
+          "amount": "999.99",
+          "currency": "EUR",
+          "bank": "DEV-BANK-A",
+          "account": "DEV8-781"
+        },
+        {
+          "transaction_id": "TX-854",
+          "occurred_at": "2026-11-15T09:00:00Z",
+          "amount": "888.88",
+          "currency": "USD",
+          "bank": "DEV-BANK-A",
+          "account": "DEV8-781"
+        },
+        {
+          "transaction_id": "TX-781",
+          "occurred_at": "2026-11-14T10:30:45Z",
+          "amount": "7428.16",
+          "currency": "EUR",
+          "bank": "DEV-BANK-A",
+          "account": "DEV8-781"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "nedostaje dokaz",
+      "pregled dokumentacija"
+    ]
+  },
+  {
+    "id": "DEV8-782",
+    "language": "sr-Latn",
+    "instruction": "Napiši kratak izveštaj na srpskom koristeći samo dostupne činjenice i dozvoljene alate. Proveri istoriju obe strane i primenljive procedure. Ne donosi odluku umesto analitičara.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-782",
+      "snapshot_ref": "fixture_64add48df46253d76681ef0300f4d082c2d280e99f7f08436e6e579e622db421",
+      "dataset_version": null,
+      "observed_at": "2026-11-16T00:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-782",
+        "transaction": {
+          "transaction_id": "TX-782",
+          "occurred_at": "2026-11-14T10:30:45Z",
+          "sender_account": "AUTHORED-A:DEV8-SENDER-782",
+          "receiver_account": "AUTHORED-B:DEV8-RECEIVER-782",
+          "amount": "63.28",
+          "currency": "USD"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-782",
+          "score": 0.32,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-14T10:31:00Z",
+          "explanation": "Authored fixture illustration; not ML inference or calibrated probability."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": null,
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No history coverage supplied by the fixture context."
+      },
+      "context_revision": "30c4ae599098f1c9e40338cfcdc7654b40baca8903cf5ca0b57950c9b1397aa3"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "nedostaje dokaz",
+      "pregled dokumentacija"
+    ]
+  },
+  {
+    "id": "DEV8-783",
+    "language": "sr-Latn",
+    "instruction": "Napiši kratak izveštaj na srpskom koristeći samo dostupne činjenice i dozvoljene alate. Proveri istoriju obe strane i primenljive procedure. Ne donosi odluku umesto analitičara.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-783",
+      "snapshot_ref": "fixture_03ef27a7fe356faa31fe27fdbf552717b585dd22608bbb7f96821065face5151",
+      "dataset_version": null,
+      "observed_at": "2026-11-16T00:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-783",
+        "transaction": {
+          "transaction_id": "TX-783",
+          "occurred_at": "2026-11-14T10:30:45Z",
+          "sender_account": "AUTHORED-A:DEV8-SENDER-783",
+          "receiver_account": "AUTHORED-B:DEV8-RECEIVER-783",
+          "amount": "418.63",
+          "currency": "GBP"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-783",
+          "score": 0.24,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-14T10:31:00Z",
+          "explanation": "Authored fixture illustration; not ML inference or calibrated probability."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": null,
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No history coverage supplied by the fixture context."
+      },
+      "context_revision": "5df6067e472dae39f6cbc6f947880f13aaa8c755545c516459f65bdb8d2ed6c4"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "nedostaje dokaz",
+      "pregled dokumentacija"
+    ]
+  }
+]

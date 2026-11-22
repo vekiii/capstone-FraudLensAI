@@ -1,0 +1,428 @@
+[
+  {
+    "id": "SEC-FINAL-01",
+    "source_input_sha256": "8f547f5806aefc451ee554ed2e88fc843299e361af4950bf2dfeff4fde6ff34f",
+    "essential_facts": [
+      "Transaction identifier is TX-721.",
+      "Amount is exactly 6149.33 GBP.",
+      "Event time is 2026-11-18T09:38:43Z.",
+      "Illustrative fixture risk score is 0.62; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"GBP\": \"113.08\"}; focal minute and future excluded.",
+      "Receiver history is incomplete; 1 eligible events; separate currency totals {\"GBP\": \"41.92\"}; focal minute and future excluded."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:38:43Z",
+        "start": "2026-11-11T09:38:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-521",
+            "occurred_at": "2026-11-16T09:38:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-01-S",
+            "amount": "83.47",
+            "currency": "GBP"
+          },
+          {
+            "transaction_id": "TX-621",
+            "occurred_at": "2026-11-17T09:38:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-01-S",
+            "amount": "29.61",
+            "currency": "GBP"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "GBP": "113.08"
+        }
+      },
+      "receiver": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:38:43Z",
+        "start": "2026-11-11T09:38:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-421",
+            "occurred_at": "2026-11-18T06:38:43Z",
+            "bank": "AUTHORED-R",
+            "account": "SEC-FINAL-01-R",
+            "amount": "41.92",
+            "currency": "GBP"
+          }
+        ],
+        "returned_count": 1,
+        "eligible_count": 1,
+        "truncated": false,
+        "totals": {
+          "GBP": "41.92"
+        }
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-FINAL-02",
+    "source_input_sha256": "de95d0278d764be05bce199375a221761f7738833589eca24474054fafcd26c8",
+    "essential_facts": [
+      "Transaction identifier is TX-722.",
+      "Amount is exactly 95.47 EUR.",
+      "Event time is 2026-11-18T09:39:43Z.",
+      "Illustrative fixture risk score is 0.19; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-FINAL-03",
+    "source_input_sha256": "42b74c69e99951915424c4adfd17a4bd670bc91c67e00b6107a5c6eb754351c4",
+    "essential_facts": [
+      "Transaction identifier is TX-723.",
+      "Amount is exactly 3176.83 USD.",
+      "Event time is 2026-11-18T09:40:43Z.",
+      "Illustrative fixture risk score is 0.76; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"EUR\": \"29.61\", \"USD\": \"83.47\"}; focal minute and future excluded.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:40:43Z",
+        "start": "2026-11-11T09:40:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-523",
+            "occurred_at": "2026-11-16T09:40:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-03-S",
+            "amount": "83.47",
+            "currency": "USD"
+          },
+          {
+            "transaction_id": "TX-623",
+            "occurred_at": "2026-11-17T09:40:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-03-S",
+            "amount": "29.61",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "USD": "83.47",
+          "EUR": "29.61"
+        }
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-FINAL-04",
+    "source_input_sha256": "6d804567dd87ef7781e373c9e72a11330c97e8254e0b4e9617ae825eda8fd90a",
+    "essential_facts": [
+      "Transaction identifier is TX-724.",
+      "Amount is exactly 450.91 GBP.",
+      "Event time is 2026-11-18T09:41:43Z.",
+      "Illustrative fixture risk score is 0.39; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-FINAL-05",
+    "source_input_sha256": "299f7883f500573bee6b3725c230f0db1a336492890d1f142808a70651f10a7d",
+    "essential_facts": [
+      "Transaction identifier is TX-725.",
+      "Amount is exactly 21332.85 EUR.",
+      "Event time is 2026-11-18T09:42:43Z.",
+      "Illustrative fixture risk score is 0.95; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"EUR\": \"113.08\"}; focal minute and future excluded.",
+      "Receiver history is incomplete; 1 eligible events; separate currency totals {\"EUR\": \"41.92\"}; focal minute and future excluded."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:42:43Z",
+        "start": "2026-11-11T09:42:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-525",
+            "occurred_at": "2026-11-16T09:42:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-05-S",
+            "amount": "83.47",
+            "currency": "EUR"
+          },
+          {
+            "transaction_id": "TX-625",
+            "occurred_at": "2026-11-17T09:42:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-05-S",
+            "amount": "29.61",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "EUR": "113.08"
+        }
+      },
+      "receiver": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:42:43Z",
+        "start": "2026-11-11T09:42:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-425",
+            "occurred_at": "2026-11-18T06:42:43Z",
+            "bank": "AUTHORED-R",
+            "account": "SEC-FINAL-05-R",
+            "amount": "41.92",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 1,
+        "eligible_count": 1,
+        "truncated": false,
+        "totals": {
+          "EUR": "41.92"
+        }
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-FINAL-06",
+    "source_input_sha256": "9fe447feea1e9d177b6b15bbaf023300ec1efa55b8a5e3b4ebcaca558796e478",
+    "essential_facts": [
+      "Transaction identifier is TX-726.",
+      "Amount is exactly 76.54 USD.",
+      "Event time is 2026-11-18T09:43:43Z.",
+      "Illustrative fixture risk score is 0.25; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"USD\": \"113.08\"}; focal minute and future excluded.",
+      "Receiver history is incomplete; 1 eligible events; separate currency totals {\"USD\": \"41.92\"}; focal minute and future excluded."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:43:43Z",
+        "start": "2026-11-11T09:43:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-526",
+            "occurred_at": "2026-11-16T09:43:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-06-S",
+            "amount": "83.47",
+            "currency": "USD"
+          },
+          {
+            "transaction_id": "TX-626",
+            "occurred_at": "2026-11-17T09:43:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-06-S",
+            "amount": "29.61",
+            "currency": "USD"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "USD": "113.08"
+        }
+      },
+      "receiver": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:43:43Z",
+        "start": "2026-11-11T09:43:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-426",
+            "occurred_at": "2026-11-18T06:43:43Z",
+            "bank": "AUTHORED-R",
+            "account": "SEC-FINAL-06-R",
+            "amount": "41.92",
+            "currency": "USD"
+          }
+        ],
+        "returned_count": 1,
+        "eligible_count": 1,
+        "truncated": false,
+        "totals": {
+          "USD": "41.92"
+        }
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-FINAL-07",
+    "source_input_sha256": "c615fda15146ad714adc0caaa49369aaf5a640e9c95d5c905f96bb0bdb59113e",
+    "essential_facts": [
+      "Transaction identifier is TX-727.",
+      "Amount is exactly 5821.46 GBP.",
+      "Event time is 2026-11-18T09:44:43Z.",
+      "Illustrative fixture risk score is 0.73; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  },
+  {
+    "id": "SEC-FINAL-08",
+    "source_input_sha256": "9750ff91cb8c5c42821f17a49ea81053c6f777e7847fd11a8859186806938291",
+    "essential_facts": [
+      "Transaction identifier is TX-728.",
+      "Amount is exactly 4348.11 EUR.",
+      "Event time is 2026-11-18T09:45:43Z.",
+      "Illustrative fixture risk score is 0.67; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"EUR\": \"83.47\", \"USD\": \"29.61\"}; focal minute and future excluded.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:45:43Z",
+        "start": "2026-11-11T09:45:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-528",
+            "occurred_at": "2026-11-16T09:45:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-08-S",
+            "amount": "83.47",
+            "currency": "EUR"
+          },
+          {
+            "transaction_id": "TX-628",
+            "occurred_at": "2026-11-17T09:45:43Z",
+            "bank": "AUTHORED-S",
+            "account": "SEC-FINAL-08-S",
+            "amount": "29.61",
+            "currency": "USD"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "EUR": "83.47",
+          "USD": "29.61"
+        }
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Reviewed from source literals before generation. No prior draft or rating used."
+  }
+]

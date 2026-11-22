@@ -1,0 +1,36 @@
+{
+  "protocol_version": "development-v3-20261116",
+  "kind": "development_template_instances_not_independent_holdout",
+  "baseline_commit": "46a15ed",
+  "runtime_revision": "46a15ed+uncommitted-timeout-v3",
+  "model": "gpt-6-luna",
+  "maximum_transport_attempts": 25,
+  "reference_review": "independent human review pending",
+  "retrieval_mode": {
+    "DEV3-721": "candidate",
+    "DEV3-722": "candidate",
+    "DEV3-723": "controlled_no_match"
+  },
+  "files_sha256": {
+    "evals/investigation/development-v3/inputs.json": "83c4199abea218dae20e1d59091a2ed2d4d94f22d59002d3a6ae7a83371e787e",
+    "evals/investigation/development-v3/reference.json": "cb57f6243e4973bdd46dfa36c7fdc9d41cc10a3a34e8470323721f952e6220a3",
+    "evidence/tasks/feature-003-timeout-v3.py": "bc44151415295b1dc8201ec194d93fffebb39f9c1ada8151ecca44f0d4a19a3c",
+    "evidence/tasks/feature-003-timeout-v3-inputs.py": "732b60f10b7f1d35080242e9b396a766ba1790de58d807b943369c852de2fcf0",
+    "data/knowledge/fraudlens-aml-knowledge-v1/retrieval-development-v2.json": "c71d6d6b5db93ebf68baa461c1606850dc6d45a289e83ec60c0a81cef0b1b4c4",
+    "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json": "606212f650f5c826c972c30cf148b4e52bca73d403997f1bec142b076449e0d5",
+    "prompts/application/investigation-v2.md": "c57d6df4aa86556e467163e0730ad26e8d431592c5b883aa748e6b526192a884",
+    "prompts/evaluation/report-judge-v2.md": "4b607f03f209007dedf0bc3758148f4d6534b18ad54f5278c17f35684fd6574c"
+  },
+  "preserved_v2_artifacts": {
+    "evals/results/feature-003/development-v2/audit.json": "107134ae06627aea45585b86a2267664337ca0577c1eeea8faa70d49f444d781",
+    "evals/results/feature-003/development-v2/DEV2-701.json": "4e703bf4895408be8856f8d0de79ab558c84b97d7635afab70896e54d2ec1aee",
+    "evals/results/feature-003/development-v2/DEV2-702.json": "969889ac4f5d9ee6a3205fa4492e1180c96da5fb913dea828833e586e209df5e",
+    "evals/results/feature-003/development-v2/DEV2-703.json": "b3f99e7e49cabccedab29e12c7b29ab35b940e8a1e601a555d8d8a701ae2d574",
+    "evals/results/feature-003/development-v2/freeze.json": "c6f420b76711d4025ee6982102904c1282d8771bae00c2bc1b7678706ec46d66",
+    "evals/results/feature-003/development-v2/judge-packets.json": "e2ab2666f5da5e396497b6fee82bc26e26ec839b2fe4beb284a99985b52689b5",
+    "evals/results/feature-003/development-v2/judge-response.json": "cc230cc5f27f495d24fe38dc1931d85d5cd707a99c4fc61c9ebe2e1d896fc952",
+    "evals/results/feature-003/development-v2/judge-result.json": "b081d708b201db0d18f5988f71980fea02c159101b9e1a1cb6cc09348b205428",
+    "evals/results/feature-003/development-v2/summary.json": "206574ce005cfc2a335b382162dc395285f9e74948162e6631eee6c771ba1f0f",
+    "evals/results/feature-003/development-v2/transport-ledger.json": "d7ab2d4bccac179b193fce6153d6ab768454366ff39a57d77611e4ea2055ead1"
+  }
+}

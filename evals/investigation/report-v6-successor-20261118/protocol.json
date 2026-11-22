@@ -1,0 +1,38 @@
+{
+  "quality_order": [
+    "NEXT-FINAL-01",
+    "NEXT-FINAL-02",
+    "NEXT-FINAL-03",
+    "NEXT-FINAL-04",
+    "NEXT-FINAL-05",
+    "NEXT-FINAL-06",
+    "NEXT-FINAL-07",
+    "NEXT-FINAL-08"
+  ],
+  "timing_order": [
+    "NEXT-FINAL-01",
+    "NEXT-FINAL-02",
+    "NEXT-FINAL-03",
+    "NEXT-FINAL-04",
+    "NEXT-FINAL-05"
+  ],
+  "secondary_order": [
+    "NEXT-FINAL-02",
+    "NEXT-FINAL-03",
+    "NEXT-FINAL-04",
+    "NEXT-FINAL-06",
+    "NEXT-FINAL-08"
+  ],
+  "source": "authored synthetic fixtures",
+  "machine": "Windows-10-10.0.19045-SP0",
+  "python": "3.14.3 (main, Mar  3 2026, 15:00:44) [MSC v.1944 64 bit (AMD64)]",
+  "clock": "perf_counter; separate HTTP observer; 250ms polling",
+  "requested_ceiling": 361,
+  "current_ceiling": 303,
+  "runtime_facts": true,
+  "typed_judge_units": true,
+  "generation_cap": 42,
+  "judging_cap": 13,
+  "calibration_cap": 6,
+  "overlap": "first five of eight"
+}

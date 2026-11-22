@@ -1,0 +1,32 @@
+{
+  "status": "FROZEN_EXECUTED_AUTOMATED_JUDGE_EVALUATION",
+  "calls_reserved": 44,
+  "successful_candidate_http200": 19,
+  "candidate_http503": 1,
+  "retry_count": 0,
+  "continuation": "10 previously undispatched rows only; original failed report preserved",
+  "files_sha256_lf": {
+    "blind-gold.json": "8803bcc54d6cfabc20b4f4a1aecb8427b208ccc0b3e210c550eb9c27c82b0c9d",
+    "calibration-results.json": "8c1fe907b3c09f79fb25a8f54c1f4cc12825867958a1e7d71b101cc3a56d7475",
+    "calibration.json": "f01ee9ae1fd7c4c93ccf1387a9782317dbc49d28f0363efac90f31ee5272ce92",
+    "candidate-outputs-complete.json": "cb17b558d068e01420c43cf1f460aba9099400bfac3f9bd93e1deb3ac2346442",
+    "candidate-outputs-continuation.json": "cb72731361d1e509bf53f649b87f2a4171c4fe42d42882334478fdecfedb3ec5",
+    "candidate-outputs.json": "7471fadc14608d3a3a3114ca3cba8f57d751d4fb699fd50ed92c4185b92697fc",
+    "continuation-started.json": "82856f2b58cc53062cb9ae5fd03e9896056e0333c21440d6695c71adf01d0b12",
+    "dispatch.jsonl": "cdfd274df175bd1634642eae62a3806adab0cde573de0be03ea96c1b16133074",
+    "freeze.json": "14740e07ac0226424148855fe54bb3307af842de9d45ba0ad0caa3f21e2c0554",
+    "gold-freeze.json": "a6aed5f0fb1ed1f1625e08c7a0da3165c90d3dbed768e164a8b2816b8a21319f",
+    "inputs.json": "340546f9400660ed3e2ab9d673a88c5b39b64f9d212b22ac34267c26f59ab3d8",
+    "passages.json": "212642269484011bac5617c47cedc6d477dc6b33a677f7af0170cfcbd2e69b29",
+    "proposed-references.json": "8526d11d4d6064de2272be0fe387cccebe9e7849c84ebfea8a31861f0fe8d908",
+    "executed-runtime\\retrieval_semantic_adapter_v6.py.txt": "2ae278e61cd861f8e46821f583c1ffabbbbf1204605198f60b559cd7ceead162",
+    "executed-runtime\\retrieval_semantic_v6.py.txt": "74f608a520ed59391aa1b9e5f5872856745806ca29c2c508ddbe2ddbb17d866e",
+    "executed-runtime\\retrieval_v6_continue_unrun.py.txt": "fd20d2dff0d44a40a3af585d0c827a0bf10d5aedf13ccbdc2680bd848fd9e708",
+    "executed-runtime\\retrieval_v6_integrated_judge.py.txt": "3ea67436a684a7db1ae40b953e248a0ab1eb0053cc6cc3d67245d9fcfff79625",
+    "executed-runtime\\semantic_api.py.txt": "763160ea4c52336454950bd20ebc9c90c695181d4ee580c9638425012f216724",
+    "executed-runtime\\semantic_runtime.py.txt": "3205ddf61cc01592cc150eede881599592f4a40562c72b13f44d4852d267186a",
+    "executed-runtime\\settings.py.txt": "5b64d8425a612eb49dc099878e8b068a2d2a20c750e25245c13ddd21113ca4b2",
+    "executed-runtime\\tools.py.txt": "daa49cb00538d21153f6d0d0490179b7632747df868ce516f23f3ed122bc9ca8",
+    "executed-runtime\\workflow.py.txt": "effeb8fc065eeed26209efb06acf9e94c90be39f09564d5b96699f7512105e32"
+  }
+}

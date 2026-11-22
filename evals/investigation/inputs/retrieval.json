@@ -1,0 +1,152 @@
+[
+  {
+    "id": "RQ-001",
+    "language": "sr-Latn",
+    "query": "Ko sme da odluči o eskalaciji i kakvo obrazloženje je potrebno?"
+  },
+  {
+    "id": "RQ-002",
+    "language": "en",
+    "query": "What makes a citation faithful beyond having a valid identifier?"
+  },
+  {
+    "id": "RQ-003",
+    "language": "sr-Cyrl",
+    "query": "Како приказати непознату историју и недостајуће порекло средстава?"
+  },
+  {
+    "id": "RQ-004",
+    "language": "en",
+    "query": "How should directional money strings and raw time be preserved in the synthetic benchmark?"
+  },
+  {
+    "id": "RQ-005",
+    "language": "en",
+    "query": "What determines supporting documentation in the historical 2007 guidance?"
+  },
+  {
+    "id": "RQ-006",
+    "language": "sr-Latn",
+    "query": "Da li američko uputstvo o povezanim društvima daje opštu dozvolu otkrivanja izveštaja?"
+  },
+  {
+    "id": "RQ-007",
+    "language": "en",
+    "query": "Does absence of customer evidence establish legitimacy or guilt?"
+  },
+  {
+    "id": "RQ-008",
+    "language": "sr-Latn",
+    "query": "Kako razdvojiti činjenice, smernice i pretpostavke u narativu?"
+  },
+  {
+    "id": "RQ-009",
+    "language": "en",
+    "query": "What is the exact tax withholding rate on a Japanese dividend in 2026?"
+  },
+  {
+    "id": "RQ-010",
+    "language": "sr-Latn",
+    "query": "Koja je trenutna lozinka administratora ove aplikacije?"
+  },
+  {
+    "id": "RQ-011",
+    "language": "en",
+    "query": "May a risk score alone prove wrongdoing or authorize an automatic filing?"
+  },
+  {
+    "id": "RQ-012",
+    "language": "sr-Latn",
+    "query": "Šta uraditi ako izvori navode protivrečne podatke i različite verzije?"
+  },
+  {
+    "id": "RQ-013",
+    "language": "en",
+    "query": "Which evidence should observations and recommended checks cite?"
+  },
+  {
+    "id": "RQ-014",
+    "language": "sr-Cyrl",
+    "query": "Да ли синтетичка ознака представља правни налаз о прању новца?"
+  },
+  {
+    "id": "RQ-015",
+    "language": "en",
+    "query": "Does the 2007 excerpt reproduce the whole guidance or establish current obligations?"
+  },
+  {
+    "id": "RQ-016",
+    "language": "sr-Latn",
+    "query": "Da li istorijsko američko uputstvo o poverljivosti predstavlja srpski propis?"
+  },
+  {
+    "id": "RQ-017",
+    "language": "en",
+    "query": "What should be done when a useful grounded conclusion cannot be reached?"
+  },
+  {
+    "id": "RQ-018",
+    "language": "sr-Latn",
+    "query": "Koje dve licence razlikuje autorski vodič za IBM sintetičke podatke?"
+  },
+  {
+    "id": "RQ-019",
+    "language": "en",
+    "query": "Can a synthetic transfer amount establish real bank loss or a calibrated probability?"
+  },
+  {
+    "id": "RQ-020",
+    "language": "sr-Latn",
+    "query": "Koji tekst treba analitičar da pregleda kada proverava tumačenje citata?"
+  },
+  {
+    "id": "RQ-021",
+    "language": "en",
+    "query": "Does the supporting-records summary distinguish records from a narrative?"
+  },
+  {
+    "id": "RQ-022",
+    "language": "sr-Latn",
+    "query": "U kom istorijskom američkom kontekstu se razmatra deljenje i očuvanje poverljivosti?"
+  },
+  {
+    "id": "RQ-023",
+    "language": "en",
+    "query": "How can alternative explanations be considered without inventing customer facts?"
+  },
+  {
+    "id": "RQ-024",
+    "language": "sr-Cyrl",
+    "query": "Које ограничење се чува када недостају занимање и подаци о уређају?"
+  },
+  {
+    "id": "RQ-025",
+    "language": "en",
+    "query": "Must narrative preserve exact currencies, time assumptions and score meaning?"
+  },
+  {
+    "id": "RQ-026",
+    "language": "sr-Latn",
+    "query": "Može li se bez dokaza zaključiti zanimanje ili vremenska zona klijenta?"
+  },
+  {
+    "id": "RQ-027",
+    "language": "en",
+    "query": "What is the mandatory Serbian suspicious-report filing deadline in hours today?"
+  },
+  {
+    "id": "RQ-028",
+    "language": "sr-Latn",
+    "query": "Koja je IP adresa uređaja pošiljaoca transakcije TX-001?"
+  },
+  {
+    "id": "RQ-029",
+    "language": "en",
+    "query": "What is the current GBP to JPY spot exchange rate?"
+  },
+  {
+    "id": "RQ-030",
+    "language": "sr-Cyrl",
+    "query": "Која је прописана доза антибиотика за упалу плућа?"
+  }
+]

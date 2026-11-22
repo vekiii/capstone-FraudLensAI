@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "status": "offline_authored_proposal_not_authorized_for_execution",
+  "development_order": [
+    "DEVQ1-01",
+    "DEVQ1-02",
+    "DEVQ1-03",
+    "DEVQ1-04"
+  ],
+  "quality_order": [
+    "QUAL1-01",
+    "QUAL1-02",
+    "QUAL1-03",
+    "QUAL1-04",
+    "QUAL1-05",
+    "QUAL1-06",
+    "QUAL1-07",
+    "QUAL1-08"
+  ],
+  "secondary_order": [
+    "QUAL1-02",
+    "QUAL1-03",
+    "QUAL1-04",
+    "QUAL1-06",
+    "QUAL1-08"
+  ],
+  "timing_order": [
+    "TIME1-01",
+    "TIME1-02",
+    "TIME1-03",
+    "TIME1-04",
+    "TIME1-05"
+  ],
+  "search_order": [
+    "SEARCH1-01",
+    "SEARCH1-02",
+    "SEARCH1-03",
+    "SEARCH1-04",
+    "SEARCH1-05",
+    "SEARCH1-06",
+    "SEARCH1-07",
+    "SEARCH1-08",
+    "SEARCH1-09",
+    "SEARCH1-10",
+    "SEARCH1-11",
+    "SEARCH1-12",
+    "SEARCH1-13",
+    "SEARCH1-14",
+    "SEARCH1-15",
+    "SEARCH1-16",
+    "SEARCH1-17",
+    "SEARCH1-18",
+    "SEARCH1-19",
+    "SEARCH1-20"
+  ],
+  "source_mode": "authored_synthetic_fixture_not_ML_evaluation",
+  "proposed_model": "gpt-6-luna",
+  "model_access": "not_probed_no_new_calls",
+  "generation": {
+    "provider": "openai",
+    "semantic_retrieval": true,
+    "max_provider_requests_per_case": 8,
+    "max_tool_calls": 12,
+    "max_output_tokens": 4096,
+    "request_timeout_seconds": 30,
+    "total_timeout_seconds": 120
+  },
+  "judge": {
+    "prompt": "prompts/evaluation/report-judge-v4.md",
+    "max_output_tokens": 8192,
+    "timeout_seconds": 60,
+    "retries": 0,
+    "contexts": "isolated_primary_secondary",
+    "limitation": "Same model judgments are not independent human validation"
+  },
+  "proposed_caps": {
+    "development_generation": 32,
+    "calibration": 6,
+    "quality_generation": 64,
+    "primary_judging": 8,
+    "secondary_judging": 5,
+    "T101_total": 115,
+    "T102_total": 40,
+    "combined_total": 155
+  },
+  "sequencing": "Review sources and development first; freeze final settings before held-out generation; exact6/6 calibration before quality acceptance. No replacement slots, replay, tuning on exposed held-out outcomes or model fallback; stop on access/quota/unknown outcome.",
+  "additional_approval_required": true,
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "local_retrieval_version": "c17e43b9014a39c47b85c0e6b6e9926e11baaf9721ee406b960a25a44d0e8895",
+  "semantic_policy": "413f9eb4f0363e05024eb7ef7171f069655d2fac19d3235fe14173645a3167ca",
+  "preparation_only": true,
+  "execution_ready": false,
+  "pending": [
+    "team source/reference review and explicit new bounded budget",
+    "final post-development settings freeze for held-out dispatch",
+    "wire fresh materialized readers to matching external API/worker",
+    "end-to-end transport ledger and immutable v4 report/unit materializer"
+  ]
+}

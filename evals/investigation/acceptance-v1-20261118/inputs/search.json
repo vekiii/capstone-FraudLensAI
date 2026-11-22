@@ -1,0 +1,102 @@
+[
+  {
+    "id": "SEARCH1-01",
+    "language": "en",
+    "query": "How should missing customer information be disclosed?"
+  },
+  {
+    "id": "SEARCH1-02",
+    "language": "en",
+    "query": "When is human review required before disposition?"
+  },
+  {
+    "id": "SEARCH1-03",
+    "language": "en",
+    "query": "How do I cite the exact evidence version?"
+  },
+  {
+    "id": "SEARCH1-04",
+    "language": "en",
+    "query": "How should synthetic benchmark limitations be described?"
+  },
+  {
+    "id": "SEARCH1-05",
+    "language": "en",
+    "query": "How should a risk score be distinguished from guilt?"
+  },
+  {
+    "id": "SEARCH1-06",
+    "language": "en",
+    "query": "How do I handle a missing source of funds?"
+  },
+  {
+    "id": "SEARCH1-07",
+    "language": "en",
+    "query": "What does unavailable account history mean?"
+  },
+  {
+    "id": "SEARCH1-08",
+    "language": "en",
+    "query": "How do I document an alternative explanation?"
+  },
+  {
+    "id": "SEARCH1-09",
+    "language": "en",
+    "query": "How should confidential customer facts be handled?"
+  },
+  {
+    "id": "SEARCH1-10",
+    "language": "en",
+    "query": "How should an unresolved evidence gap be recorded?"
+  },
+  {
+    "id": "SEARCH1-11",
+    "language": "en",
+    "query": "Which source provenance details should a reviewer see?"
+  },
+  {
+    "id": "SEARCH1-12",
+    "language": "en",
+    "query": "How do I avoid treating an alert as a legal finding?"
+  },
+  {
+    "id": "SEARCH1-13",
+    "language": "en",
+    "query": "What should a report say about historical source guidance?"
+  },
+  {
+    "id": "SEARCH1-14",
+    "language": "en",
+    "query": "What is required before a case can be escalated?"
+  },
+  {
+    "id": "SEARCH1-15",
+    "language": "en",
+    "query": "How should contradictory evidence be presented?"
+  },
+  {
+    "id": "SEARCH1-16",
+    "language": "en",
+    "query": "How should incomplete information limit conclusions?"
+  },
+  {
+    "id": "SEARCH1-17",
+    "language": "en",
+    "query": "How should unsupported procedural advice be handled?"
+  },
+  {
+    "id": "SEARCH1-18",
+    "language": "en",
+    "query": "How do I keep mixed currency amounts separate?"
+  },
+  {
+    "id": "SEARCH1-19",
+    "language": "en",
+    "query": "What is the exact current filing deadline in Portugal?"
+  },
+  {
+    "id": "SEARCH1-20",
+    "language": "en",
+    "query": "What are the official fees for a Portuguese filing?"
+  }
+]

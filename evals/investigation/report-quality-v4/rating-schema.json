@@ -1,0 +1,324 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rating_version",
+    "packet_id",
+    "units",
+    "checks",
+    "critical_error",
+    "additional_issues",
+    "contradictions"
+  ],
+  "properties": {
+    "rating_version": {
+      "type": "integer",
+      "const": 4
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "unit_id",
+          "judgment",
+          "reason",
+          "critical_error"
+        ],
+        "properties": {
+          "unit_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "judgment": {
+            "enum": [
+              "supported",
+              "unsupported",
+              "uncertain",
+              "applicable",
+              "present",
+              "missing"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "critical_error": {
+            "type": "boolean"
+          }
+        }
+      },
+      "maxItems": 100
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_disclosures_complete",
+        "missing_values_not_invented",
+        "no_cross_section_contradictions"
+      ],
+      "properties": {
+        "required_disclosures_complete": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "passed",
+            "reason",
+            "report_locations",
+            "evidence_refs",
+            "fields"
+          ],
+          "properties": {
+            "passed": {
+              "type": "boolean"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000,
+              "pattern": "\\S"
+            },
+            "report_locations": {
+              "type": "array",
+              "maxItems": 100,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000,
+                "pattern": "\\S"
+              }
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 100,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000,
+                "pattern": "\\S"
+              }
+            },
+            "fields": {
+              "type": "array",
+              "uniqueItems": true,
+              "maxItems": 11,
+              "items": {
+                "enum": [
+                  "transaction_id",
+                  "amount",
+                  "currency",
+                  "event_time",
+                  "score_meaning",
+                  "source_of_funds",
+                  "identity",
+                  "occupation",
+                  "device",
+                  "history",
+                  "human_authority"
+                ]
+              }
+            }
+          }
+        },
+        "missing_values_not_invented": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "passed",
+            "reason",
+            "report_locations",
+            "evidence_refs",
+            "fields"
+          ],
+          "properties": {
+            "passed": {
+              "type": "boolean"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000,
+              "pattern": "\\S"
+            },
+            "report_locations": {
+              "type": "array",
+              "maxItems": 100,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000,
+                "pattern": "\\S"
+              }
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 100,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000,
+                "pattern": "\\S"
+              }
+            },
+            "fields": {
+              "type": "array",
+              "uniqueItems": true,
+              "maxItems": 11,
+              "items": {
+                "enum": [
+                  "transaction_id",
+                  "amount",
+                  "currency",
+                  "event_time",
+                  "score_meaning",
+                  "source_of_funds",
+                  "identity",
+                  "occupation",
+                  "device",
+                  "history",
+                  "human_authority"
+                ]
+              }
+            }
+          }
+        },
+        "no_cross_section_contradictions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "passed",
+            "reason",
+            "report_locations",
+            "evidence_refs",
+            "fields"
+          ],
+          "properties": {
+            "passed": {
+              "type": "boolean"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000,
+              "pattern": "\\S"
+            },
+            "report_locations": {
+              "type": "array",
+              "maxItems": 100,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000,
+                "pattern": "\\S"
+              }
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 100,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000,
+                "pattern": "\\S"
+              }
+            },
+            "fields": {
+              "type": "array",
+              "uniqueItems": true,
+              "maxItems": 11,
+              "items": {
+                "enum": [
+                  "transaction_id",
+                  "amount",
+                  "currency",
+                  "event_time",
+                  "score_meaning",
+                  "source_of_funds",
+                  "identity",
+                  "occupation",
+                  "device",
+                  "history",
+                  "human_authority"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "critical_error": {
+      "type": "boolean"
+    },
+    "additional_issues": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      }
+    },
+    "contradictions": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim_location",
+          "claim_quote",
+          "counter_location",
+          "evidence_ref",
+          "counter_quote"
+        ],
+        "properties": {
+          "claim_location": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          },
+          "claim_quote": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          },
+          "counter_location": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "counter_quote": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000,
+            "pattern": "\\S"
+          }
+        }
+      }
+    }
+  }
+}

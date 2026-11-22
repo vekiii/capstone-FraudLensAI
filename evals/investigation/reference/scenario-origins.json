@@ -1,0 +1,134 @@
+[
+  {
+    "id": "INV-D01",
+    "title": "Ordinary fixture narrative, exact EUR and illustrative score",
+    "origin_kind": "fixture_derivative",
+    "base_source_path": "data/fixtures/cases.json",
+    "base_context_sha256": "dca91bea65e50ce07a7f29e9f0ee98e734b2bc802aea3e47d22f99c6d08affc4",
+    "transform_description": "Ordinary fixture narrative, exact EUR and illustrative score; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "e74aad90a697c8bdcb26fcfe2ba9b1ed43a7f2caff2b010de3a60f9fd5ca68e1",
+    "context_revision": "032a37df351799b142bd21f3c34d621555b58e434819227e6ee38b91b11d73ad",
+    "execution_adapter": "T054 materialized-context/history harness pending; never resolve by case_id alone"
+  },
+  {
+    "id": "INV-D02",
+    "title": "High ordinal rule score with two available contributions",
+    "origin_kind": "authored_producer_contract",
+    "base_source_path": "specs/003-ai-investigation/contracts/examples/context-dataset.json",
+    "base_context_sha256": "0723905e29148412b3c58c328c898caee7890f03cb54a7a1cc3b6b5ce8074480",
+    "transform_description": "High ordinal rule score with two available contributions; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "e67b55d222ea2c9da59e3334a45da3151eb0d2ac23fb5685e751034671e9b7a8",
+    "context_revision": "2abb9f9ea399883809fc08a7b93bca13494fb65700974f5adee5f9026b7491f3",
+    "execution_adapter": "T054 input harness pending; dataset runtime adapter unavailable"
+  },
+  {
+    "id": "INV-D03",
+    "title": "Unavailable explanation, no invented contributions",
+    "origin_kind": "authored_producer_contract",
+    "base_source_path": "specs/003-ai-investigation/contracts/examples/context-dataset.json",
+    "base_context_sha256": "0723905e29148412b3c58c328c898caee7890f03cb54a7a1cc3b6b5ce8074480",
+    "transform_description": "Unavailable explanation, no invented contributions; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "06aa26d07db2ec8935a1f6061f6227f13c5a3cfe969acf39959b2992378f1304",
+    "context_revision": "c1100d09190f6e78d4bee96c017fdf0dc6c4d778ee895dbf6bcb21c8072ac9ba",
+    "execution_adapter": "T054 input harness pending; dataset runtime adapter unavailable"
+  },
+  {
+    "id": "INV-D04",
+    "title": "No applicable guidance for requested current filing deadline",
+    "origin_kind": "fixture_derivative",
+    "base_source_path": "data/fixtures/cases.json",
+    "base_context_sha256": "dca91bea65e50ce07a7f29e9f0ee98e734b2bc802aea3e47d22f99c6d08affc4",
+    "transform_description": "No applicable guidance for requested current filing deadline; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "8c26085ebd2dbe8bd607cc7a9ec6d7009a88e5836acc621e46b3d1c444bf2dd6",
+    "context_revision": "348613ca31914e72473a6262fe7e1ec97e79516ef22ea4ee5f31aab743c411a6",
+    "execution_adapter": "T054 materialized-context/history harness pending; never resolve by case_id alone"
+  },
+  {
+    "id": "INV-H01",
+    "title": "Ordinary fixture CASE-002, exact small transfer",
+    "origin_kind": "fixture_derivative",
+    "base_source_path": "data/fixtures/cases.json",
+    "base_context_sha256": "6e5e64e586ca4c79b69b4dd9548a28ebd807c8adb62bfded4a1ace7772e9bae0",
+    "transform_description": "Ordinary fixture CASE-002, exact small transfer; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "9b76d71b6d4d1ab842d1f02060bc12d3675b2baa1008c740a2cdc7dcf0997880",
+    "context_revision": "fa44df572e242891ec6b1044fb737f2ae54fe8e5e18e67b356f08720f1c190f4",
+    "execution_adapter": "T054 materialized-context/history harness pending; never resolve by case_id alone"
+  },
+  {
+    "id": "INV-H02",
+    "title": "Held-out high ordinal score preserves rule meaning",
+    "origin_kind": "authored_producer_contract",
+    "base_source_path": "specs/003-ai-investigation/contracts/examples/context-dataset.json",
+    "base_context_sha256": "0723905e29148412b3c58c328c898caee7890f03cb54a7a1cc3b6b5ce8074480",
+    "transform_description": "Held-out high ordinal score preserves rule meaning; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "8e3131220de33d9237f4872818f50c9541c9f86bb4b0ee8fd355b97964c524bc",
+    "context_revision": "18453ae6a34836adcb9e496a7720ec3f6b98b27ff72d21cd71d5f0ca5a4271d9",
+    "execution_adapter": "T054 input harness pending; dataset runtime adapter unavailable"
+  },
+  {
+    "id": "INV-H03",
+    "title": "Partial explanation exposes remainder and absent contribution",
+    "origin_kind": "authored_producer_contract",
+    "base_source_path": "specs/003-ai-investigation/contracts/examples/context-dataset.json",
+    "base_context_sha256": "0723905e29148412b3c58c328c898caee7890f03cb54a7a1cc3b6b5ce8074480",
+    "transform_description": "Partial explanation exposes remainder and absent contribution; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "fb55bed3b5dbaed95f8617671692c502f2f84d99526e06e7aa2f0f4658955b1a",
+    "context_revision": "b97581aaf5600d173d56f334220f8b7a575d57d195a7c5b058199f5920b40118",
+    "execution_adapter": "T054 input harness pending; dataset runtime adapter unavailable"
+  },
+  {
+    "id": "INV-H04",
+    "title": "Contradiction: assessment prior count 3 versus one full-window sender event",
+    "origin_kind": "authored_producer_contract",
+    "base_source_path": "specs/003-ai-investigation/contracts/examples/context-dataset.json",
+    "base_context_sha256": "0723905e29148412b3c58c328c898caee7890f03cb54a7a1cc3b6b5ce8074480",
+    "transform_description": "Contradiction: assessment prior count 3 versus one full-window sender event; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "d0ab0d18e160efd66a4dd5c13c697ead1b863e06000dae98b5d8d5d599434119",
+    "context_revision": "83d7e35ba1a8bb48d91edbc60af9b120ce248ccf22d32851aaaf6b132997a395",
+    "execution_adapter": "T054 input harness pending; dataset runtime adapter unavailable"
+  },
+  {
+    "id": "INV-H05",
+    "title": "Missing customer context despite large fixture transfer",
+    "origin_kind": "fixture_derivative",
+    "base_source_path": "data/fixtures/cases.json",
+    "base_context_sha256": "0dcbe61bd1ec4a03ca797947eb08a809aa73ccab174fa79704dca20ac7639488",
+    "transform_description": "Missing customer context despite large fixture transfer; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "ab9e12d4c08ca00051d539bdab8a5f0307c9b6751e1433c692ab052e9a08e07c",
+    "context_revision": "2a57cf163fe6aeb17346cdd46121e1db344a532f3d584910cb146c084affaa01",
+    "execution_adapter": "T054 materialized-context/history harness pending; never resolve by case_id alone"
+  },
+  {
+    "id": "INV-H06",
+    "title": "No adequate guidance for requested current Serbian filing channel and deadline",
+    "origin_kind": "fixture_derivative",
+    "base_source_path": "data/fixtures/cases.json",
+    "base_context_sha256": "dca91bea65e50ce07a7f29e9f0ee98e734b2bc802aea3e47d22f99c6d08affc4",
+    "transform_description": "No adequate guidance for requested current Serbian filing channel and deadline; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "24fcfd5e71eb323756e226d8ba06808987bfb85f41d4de295526534103286f04",
+    "context_revision": "6bb9e1c386936f1dc3c801cb01e10c0fdbdb54f408dac8343d1926b08880d325",
+    "execution_adapter": "T054 materialized-context/history harness pending; never resolve by case_id alone"
+  },
+  {
+    "id": "INV-H07",
+    "title": "52 authored events, 50 returned, incomplete history, two currencies",
+    "origin_kind": "authored_producer_contract",
+    "base_source_path": "specs/003-ai-investigation/contracts/examples/context-dataset.json",
+    "base_context_sha256": "0723905e29148412b3c58c328c898caee7890f03cb54a7a1cc3b6b5ce8074480",
+    "transform_description": "52 authored events, 50 returned, incomplete history, two currencies; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "ba1f4704ba262b4e204c2e176ebb7cbded740681fa175f0e98b3f0488a8cc0fa",
+    "context_revision": "04fe01ccae297e4766ba8af0ffbd4eb5004198f6274e5c1eb4eaf6cd789d2d82",
+    "execution_adapter": "T054 input harness pending; dataset runtime adapter unavailable"
+  },
+  {
+    "id": "INV-H08",
+    "title": "Synthetic UTC assumption, strict minute cutoff, bank identity and incomplete coverage",
+    "origin_kind": "authored_producer_contract",
+    "base_source_path": "specs/003-ai-investigation/contracts/examples/context-dataset.json",
+    "base_context_sha256": "0723905e29148412b3c58c328c898caee7890f03cb54a7a1cc3b6b5ce8074480",
+    "transform_description": "Synthetic UTC assumption, strict minute cutoff, bank identity and incomplete coverage; unique authored snapshot/identity binding; see exact input delta.",
+    "input_sha256": "a74f6e626584117bd4d360f3cb91d399e3de883bae7f23a218b7abae8e15552a",
+    "context_revision": "e4dd3722a28051796326fdf606205ff17037c92783caa9c63b6e63a965ed5cdd",
+    "execution_adapter": "T054 input harness pending; dataset runtime adapter unavailable"
+  }
+]

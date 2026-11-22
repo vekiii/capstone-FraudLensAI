@@ -1,0 +1,23 @@
+{
+  "protocol_version": "development-v2-20261116",
+  "kind": "development_not_independent_holdout",
+  "source_revision": "7ed606c",
+  "model": "gpt-6-luna",
+  "maximum_transport_attempts": 25,
+  "generation_per_case": 8,
+  "judge_requests": 1,
+  "reference_review": "pending independent human review",
+  "retrieval_mode": {
+    "DEV2-701": "candidate",
+    "DEV2-702": "candidate",
+    "DEV2-703": "controlled_no_match"
+  },
+  "files_sha256": {
+    "evals/investigation/development-v2/inputs.json": "c6d361e86d279e0784e648a3b3b074627df9945fb40233b5ec15d5e06c9c4782",
+    "evals/investigation/development-v2/reference.json": "7d5274dced36febcdc00d8b3d68ddf0f426cb750827865b7f090b7f14b8c20b0",
+    "data/knowledge/fraudlens-aml-knowledge-v1/retrieval-development-v2.json": "c71d6d6b5db93ebf68baa461c1606850dc6d45a289e83ec60c0a81cef0b1b4c4",
+    "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json": "606212f650f5c826c972c30cf148b4e52bca73d403997f1bec142b076449e0d5",
+    "prompts/application/investigation-v2.md": "c57d6df4aa86556e467163e0730ad26e8d431592c5b883aa748e6b526192a884",
+    "prompts/evaluation/report-judge-v2.md": "4b607f03f209007dedf0bc3758148f4d6534b18ad54f5278c17f35684fd6574c"
+  }
+}

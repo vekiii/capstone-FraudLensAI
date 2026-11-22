@@ -1,0 +1,23 @@
+{
+  "quality_order": [
+    "SEC-DEVELOPMENT-01",
+    "SEC-DEVELOPMENT-02",
+    "SEC-DEVELOPMENT-03",
+    "SEC-DEVELOPMENT-04"
+  ],
+  "timing_order": [
+    "SEC-DEVELOPMENT-01",
+    "SEC-DEVELOPMENT-02",
+    "SEC-DEVELOPMENT-03",
+    "SEC-DEVELOPMENT-04"
+  ],
+  "secondary_order": [],
+  "stage_caps": {
+    "development": 20,
+    "calibration": 6,
+    "final": 42,
+    "judging": 13
+  },
+  "total_ceiling": 433,
+  "source": "authored synthetic fixtures, reviewed source obligations"
+}

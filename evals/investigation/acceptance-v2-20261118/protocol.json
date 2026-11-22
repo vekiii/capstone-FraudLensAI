@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "status": "source_authoring_before_execution",
+  "semantic_profile": "v7",
+  "source_mode": "authored_synthetic_fixture_not_ML_evaluation",
+  "quality_order": [
+    "RUN2-01",
+    "RUN2-02",
+    "RUN2-03",
+    "RUN2-04",
+    "RUN2-05",
+    "RUN2-06",
+    "RUN2-07",
+    "RUN2-08"
+  ],
+  "timing_order": [
+    "RUN2-01",
+    "RUN2-02",
+    "RUN2-03",
+    "RUN2-04",
+    "RUN2-05"
+  ],
+  "secondary_order": [
+    "RUN2-02",
+    "RUN2-03",
+    "RUN2-04",
+    "RUN2-06",
+    "RUN2-08"
+  ],
+  "sample_overlap": "Timing five are prospectively the FIRST five of quality eight; same saved reports, no selection after outputs; correlated samples disclosed.",
+  "timing_genres": [
+    "available_history",
+    "unavailable_history",
+    "mixed_currency",
+    "no_adequate_procedure",
+    "elevated_missing_customer_facts"
+  ],
+  "prior_actual_requests": 56,
+  "maximum_total_requests": 155,
+  "prospective_caps": {
+    "calibration": 6,
+    "first_five_shared_generation": 40,
+    "last_three_quality_generation": 24,
+    "primary_secondary": 13
+  },
+  "conservative_full_maximum": 139,
+  "remaining_retry_reserve": 16,
+  "criteria": "Unchanged v4 exact6/6, 7/8 quality, .90/.80, zero critical; timing4/5<=90, all5<=120, local20 rank19p95<=2",
+  "original_8_quality_slots": "Never generated; retained unexecuted after original calibration failure",
+  "historical_results": "All original failed/unknown outcomes retained, no regrading",
+  "source_authoring_script_sha256": "2d9f7bf3b186ff74e2a99f4d41a798d125860cb2477514a77e6e49baad028480",
+  "source_input_sha256": {
+    "RUN2-01": "739ea7c5333b8c6d0116af9dd95f59b261935d56c91614cd8e1acbb3539bd580",
+    "RUN2-02": "9f0b986bfa6b066cb40b6e50c5f7f80e508416ccbfc790dd886d0fd7e16ae990",
+    "RUN2-03": "bc52218a80ec37e5d7b48efdacfbbcdc39252717b38749d248b700b5a6206b37",
+    "RUN2-04": "b6d526f22ce37962863f83d3c2a509ef7a30861bbfecc3e1aefd201bf9fc0479",
+    "RUN2-05": "a9eb95b48f98f6e60fb3688964c5b300d7e0677c7bd0629c3bc18e7798c73d40",
+    "RUN2-06": "0f65610126866718c2b9068f5b926dc5a9355768dcca8464fc1152f202df07c8",
+    "RUN2-07": "c0a242ca3d1fb92c80ba5f32c98c105dcd941c47ec495ebe6cddc805f7ef8e4e",
+    "RUN2-08": "3f37c6434017473221ba20bfb623515c9d77c67cd6a693fce8b671e6aa4216f8"
+  }
+}

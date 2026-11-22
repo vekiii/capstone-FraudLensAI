@@ -1,0 +1,290 @@
+[
+  {
+    "id": "LAT6-01",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-641",
+      "snapshot_ref": "fixture_1da69127b2ce8b86c705d68bae8ce157b3fecdb39ff811c106c287d637ce4a40",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-641",
+        "transaction": {
+          "transaction_id": "TX-641",
+          "occurred_at": "2026-11-18T09:58:43Z",
+          "amount": "3917.73",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:LAT6-01",
+          "receiver_account": "AUTHORED-R:LAT6-01"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-641",
+          "score": 0.46,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:58:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:58:43Z",
+        "start": "2026-11-11T09:58:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "780713373496f33125ddf5fa2db6750cdba194b7fd4eed3296455eada6b3222d"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-641": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "LAT6-01-S"
+          },
+          "receiver": {
+            "bank": "AUTHORED-R",
+            "account": "LAT6-01-R"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-441",
+          "occurred_at": "2026-11-16T09:58:43Z",
+          "amount": "83.47",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "LAT6-01-S"
+        },
+        {
+          "transaction_id": "TX-541",
+          "occurred_at": "2026-11-17T09:58:43Z",
+          "amount": "29.61",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "LAT6-01-S"
+        },
+        {
+          "transaction_id": "TX-341",
+          "occurred_at": "2026-11-18T06:58:43Z",
+          "amount": "41.92",
+          "currency": "EUR",
+          "bank": "AUTHORED-R",
+          "account": "LAT6-01-R"
+        },
+        {
+          "transaction_id": "TX-241",
+          "occurred_at": "2026-11-18T09:58:33Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "LAT6-01-S"
+        },
+        {
+          "transaction_id": "TX-141",
+          "occurred_at": "2026-11-19T09:58:43Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "LAT6-01-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+    ]
+  },
+  {
+    "id": "LAT6-02",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-642",
+      "snapshot_ref": "fixture_7e61efd45392e7be6ba133a064f0f490c562177656f5d978719b19a4815e61fb",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-642",
+        "transaction": {
+          "transaction_id": "TX-642",
+          "occurred_at": "2026-11-18T09:59:43Z",
+          "amount": "231.78",
+          "currency": "USD",
+          "sender_account": "AUTHORED-S:LAT6-02",
+          "receiver_account": "AUTHORED-R:LAT6-02"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-642",
+          "score": 0.29,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:59:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "f496d11086edf86fecc5aeb6df70feebe1037327706b68102e4d2253ccca42a2"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+    ]
+  },
+  {
+    "id": "LAT6-03",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-643",
+      "snapshot_ref": "fixture_0ac4d0940ae72b2b88f9f678ca9a94a2678360edef9f7d8f62fb685ea13c0e81",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-643",
+        "transaction": {
+          "transaction_id": "TX-643",
+          "occurred_at": "2026-11-18T10:00:43Z",
+          "amount": "2693.32",
+          "currency": "GBP",
+          "sender_account": "AUTHORED-S:LAT6-03",
+          "receiver_account": "AUTHORED-R:LAT6-03"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-643",
+          "score": 0.74,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T10:00:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T10:00:43Z",
+        "start": "2026-11-11T10:00:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "37f2f04c0bd43cee5b44b5b32bae835d03637e376c5d666bf649222823c1d579"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-643": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "LAT6-03-S"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-443",
+          "occurred_at": "2026-11-16T10:00:43Z",
+          "amount": "83.47",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "LAT6-03-S"
+        },
+        {
+          "transaction_id": "TX-543",
+          "occurred_at": "2026-11-17T10:00:43Z",
+          "amount": "29.61",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "LAT6-03-S"
+        },
+        {
+          "transaction_id": "TX-243",
+          "occurred_at": "2026-11-18T10:00:33Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "LAT6-03-S"
+        },
+        {
+          "transaction_id": "TX-143",
+          "occurred_at": "2026-11-19T10:00:43Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "LAT6-03-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review the transfer evidence, precisely bounded history, and limits on analyst guidance."
+    ]
+  },
+  {
+    "id": "LAT6-04",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-644",
+      "snapshot_ref": "fixture_18755471bcb8c1b15bd67e91e67aedb1f21aaabb5b164e44b5bdc60545feecd0",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-644",
+        "transaction": {
+          "transaction_id": "TX-644",
+          "occurred_at": "2026-11-18T10:01:43Z",
+          "amount": "581.42",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:LAT6-04",
+          "receiver_account": "AUTHORED-R:LAT6-04"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-644",
+          "score": 0.37,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T10:01:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: What is the exact current statutory reporting deadline in Iceland?"
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "5fb574016d3d30a6e00c4eaa14161cac9c88a1020f99bd66a95ecba5ff74c25e"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "What is the exact current statutory reporting deadline in Iceland?"
+    ]
+  }
+]

@@ -1,0 +1,90 @@
+{
+  "protocol_version": 2,
+  "amendment_id": "report-judging-v2",
+  "date": "2026-11-15",
+  "status": "authorized_not_executed",
+  "decision": "User annotation 41c2c8ab-006f-4531-8a95-b8fac4579788; both rating roles automated",
+  "evaluation_kind": "automated_llm_as_judge_post_hoc",
+  "human_validation": false,
+  "base_protocol": {
+    "path": "evals/investigation/protocol.json",
+    "sha256": "688e4f78bdd4f9132d3c79e0c6849a297417cea450859a17656954510a855306"
+  },
+  "rubric": {
+    "path": "evals/investigation/reference/rubric.json",
+    "sha256": "39c724e5a42b2a7fb2c2092a84be8ca838dc37543a2c4317227c77271d1e9772",
+    "criteria_unchanged": true
+  },
+  "splits": {
+    "path": "evals/investigation/splits.json",
+    "sha256": "d1b9d6c3ba77a4dc9b3a2535462f49e19af07394ef4de745b2653494edd5c2e3"
+  },
+  "frozen_outcomes_sha256": {
+    "demo-INV-D01.json": "4fcd987c9f3829c134213a6bb20e326caefb07359675e741631a9c724c690fff",
+    "demo-INV-D02.json": "89e29b41147a841707007fe920c72f24e1df892ff6685f9814a4c5dd78b901c9",
+    "demo-INV-D03.json": "469e4c04f622f456b8665120dc6c19673a3e613a03578ce489184825a9dd88bc",
+    "demo-INV-H01.json": "65b2199b5677a6701de60e8c37c700376b7c3f909f731b940819769ec82e7a32",
+    "demo-INV-H05.json": "24d59c7bcde9be0b5b734bb4ff7b55e2dcb6c461b7368004abab6b619cbbc5ac",
+    "primary-INV-H01.json": "f60390255a08be1595f71e085fcabc38b403e9fd2857f7f5c2439456e7506653",
+    "primary-INV-H02.json": "07182148070e143e2faeb34a3d6b9f99b6fe6bcf7cc0a7caf9a4251b604ee7ed",
+    "primary-INV-H03.json": "7b45294629a8b20af2ef463493ecbc806d50c9a4aacefd82375bc926298ad6fc",
+    "primary-INV-H04.json": "0c688c53378581355bf3292b5eeab1e59ee781458fce5265de123fba1ef4421b",
+    "primary-INV-H05.json": "c41cb78933304c88dd5557a92fcbc7818964301e7bb576f039c7569e3035a3f9",
+    "primary-INV-H06.json": "1e84832149012199355ea280ec93927285ff4ba39e15ff3f0b1b0801bdd47a82",
+    "primary-INV-H07.json": "99b3cf8484eb0629f23e535cec862df61f149b7f9a97428cce083b3733482cd8",
+    "primary-INV-H08.json": "99aad45e88d39a6012d735f806b4f6bc2ea8d270eeda80f97de2f64521db9f03"
+  },
+  "roles": {
+    "primary": {
+      "kind": "llm",
+      "scenario_count": 8
+    },
+    "secondary": {
+      "kind": "llm",
+      "subset": [
+        "INV-H02",
+        "INV-H03",
+        "INV-H04",
+        "INV-H06",
+        "INV-H08"
+      ],
+      "fresh_context": true,
+      "primary_judgments_visible": false
+    }
+  },
+  "judge": {
+    "provider": null,
+    "requested_model": null,
+    "returned_model": null,
+    "settings": null,
+    "prompt_sha256": null,
+    "executed": false,
+    "transport_budget": null
+  },
+  "targets": {
+    "reports_minimum": 7,
+    "reports_denominator": 8,
+    "factual_support_minimum": 0.9,
+    "essential_fact_coverage_minimum": 0.8,
+    "unsupported_critical_claims_maximum": 0,
+    "unsupported_no_guidance_recommendations_maximum": 0
+  },
+  "controls": {
+    "retain_all_failures": true,
+    "zero_claims": "N/A",
+    "uncertain": "unsupported or missing until evidence-based resolution",
+    "preserve_raw_disagreements": true,
+    "adjudication": "separate evidence-based record; unresolved cannot pass",
+    "same_model": "disclose dependence; agreement is not proof of correctness",
+    "no_report_regeneration": true,
+    "no_holdout_tuning": true,
+    "reference_access": "offline post-generation scoring only; never generator/runtime"
+  },
+  "result_directory": "evals/results/feature-003/judge-v2/",
+  "limitations": [
+    "Method changed after outputs exposed; not original frozen human validation",
+    "Neither rating role may use Vedran or Milan as machine evaluator identity",
+    "Human analyst/source/producer/code-review/reproduction gates unchanged",
+    "No new provider execution budget granted"
+  ]
+}

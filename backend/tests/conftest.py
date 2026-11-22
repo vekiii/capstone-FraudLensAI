@@ -5,7 +5,7 @@ import json
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def isolate_investigation_configuration(monkeypatch, tmp_path):
     # Default tests must never read a contributor's real credentials/configuration.
     monkeypatch.setattr('fraudlens.investigation.environment.ENV_FILE', tmp_path / '.env')

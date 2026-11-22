@@ -1,0 +1,26 @@
+{
+  "status": "FROZEN_AUTOMATED_EVALUATION",
+  "runtime_revision": "324d5546a304d98fa24ddc996c694563def79cde7e4d3df6af8d026c16a1f7b3",
+  "files": {
+    "prompts\\application\\retrieval-reference-judge-v1.md": "810ab22ced63ef4570052539bfe71a2fd290380bf04e0948f4c909507d52f339",
+    "prompts\\application\\retrieval-answerability-v6.md": "1b7bcb6e218ee9142ba4845d414d1614258e7b3c5c66d0b2a937f66c9f8ed399",
+    "backend\\tests\\support\\retrieval_v6_integrated_judge.py": "3ea67436a684a7db1ae40b953e248a0ab1eb0053cc6cc3d67245d9fcfff79625"
+  },
+  "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "model": "gpt-6-luna",
+  "requests_max": 44,
+  "retries": 0,
+  "input_hash": "35f8fad12266f62472fb5e84965bb8c11b5e27db60e193d4675aea0d025ece0f",
+  "passage_hash": "177a94cc255f956b3ac06b8d7ffa1f3c5a508b478f5e20e9b96336a3e726b496",
+  "reference_hash": "95c0d51d46885372e808b37cc1dcfd4161fa39f624f24a10467a849ff7a1a631",
+  "calibration_hash": "47776e181b65411a3d2ff5ff272d26d9f20838cdbb64bb110905b6825694faf2",
+  "thresholds": {
+    "recall_at5": 0.8,
+    "mrr_at5": 0.7,
+    "answerable": 16,
+    "no_answer": 4,
+    "all_no_answer_correct": true
+  },
+  "judge_method": "separate blind context, same configured model; not independent human/model",
+  "authorization": "User approved API/worker integration and LLM-as-judge evaluation; new44-call cap"
+}

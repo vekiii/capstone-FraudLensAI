@@ -1,0 +1,82 @@
+[
+  {
+    "id": "LAT-SEARCH-01",
+    "query": "Escalate a case with incomplete information"
+  },
+  {
+    "id": "LAT-SEARCH-02",
+    "query": "Confirm the exact transaction fields"
+  },
+  {
+    "id": "LAT-SEARCH-03",
+    "query": "What does the score prove"
+  },
+  {
+    "id": "LAT-SEARCH-04",
+    "query": "Explain unknown employment"
+  },
+  {
+    "id": "LAT-SEARCH-05",
+    "query": "Describe what a citation establishes"
+  },
+  {
+    "id": "LAT-SEARCH-06",
+    "query": "Missing device evidence"
+  },
+  {
+    "id": "LAT-SEARCH-07",
+    "query": "Keep amounts in their original currency"
+  },
+  {
+    "id": "LAT-SEARCH-08",
+    "query": "What is a simulated procedure"
+  },
+  {
+    "id": "LAT-SEARCH-09",
+    "query": "Document the choice to close"
+  },
+  {
+    "id": "LAT-SEARCH-10",
+    "query": "Time basis of a benchmark transfer"
+  },
+  {
+    "id": "LAT-SEARCH-11",
+    "query": "Record limits of partial history"
+  },
+  {
+    "id": "LAT-SEARCH-12",
+    "query": "Keep contradictory sources separate"
+  },
+  {
+    "id": "LAT-SEARCH-13",
+    "query": "Identify a passage by its version"
+  },
+  {
+    "id": "LAT-SEARCH-14",
+    "query": "Summarize records versus narrative"
+  },
+  {
+    "id": "LAT-SEARCH-15",
+    "query": "Scope of US affiliate sharing"
+  },
+  {
+    "id": "LAT-SEARCH-16",
+    "query": "Evidence for a suggested check"
+  },
+  {
+    "id": "LAT-SEARCH-17",
+    "query": "Preserve the original time"
+  },
+  {
+    "id": "LAT-SEARCH-18",
+    "query": "Unknown account history"
+  },
+  {
+    "id": "LAT-SEARCH-19",
+    "query": "Current tax rate in Peru"
+  },
+  {
+    "id": "LAT-SEARCH-20",
+    "query": "Weather forecast for Friday"
+  }
+]

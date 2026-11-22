@@ -1,0 +1,27 @@
+{
+  "quality_order": [
+    "RUN3-01",
+    "RUN3-02",
+    "RUN3-03",
+    "RUN3-04",
+    "RUN3-05",
+    "RUN3-06",
+    "RUN3-07",
+    "RUN3-08"
+  ],
+  "timing_order": [
+    "RUN3-01",
+    "RUN3-02",
+    "RUN3-03",
+    "RUN3-04",
+    "RUN3-05"
+  ],
+  "secondary_order": [
+    "RUN3-02",
+    "RUN3-03",
+    "RUN3-04",
+    "RUN3-06",
+    "RUN3-08"
+  ],
+  "sample_overlap": "FIRST five of quality eight, fixed BEFORE outputs; correlated samples"
+}

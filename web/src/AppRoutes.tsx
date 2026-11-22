@@ -18,7 +18,8 @@ function loadPage(page: ReactNode) {
 
 export function AppRoutes() {
   return (
-      <Routes><Route element={<SiteFrame />}>
+    <Routes>
+      <Route element={<SiteFrame />}>
         <Route path="/" element={loadPage(<Overview />)} />
         <Route path="/data" element={loadPage(<DataPage />)} />
         <Route path="/rag" element={loadPage(<RagPage />)} />
@@ -28,6 +29,7 @@ export function AppRoutes() {
         <Route path="/eda" element={loadPage(<EdaPage />)} />
         <Route path="/simulation" element={loadPage(<SimulationPage />)} />
         <Route path="*" element={loadPage(<Overview />)} />
-      </Route></Routes>
+      </Route>
+    </Routes>
   );
 }

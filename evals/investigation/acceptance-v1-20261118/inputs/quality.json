@@ -1,0 +1,630 @@
+[
+  {
+    "id": "QUAL1-01",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-911",
+      "snapshot_ref": "fixture_6c682c5834e1e68c2f4dd3fc8c59aa9bd4abac3a14bf06c4f42b0be69381f0e3",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-911",
+        "transaction": {
+          "transaction_id": "TX-911",
+          "occurred_at": "2026-11-18T09:28:43Z",
+          "amount": "3074.29",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:QUAL1-01",
+          "receiver_account": "AUTHORED-R:QUAL1-01"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-911",
+          "score": 0.57,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:28:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:28:43Z",
+        "start": "2026-11-11T09:28:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "71f563d4f06fe543d98e91415af4b62b4000d73fa332041aa4c0ab1e5fc1c959"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-911": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "QUAL1-01-S"
+          },
+          "receiver": {
+            "bank": "AUTHORED-R",
+            "account": "QUAL1-01-R"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-711",
+          "occurred_at": "2026-11-16T09:28:43Z",
+          "amount": "83.47",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-01-S"
+        },
+        {
+          "transaction_id": "TX-811",
+          "occurred_at": "2026-11-17T09:28:43Z",
+          "amount": "29.61",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-01-S"
+        },
+        {
+          "transaction_id": "TX-611",
+          "occurred_at": "2026-11-18T06:28:43Z",
+          "amount": "41.92",
+          "currency": "EUR",
+          "bank": "AUTHORED-R",
+          "account": "QUAL1-01-R"
+        },
+        {
+          "transaction_id": "TX-511",
+          "occurred_at": "2026-11-18T09:28:33Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-01-S"
+        },
+        {
+          "transaction_id": "TX-411",
+          "occurred_at": "2026-11-19T09:28:43Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-01-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  },
+  {
+    "id": "QUAL1-02",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-912",
+      "snapshot_ref": "fixture_8f91e09e30b759033ccb1997e3dedaf42028b0509cffba70784b67770d1526a0",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-912",
+        "transaction": {
+          "transaction_id": "TX-912",
+          "occurred_at": "2026-11-18T09:29:43Z",
+          "amount": "76.43",
+          "currency": "USD",
+          "sender_account": "AUTHORED-S:QUAL1-02",
+          "receiver_account": "AUTHORED-R:QUAL1-02"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-912",
+          "score": 0.31,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:29:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "bab9680b9e2132ea0fefb9d7d21b0d4a57f420eaf116412fd97ad288f9dc7854"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  },
+  {
+    "id": "QUAL1-03",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-913",
+      "snapshot_ref": "fixture_1fb7f7421373e2e70726a340b23f3e84dded13d494be27b1d501030237d41825",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-913",
+        "transaction": {
+          "transaction_id": "TX-913",
+          "occurred_at": "2026-11-18T09:30:43Z",
+          "amount": "851.67",
+          "currency": "GBP",
+          "sender_account": "AUTHORED-S:QUAL1-03",
+          "receiver_account": "AUTHORED-R:QUAL1-03"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-913",
+          "score": 0.66,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:30:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:30:43Z",
+        "start": "2026-11-11T09:30:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "0de748f7f726501c5ea8fff7987d60077e8572afb00a3d1c29935333b45bbf3a"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-913": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "QUAL1-03-S"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-713",
+          "occurred_at": "2026-11-16T09:30:43Z",
+          "amount": "83.47",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-03-S"
+        },
+        {
+          "transaction_id": "TX-813",
+          "occurred_at": "2026-11-17T09:30:43Z",
+          "amount": "29.61",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-03-S"
+        },
+        {
+          "transaction_id": "TX-513",
+          "occurred_at": "2026-11-18T09:30:33Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-03-S"
+        },
+        {
+          "transaction_id": "TX-413",
+          "occurred_at": "2026-11-19T09:30:43Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-03-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  },
+  {
+    "id": "QUAL1-04",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-914",
+      "snapshot_ref": "fixture_29f3f6189543e8df83306f86f631be9dbdd23b93e2f72d3f8428a1ac52fcd0da",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-914",
+        "transaction": {
+          "transaction_id": "TX-914",
+          "occurred_at": "2026-11-18T09:31:43Z",
+          "amount": "143.28",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:QUAL1-04",
+          "receiver_account": "AUTHORED-R:QUAL1-04"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-914",
+          "score": 0.38,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:31:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: What is the exact current statutory filing deadline for this transfer in Portugal?"
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "08540ab4fe75a2c949ee6984301367942cba4df2656319cb51ce9279e3e4d8b2"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "What is the exact current statutory filing deadline for this transfer in Portugal?"
+    ]
+  },
+  {
+    "id": "QUAL1-05",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-915",
+      "snapshot_ref": "fixture_ae7c64d402ce6fc563f8480436f64f8653fb66972266e2b25b71b24bbafa8b1b",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-915",
+        "transaction": {
+          "transaction_id": "TX-915",
+          "occurred_at": "2026-11-18T09:32:43Z",
+          "amount": "11762.94",
+          "currency": "USD",
+          "sender_account": "AUTHORED-S:QUAL1-05",
+          "receiver_account": "AUTHORED-R:QUAL1-05"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-915",
+          "score": 0.89,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:32:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:32:43Z",
+        "start": "2026-11-11T09:32:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "425fd72905776e8d5721f3815e3db7ae35d786f4e747bab1b570ac0a32e06c34"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-915": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "QUAL1-05-S"
+          },
+          "receiver": {
+            "bank": "AUTHORED-R",
+            "account": "QUAL1-05-R"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-715",
+          "occurred_at": "2026-11-16T09:32:43Z",
+          "amount": "83.47",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-05-S"
+        },
+        {
+          "transaction_id": "TX-815",
+          "occurred_at": "2026-11-17T09:32:43Z",
+          "amount": "29.61",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-05-S"
+        },
+        {
+          "transaction_id": "TX-615",
+          "occurred_at": "2026-11-18T06:32:43Z",
+          "amount": "41.92",
+          "currency": "USD",
+          "bank": "AUTHORED-R",
+          "account": "QUAL1-05-R"
+        },
+        {
+          "transaction_id": "TX-515",
+          "occurred_at": "2026-11-18T09:32:33Z",
+          "amount": "987.65",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-05-S"
+        },
+        {
+          "transaction_id": "TX-415",
+          "occurred_at": "2026-11-19T09:32:43Z",
+          "amount": "987.65",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-05-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  },
+  {
+    "id": "QUAL1-06",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-916",
+      "snapshot_ref": "fixture_81bd9135e91bc2e44062815fdc484dd763e221a9938bbb6d7835fdb1418c92b3",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-916",
+        "transaction": {
+          "transaction_id": "TX-916",
+          "occurred_at": "2026-11-18T09:33:43Z",
+          "amount": "18.53",
+          "currency": "GBP",
+          "sender_account": "AUTHORED-S:QUAL1-06",
+          "receiver_account": "AUTHORED-R:QUAL1-06"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-916",
+          "score": 0.19,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:33:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:33:43Z",
+        "start": "2026-11-11T09:33:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "2e0dfd82f32968f38a53c99e9a437b6aca326b061659f74ceae4e746af3d4bdc"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-916": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "QUAL1-06-S"
+          },
+          "receiver": {
+            "bank": "AUTHORED-R",
+            "account": "QUAL1-06-R"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-716",
+          "occurred_at": "2026-11-16T09:33:43Z",
+          "amount": "83.47",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-06-S"
+        },
+        {
+          "transaction_id": "TX-816",
+          "occurred_at": "2026-11-17T09:33:43Z",
+          "amount": "29.61",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-06-S"
+        },
+        {
+          "transaction_id": "TX-616",
+          "occurred_at": "2026-11-18T06:33:43Z",
+          "amount": "41.92",
+          "currency": "GBP",
+          "bank": "AUTHORED-R",
+          "account": "QUAL1-06-R"
+        },
+        {
+          "transaction_id": "TX-516",
+          "occurred_at": "2026-11-18T09:33:33Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-06-S"
+        },
+        {
+          "transaction_id": "TX-416",
+          "occurred_at": "2026-11-19T09:33:43Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-06-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  },
+  {
+    "id": "QUAL1-07",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-917",
+      "snapshot_ref": "fixture_df6dd38ecc76e149db9cf24ee69579007b4d561a5ca3e60db21b8233f6a8c535",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-917",
+        "transaction": {
+          "transaction_id": "TX-917",
+          "occurred_at": "2026-11-18T09:34:43Z",
+          "amount": "4296.81",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:QUAL1-07",
+          "receiver_account": "AUTHORED-R:QUAL1-07"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-917",
+          "score": 0.74,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:34:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "93155919880c39238766220e6d271b568ad06ecd3c935211fbfa62c96a786fda"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  },
+  {
+    "id": "QUAL1-08",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-918",
+      "snapshot_ref": "fixture_15a0915291752f4a636d73ba68e48392988ce93d69677fa406077656899691ad",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-918",
+        "transaction": {
+          "transaction_id": "TX-918",
+          "occurred_at": "2026-11-18T09:35:43Z",
+          "amount": "6853.47",
+          "currency": "USD",
+          "sender_account": "AUTHORED-S:QUAL1-08",
+          "receiver_account": "AUTHORED-R:QUAL1-08"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-918",
+          "score": 0.81,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:35:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:35:43Z",
+        "start": "2026-11-11T09:35:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "269353705b1f6335effddd58cf1280068ec23f97ef6e2c1874dca5f1f51d4a9a"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-918": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "QUAL1-08-S"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-718",
+          "occurred_at": "2026-11-16T09:35:43Z",
+          "amount": "83.47",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-08-S"
+        },
+        {
+          "transaction_id": "TX-818",
+          "occurred_at": "2026-11-17T09:35:43Z",
+          "amount": "29.61",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-08-S"
+        },
+        {
+          "transaction_id": "TX-518",
+          "occurred_at": "2026-11-18T09:35:33Z",
+          "amount": "987.65",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-08-S"
+        },
+        {
+          "transaction_id": "TX-418",
+          "occurred_at": "2026-11-19T09:35:43Z",
+          "amount": "987.65",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "QUAL1-08-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  }
+]

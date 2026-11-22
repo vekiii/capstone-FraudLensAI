@@ -82,10 +82,23 @@ are uncalibrated risk scores, alerts are not capped, and analysts make final dec
 Settings resolve data/fixtures/cases.json relative to the repository, but startup
 and health do not open it. T014's three synthetic cases are stored there without scores.
 
+## Fixture investigation and Simulation Lab
+
+Use the [Feature 003 fixture setup](evidence/tasks/feature-003-web-integration.md#run-the-local-demo)
+for a local store, reviewed knowledge, and the test-provider worker. Open Cases
+and select a fixture case to access investigation. Simulation Lab is available
+at the local /simulation route and uses the bundled synthetic scenario.
+
+The optional investigation dependency group pins the provider SDK for a separately
+configured live provider. The test-provider fixture workflow works without a key.
+The Feature 002 model lookup and Feature 003 investigation use separate contracts.
+A producer adapter for scored Feature 002 transactions is pending.
+
 ## Checks and build
 ```powershell
 uv run --locked pytest backend/tests/integration/test_startup.py
-uv run --locked pytest backend/tests
+$env:PYTHONPATH = 'backend/src'
+uv run --locked --python 3.14.10 --group ml --group investigation pytest backend/tests
 uv run --locked ruff check backend
 npm.cmd --prefix web run test -- --run
 npm.cmd --prefix web run typecheck

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "SEARCH3-01",
+    "language": "en",
+    "query": "How is a missing customer fact documented in an investigation?"
+  },
+  {
+    "id": "SEARCH3-02",
+    "language": "en",
+    "query": "Can an automated draft make the final analyst decision?"
+  },
+  {
+    "id": "SEARCH3-03",
+    "language": "en",
+    "query": "What binds a citation to its historical source version?"
+  },
+  {
+    "id": "SEARCH3-04",
+    "language": "en",
+    "query": "What should a report disclose about authored fixture data?"
+  },
+  {
+    "id": "SEARCH3-05",
+    "language": "en",
+    "query": "Can a risk indicator be interpreted as evidence of guilt?"
+  },
+  {
+    "id": "SEARCH3-06",
+    "language": "en",
+    "query": "How should undocumented funds origin affect the report?"
+  },
+  {
+    "id": "SEARCH3-07",
+    "language": "en",
+    "query": "Does unavailable transaction history establish inactivity?"
+  },
+  {
+    "id": "SEARCH3-08",
+    "language": "en",
+    "query": "How should a report distinguish an explanation from an established fact?"
+  },
+  {
+    "id": "SEARCH3-09",
+    "language": "en",
+    "query": "What limits apply to sharing customer investigation details?"
+  },
+  {
+    "id": "SEARCH3-10",
+    "language": "en",
+    "query": "How should missing evidence appear in the final draft?"
+  },
+  {
+    "id": "SEARCH3-11",
+    "language": "en",
+    "query": "Which metadata identifies the origin of a procedure?"
+  },
+  {
+    "id": "SEARCH3-12",
+    "language": "en",
+    "query": "Is a synthetic transfer amount evidence of financial loss?"
+  },
+  {
+    "id": "SEARCH3-13",
+    "language": "en",
+    "query": "Does simulated guidance establish current local law?"
+  },
+  {
+    "id": "SEARCH3-14",
+    "language": "en",
+    "query": "Who authorizes account intervention and case escalation?"
+  },
+  {
+    "id": "SEARCH3-15",
+    "language": "en",
+    "query": "How can conflicting source statements be disclosed?"
+  },
+  {
+    "id": "SEARCH3-16",
+    "language": "en",
+    "query": "What limits an investigation based on partial evidence?"
+  },
+  {
+    "id": "SEARCH3-17",
+    "language": "en",
+    "query": "How should the absence of an applicable procedure be reported?"
+  },
+  {
+    "id": "SEARCH3-18",
+    "language": "en",
+    "query": "What supports totals involving different currencies?"
+  },
+  {
+    "id": "SEARCH3-19",
+    "language": "en",
+    "query": "Which current Portuguese statutory reporting date applies here?"
+  },
+  {
+    "id": "SEARCH3-20",
+    "language": "en",
+    "query": "How much is the exact official Portugal case submission charge?"
+  }
+]
