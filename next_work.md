@@ -1,5 +1,9 @@
 # Next work — FraudLens AI
 
+## PR #3 review documentation published — 2026-11-22
+
+The final Codex report and its original prompt were committed as `2779b91`; the scoped user manual confirmation, T252 record, evidence index and this handoff were committed as `0837597`. Both commits were pushed on `codex/pr3-final-review` and opened as documentation [PR #5](https://github.com/vekiii/capstone-FraudLensAI/pull/5) targeting `integration/capstone-mvp`. PR #3's description was updated to the reviewed executable commit `d46699f`, with separate Mac/Windows/user evidence and links to PR #5. PR #3 remains Draft; neither PR was merged. Documentation-only diff checks passed; application regression was not rerun for publication. T252 is open. **Next step:** record the independent nonauthor T252 protocol/data-card/metrics review and remaining second-person reproduction, then make the PR #3 merge decision.
+
 ## T252 scoped user manual review — 2026-11-22
 
 The user [confirmed a manual review](evidence/tasks/feature-002-review.md) of the local application flow, results and limitations in the test-provider scope, with no objections. The confirmation is tied only to the reviewed session commit `d46699fbd11219ebc92c6ef002d4924a4c7d4b34`; no later commit, individual clicks or code-line review is inferred. Codex's 1,408 backend/290 React tests, parity and HTTP technical review remain separate technical evidence. T252 is **open**: independent human review of protocol, data card, model metrics/limits and a confirmed second-person reproduction/disposition for the remaining scope are not yet recorded. No executable code, model, training, T230, live provider, commit, push or merge changed in this documentation update. **Next step:** obtain and record the actual independent nonauthor T252 review and reproduction with scope, environment, read-only commands, findings and disposition before closing T252 or deciding on PR #3 merge.
