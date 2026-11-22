@@ -16,4 +16,9 @@ Conversation-based review scope discussed with the assistant:
 4. Application behavior and limits: T233/T236/T240/T242 evidence for artifact loading, fail-closed behavior, fixture mode, label-free runtime/UI, risk-score framing, and investigation flow limits.
 5. Independent reproduction: read-only identity/contract checks on a separate environment, with environment, commands, hashes/results, and blockers recorded.
 
-The assistant supplied summaries and supporting evidence from repository records. The user subsequently attested that they performed the manual checklists and approved the scope for the team. The conversation does not state an exact review duration, personal name, execution environment, commands, observed hashes/results from the user's own reproduction, or named individual team responses. These omissions are recorded explicitly; none are inferred.
+The assistant supplied summaries and supporting evidence from repository records. The user subsequently attested that they performed the manual checklists and approved the scope for the team. At that initial attestation, the conversation did not state an exact review duration, personal name, execution environment, commands, observed hashes/results from the user's own reproduction, or named individual team responses. These omissions were recorded explicitly; none were inferred.
+
+Later user-supplied Windows result and renewed approval:
+- The user pasted a PowerShell `Get-FileHash` result table: `SHA256 693320617CD8FF05C3BA177FCF9E3447BD2F7B92C5B29736FCE304D60023C9E0`; the displayed path was truncated after `C:\Users\IsidoraPopovicLUKOWA\OneDrive - LUKOWA\Documents\sita-capsto..`.
+- Latest user approval (verbatim): "everythign is approved by me in the name of the team".
+- This one matching hash is a partial reproduction record. The remaining hash/contract outputs, full environment, specific findings, reviewer name/contribution boundary and review duration were not supplied in the conversation.
