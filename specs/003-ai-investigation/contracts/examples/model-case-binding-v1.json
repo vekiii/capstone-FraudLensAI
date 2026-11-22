@@ -1,0 +1,19 @@
+{
+  "contract_version": 1,
+  "canonical_transaction_id": "ibm-hi-small:b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040:row:2980342",
+  "case_id": "C157e60df5584c2cbbbac01aa0a6e2a60",
+  "transaction_id": "D2adcb5bb7f6b9a8e5aa0dd4b0238c6dd",
+  "case_digest": "157e60df5584c2cbbbac01aa0a6e2a60258cc6e3e1a74cc1983f420659fe39e3",
+  "transaction_digest": "2adcb5bb7f6b9a8e5aa0dd4b0238c6dd54e44ca1e1c6f4ff1e763d96c7207e29",
+  "snapshot_ref": "run_model_bridge_example",
+  "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "model_sha256": "3b4e4019312d60610dd0094c6697897a061611a60e7777ed7be35e133af9451c",
+  "feature_version": "hi-small-temporal-v1",
+  "feature_manifest_sha256": "63873b79a1ff875c5702a62c40c7a9cb3faef6bb7e0bb658739abac35274c05f",
+  "source_sha256": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040",
+  "threshold": 0.2489517623052024,
+  "risk_score": 0.5,
+  "review_status": "review_recommended",
+  "event_time_utc": "2022-09-06T12:00:00Z",
+  "assessed_at_utc": "2026-11-22T12:00:00Z"
+}

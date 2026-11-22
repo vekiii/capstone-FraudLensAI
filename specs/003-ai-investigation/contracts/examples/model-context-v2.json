@@ -1,0 +1,69 @@
+{
+  "contract_version": 2,
+  "source_mode": "dataset",
+  "case_id": "C157e60df5584c2cbbbac01aa0a6e2a60",
+  "snapshot_ref": "run_model_bridge_example",
+  "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "observed_at": "2026-11-22T12:00:00Z",
+  "source_payload": {
+    "contract_version": 2,
+    "snapshot_ref": "run_model_bridge_example",
+    "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "case_id": "C157e60df5584c2cbbbac01aa0a6e2a60",
+    "transaction": {
+      "transaction_id": "D2adcb5bb7f6b9a8e5aa0dd4b0238c6dd",
+      "event_time_utc": "2022-09-06T12:00:00Z",
+      "event_time_raw": "2022/09/06 12:00",
+      "time_basis": "assumed_utc_for_synthetic_benchmark",
+      "sender": {
+        "bank": "SYNTH-BANK-A",
+        "account": "001"
+      },
+      "receiver": {
+        "bank": "SYNTH-BANK-B",
+        "account": "002"
+      },
+      "paid": {
+        "amount": "1250.000",
+        "currency": "Australian Dollar"
+      },
+      "received": {
+        "amount": "1250.000",
+        "currency": "Australian Dollar"
+      },
+      "payment_format": null
+    },
+    "risk_assessment": {
+      "transaction_id": "D2adcb5bb7f6b9a8e5aa0dd4b0238c6dd",
+      "run_id": "run_model_bridge_example",
+      "dataset_version": "dv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "score": 0.5,
+      "score_kind": "uncalibrated_probability_estimate",
+      "score_source": "model",
+      "scorer_version": "lightgbm-3b4e4019312d",
+      "feature_version": "hi-small-temporal-v1",
+      "event_time_utc": "2022-09-06T12:00:00Z",
+      "history_cutoff_exclusive_at": "2022-09-06T12:00:00Z",
+      "scored_at": "2026-11-22T12:00:00Z",
+      "history_coverage": {
+        "state": "incomplete",
+        "start": "2022-09-01T00:00:00Z"
+      },
+      "explanation": {
+        "status": "unavailable",
+        "reason_code": "unsupported_method",
+        "feature_snapshot_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    }
+  },
+  "history": {
+    "availability": "available",
+    "cutoff": "2022-09-06T12:00:00Z",
+    "coverage": "incomplete",
+    "start": "2022-09-01T00:00:00Z",
+    "lookback_days": 7,
+    "view_scope": "synthetic_shared_banks",
+    "reason": "Authored compatibility example, not an observed IBM row."
+  },
+  "context_revision": "9b4e8a49939bae2456ba4e3f7bec12b65832a044a185cd28f568ceddf73d6c3f"
+}
