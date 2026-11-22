@@ -1,0 +1,21 @@
+Obavila sam ljudski pregled aplikacijskog toka i rezultata prema
+dogovorenoj checklisti. Sve je u redu u pregledanom lokalnom
+test-provider opsegu; nemam primjedbi.
+
+Zabilježi moju potvrdu kao korisnički dostavljen zapis ljudskog
+pregleda, uz datum i tačan commit iz evidencije pregledane sesije.
+Ne pretpostavljaj da sam pregledala noviji commit.
+
+Razdvoji:
+- moj ručni pregled aplikacije, rezultata i ograničenja;
+- Codex automatizovane testove i tehnički pregled.
+
+Ne pripisuj mi pregled svakog reda koda niti nezavisni pregled
+sopstvenog modelskog rada. Ne izmišljaj dodatne aktivnosti.
+
+Ažuriraj T252 review evidenciju i handoff. T252 zatvori samo ako
+postoje i stvarne potvrde nezavisnog pregleda preostalog obima.
+Navedi šta nedostaje ako kriterijumi nisu potpuno ispunjeni.
+
+Bez promjene izvršnog koda, treninga, T230, live provider poziva,
+commita, pusha ili mergea.

@@ -1,6 +1,6 @@
 # Feature 002 human review and reproduction (T252)
 
-**Status:** pending human review and second-person reproduction. Prepared 2026-11-21; no reviewer, review date, reproduction command or outcome is inferred from this preparation.
+**Status:** T252 remains open. On 2026-11-22 the user supplied a positive manual review of the local application flow, results and limitations in the test-provider scope for the reviewed session commit `d46699fbd11219ebc92c6ef002d4924a4c7d4b34`. This is a scoped human confirmation, not independent review of the user's own Feature 002 model work, a line-by-line code review, or a review of a later commit. Independent human protocol/data-card/model-metrics review and confirmed independent reproduction/disposition for the remaining T252 scope are still pending. [Verbatim user confirmation](../../prompts/development/2026-11-22-T252-user-manual-review.txt).
 
 ## Review packet and requested scope
 
@@ -14,13 +14,17 @@
 
 | Item | Actual reviewer / date | Scope, commands, observed result |
 |---|---|---|
-| Human protocol/data-card/metrics/limits review | Pending | Pending |
-| Second-person reproduction | Pending | Pending |
-| Findings and disposition | Pending | Pending |
+| Manual application flow, results and limitations | User-provided confirmation, 2026-11-22; no personal name inferred | The user states she completed the agreed checklist, found the reviewed local test-provider application flow and results satisfactory and had no objections. Bound to the reviewed session at commit `d46699fbd11219ebc92c6ef002d4924a4c7d4b34` from the [Codex Mac evidence](pr3-final-codex-technical-review-2026-11-22.md). The user did not supply individual clicks, commands, screenshots or a claim of a newer commit; none are inferred. |
+| Independent human protocol, data-card, model metrics and limits review | Pending | Requires a person independent of the Feature 002 work to record actual scope, findings and disposition, including provenance gaps, frozen model/threshold, validation reuse, T230 aggregate interpretation and limitations. The user's own review does not satisfy this item. |
+| Independent second-person reproduction and disposition | Pending confirmation for T252 | [Milan's Windows technical run](pr4-windows-review-2026-11-22.md) and [fix verification](pr4-windows-fixes-2026-11-22.md) document automated reproduction on earlier PR #4 revisions; they are technical evidence, not a recorded independent human sign-off on the complete T252 scope of this reviewed PR #3 commit. Record an actual independent person's environment, read-only commands, verified hashes/results and disposition before closure. |
+
+### Scope separation
+
+The [Codex technical review](pr3-final-codex-technical-review-2026-11-22.md) independently ran automated tests, artifact hash/parity checks, aggregate-only arithmetic and a fresh HTTP/test-provider worker flow on `d46699fbd11219ebc92c6ef002d4924a4c7d4b34`. It explicitly did **not** perform a browser check because local browser use was disabled in Work settings. The user's later manual confirmation covers the application/results/limitations she reports and does not retroactively turn Codex HTTP checks into Codex browser checks. Neither record is a live LLM evaluation or a human AML decision.
 
 ## Technical contribution — 2026-11-22
 
-The [PR #4 Windows run](pr4-windows-review-2026-11-22.md) verified the transferred artifact hashes and frozen-score parity on exact commit `c0d59f2`. It exercised one local test-provider investigation and found a Windows SQLite activation failure in the offline publisher, a Windows SQLite test failure and an open manifest trust issue. The run did not repeat T230 or use record-level labels. An automated technical contribution supplies reproducible evidence for a future human reviewer. The entries above remain pending for an actual independent contributor's review, reproduction and disposition. T252 stays unchecked.
+The [PR #4 Windows run](pr4-windows-review-2026-11-22.md) verified the transferred artifact hashes and frozen-score parity on exact commit `c0d59f2`. It exercised one local test-provider investigation and found a Windows SQLite activation failure in the offline publisher, a Windows SQLite test failure and an open manifest trust issue. The run did not repeat T230 or use record-level labels. An automated technical contribution supplies reproducible evidence for a future human reviewer. The independent protocol/data-card/model-metrics review and final second-person reproduction/disposition entries above remain pending. T252 stays unchecked.
 
 The follow-up fixed the SQLite failures and required an independent bridge manifest
 digest in both runtime consumers. Windows checks again reproduced frozen-score
