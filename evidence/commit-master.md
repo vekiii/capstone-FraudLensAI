@@ -1,8 +1,8 @@
 # Master commit and branch record
 
-Updated: 2026-11-22. Snapshot taken from current local and fetched remote refs before the commit that publishes this update.
+Updated: 2026-11-23. Snapshot of 306 commits reachable from local and fetched remote refs after reattributing nine commits to Isidora Popovic and before this ledger update. The correction changed author/committer metadata and commit IDs only; the original file trees, messages and timestamps were verified identical.
 
-Times are Git committer timestamps in ISO 8601 with their recorded UTC offset. The committer is shown as the person who recorded the commit; the author is listed separately because Git distinguishes authorship from committing. These names and timestamps are repository metadata and do not independently verify work effort or identity.
+Times are Git committer timestamps in ISO 8601 with their recorded UTC offset. Committer and author are recorded Git identities; those fields do not independently verify who directed, reviewed or performed the work.
 
 ## Feature 002 - start here
 
@@ -95,13 +95,13 @@ This section retains previously selected Feature 002 commits and adds newly reac
 | 2026-11-22T21:55:54+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | `399c13a6e5f200d1f621832317149a3ba8dd93d7` | docs(T252): record reviewer hash and renewed approval |
 | 2026-11-22T22:00:00+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | `6e7915713e4505429fc9a81bb2a0d8f7e37abe5e` | docs(T252): record Isidora reply and authorship question |
 | 2026-11-22T22:04:20+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | `a13a5c1445ccc938d5fa920d9afe80af706c9571` | docs(T252): record reviewer authorship and artifact blocker |
-| 2026-11-22T22:14:35+01:00 | Codex | Codex | `76b9e08a7620fbb53feff00a7db872719b37dd1d` | docs: record T252 Windows frozen-input hash receipt |
-| 2026-11-22T22:18:14+01:00 | Codex | Codex | `fc724e6d2f0bb9afa9071e47323e364063ecaf43` | docs: record T252 Windows parity input repair |
-| 2026-11-22T22:26:08+01:00 | Codex | Codex | `7b5b56cbb4a2fe8d738a8b4e574ee63d051e068e` | docs: record reported Vedran T252 approval scope pending |
-| 2026-11-22T22:35:50+01:00 | Codex | Codex | `b925ae5a9bd6a2ce06741366ef321b2dec297d33` | docs: reconcile T252 team approval and execution gates |
-| 2026-11-22T22:45:47+01:00 | Codex | Codex | `6938da03d0b74a8f778ee0af80ff6985bf7d1187` | docs: record final team approval and T252 reproduction gap |
-| 2026-11-22T22:53:39+01:00 | Codex | Codex | `a737e205f47b36eaa1436c4b294d2a702068bfee` | docs: record T230 snapshot transfer preparation |
-| 2026-11-22T22:53:39+01:00 | Codex | Codex | `203e265e7323cc41519629d6c973618a78b5c57e` | docs: record final unweighted LightGBM configuration |
+| 2026-11-22T22:14:35+01:00 | Isidora Popovic | Isidora Popovic | `3c7092bfb86d7c13238960e0fad28b85ebca01d5` | docs: record T252 Windows frozen-input hash receipt |
+| 2026-11-22T22:18:14+01:00 | Isidora Popovic | Isidora Popovic | `33f73574c4499814e727914b693964eb1634feff` | docs: record T252 Windows parity input repair |
+| 2026-11-22T22:26:08+01:00 | Isidora Popovic | Isidora Popovic | `faee7f6d5b1cf3e269ca3338309453a1514ec3ae` | docs: record reported Vedran T252 approval scope pending |
+| 2026-11-22T22:35:50+01:00 | Isidora Popovic | Isidora Popovic | `0600c36961c94d662edcfafd9673ee3b9cf052da` | docs: reconcile T252 team approval and execution gates |
+| 2026-11-22T22:45:47+01:00 | Isidora Popovic | Isidora Popovic | `f25345f6f1ca2d3688705efd583d6451e9b57bcf` | docs: record final team approval and T252 reproduction gap |
+| 2026-11-22T22:53:39+01:00 | Isidora Popovic | Isidora Popovic | `990ba1f405629367e9d18147dfac7fa9ff41ebba` | docs: record T230 snapshot transfer preparation |
+| 2026-11-22T22:53:39+01:00 | Isidora Popovic | Isidora Popovic | `5676ef4c5047721951ea4f15eeb0a1e6a18dd956` | docs: record final unweighted LightGBM configuration |
 
 ## Branches: current refs and recorded merges
 
@@ -112,10 +112,11 @@ Branch refs below are the local and fetched `origin` refs present on 2026-11-22.
 | Ref | Tip commit | Tip committed at (ISO 8601) | Committer | Author | Tip description |
 |---|---|---|---|---|---|
 | `002-data-and-risk-scoring` | `27ac7d4` | 2026-11-13T14:35:38+01:00 | Elena Kalajdžić | Elena Kalajdžić | fix(feature-002): protect concurrent feature snapshot builds |
-| `codex/pr3-final-review` | `6938da0` | 2026-11-22T22:45:47+01:00 | Codex | Codex | docs: record final team approval and T252 reproduction gap |
-| `feature/002-clean-start` | `203e265` | 2026-11-22T22:53:39+01:00 | Codex | Codex | docs: record final unweighted LightGBM configuration |
+| `codex/pr3-final-review` | `f25345f` | 2026-11-22T22:45:47+01:00 | Isidora Popovic | Isidora Popovic | docs: record final team approval and T252 reproduction gap |
+| `feature/002-clean-start` | `ab9f0bf` | 2026-11-22T22:54:43+01:00 | Isidora Popovic | Isidora Popovic | docs: refresh master commit and branch evidence |
 | `feature/002-model-development` | `6b05dc4` | 2026-11-18T12:34:48+01:00 | Isidora Popovic | Isidora Popovic | docs(model2): record synthetic contribution ledger |
 | `feature/005-real-time-fraud-detection-mlops-spec` | `1401889` | 2026-11-17T16:30:22+01:00 | Isidora Popovic | Isidora Popovic | style(web): refine overview hero typography |
+| `feature/006-security-edge-case-audit` | `5f1ce8b` | 2026-11-22T23:54:21+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | docs(evidence): publish master commit ledger for security audit |
 | `initialization` | `f37e67a` | 2026-11-12T23:53:43+01:00 | Isidora Popovic | Isidora Popovic | docs(evidence): record session publication ledger |
 | `ls` | `f37e67a` | 2026-11-12T23:53:43+01:00 | Isidora Popovic | Isidora Popovic | docs(evidence): record session publication ledger |
 | `main` | `b03e8e3` | 2026-11-11T16:19:45+01:00 | Veki | Veki | initial idea |
@@ -125,9 +126,10 @@ Branch refs below are the local and fetched `origin` refs present on 2026-11-22.
 | `origin/002-data-and-risk-scoring` | `27ac7d4` | 2026-11-13T14:35:38+01:00 | Elena Kalajdžić | Elena Kalajdžić | fix(feature-002): protect concurrent feature snapshot builds |
 | `origin/004-simulation-and-prioritization` | `45a375f` | 2026-11-19T05:36:50+01:00 | milangavric2003 | milangavric2003 | T020-T021; feature 04 finished |
 | `origin/006-capstone-evaluation` | `3eee1d6` | 2026-11-22T21:35:14+01:00 | Veki | Veki | feat(feature-006): update evidence map and release candidate documentation for clarity and accuracy |
-| `origin/codex/pr3-final-review` | `6938da0` | 2026-11-22T22:45:47+01:00 | Codex | Codex | docs: record final team approval and T252 reproduction gap |
-| `origin/feature/002-clean-start` | `a844b72` | 2026-11-21T14:13:09+01:00 | Elena Kalajdžić | Elena Kalajdžić | test(T249): record full Feature 002 and Foundation regression |
+| `origin/codex/pr3-final-review` | `f25345f` | 2026-11-22T22:45:47+01:00 | Isidora Popovic | Isidora Popovic | docs: record final team approval and T252 reproduction gap |
+| `origin/feature/002-clean-start` | `ab9f0bf` | 2026-11-22T22:54:43+01:00 | Isidora Popovic | Isidora Popovic | docs: refresh master commit and branch evidence |
 | `origin/feature/005-real-time-fraud-detection-mlops-spec` | `1401889` | 2026-11-17T16:30:22+01:00 | Isidora Popovic | Isidora Popovic | style(web): refine overview hero typography |
+| `origin/feature/006-security-edge-case-audit` | `5f1ce8b` | 2026-11-22T23:54:21+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | docs(evidence): publish master commit ledger for security audit |
 | `origin/feature03` | `62f0991` | 2026-11-18T16:34:25+01:00 | Veki | Veki | T101 finished |
 | `origin/feature03-reliability-v2` | `9202964` | 2026-11-16T08:38:08+01:00 | milangavric2003 | milangavric2003 | Record final recovery results and prepare joint merge review |
 | `origin/feature03-retrieval-v3` | `8ca4ba8` | 2026-11-17T13:41:57+01:00 | Veki | Veki | T096 finished |
@@ -155,7 +157,7 @@ Merge commits identify the receiving-side event recorded in Git. The `git stash`
 
 ## Complete commit history
 
-All commits reachable from any local or fetched remote ref in this checkout, oldest first (303 commits at update time). The branch refs above identify current branch tips; commit presence does not mean a commit is unique to one branch.
+All commits reachable from any local or fetched remote ref in this checkout, oldest first (306 commits at update time). The branch refs above identify current branch tips; commit presence does not mean a commit is unique to one branch.
 
 | Committed at (ISO 8601) | Committer | Author | Commit | Description |
 |---|---|---|---|---|
@@ -454,11 +456,14 @@ All commits reachable from any local or fetched remote ref in this checkout, old
 | 2026-11-22T21:55:54+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | `399c13a6e5f200d1f621832317149a3ba8dd93d7` | docs(T252): record reviewer hash and renewed approval |
 | 2026-11-22T22:00:00+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | `6e7915713e4505429fc9a81bb2a0d8f7e37abe5e` | docs(T252): record Isidora reply and authorship question |
 | 2026-11-22T22:04:20+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | `a13a5c1445ccc938d5fa920d9afe80af706c9571` | docs(T252): record reviewer authorship and artifact blocker |
-| 2026-11-22T22:14:35+01:00 | Codex | Codex | `76b9e08a7620fbb53feff00a7db872719b37dd1d` | docs: record T252 Windows frozen-input hash receipt |
-| 2026-11-22T22:18:14+01:00 | Codex | Codex | `fc724e6d2f0bb9afa9071e47323e364063ecaf43` | docs: record T252 Windows parity input repair |
-| 2026-11-22T22:21:37+01:00 | Codex | Codex | `c84197c4560e1a24ec2f84ce293fb344e225be39` | docs: record reviewer Windows parity result |
-| 2026-11-22T22:26:08+01:00 | Codex | Codex | `7b5b56cbb4a2fe8d738a8b4e574ee63d051e068e` | docs: record reported Vedran T252 approval scope pending |
-| 2026-11-22T22:35:50+01:00 | Codex | Codex | `b925ae5a9bd6a2ce06741366ef321b2dec297d33` | docs: reconcile T252 team approval and execution gates |
-| 2026-11-22T22:45:47+01:00 | Codex | Codex | `6938da03d0b74a8f778ee0af80ff6985bf7d1187` | docs: record final team approval and T252 reproduction gap |
-| 2026-11-22T22:53:39+01:00 | Codex | Codex | `a737e205f47b36eaa1436c4b294d2a702068bfee` | docs: record T230 snapshot transfer preparation |
-| 2026-11-22T22:53:39+01:00 | Codex | Codex | `203e265e7323cc41519629d6c973618a78b5c57e` | docs: record final unweighted LightGBM configuration |
+| 2026-11-22T22:14:35+01:00 | Isidora Popovic | Isidora Popovic | `3c7092bfb86d7c13238960e0fad28b85ebca01d5` | docs: record T252 Windows frozen-input hash receipt |
+| 2026-11-22T22:18:14+01:00 | Isidora Popovic | Isidora Popovic | `33f73574c4499814e727914b693964eb1634feff` | docs: record T252 Windows parity input repair |
+| 2026-11-22T22:21:37+01:00 | Isidora Popovic | Isidora Popovic | `41be73595a9bafc3a949608c2c51471d33de73e1` | docs: record reviewer Windows parity result |
+| 2026-11-22T22:26:08+01:00 | Isidora Popovic | Isidora Popovic | `faee7f6d5b1cf3e269ca3338309453a1514ec3ae` | docs: record reported Vedran T252 approval scope pending |
+| 2026-11-22T22:35:50+01:00 | Isidora Popovic | Isidora Popovic | `0600c36961c94d662edcfafd9673ee3b9cf052da` | docs: reconcile T252 team approval and execution gates |
+| 2026-11-22T22:45:47+01:00 | Isidora Popovic | Isidora Popovic | `f25345f6f1ca2d3688705efd583d6451e9b57bcf` | docs: record final team approval and T252 reproduction gap |
+| 2026-11-22T22:53:39+01:00 | Isidora Popovic | Isidora Popovic | `990ba1f405629367e9d18147dfac7fa9ff41ebba` | docs: record T230 snapshot transfer preparation |
+| 2026-11-22T22:53:39+01:00 | Isidora Popovic | Isidora Popovic | `5676ef4c5047721951ea4f15eeb0a1e6a18dd956` | docs: record final unweighted LightGBM configuration |
+| 2026-11-22T22:54:43+01:00 | Isidora Popovic | Isidora Popovic | `ab9f0bf936459ea2fa0af7bd849b941893b9abae` | docs: refresh master commit and branch evidence |
+| 2026-11-22T23:52:31+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | `ab692c69ae06bd89a83bf92d95893ccfddf380dc` | test(security): audit integrated MVP boundaries |
+| 2026-11-22T23:54:21+01:00 | Isidora Popovic LUKOWA | Isidora Popovic LUKOWA | `5f1ce8b8de3e2e88fbed15b0ce16c38193eef502` | docs(evidence): publish master commit ledger for security audit |
