@@ -26,3 +26,7 @@ Later user-supplied Windows result and renewed approval:
 Follow-up user replies to two specific evidence questions:
 - Asked for the reviewer name and personal Feature 002 contributions, the user answered verbatim: "isidora as a team". This provides a first name and representative role but does not list contributions.
 - Asked whether the remaining frozen model/prediction/report hash checks and `T233-parity.py` were completed, and to paste results or identify missing files, the user answered verbatim: "yes". No output or checkout path accompanied the answer.
+
+Later direct replies:
+- Asked whether the Feature 002 commits authored as `Isidora Popovic LUKOWA` were hers and who independently reviewed those parts, the user answered verbatim: "isidora popovic i did all as a team". No separate reviewer or disposition was named.
+- Asked to paste the actual SHA-256 values for frozen model, manifest, predictions and T230 aggregate report, the `T233-parity.py` result, and Windows checkout path, the user answered verbatim: "how do i get that sha". The requested outputs were not supplied.
