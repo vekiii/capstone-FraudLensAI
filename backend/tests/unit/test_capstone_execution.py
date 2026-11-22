@@ -104,7 +104,7 @@ def test_ev06_pass_requires_exact_saved_binding_from_its_own_phase():
     from evals.capstone.execution import summarize, validate_phase
 
     binding = dict(case_id='C' + 'c' * 32, source_mode='dataset', snapshot_ref='run_test',
-                   context_revision='d' * 64, run_id='run_' + 'e' * 32,
+                   context_revision='d' * 64, run_id='inv_' + 'e' * 32,
                    attempt_id='att_' + 'f' * 32, report_id='1' * 64, review_id='rev_' + '2' * 32,
                    evidence_ids=['ev_' + '3' * 32])
     baseline = phase('baseline', ['pass'] * 6 + ['not_run'] * 10)

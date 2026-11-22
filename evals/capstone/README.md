@@ -44,6 +44,11 @@ izvora i njegov objavljeni corpus ID su preduslovi tog scenarija.
 
 ## Zapis i zbir
 
+Za lokalni pytest fixture korpus koristi `--basetemp` u ignorisanom
+`.cache/` direktorijumu. Rezultat testa može biti u `evals/results/`.
+Trag iz faze 4 i ispravka šeme evidencije za stvarni `inv_` identitet
+opisani su u [poređenju](../../evidence/tasks/feature-006-before-after.md).
+
 Validan zapis faze prati [JSON šemu](execution.schema.json). Sadrži fazu,
 testirani commit SHA, verziju paketa i po jedan red za svaki EV ID. Po redu
 upisati sledeće.

@@ -31,7 +31,7 @@
         "scorer_version": {"$ref": "#/$defs/text"},
         "score_source": {"$ref": "#/$defs/text"},
         "score_kind": {"$ref": "#/$defs/text"},
-        "run_id": {"type": "string", "pattern": "^run_[0-9a-f]{32}$"},
+        "run_id": {"type": "string", "pattern": "^inv_[0-9a-f]{32}(?![\\s\\S])"},
         "attempt_id": {"type": "string", "pattern": "^att_[0-9a-f]{32}$"},
         "report_id": {"$ref": "#/$defs/sha256"},
         "review_id": {"type": "string", "pattern": "^rev_[0-9a-f]{32}$"},

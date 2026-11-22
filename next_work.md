@@ -1,5 +1,24 @@
 # Next work - FraudLens AI
 
+## Feature 06 — Faza 4 završena, 22. novembar 2026.
+
+T009–T019 su potvrđeni i čekirani. Isti zamrznuti paket ima baseline
+`5974f94f68c2a1fd1e42b9b2d01d438c30bd8dca` sa 11/16 prolaza, četiri pada
+i jednim blokiranim redom i final `d8acc2a335d95e2402f586006925949f4d9f7739`
+sa 13/16 prolaza i tri pada. Utrošeno je 36 potvrđenih zahteva,
+121.405 ulaznih i 18.891 izlazni token. Svih šest finalnih negativnih
+kontrola je prošlo. [Poređenje i stvarni tragovi](evidence/tasks/feature-006-before-after.md).
+
+Ciljana izmena uklonila je duple stavke istorije iz modelskog zahteva.
+EV-01 je stigao do validiranog nacrta i obnovljive odluke, uz tačnu
+citiranu činjenicu u EV-06. Ostali padovi su EV-01 bez proceduralnog
+odlomka, EV-04 zbog neslaganja skupa citata i EV-07 zbog generičkih
+pogodaka. SC-002 ostaje otvoren zbog blokiranog baseline EV-06.
+
+Sledeći korak u fazi 5 je T020, uskladiti quickstart sa stvarnim
+komandama i pinovima kandidata. Nezavisna reprodukcija i puna završna
+regresija još nisu izvršene.
+
 ## Feature 06 — T013–T015 završeni, 22. novembar 2026.
 
 Baseline `5974f94` ima 11 prolaza, četiri pada i jedan blokiran red.

@@ -36,7 +36,11 @@ $tests = @(rg --files backend/tests/integration | rg 'test_(investigation_|capst
 .venv/Scripts/python.exe -m ruff check backend/src/fraudlens/investigation/provider.py backend/tests/integration/test_investigation_dataset_binding.py evals/capstone/run.py
 ```
 
-Očekivani uticaj na final je isporučen zahtev za nacrt u EV-01 i EV-04
-pod istim limitom, tako da model može da iskoristi istorijski dokaz.
-EV-06 zavisi od sačuvanog EV-01 nacrta, citata i odluke. Živi ishod se
-potvrđuje u T017 na kandidatu.
+Izmena je na finalnom SHA-u `d8acc2a335d95e2402f586006925949f4d9f7739`.
+Finalni EV-01 zahtev od 40.006 i EV-04 zahtev od 46.288 bajtova prošli
+su isti limit od 48.000. EV-01 je dobio validiran nacrt sa citiranim
+brojevima iz oba istorijska poziva i sačuvanom odlukom. EV-04 je stigao
+do validacije i naišao na `citation_set_mismatch`, posle iskorišćene
+četvrte rezervacije. Živi upiti i izbor odlomaka varirali su, pa razlika
+u ukupnim bajtovima obuhvata i sastav dokaza u ta dva izvršavanja.
+[Finalni trag](feature-006-final-live.md) · [Poređenje](feature-006-before-after.md).
