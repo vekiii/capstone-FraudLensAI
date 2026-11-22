@@ -1,15 +1,20 @@
-# Next work ? FraudLens AI
+# Next work — FraudLens AI
 
-## Capstone MVP integration
+## Capstone MVP integration — 2026-11-22
 
-The integration branch starts from origin/main at 0fbe313 and takes Feature 002
-from origin/feature/002-clean-start at a844b72. The incoming Feature 002
-specification and contracts are canonical for the selected implementation.
-Foundation acceptance and the older main recovery history are retained below.
+Draft [PR #3](https://github.com/vekiii/capstone-FraudLensAI/pull/3) assembles
+Feature 002 clean-start, the single React app, the Feature 003 fixture investigation,
+and Feature 004 Simulation Lab. See the [integration evidence](evidence/tasks/capstone-mvp-integration.md)
+for the source revisions, 1,373 backend passes, two skips, 285 web passes, and
+the Chrome walk-through including a restored analyst review.
 
-The next implementation unit is the single React web app and the Feature 002
-risk and EDA views. The selected model and generated data are absent in this
-worktree. Live model parity and T252 remain open.
+The selected ML artifact, frozen reports and full-source EDA summary are absent
+from this worktree. The model-to-investigation producer adapter and Feature 002
+T252 are open. Feature 006 and the remainder of Feature 005 are deferred.
+
+Next step. Have the Feature 002 and 003 owners agree on the case and history
+contract for one scored transaction. Have the owner of the frozen local model
+repeat T233 HTTP parity on the exact PR candidate.
 
 ## Latest handoff: 2026-11-21 Stage F EDA page and full regression completed
 
