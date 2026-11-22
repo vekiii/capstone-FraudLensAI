@@ -138,3 +138,23 @@ export function getCase(caseId: string, options: RequestOptions = {}): Promise<C
     return detail;
   }, { ...options, dataset: snapshot !== undefined });
 }
+
+export function getPublishedModelCases(options: RequestOptions = {}): Promise<CaseListResponse> {
+  return request('/api/model/cases', value => {
+    const result = decodeCaseListResponse(value);
+    if (!('contract_version' in result)) throw new ContractValidationError();
+    return result;
+  }, { ...options, dataset: true });
+}
+
+export function getPublishedModelCase(caseId: string, options: RequestOptions = {}): Promise<CaseDetailResponse> {
+  const snapshot = options.snapshot;
+  const path = `/api/model/cases/${encodeURIComponent(caseId)}`
+    + (snapshot === undefined ? '' : `?snapshot=${encodeURIComponent(snapshot)}`);
+  return request(path, value => {
+    const result = decodeCaseDetailResponse(value);
+    if (!('contract_version' in result) || result.case_id !== caseId
+        || snapshot !== undefined && result.snapshot_ref !== snapshot) throw new ContractValidationError();
+    return result;
+  }, { ...options, dataset: true });
+}

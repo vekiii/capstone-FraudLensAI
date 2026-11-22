@@ -56,7 +56,7 @@ export type Search = ReturnType<typeof decodeSearch> & { truncated?: boolean };
 const safeMax = Number.MAX_SAFE_INTEGER;
 function bool(v: unknown): boolean { return typeof v === 'boolean' ? v : fail(); }
 function id(v: unknown, prefix: string) { const t = text(v, prefix.length + 32); return new RegExp('^' + prefix + '[a-f0-9]{32}(?![\\s\\S])').test(t) ? t : fail(); }
-function caseId(v: unknown) { const t = text(v, 8); return /^CASE-[0-9]{3}(?![\s\S])/.test(t) ? t : fail(); }
+function caseId(v: unknown) { const t = text(v, 33); return /^(?:CASE-[0-9]{3}|C[a-f0-9]{32})(?![\s\S])/.test(t) ? t : fail(); }
 const evidenceId = (v: unknown) => id(v, 'ev_');
 const attemptId = (v: unknown) => id(v, 'att_');
 function unique<T>(values: T[]) { return new Set(values).size === values.length ? values : fail(); }

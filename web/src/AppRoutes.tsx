@@ -7,6 +7,7 @@ const DataPage = lazy(() => import("./pages/Data").then(({ DataPage }) => ({ def
 const RagPage = lazy(() => import("./pages/Rag").then(({ RagPage }) => ({ default: RagPage })));
 const LivePage = lazy(() => import("./pages/Live").then(({ LivePage }) => ({ default: LivePage })));
 const CasesPage = lazy(() => import("./pages/Cases").then(({ CasesPage }) => ({ default: CasesPage })));
+const ModelCasesPage = lazy(() => import("./pages/ModelCases").then(({ ModelCasesPage }) => ({ default: ModelCasesPage })));
 const EdaPage = lazy(() => import("./pages/Scoring").then(({ EdaPage }) => ({ default: EdaPage })));
 const RiskTools = lazy(() => import("./pages/Scoring").then(({ RiskTools }) => ({ default: RiskTools })));
 
@@ -25,6 +26,7 @@ export function AppRoutes() {
         <Route path="/rag" element={loadPage(<RagPage />)} />
         <Route path="/live" element={loadPage(<LivePage />)} />
         <Route path="/cases" element={loadPage(<><CasesPage /><RiskTools /></>)} />
+        <Route path="/model-cases" element={loadPage(<ModelCasesPage />)} />
         <Route path="/dataset-overview" element={loadPage(<EdaPage />)} />
         <Route path="/eda" element={loadPage(<EdaPage />)} />
         <Route path="/simulation" element={loadPage(<SimulationPage />)} />

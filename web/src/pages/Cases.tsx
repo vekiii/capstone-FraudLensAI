@@ -93,9 +93,10 @@ function DatasetDetail({ detail }: { detail: Extract<CaseDetailResponse, { contr
   </>;
 }
 
-export function CasesPage({ client = defaultClient, dataset = import.meta.env.VITE_APP_MODE === "dataset" }: {
+export function CasesPage({ client = defaultClient, dataset = import.meta.env.VITE_APP_MODE === "dataset", initialCase }: {
   client?: CaseClient;
   dataset?: boolean;
+  initialCase?: string;
 }) {
   const [listing, setListing] = useState<CaseListResponse>();
   const [state, setState] = useState<ViewState>({ kind: "loading-list" });
@@ -116,13 +117,17 @@ export function CasesPage({ client = defaultClient, dataset = import.meta.env.VI
         items: [...result.items].sort((left, right) => left.case_id.localeCompare(right.case_id)),
       };
       setListing(ordered);
-      setState({ kind: "list" });
+      if (initialCase && "contract_version" in result && result.items.some(item => item.case_id === initialCase)) {
+        setState({ kind: "loading-detail", caseId: initialCase });
+        const detail = await client.getCase(initialCase, { signal: controller.signal, snapshot: result.snapshot_ref });
+        if (generation.current === token) setState({ kind: "detail", detail });
+      } else setState({ kind: "list" });
     } catch (error) {
       if (generation.current === token) setState({ kind: "list-error", error: publicError(error) });
     } finally {
       if (generation.current === token) pending.current = undefined;
     }
-  }, [client, dataset]);
+  }, [client, dataset, initialCase]);
 
   useEffect(() => {
     void loadList();
@@ -194,7 +199,7 @@ export function CasesPage({ client = defaultClient, dataset = import.meta.env.VI
         {"caseId" in state && <button className="button button-back" type="button"
           onClick={() => setState({ kind: "list" })}>← Nazad na listu</button>}
         {state.kind === "detail" && ("contract_version" in state.detail
-          ? <DatasetDetail detail={state.detail} /> : <>
+          ? <><DatasetDetail detail={state.detail} /><InvestigationPanel key={state.detail.case_id} caseId={state.detail.case_id} dataset /></> : <>
             <FixtureDetail detail={state.detail} />
             <InvestigationPanel key={state.detail.case_id} caseId={state.detail.case_id} />
           </>)}

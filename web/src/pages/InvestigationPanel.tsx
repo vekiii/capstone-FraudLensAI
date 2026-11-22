@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export function InvestigationPanel({ caseId }: { caseId: string }) {
+export function InvestigationPanel({ caseId, dataset = false }: { caseId: string; dataset?: boolean }) {
   const [open, setOpen] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
   const panel = useRef<HTMLDivElement>(null);
@@ -10,8 +10,10 @@ export function InvestigationPanel({ caseId }: { caseId: string }) {
     if (!open || !root) return;
     let active = true;
     let dispose: (() => void) | undefined;
-    void import("../investigation/controller").then(({ mountReports }) => {
-      if (active) dispose = mountReports(root, caseId);
+    void Promise.all([import("../investigation/controller"), import("../investigation/api")]).then(([{ mountReports }, { reportClient, createDatasetInvestigation }]) => {
+      if (active) dispose = mountReports(root, caseId,
+        dataset ? { ...reportClient, create: createDatasetInvestigation } : reportClient,
+        { sourceMode: dataset ? 'dataset' : 'fixture' });
     }).catch(() => {
       if (active) setLoadFailed(true);
     });
@@ -19,7 +21,7 @@ export function InvestigationPanel({ caseId }: { caseId: string }) {
       active = false;
       dispose?.();
     };
-  }, [caseId, open]);
+  }, [caseId, dataset, open]);
 
   return <section className="investigation-panel" aria-label="AI istraga" lang="sr-Latn">
     {!open && <button className="button" type="button" onClick={() => setOpen(true)}>

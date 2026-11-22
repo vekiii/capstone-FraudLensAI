@@ -64,6 +64,13 @@ export function createInvestigation(caseId: string, snapshot: string, revision: 
     return result;
   }, signal, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key }, body: JSON.stringify({ case_id: caseId, source_mode: 'fixture', snapshot_ref: snapshot }) }, 202, true);
 }
+export function createDatasetInvestigation(caseId: string, snapshot: string, revision: string, key: string, signal?: AbortSignal) {
+  return request('/api/investigation/runs', value => {
+    const result = decodeRun(value);
+    if (result.case_id !== caseId || result.snapshot_ref !== snapshot || result.context_revision !== revision) throw new KnowledgeError('invalid_response');
+    return result;
+  }, signal, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key }, body: JSON.stringify({ case_id: caseId, source_mode: 'dataset', snapshot_ref: snapshot }) }, 202, true);
+}
 export function getInvestigation(id: string, caseId: string, revision: string, signal?: AbortSignal) {
   return request('/api/investigation/attempts/' + encodeURIComponent(id), value => {
     const result = decodeRun(value);

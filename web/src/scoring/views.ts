@@ -89,6 +89,11 @@ export function createRiskView(root: HTMLElement, assess: (id: string) => void) 
             ['Vreme ocenjivanja (UTC)', result.scored_at],
           ]), element('h3', 'Dostupne činjenice i feature vrednosti'),
           element('p', result.explanation, 'explanation'));
+        if (result.review_status === 'review_recommended') {
+          const link = element('a', 'Otvori objavljeni modelski slučaj', 'button');
+          link.href = '/model-cases?transaction=' + encodeURIComponent(result.transaction_id);
+          output.append(link);
+        }
       }
     },
   };

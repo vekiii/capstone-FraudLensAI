@@ -7,7 +7,7 @@ import type { Run } from './contracts';
 import type { ReviewInput } from './api';
 
 export type ReportClient = typeof reportClient;
-export function mountReports(root: HTMLElement, caseId: string, client: ReportClient = reportClient, options: { pollInterval?: number; maxPolls?: number } = {}) {
+export function mountReports(root: HTMLElement, caseId: string, client: ReportClient = reportClient, options: { pollInterval?: number; maxPolls?: number; sourceMode?: 'fixture' | 'dataset' } = {}) {
   let generation = 0, disposed = false, polls = 0;
   let pending = new AbortController(), evidencePending: AbortController | undefined;
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -23,7 +23,7 @@ export function mountReports(root: HTMLElement, caseId: string, client: ReportCl
   const maximum = Math.min(120, Math.max(1, options.maxPolls ?? 120));
   const current = (token: number) => !disposed && generation === token;
   function begin() { generation++; clearTimeout(timer); pending.abort(); evidencePending?.abort(); pending = new AbortController(); return generation; }
-  const view = createReportView(root, { start: () => { void create(); }, refresh: () => { void initialize(); }, select: id => { const run = saved.find(item => item.attempt_id === id) ?? history.get(id); if (run) { const token = begin(); polls = 0; show(run, token); } }, evidence: id => { void evidence(id); }, retry: reuse => { void mutate('retry', reuse); }, cancel: () => { void mutate('cancel', false); }, parent: () => { void parent(); }, review: body => { void review(body); } });
+  const view = createReportView(root, { start: () => { void create(); }, refresh: () => { void initialize(); }, select: id => { const run = saved.find(item => item.attempt_id === id) ?? history.get(id); if (run) { const token = begin(); polls = 0; show(run, token); } }, evidence: id => { void evidence(id); }, retry: reuse => { void mutate('retry', reuse); }, cancel: () => { void mutate('cancel', false); }, parent: () => { void parent(); }, review: body => { void review(body); } }, options.sourceMode);
   function checked(value: unknown, expected?: string) { const run = decodeRun(value); if (run.case_id !== caseId || run.context_revision !== revision || run.snapshot_ref !== snapshot || (expected && run.attempt_id !== expected)) throw new Error(); return run; }
   function show(run: Run, token: number) {
     saved = saved.map(item => item.attempt_id === run.attempt_id ? run : item);
