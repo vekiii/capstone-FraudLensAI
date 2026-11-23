@@ -1,5 +1,100 @@
 # Feature 003 validation quickstart
 
+## PR #3 demo with the real OpenAI provider on Windows
+
+Run from the repository root on `integration/capstone-mvp`. This checkout has the
+verified model, label-free features, case bridge, model results and EDA files in
+their ignored `data/` locations. A fresh checkout needs the team's verified
+Windows artifact package, exact Python **3.14.10** and locked `dev`, `ml` and
+`investigation` groups. Use `npm.cmd --prefix web ci` if the web dependencies are
+missing. The private root `.env` supplies `OPENAI_API_KEY` and `OPENAI_MODEL`
+(`gpt-6-luna` was used for verification).
+[Artifact handoff](../../evidence/tasks/model-rag-handoff-2026-11-22.md#commit-and-transfer-review--2026-11-22)
+
+### Shared settings for the API and worker terminals
+
+Paste this block into two PowerShell terminals opened at the repository root.
+Use the same store in both. To use a different Python installation, point
+`$demoPython` to its locked environment with Python 3.14.10.
+
+```powershell
+$demoPython = (Resolve-Path '.cache/pr4-win-c0d59f2/.venv-31410/Scripts/python.exe').Path
+$env:PYTHONPATH = (Resolve-Path 'backend/src').Path
+$env:APP_MODE = 'model'
+$env:MODEL_CASE_BRIDGE_ROOT = 'data/processed/model-case-bridge-v1'
+$env:MODEL_CASE_BRIDGE_MANIFEST_SHA256 = '16760ba36a2b36e6f144730c7afae7c855e34b2897166920bc6d185fcf9d2004'
+$env:EDA_SUMMARY_PATH = 'data/processed/t246-hi-small-eda-summary-v1.json'
+$env:EDA_SUMMARY_SHA256 = 'b8900338ca375b2d632b260a794634fb19408012a1c14fc66e2f7b097a111820'
+$env:INVESTIGATION_ENABLED = 'true'
+$env:INVESTIGATION_SOURCE = 'dataset'
+$env:INVESTIGATION_DATASET_SCORE_SOURCE = 'model'
+$env:INVESTIGATION_MODEL_CASE_BRIDGE_ROOT = $env:MODEL_CASE_BRIDGE_ROOT
+$env:INVESTIGATION_PROVIDER = 'openai'
+$env:INVESTIGATION_SEMANTIC_RETRIEVAL = 'true'
+$env:INVESTIGATION_SEMANTIC_PROFILE = 'v8'
+$env:INVESTIGATION_REPORT_PROMPT = 'v6'
+$env:INVESTIGATION_REPORT_PARALLEL_TOOLS = 'true'
+$env:INVESTIGATION_REPORT_STRICT_SECTIONS = 'true'
+$env:INVESTIGATION_REPORT_REASONING_EFFORT = 'low'
+$env:INVESTIGATION_REQUEST_TIMEOUT_SECONDS = '60'
+$env:INVESTIGATION_MAX_OUTPUT_TOKENS = '8192'
+$env:INVESTIGATION_MAX_PROVIDER_REQUESTS = '8'
+$env:INVESTIGATION_TOTAL_TIMEOUT_SECONDS = '120'
+$env:INVESTIGATION_STORE = 'data/processed/pr3-demo.sqlite'
+$env:INVESTIGATION_ANALYST = 'milan-demo'
+```
+
+### Terminal 1 — prepare the demo store and start FastAPI
+
+```powershell
+$corpus = 'data/knowledge/fraudlens-aml-knowledge-v1'
+if (-not (Test-Path -LiteralPath $env:INVESTIGATION_STORE)) {
+    & $demoPython -m fraudlens.investigation.cli prepare-knowledge --manifest "$corpus/manifest.json" --retrieval "$corpus/retrieval.json" --store $env:INVESTIGATION_STORE
+    if ($LASTEXITCODE -ne 0) { throw 'Demo knowledge preparation failed' }
+}
+& $demoPython -m uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
+```
+
+### Terminal 2 — start React
+
+```powershell
+npm.cmd --prefix web run dev -- --host 127.0.0.1 --port 5173 --strictPort
+```
+
+### In Chrome — open the case and queue one investigation
+
+1. Open <http://127.0.0.1:5173/cases>. In the risk lookup, paste the ID below.
+2. Follow the link to the published model case. Open **Prikaži AI istragu** and
+   click **Pokreni novu istragu** once.
+
+```text
+ibm-hi-small:b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040:row:2959955
+```
+
+### Terminal 3 — process the queued investigation
+
+Use the shared settings from above. This command claims one queued attempt and
+may call the configured OpenAI provider up to eight times.
+
+```powershell
+& $demoPython -m fraudlens.investigation.cli worker --store $env:INVESTIGATION_STORE --once
+```
+
+Return to the browser and refresh the saved attempt if polling has stopped.
+Open a **Dokaz** link on the report and inspect the exact passage before making
+your decision. For the demo you can select **Zatražiti dodatne podatke**, explain
+which evidence you want, and click **Sačuvaj odluku**. Reload and reopen
+**Prikaži AI istragu** to show the persisted decision. Stop the two foreground
+servers with Ctrl+C.
+
+For a walkthrough of the verified saved result, set `INVESTIGATION_STORE` to
+`data/processed/pr3-live-compact-verification-20261123.sqlite` in terminal 1
+before starting FastAPI. Start React and open the same case and investigation.
+The saved live report and decision load from SQLite using the API and React
+servers alone.
+
+[Live-run evidence](../../evidence/tasks/pr3-live-demo-2026-11-23.md)
+
 ## PR #4 frozen model-case bridge on Windows
 
 The frozen LightGBM artifact requires **Python 3.14.10** and the locked
