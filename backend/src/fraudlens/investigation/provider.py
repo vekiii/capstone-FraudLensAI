@@ -420,8 +420,16 @@ def scripted_draft(conversation, scenario):
     fact = _claim(ref, f"Zabelezena transakcija: {values[required[0]]} {values[required[1]]}.", assertions=assertions)
     draft.update(outcome='ready_for_review', summary=[copy.deepcopy(fact)], observed_facts=[fact], citations=[ref])
     if dataset_case:
-        draft['limitations'][1] = ('Sinteticki modelski risk score nije kalibrisana verovatnoca; '
-                                   'doprinosi modelskih obelezja nisu dostupni.')
+        local_available = any(item['kind'] == 'case_fact' and any(
+            fact['path'] == 'local_contribution_v1.method' and
+            fact['value'] == 'lightgbm_pred_contrib_log_odds_v1' for fact in item['facts'])
+            for item in items)
+        draft['limitations'][1] = (
+            'Sinteticki modelski risk score nije kalibrisana verovatnoca; '
+            'lokalni doprinosi su na log-odds skali i nisu uzrocni nalaz.'
+            if local_available else
+            'Sinteticki modelski risk score nije kalibrisana verovatnoca; '
+            'doprinosi modelskih obelezja nisu dostupni.')
     procedure = next((item for item in items if item['kind'] == 'procedure'), None)
     if procedure:
         draft['recommended_checks'] = [_claim(procedure['evidence_id'],

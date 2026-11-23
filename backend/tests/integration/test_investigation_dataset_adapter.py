@@ -168,6 +168,9 @@ def test_new_boosted_version_is_explicit_and_provider_projection_accepts_it(publ
     context = reader.resolve(ctx['case_id'], ctx['snapshot_ref'])
     projected = outbound_context(context, 'inv_' + 'a' * 32)
     assert projected['context_contract_version'] == 2
+    assert projected['assessment']['score_source'] == 'model'
+    assert 'Synthetic benchmark' in projected['notice']
+    assert 'no ML inference' not in json.dumps(projected)
     assert 'order/baseline dependent' in projected['notice']
     assert project_conversation([{'type': 'context', 'data': projected}])[0]['data'] == projected
     projected.pop('context_contract_version')

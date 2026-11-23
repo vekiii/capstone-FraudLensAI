@@ -1,3 +1,7 @@
+# Local contribution consumer experiment — 2026-11-23
+
+On `feature/002-model-contributions`, a separately authorized local opt-in reads the independent pinned sidecar and joins it after the unchanged v2 context validation. New attempts receive a distinct versioned case-fact evidence item bound to attempt, context and content hash. Provider projection keeps the full local evidence JSON but sends one short prefix plus all exact facts and complete procedure passages. The existing 48,000-byte request guard remains. A separate React decoder/view shows available, unavailable and invalid states; old v2 decoders, bridge publication and saved reports remain unchanged. [Observed results](../../evidence/tasks/002-003-local-contributions-implementation-2026-11-23.md) support owner review; T110/T111 remain open and the local experiment is not accepted Feature 003 delivery.
+
 # Implementation Plan: Evidence-backed AI Investigation
 
 Authorized2026-11-18: [reportv6 output/bounds correction](report-v6-output-bounds.md),
@@ -186,5 +190,9 @@ Freeze context API with producing/consuming teammates before real integration. D
 - Integration/convergence: dataset adapter review/live integration when producer exists; full foundation regressions, quickstart reproduction and actual acceptance. No automatic completion of ML gates.
 
 ## Complexity Tracking
+
+### Pending frozen LightGBM contribution contract review — 2026-11-23
+
+The [distinct log-odds contract proposal](contracts/local-lightgbm-contributions-proposal-v1.md) is not approved or active. Review producer schema/semantics, dataset resolver, outbound/evidence projection, provider byte cap and frontend decoder before accepting it. Keep historical v1/v2 snapshots, stored reports and the existing bridge publication intact. [Prototype evidence](../../evidence/tasks/002-local-contributions-2026-11-23.md) is calculation evidence, not a provider or report evaluation.
 
 No constitution violations or additional services. A separate SQLite file avoids shared schema migrations. One worker is the smallest durable execution mechanism here; a queue service and framework are rejected as unnecessary. Lexical retrieval keeps baseline offline and transparent; embeddings remain a separately justified later choice if this bounded comparison is insufficient, not an implicit task.

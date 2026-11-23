@@ -28,6 +28,8 @@ class InvestigationSettings(BaseModel):
     dataset_score_source: Literal['rules', 'model'] = 'rules'
     model_case_bridge_root: Path | None = None
     model_case_bridge_manifest_sha256: str | None = None
+    local_contribution_path: Path | None = None
+    local_contribution_sha256: str | None = Field(default=None, pattern='^[0-9a-f]{64}$')
     dataset_history_index: Path | None = None
     dataset_history_index_sha256: str | None = Field(default=None, pattern='^[0-9a-f]{64}$')
     analyst: str = Field(default='local-demo-analyst', min_length=1, max_length=80)
@@ -42,7 +44,7 @@ class InvestigationSettings(BaseModel):
     max_response_bytes: int = Field(default=2097152, ge=1, le=2097152)
 
     @field_validator('store', 'dataset_run_store', 'dataset_store', 'dataset_history_index',
-                     'model_case_bridge_root', mode='before')
+                     'model_case_bridge_root', 'local_contribution_path', mode='before')
     @classmethod
     def resolve_store(cls, value):
         if value is None:
@@ -74,6 +76,9 @@ class InvestigationSettings(BaseModel):
             raise ValueError('History index requires dataset mode and an explicit digest')
         if self.model_case_bridge_root is not None and (self.source != 'dataset' or self.dataset_score_source != 'model'):
             raise ValueError('Model case bridge requires dataset/model source')
+        if ((self.local_contribution_path is None) != (self.local_contribution_sha256 is None)
+                or self.local_contribution_path is not None and self.model_case_bridge_root is None):
+            raise ValueError('Local contributions require bridge and an independent pin')
         if self.provider == 'openai' and not self.model.get_secret_value().strip():
             raise ValueError('OpenAI provider requires an explicit model identifier')
         if self.semantic_retrieval and self.provider != 'openai':

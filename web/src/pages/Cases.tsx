@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ApiError, getCase, getCases } from "../api";
 import type { CaseDetail, CaseDetailResponse, CaseListResponse } from "../contracts";
 import { InvestigationPanel } from "./InvestigationPanel";
+import { LocalContributions } from "./LocalContributions";
 interface CaseClient {
   getCases(options: { signal: AbortSignal; dataset?: boolean }): Promise<CaseListResponse>;
   getCase(caseId: string, options: { signal: AbortSignal; snapshot?: string }): Promise<CaseDetailResponse>;
@@ -74,7 +75,7 @@ function DatasetDetail({ detail }: { detail: Extract<CaseDetailResponse, { contr
         <div><dt>Istorija do (isključivo)</dt><dd>{risk.history_cutoff_exclusive_at}</dd></div>
         <div><dt>Stvarno vreme bodovanja (UTC)</dt><dd>{risk.scored_at}</dd></div>
         <div><dt>Pokrivenost istorije</dt><dd>{risk.history_coverage.state} · {risk.history_coverage.start ?? "nepoznat početak"}</dd></div>
-      </dl><h4>Objašnjenje</h4>
+      </dl><h4>Objašnjenje u objavljenoj v2 procjeni</h4>
       {risk.explanation.status === "unavailable"
         ? <p className="explanation">Objašnjenje nedostupno: {risk.explanation.reason_code}.</p>
         : <>
@@ -199,7 +200,9 @@ export function CasesPage({ client = defaultClient, dataset = import.meta.env.VI
         {"caseId" in state && <button className="button button-back" type="button"
           onClick={() => setState({ kind: "list" })}>← Nazad na listu</button>}
         {state.kind === "detail" && ("contract_version" in state.detail
-          ? <><DatasetDetail detail={state.detail} /><InvestigationPanel key={state.detail.case_id} caseId={state.detail.case_id} dataset /></> : <>
+          ? <><DatasetDetail detail={state.detail} />
+            {state.detail.risk_assessment.score_source === 'model' && <LocalContributions detail={state.detail} />}
+            <InvestigationPanel key={state.detail.case_id} caseId={state.detail.case_id} dataset /></> : <>
             <FixtureDetail detail={state.detail} />
             <InvestigationPanel key={state.detail.case_id} caseId={state.detail.case_id} />
           </>)}

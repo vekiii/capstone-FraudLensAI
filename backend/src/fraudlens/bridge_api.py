@@ -7,6 +7,12 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
 from fraudlens.bridge_reader import BridgeNotFound, BridgeReader, BridgeUnavailable
+from fraudlens.investigation.contribution_sidecar import (
+    SidecarInvalid,
+    SidecarMissing,
+    SidecarReader,
+)
+from fraudlens.investigation.environment import read_environment
 from fraudlens.scoring.model_scorer import valid_canonical_id
 
 router = APIRouter(prefix='/api/model/cases')
@@ -70,3 +76,33 @@ def listing(request: Request):
 @router.get('/{case_id}')
 def detail(request: Request, case_id: str):
     return _response(request, 'detail', case_id)
+
+
+@router.get('/{case_id}/local-contributions')
+def local_contributions(request: Request, case_id: str):
+    """Separate experimental sidecar; never changes the v2 case response."""
+    if request.query_params:
+        return _error(422, 'invalid_request')
+    try:
+        reader = _reader(request)
+        context = reader.resolve(case_id, None)
+        binding = reader._binding(case_id=case_id)
+    except BridgeNotFound:
+        return _error(404, 'case_not_found')
+    except (BridgeUnavailable, ValueError, OSError, KeyError):
+        return _error(503, 'run_unavailable')
+    config = read_environment()
+    path, pin = config.get('INVESTIGATION_LOCAL_CONTRIBUTION_PATH'), config.get('INVESTIGATION_LOCAL_CONTRIBUTION_SHA256')
+    if not path and not pin:
+        return {'contract_version': 1, 'status': 'unavailable', 'reason_code': 'not_configured'}
+    if not path or not pin:
+        return {'contract_version': 1, 'status': 'invalid', 'reason_code': 'verification_failed'}
+    try:
+        source = Path(path)
+        if not source.is_absolute():
+            source = Path(__file__).resolve().parents[3] / source
+        return SidecarReader(source, pin).read(binding, context)
+    except SidecarMissing:
+        return {'contract_version': 1, 'status': 'unavailable', 'reason_code': 'missing_artifact'}
+    except SidecarInvalid:
+        return {'contract_version': 1, 'status': 'invalid', 'reason_code': 'verification_failed'}
