@@ -1,0 +1,30 @@
+# RAG page source audit — 2026-11-23
+
+Scope: read-only review for the `/rag` presentation update. No provider call or new evaluation was run. The installed skill catalog contains no `frontend-design` skill.
+
+## Implemented architecture and boundaries
+
+- The existing `/rag` route is registered in `web/src/AppRoutes.tsx`, but `web/src/pages/Rag.tsx` still describes retrieval as proposed and reads placeholder showcase data. The implementation and evidence below supersede those page claims.
+- The tool contract in `specs/003-ai-investigation/contracts/tools-and-provider.md` (lines 5–21) defines `get_case_facts {}`, `get_account_history {account_side: sender|receiver}`, and `search_procedures {query: 1–500 trimmed characters}`. History is server-bound, strictly before the cutoff, with a seven-day lookback and at most 50 events. Search returns at most five exact passages or `no_match`. The model does not supply account identity, corpus path, permissions, or evidence IDs. `backend/src/fraudlens/investigation/tools.py` enforces dispatch and provenance.
+- `backend/src/fraudlens/investigation/workflow.py` (especially lines 298–315, 539 onward) binds and rechecks saved evidence, archived passages, and report output. `backend/src/fraudlens/investigation/models.py:171–181` defines draft fields: outcome, summary, observed facts, risk indicators, alternative explanations, missing information, recommended checks, limitations, citations. The analyst retains final review authority; this is an advisory workflow, separate from LightGBM risk scoring (`.specify/memory/constitution.md`, `specs/003-ai-investigation/contracts/tools-and-provider.md`). A valid citation identifier alone cannot prove the claim faithfully interprets the passage (`specs/003-ai-investigation/evaluation.md`).
+
+## Reviewed corpus and storage
+
+- `data/knowledge/fraudlens-aml-knowledge-v1/manifest.json` lists six English documents with source URI, jurisdiction, version, reviewer, review date, SHA-256 content hash, and named included sections: three original simulated guides (`sim-review`, `sim-citation`, `sim-missing`), an authored IBM synthetic-data field-limitations guide (`ibm-guide`), and two historical US FinCEN guidance summaries (`us-records`, `us-confidentiality`). `evidence/tasks/feature-003-corpus-review.md` records review. Historical US guidance is neither Serbian law nor current legal advice. Full source texts need not be reproduced.
+- `backend/src/fraudlens/investigation/knowledge.py` validates source hashes and selected `##` sections, chunks at 2,400 characters with a 200-passage cap, derives versioned content identities, and stores the published corpus in an immutable SQLite archive. `evidence/tasks/feature-003-phase-03-completion.md` records historical publication of six documents and six passages to `data/processed/investigations.sqlite`.
+- Current checkout check: `Test-Path data/processed/investigations.sqlite` returned `False` on 2026-11-23. Historical publication does not prove this checkout has a usable corpus archive or running knowledge API.
+
+## Retrieval modes
+
+- `backend/src/fraudlens/investigation/retrieval.py` implements local normalized-token BM25 with `k1=1.2`, `b=0.75`, an adequacy cutoff, deterministic score/ID ordering, at most five hits, and `no_match`. It uses no embedding model or vector database. `backend/src/fraudlens/investigation/api.py` exposes `GET /api/knowledge/search`.
+- Optional semantic selection uses the OpenAI Responses API on a bounded approved pool (1–20 passages, 48,000-byte request, 2,048 output tokens, 30-second timeout) and structured `supported`/`insufficient` output. Known passage IDs and exact quotes are validated (`backend/src/fraudlens/investigation/retrieval_semantic_v6.py`). The v8 source map ranks a closed ID set and copies archived source text (`retrieval_source_map_v8.py`). Dispatch is separately exposed as `POST /api/knowledge/semantic-search` (`semantic_api.py`); reservation/accounting is described in `specs/003-ai-investigation/contracts/semantic-search-v1.md`. Provider failure is a failure, not `no_match`. Defaults in `settings.py:14–22` are `enabled=False`, `semantic_retrieval=False`, `provider='test'`; source code alone does not establish an enabled local runtime.
+
+## Recorded evaluations, with separate denominators
+
+- Original multilingual BM25 held-out retrieval: Recall@5 **0.50**, MRR@5 **0.50**, no-answer **4/4**; below targets. Sources: `evidence/tasks/feature-003-automated-evaluation.md:140–141` and `evidence/tasks/feature-003-evaluation.md`. The later English-only scope is documented in `evidence/tasks/retrieval-english-mvp-decision.md`.
+- English-only semantic v6 integrated evaluation: 20 questions (16 answerable, four no-answer), Recall@5 **0.864583**, MRR@5 **0.9375**, no-answer **4/4**; one HTTP 503 provider failure counted zero. It met the numeric .80/.70/4-of-4 retrieval gate under an automated, same-model reference method. Source: `evidence/tasks/feature-003-v6-integration-judge-20261117.md:62–84`. This is a different question set and method from the original multilingual test, so the displayed panels must not imply a controlled head-to-head benchmark or production reliability.
+- Original eight-report quality evaluation: **0/8** pass, with six generating no report (`evidence/tasks/feature-003-automated-evaluation.md:113–141`). Later v8 development: **3/4** locally valid, development gate failed, no held-out promotion (`evidence/tasks/feature-003-v8-development-20261118.md:40–50`). Final-live judge calibration matched **2/3**, so favorable raw judge ratings were not accepted quality scores (`evidence/tasks/feature-003-final-live-v8.md:75–85`). These are not retrieval metrics and do not establish accepted end-to-end report quality.
+
+## Presentation decision
+
+The page will describe architecture, corpus provenance, implemented and optional retrieval separately, and historical evaluation with explicit experiment labels. It will not claim a currently populated knowledge API, provider access, production-ready autonomous investigations, regulatory compliance, or accepted report quality.
