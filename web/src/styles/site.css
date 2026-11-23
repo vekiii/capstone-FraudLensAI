@@ -126,6 +126,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .case-panel > [role="status"] { color: var(--muted); }
 .detail-section { padding: 18px 0; border-top: 1px solid var(--line); }
 .detail-section:last-child { padding-bottom: 0; }
+.contribution-details { margin-top: 1rem; overflow-wrap: anywhere; }
+.contribution-details summary { cursor: pointer; font-weight: 650; min-height: 44px; }
+.contribution-details summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.contribution-details dt { color: var(--muted); margin-top: 0.65rem; }
+.contribution-details dd { margin-left: 0; }
 .fields { margin: 0; }
 .fields > div { display: grid; grid-template-columns: minmax(150px, .8fr) minmax(0, 2fr); gap: 16px; padding: 8px 0; }
 .fields dt { color: var(--muted); font-size: 13px; }
