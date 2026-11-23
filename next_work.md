@@ -1,3 +1,11 @@
+## Remotion deck refactor and export — 2026-11-23
+
+On `feature/frontend`, the existing `fraud-demo/` Remotion composition was refactored into a seven-scene, deck-styled 48-second video with 18-frame spring transitions, persistent pipeline rail, Inter, the palette in `web/src/theme.ts`, compact captions, and showcase copy in `src/data/transactions.json`. The [execution record](evidence/tasks/remotion-deck-refactor-2026-11-23.md) documents the McKinsey source, synthetic-case limits, package/render commands, lint success, MP4 metadata (1920×1080, 30 fps, 1,440 frames), and sampled visual review. The final MP4 is `fraud-demo/out/FraudLensProductDemo.mp4`; Studio responded at `http://localhost:3000/FraudLensProductDemo`. At the user's request, the frontend audit and video source were committed locally as `180d3a4` and `36fea55` with Isidora Popovic's existing Git identity. The generated MP4 and unrelated untracked files were excluded; no push or merge occurred. **Next step:** review the rendered video in Studio or MP4 and request any editorial revisions.
+
+## Remotion product demo preview — 2026-11-23
+
+On `feature/frontend`, an uncommitted six-scene, 45-second Remotion demo was added in `fraud-demo/`, driven by `src/data/transactions.json`. The model and retrieval nodes are explicitly illustrative; transaction facts, fixture scores, and synthetic source excerpts trace to repository inputs. Studio is running at `http://localhost:3000/FraudLensProductDemo`. The [execution record](evidence/tasks/remotion-product-demo-2026-11-23.md) records exact commands and limits: 3/3 fixture checks, lint, bundle, composition metadata and HTTP check passed; frame-level visual review and export were not run. The unrelated untracked snapshot files and nested scaffold were preserved. **Next step:** preview all six scenes and caption timing in Studio, then request any revisions or an export.
+
 ## CAP-06 na integrisanom MVP-u — 23. novembar 2026.
 
 Na grani `fix/cap06-final-verification` kandidat `0151fac` odbija query
