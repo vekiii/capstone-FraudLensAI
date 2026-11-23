@@ -14,6 +14,17 @@ The user authorized a local merge of current `origin/main` (`c297ceb`) into `fea
 
 [PR #7 review evidence](evidence/tasks/002-003-pr7-browser-technical-review-2026-11-23.md) covers actual Safari inspection of both saved post-correction real-provider reports, every cited evidence item, sidecar panel and opt-in/negative states on an ignored copy with test provider and no worker. Both reports and scores remained faithful in this scoped check; reload/reopen added zero provider dispatches. Existing 65/65 score/status and contribution parity remains valid for the exact PR head `5a086e9`; a targeted repair/budget plus aggregate-results run passed 22/22, including the previously skipped aggregate presentation test after exact-hash local inputs were restored. A full default-sandbox backend run had eight `ps` EPERM resource-guard failures; its non-training cases passed 10/10 when rerun with permission. GitHub now reports a real merge conflict with advanced `main` in this handoff file. Panel labels/units are raw and the observed LIVE 47,915-byte request leaves only 85 bytes under the unchanged cap. No source/prompt fix, new provider call, commit, push or merge. **Next step:** Feature 003 owner reviews sidecar/UI/budget decisions, then an authorized integration preserves both `next_work.md` handoffs, resolves the conflict, and tests the combined candidate before acceptance.
 
+## CAP-06 paket za predaju — 23. novembar 2026.
+
+PR #6 je uključen u `main` na `c297ceb`. Na kandidatu `55444ce`
+iz čistog checkout-a prošlo je 56 ciljanih backend provera, uključujući
+sedam CAP-06 kontrola, zatim 16 audit i 291 web test. Build i provera
+sintetičkog serverskog markera su prošli.
+[Dokaz i komande](evidence/security/cap06-submission-verification-2026-11-23.md).
+
+Sledeći korak je da tim na konačnom SHA predaje zabeleži kompaktan živi
+prolaz i kontrolisani budžetski prekid zajedno sa CAP-06 proverama.
+
 ## CAP-06 na integrisanom MVP-u — 23. novembar 2026.
 
 Na grani `fix/cap06-final-verification` kandidat `0151fac` odbija query
@@ -21,7 +32,7 @@ parametre za skor rizika pre lookup-a ili skoringa. Prošlo je svih 16
 audit testova, svih šest CAP-06 kontrola i 17 ciljanih backend regresija.
 Svih 290 web testova i build su prošli. [Završna evidencija](evidence/security/cap06-integrated-main-2026-11-23.md).
 
-Sledeći korak je uključivanje lokalne popravke i dokaza u verziju za predaju.
+Popravka i ovaj dokaz uključeni su u `main` kroz PR #6.
 
 ## Draft PR #7 opened for local contribution review — 2026-11-23
 
