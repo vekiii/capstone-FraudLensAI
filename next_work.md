@@ -1,3 +1,16 @@
+## PR #7 local integration in progress — 2026-11-23
+
+The user authorized a local merge of current `origin/main` into `feature/002-model-contributions` and a presentation-only improvement to the local contribution panel. The previous PR #7 browser review remains uncommitted with a verified backup. CAP-06 and PR #7 handoffs are preserved below. **Next step:** finish the panel display change and test the combined candidate, then record results before any publication. No push or PR merge is authorized for this unit.
+
+## CAP-06 na integrisanom MVP-u — 23. novembar 2026.
+
+Na grani `fix/cap06-final-verification` kandidat `0151fac` odbija query
+parametre za skor rizika pre lookup-a ili skoringa. Prošlo je svih 16
+audit testova, svih šest CAP-06 kontrola i 17 ciljanih backend regresija.
+Svih 290 web testova i build su prošli. [Završna evidencija](evidence/security/cap06-integrated-main-2026-11-23.md).
+
+Sledeći korak je uključivanje lokalne popravke i dokaza u verziju za predaju.
+
 ## Draft PR #7 opened for local contribution review — 2026-11-23
 
 The user explicitly confirmed fetch, conditional normal push and Draft PR in chat. `git fetch origin` succeeded; `origin/main` `156e25b` was an ancestor of the local branch. The new `feature/002-model-contributions` branch was pushed without force. The GitHub connector returned 403 on PR creation, but `gh` opened and verified [Draft PR #7](https://github.com/vekiii/capstone-FraudLensAI/pull/7) to `main`, at head `f80de45` before this documentation handoff. [Final evidence](evidence/tasks/002-003-final-local-review-2026-11-23.md) preserves the checks, original LIVE outcomes, local review links and pending Feature 003 contract decisions. No merge or human contract acceptance. **Next step:** the user performs visual review and the Feature 003 owner decides the sidecar contract, log-odds presentation and 48,000-byte headroom in Draft PR #7.
