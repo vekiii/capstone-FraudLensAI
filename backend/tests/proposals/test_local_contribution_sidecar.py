@@ -9,7 +9,7 @@ from local_contribution_sidecar import build_sidecar, validate_sidecar
 
 from fraudlens.bridge_reader import BridgeReader
 from fraudlens.investigation.context import outbound_context, validate_outbound_dataset
-from fraudlens.investigation.models import validate
+from fraudlens.investigation.models import digest, validate
 from fraudlens.investigation.provider import ProviderError, project_conversation
 from fraudlens.scoring.local_contributions import compute_local_contributions
 from fraudlens.scoring.model_scorer import FeatureStore, ModelScorer
@@ -53,7 +53,23 @@ def test_isolated_json_example_matches_verified_browser_case(proposal):
                           'local-contribution-sidecar-v1.proposal.json').read_text())
     assert example['proposal_status'] == 'unapproved_isolated_example'
     assert example['existing_provider_context_v2'] == outbound_context(context, 'inv_' + 'a' * 32)
-    assert example['contribution_sidecar_v1'] == sidecar
+    reference = example['contribution_sidecar_v1']
+    recomputed = deepcopy(sidecar)
+    # Each digest must match its own exact content. Native float results can
+    # differ in the last places across platforms, which changes the digest.
+    for payload in (reference, recomputed):
+        evidence_digest = payload.pop('evidence_digest')
+        assert digest(payload) == evidence_digest
+
+    roundoff = 1e-12
+    for field in ('base_value', 'raw_score', 'remainder'):
+        assert recomputed.pop(field) == pytest.approx(reference.pop(field), abs=roundoff, rel=0), field
+    for actual, expected in zip(recomputed['items'], reference['items'], strict=True):
+        assert actual.pop('contribution') == pytest.approx(
+            expected.pop('contribution'), abs=roundoff, rel=0), expected['feature_key']
+
+    # Check the score, identity, units, direction and item order exactly.
+    assert recomputed == reference
 
 
 @pytest.mark.parametrize('field,value', [
