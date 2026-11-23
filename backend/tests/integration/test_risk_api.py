@@ -88,3 +88,17 @@ def test_invalid_canonical_id_is_rejected_before_lookup():
         response = client.get('/api/transactions/TX-001/risk')
     assert response.status_code == 422
     assert response.json()['error']['code'] == 'invalid_request'
+
+
+def test_risk_query_is_rejected_before_lookup_or_scoring(monkeypatch):
+    record = FeatureTransaction(ID, '2022-09-06T00:00:00+00:00', {})
+    application = app(record, result())
+    with TestClient(application) as client:
+        def unexpected_call(*_args):
+            raise AssertionError('Invalid query must not reach lookup or scoring')
+
+        monkeypatch.setattr(application.state.feature_store, 'get', unexpected_call)
+        monkeypatch.setattr(application.state.model_scorer, 'score', unexpected_call)
+        response = client.get(f'/api/transactions/{ID}/risk', params={'unexpected': ''})
+    assert response.status_code == 422
+    assert response.json()['error']['code'] == 'invalid_request'

@@ -173,7 +173,9 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None,
     @app.get('/api/transactions/{transaction_id}/risk', response_model=PredictionResult,
              responses={404: {'model': RiskError}, 409: {'model': RiskError},
                         422: {'model': RiskError}, 503: {'model': RiskError}})
-    def transaction_risk(transaction_id: str):
+    def transaction_risk(transaction_id: str, request: Request):
+        if request.query_params:
+            return _risk_error(422, 'invalid_request', 'Risk query is not permitted.')
         if len(transaction_id) > 160 or not valid_canonical_id(transaction_id):
             return _risk_error(422, 'invalid_request', 'Invalid transaction identifier.')
         if app.state.settings.mode != 'model' or app.state.model_scorer is None or app.state.feature_store is None:
