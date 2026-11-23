@@ -1,6 +1,6 @@
 # Feature 002 human review and reproduction (T252)
 
-**Status:** The user, explicitly speaking as a team representative, reports that the relevant work has been reviewed and approved. [Isidora's prior attestation](T252-independent-approval-attestation-2026-11-22.md) records six matching Windows SHA-256 outputs and a successful `T233-parity.py` rerun on the reviewed checkout. The user does not claim to be Vedran or to attest personally for him; his individual review remains **not independently verified**. [The governance reconciliation](T252-governance-reconciliation-2026-11-22.md) finds no written Vedran-specific execution gate. T252 remains open only for its own actual reviewer/reproduction record, not as a project-wide stop. No duration or unreported finding is inferred.
+**Status:** T252 is complete for executable candidate `d46699f`. Milan Gavrić confirmed his scoped Feature 002 review and his own Windows T233 run on 2026-11-23. The [closure record](#independent-review-and-t252-closure--2026-11-23) links his confirmation to the prior Windows evidence and the fresh technical follow-up. The 2026-11-22 entries preserve the earlier team and author-side confirmations.
 
 ## Review packet and requested scope
 
@@ -40,6 +40,40 @@ parity and the test-provider browser flow. [Fixes and execution evidence](pr4-wi
 
 The user again explicitly confirms that the entire team has reviewed and approved the project, including T252, and instructs us to record this as a **collective team decision communicated by its representative**. This confirms team approval of the reviewed work; it is not a claim that the representative is Vedran or that an unrecorded individual performed specific checks. The decision is associated with the reviewed executable candidate `d46699fbd11219ebc92c6ef002d4924a4c7d4b34`; no approval of a later executable revision is inferred.
 
-The [governance reconciliation](T252-governance-reconciliation-2026-11-22.md) at `b925ae5` records contributor attribution and the absence of a Vedran-specific or project-wide T252 execution gate. The [Windows attestation](T252-independent-approval-attestation-2026-11-22.md) records six matching frozen-input hashes and Isidora's 8/8 offline, 1/1 HTTP parity output. [T229](T229.md) and [T230](T230.md) bind the selected unweighted LightGBM, fixed threshold and one aggregate test result; [T233](T233.md), [T236](T236.md), [T240](T240.md), [T242](T242.md) and [T251](T251.md) document the local application contracts and limits. These existing checks are reused; no new model evaluation or application test was run for this decision.
+The [governance reconciliation](T252-governance-reconciliation-2026-11-22.md) at `0600c36` records contributor attribution and the absence of a Vedran-specific or project-wide T252 execution gate. The [Windows attestation](T252-independent-approval-attestation-2026-11-22.md) records six matching frozen-input hashes and Isidora's 8/8 offline, 1/1 HTTP parity output. [T229](T229.md) and [T230](T230.md) bind the selected unweighted LightGBM, fixed threshold and one aggregate test result; [T233](T233.md), [T236](T236.md), [T240](T240.md), [T242](T242.md) and [T251](T251.md) document the local application contracts and limits. These existing checks are reused; no new model evaluation or application test was run for this decision.
 
 **T252 task disposition: open, with collective approval recorded.** The written [task](../../specs/002-data-and-risk-scoring/tasks.md) requires actual human reviewer scope and reproduction; item 5 of this packet calls for a second contributor's read-only checks, environment, commands and observed results. The existing author-side and Codex technical records do not identify that second human contributor's own checks or findings. The final instruction expressly says not to claim an unverified reproduction. No named person's personal attestation is required, and this bounded record gap does not block unrelated authorized work. The one next step for T252 is to attach the actual second contributor's scoped review and reproduction record, then mark the task complete if it meets this criterion.
+
+## PR #5 technical follow-up — 2026-11-23
+
+[Milan's request](../../prompts/development/2026-11-23-pr5-t252-review.md) starts the PR review and asks to close T252 before merging. GitHub reported PR #5 open and mergeable between review head `f25345f` and integration base `d46699f`. The 12 changed files are documentation, and `git diff --check d46699f..f25345f` passed. The governance commit reference above now uses the reachable replacement SHA `0600c36` after the attribution correction.
+
+| Technical check | Observed result |
+| --- | --- |
+| Reviewed executable inputs | The existing ignored `.cache/pr4-win-fixed` snapshot matched the clean integration checkout on 86 compared files covering `backend/src`, locked configuration, T233 and T230 evidence inputs. The T233 script also matched its Git blob at `d46699f`. |
+| `Get-FileHash -Algorithm SHA256` | All eight frozen inputs matched the expected values for the model, trusted manifest, sealed prediction CSV, T230 aggregate, T219 manifest and the three label-free T219 partitions. Expected hashes are in the [Windows attestation](T252-independent-approval-attestation-2026-11-22.md). |
+| `T233-parity.py` on Windows with the existing Python 3.14.10 environment | Exit 0 with **8/8 exact offline scores and 1/1 HTTP score match**. The command also checked that fixture case listing returned 200. |
+| T230 aggregate arithmetic and identity | Ten named Python assertions passed for counts, precision, recall, F1, sealed prediction hash, threshold, label-write flag and top-K denominators. The existing aggregate contains 233,070 rows and 218 positives. Precision 0.676923, recall 0.201835 and F1 0.310954 match the recorded values. An initial PowerShell assertion failed, so the check was repeated from the same verified JSON using Python and individually reported assertions. |
+
+To reproduce the parity check from the main checkout in PowerShell, use the recovered Windows snapshot and interpreter.
+
+```powershell
+Push-Location '.cache/pr4-win-fixed'
+try {
+    $env:PYTHONPATH = (Resolve-Path 'backend/src').Path
+    $env:INVESTIGATION_ENABLED = 'false'
+    & '..\pr4-win-c0d59f2\.venv-31410\Scripts\python.exe' -B evidence/tasks/T233-parity.py
+} finally {
+    Pop-Location
+}
+```
+
+Codex performed the fresh technical checks. This follow-up reused the existing report and prepared artifacts for read-only checks. The live-provider run remains a separate demo requirement.
+
+## Independent review and T252 closure — 2026-11-23
+
+Milan Gavrić confirmed that he personally reviewed the Feature 002 protocol, data card, T230 aggregate metrics and limitations at `d46699f`. When asked to distinguish executing the Windows check from observing it or reading the recorded output, he confirmed **“Лично сам покренуо T233”**. He reported no further findings in his reply. The [reviewer replies](../../prompts/development/2026-11-23-pr5-t252-review.md#reviewer-confirmation) preserve his wording and the scope of the questions.
+
+- **Independence.** Milan's integration and Windows bridge fixes (`f68d2cd`, `40ce7e3`) were his own contributions. His independent review here covers Feature 002's model protocol, data, metrics and limitations. The Git history of the protocol, data card and training implementation records other authors.
+- **Reproduction.** The linked [Windows evidence](pr4-windows-fixes-2026-11-22.md) identifies the locked Python 3.14.10 environment, the already verified frozen inputs and the `T233-parity.py` command. That run recorded **8/8 exact offline scores and 1/1 HTTP score match**. The script uses sealed predictions and label-free features and verifies their frozen identities. Codex separately reproduced the same output in this follow-up. Milan did not supply a new transcript or duration with his confirmation.
+- **Disposition.** The earlier collective approval, Milan's scoped nonauthor review and his personal Windows T233 execution cover the remaining T252 evidence requirement. The frozen LightGBM, threshold and existing T230 aggregates identify the reviewed scope. The final demo still requires a separate live-provider run on the integrated candidate.
