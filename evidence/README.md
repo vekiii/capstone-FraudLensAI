@@ -1,5 +1,7 @@
 # Execution evidence
 
+[CAP-06 na integrisanom kandidatu](security/cap06-submission-verification-2026-11-23.md) sadrži testirani SHA, komande i rezultate negativnih provera, budžetskog prekida i provere browser builda.
+
 [T252 governance reconciliation](tasks/T252-governance-reconciliation-2026-11-22.md) verifies team approval, Git authorship, frozen hashes and aggregate arithmetic, and limits the open T252 record to its own actual reviewer/reproduction criteria; no Vedran-specific or project-wide gate is found. [The earlier approval attestation](tasks/T252-independent-approval-attestation-2026-11-22.md) preserves Isidora's checklist, Windows hashes and parity output.
 
 [Codex tehnički pregled završnog PR #3 kandidata](tasks/pr3-final-codex-technical-review-2026-11-22.md) bilježi tačan merge commit, izolovanu Mac reprodukciju, hash/paritet/regresiju, HTTP test-provider tok i ograničenje browser alata. [T252 je završen 23. novembra](tasks/feature-002-review.md#independent-review-and-t252-closure--2026-11-23) nakon što je Milan potvrdio nezavisni pregled Feature 002 i lično Windows T233 izvršavanje za `d46699f`.

@@ -100,6 +100,23 @@ it.each(['needs_information', 'failed', 'gathering_evidence', 'drafting'])('show
   if (state === 'failed') expect(el.textContent).toContain('output_invalid');
 });
 
+it('reopens a budget failure without starting or retrying an investigation', async () => {
+  const run = ready();
+  run.state = 'failed';
+  run.report = null;
+  run.failure = { code: 'budget_exhausted', message: 'Budget exceeded', outcome_unknown: false };
+  const client = clientWith(run);
+  const el = root();
+  dispose = mountReports(el, 'CASE-001', client);
+  await tick();
+
+  expect(el.querySelector('[data-run-state="failed"]')).not.toBeNull();
+  expect(el.querySelector('[role="alert"]')?.textContent).toContain('budget_exhausted');
+  expect(el.querySelector('[data-evidence]')).toBeNull();
+  expect(client.create).not.toHaveBeenCalled();
+  expect(client.retry).not.toHaveBeenCalled();
+});
+
 it('rejects other-case replies and cancels obsolete browser work including late evidence', async () => {
   const run = ready(); const wrong = { ...run, case_id: 'CASE-002' };
   const el = root(); dispose = mountReports(el, 'CASE-001', clientWith(wrong)); await tick();

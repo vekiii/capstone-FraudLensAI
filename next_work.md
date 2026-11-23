@@ -1,3 +1,14 @@
+## CAP-06 paket za predaju — 23. novembar 2026.
+
+PR #6 je uključen u `main` na `c297ceb`. Na kandidatu `55444ce`
+iz čistog checkout-a prošlo je 56 ciljanih backend provera, uključujući
+sedam CAP-06 kontrola, zatim 16 audit i 291 web test. Build i provera
+sintetičkog serverskog markera su prošli.
+[Dokaz i komande](evidence/security/cap06-submission-verification-2026-11-23.md).
+
+Sledeći korak je da tim na konačnom SHA predaje zabeleži kompaktan živi
+prolaz i kontrolisani budžetski prekid zajedno sa CAP-06 proverama.
+
 ## CAP-06 na integrisanom MVP-u — 23. novembar 2026.
 
 Na grani `fix/cap06-final-verification` kandidat `0151fac` odbija query
@@ -5,7 +16,7 @@ parametre za skor rizika pre lookup-a ili skoringa. Prošlo je svih 16
 audit testova, svih šest CAP-06 kontrola i 17 ciljanih backend regresija.
 Svih 290 web testova i build su prošli. [Završna evidencija](evidence/security/cap06-integrated-main-2026-11-23.md).
 
-Sledeći korak je uključivanje lokalne popravke i dokaza u verziju za predaju.
+Popravka i ovaj dokaz uključeni su u `main` kroz PR #6.
 
 ## PR #3 live Windows demo verification — 2026-11-23
 
