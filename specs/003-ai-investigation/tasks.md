@@ -552,6 +552,14 @@ These task IDs track the specific frozen 002 LightGBM integration in this worktr
 - [x] T108 [US2] Verify one bounded ID-only model→risk HTTP→published case→003 context→test-provider report/evidence→analyst disposition journey, exact score/provenance parity and 7d history; record actual browser/API/worker observations, hashes and identities. No live provider or label reads. (Depends: T107; FR-001–004, FR-011, FR-013–021, SC-007.)
 - [x] T109 [US2] Run focused and full relevant backend/frontend regression, typecheck/build/Ruff/diff and stale/fixture checks; record real command exits, failures/limits and next handoff in evidence and `next_work.md`. T252 stays independently open for human reproduction. (Depends: T108; FR-028, SC-007.)
 
+### Proposed local contribution follow-up (no activation)
+
+- [ ] T110 [US2] Feature 003 owner reviews and records decisions on method/version, linked identities/digests, unavailable reason, sidecar versus assessment migration and consumer notice in the [proposal](contracts/local-lightgbm-contributions-proposal-v1.md) and [compatibility evidence](../../evidence/tasks/002-003-contribution-compatibility-2026-11-23.md). Do not relabel an old method or rewrite historical snapshots.
+- [ ] T111 [US2] After T110, make accepted sidecar/contract RED tests GREEN across binding, new-attempt case-fact evidence, provider byte gate and any new case-page decoder; preserve old v2 schema/reports/bridge and the 48,000-byte input cap. No provider run is implied.
+- [x] T112 [US2] Execute the separately authorized local branch experiment: opt-in pinned sidecar read, distinct new-attempt evidence, duplicate-free provider projection, separate typed case view, two-case test-provider and browser checks, unchanged historical v2 and archived reports. Record actual checks in [local implementation evidence](../../evidence/tasks/002-003-local-contributions-implementation-2026-11-23.md). T110/T111 remain open for owner review and accepted delivery.
+- [x] T113 [US2] Run the authorized offline 48,000-byte initial/repair and persisted-audit regressions, reopen both post-correction LIVE reports through a copied local API store without a worker, prepare manual React review, and record visual-review limits in [final local evidence](../../evidence/tasks/002-003-final-local-review-2026-11-23.md). This does not close T110/T111 or constitute independent report evaluation.
+
+
 ### Authorized v8 cycle update, 2026-11-18
 
 User approved v8/reportv5 and153new/279total. Transferred5 T098 stores match

@@ -1,0 +1,3 @@
+# Original request — final local checks and Draft PR preparation
+
+The user authorized final offline input-budget checks with mock transport, local API/React read-only review of saved contribution reports, full relevant regressions, evidence/task/handoff updates, logical commits, feature-branch push and a Draft PR to `main`. The user explicitly prohibited further live provider calls, merge, training, labels, T230, showcase replay and Feature 006. Preserve original LIVE attempts, their outcomes, frozen artifacts and local work. Fetch origin and verify main/fast-forward before any push; do not rebase or force push. The full user wording was supplied in a private Codex attachment for this task.

@@ -190,3 +190,110 @@ def test_large_sdk_repair_is_still_validated_once_and_accounted(runtime, correct
     assert result['state'] == ('ready_for_review' if corrected else 'failed')
     if not corrected:
         assert result['report'] is None and result['failure']['code'] == 'output_invalid'
+
+
+@pytest.mark.parametrize('prompt_bytes,accepted', [(44132, True), (44133, False)])
+def test_exact_http_input_boundary_never_dispatches_oversized_request(prompt_bytes, accepted):
+    seen = []
+
+    def handler(request):
+        seen.append(len(request.content))
+        return httpx2.Response(200, json=response([], status='incomplete'))
+
+    async def exercise():
+        provider = OpenAIProvider('AUTHORED-NOT-REAL', 'test', prompt='X' * prompt_bytes,
+                                  transport=httpx2.MockTransport(handler))
+        try:
+            if accepted:
+                await provider.next_turn(messages(), definitions(), {}, LIMITS)
+            else:
+                with pytest.raises(ProviderError, match='budget_exhausted'):
+                    await provider.next_turn(messages(), definitions(), {}, LIMITS)
+        finally:
+            await provider.aclose()
+
+    asyncio.run(exercise())
+    assert seen == ([48000] if accepted else [])
+
+
+@pytest.mark.parametrize('continuation_bytes,accepted', [(43114, True), (43115, False)])
+def test_repair_exact_http_boundary_preserves_continuation_and_blocks_oversize(continuation_bytes, accepted):
+    seen = []
+    draft = scripted_draft([], 'needs_information')
+    output = [dict(type='reasoning', id='rs', summary=[],
+                   encrypted_content='X' * continuation_bytes),
+              dict(type='message', id='ms', role='assistant', status='completed',
+                   content=[dict(type='output_text', text=json.dumps(draft))])]
+
+    def handler(request):
+        seen.append(len(request.content))
+        return httpx2.Response(200, json=response(output if len(seen) == 1 else [],
+                                                   status='completed' if len(seen) == 1 else 'incomplete'))
+
+    async def exercise():
+        provider = OpenAIProvider('AUTHORED-NOT-REAL', 'test',
+                                  transport=httpx2.MockTransport(handler))
+        conversation = messages()
+        try:
+            await provider.next_turn(conversation, definitions(), {}, LIMITS)
+            assert provider.history[-2:] == output
+            conversation.append(dict(type='repair', code='output_invalid', reason='exact_assertion_mismatch'))
+            if accepted:
+                await provider.next_turn(conversation, definitions(), {}, {**LIMITS, 'tool_choice': 'none'})
+            else:
+                before = copy.deepcopy(provider.history)
+                with pytest.raises(ProviderError, match='budget_exhausted'):
+                    await provider.next_turn(conversation, definitions(), {},
+                                             {**LIMITS, 'tool_choice': 'none'})
+                assert provider.history == before
+        finally:
+            await provider.aclose()
+
+    asyncio.run(exercise())
+    assert seen == ([3868, 48000] if accepted else [3868])
+
+
+def test_oversized_repair_fails_closed_and_reopens_with_exact_dispatch_audit(runtime):
+    captured = []
+    calls = [('get_case_facts', {}), ('get_account_history', {'account_side': 'sender'}),
+             ('search_procedures', {'query': 'missing evidence'})]
+
+    def handler(request):
+        body = json.loads(request.content)
+        captured.append(len(request.content))
+        if len(captured) <= 3:
+            name, arguments = calls[len(captured) - 1]
+            output = [dict(type='reasoning', id=f'rs_{len(captured)}', summary=[], encrypted_content='OPAQUE'),
+                      dict(type='function_call', id=f'fc_{len(captured)}', call_id=f'call_{len(captured)}',
+                           name=name, arguments=json.dumps(arguments))]
+        else:
+            assert len(captured) == 4
+            conversation = [dict(type='tool_result', result=json.loads(item['output']))
+                            for item in body['input'] if item.get('type') == 'function_call_output']
+            draft = scripted_draft(conversation, 'grounded')
+            draft['observed_facts'][0]['exact_assertions'][0]['value'] = '999999.00'
+            output = sized_output(body, draft, 53000)
+        return httpx2.Response(200, json=response(output))
+
+    _, request, make = runtime
+    service = make()
+    service.settings = InvestigationSettings(max_provider_requests=5)
+    service.provider_factory = lambda binding: OpenAIProvider('AUTHORED-NOT-REAL', 'authored-model',
+        prompt=binding['prompt'], transport=httpx2.MockTransport(handler))
+    created = create(service, request)
+    result = asyncio.run(service.work_once())
+    assert result['state'] == 'failed' and result['failure']['code'] == 'budget_exhausted'
+    assert result['failure']['outcome_unknown'] is False and result['report'] is None
+    assert result['budget']['provider_requests'] == 5 and result['budget']['repairs'] == 1
+    assert len(captured) == 4 and max(captured) <= 48000
+    with service.repo.connection() as db:
+        rows = db.execute('SELECT sequence,outcome FROM provider_dispatches WHERE attempt_id=? ORDER BY sequence',
+                          (created['attempt_id'],)).fetchall()
+    assert [(row[0], row[1]) for row in rows] == [
+        (1, 'completed'), (2, 'completed'), (3, 'completed'), (4, 'completed'), (5, 'failed')]
+    events = service.events(created['attempt_id'])
+    assert [event['operation'] for event in events if event['operation'] in ('repair', 'failure')][-2:] == [
+        'repair', 'failure']
+    assert service.read(created['attempt_id']) == result
+    assert asyncio.run(service.work_once()) is None
+    assert len(captured) == 4
