@@ -1,0 +1,80 @@
+# T252 independent review and team approval attestation — 2026-11-22
+
+## Record status
+
+**Current reconciliation (2026-11-22):** The user clarified that they are reporting a team decision as its representative and are not Vedran or a personal attestor for him. Team approval of the reviewed local work is recognized. Vedran's own T252 review is **not independently verified**, and no written project rule requires his personal signature. [The governance and verification record](T252-governance-reconciliation-2026-11-22.md) limits the open T252 item to its own actual reviewer/reproduction evidence; it does not block unrelated authorized work. Historical statements below remain as the sequence in which evidence arrived.
+
+**User-reported disposition: APPROVED on behalf of the team. T252 remains open.** In this conversation the user states that they performed the T252 manual checklists and approve the reviewed scope on behalf of the whole team. They initially identified as an independent reviewer, but later identified as Isidora Popovic and answered a direct question about Feature 002 authorship with `i did all as a team`. This document records those statements as user attestations; it does not convert assistant-prepared summaries into reviewer actions or record separate approvals from unnamed team members.
+
+The T252 acceptance record calls for actual reviewer scope and reproduction details. The conversation now includes six user-supplied Windows PowerShell SHA-256 results and a successful user-reported parity output from the reviewed checkout. It does not provide the exact elapsed review time or a separate nonauthor's findings. The user-reported approval is recorded, but the missing independent review prevents marking T252 complete under the existing review gate. No duration is estimated.
+
+## Review identity and scope
+
+- **Reviewer/team representative:** Isidora Popovic, as supplied by the user in the later reply. This is one representative approval, not individual approvals by every team member.
+- **Independence:** Git history in the reviewed `d46699f` ancestry attributes protocol, data and training work to `Isidora Popovic LUKOWA`, including `70f3019` (T212 temporal protocol), `937beec` (T219 partition hashes), `03c69c2` (T226 validation evaluation), and `14fede4` (IBM-day split/LightGBM pipeline). Asked directly whether those commits were hers and who independently reviewed them, the user replied `isidora popovic i did all as a team`; no separate reviewer or findings were named. The reply does not map every contribution individually, but it confirms substantial participation under the matching name. Isidora's team approval cannot supply nonauthor review for her own work. The prior T252 record also scoped the user's manual confirmation as not independent of her Feature 002 model work.
+- **Team representation:** user expressly says the approval is on behalf of the whole team. No other team member is named and no separate individual responses are in this conversation; this record attributes the representative approval to the user.
+- **Decision date:** 2026-11-22 (conversation date); exact time not supplied.
+- **Review duration:** not stated in the conversation; not estimated.
+- **Reviewed PR #3 candidate:** `d46699fbd11219ebc92c6ef002d4924a4c7d4b34`, as referenced by the T252 packet. `git ls-remote origin refs/pull/3/head` independently returned that same commit on 2026-11-22 at approximately 20:54 UTC; this is a point-in-time check, not a future-head guarantee.
+- **Decision:** user-reported approval of all five T252 checklist areas, on behalf of the team, within the reviewed candidate and the limitations recorded below.
+
+## Checklist scope and supporting repository evidence
+
+The user states that they completed and approved each checklist area. The evidence links below are the repository support discussed in this conversation; they are technical records, not proof of the user's own execution.
+
+| Review area | User-reported outcome | Supporting evidence and scope limits |
+|---|---|---|
+| Protocol and model choice | Approved, per user attestation | `specs/002-data-and-risk-scoring/protocol.md`; `evidence/tasks/T228.md`; `T229.md`; `T230.md`. Records bind the unweighted LightGBM model SHA-256 `3b4e4019312d60610dd0094c6697897a061611a60e7777ed7be35e133af9451c`, trusted manifest `c766e90159a70eff2d1f29d5ff425029af20ff123f1fad08e45f9fc416076d45`, and fixed threshold `0.2489517623052024`. The model was selected using validation; the records disclose later validation reuse for diagnosis/ranking. |
+| Data provenance | Approved, per user attestation | `data/README.md`; `evidence/tasks/T203.md`; `T210.md`; source and feature manifests. The exact local source copy is hash-bound, while upstream Kaggle revision, acquisition date, listing terms, and publisher timezone remain unknown. Approval does not resolve these unknowns. |
+| Metrics and claims | Approved, per user attestation | `evidence/tasks/T228.md`, `T229.md`, `T230.md`, `T251.md`. T230 records one authorized aggregate-only test result on 233,070 rows for 2022-09-06 00:00–11:12 UTC: TP/FP/TN/FN 44/21/232,831/174; precision 0.676923; recall 0.201835; F1 0.310954; AP 0.2745021334479726; ROC AUC 0.976155; Brier 0.000770. Threshold alerts: 65. P@20/50/100 are 18/20, 38/50, 52/100 over the whole partition. Probabilities are uncalibrated; validation was reused; the results are not deployment performance claims. The showcase prevalence exception means showcase is not an unbiased holdout. |
+| Application behavior and limits | Approved, per user attestation | `evidence/tasks/T233.md`, `T236.md`, `T240.md`, `T242.md`, and the PR #3 Codex review. These report hash-gated artifact loading/fail-closed tests, fixture availability, label-free parity, frontend/backend regression, browser result/error states, and test-provider investigation behavior. The test-provider flow is not a live LLM evaluation or a human AML decision. |
+| Independent reproduction | Approved, per user attestation; six hash results and successful parity output supplied | T233/T236/T240/T242 and the Codex/Windows review records contain technical checks by their recorded contributors. Isidora supplied matching PowerShell SHA-256 values for six review inputs and the final `T233-parity.py` output from the temporary checkout (below). Because she contributed to Feature 002, this does not replace the required nonauthor review/reproduction. |
+
+## Known limitations accepted within this reported approval
+
+The approval does not change the recorded facts that the scores are uncalibrated, validation was reused for selection/diagnosis, source provenance is incomplete, T230 is one result for a specific synthetic source and split, and showcase is not an unbiased holdout. The documented app/API is a local single-user workflow; the evidence is not a production readiness claim. No new test evaluation, training, label access, showcase replay, or live provider call was performed for this record.
+
+## Reviewer-supplied Windows hash and renewed approval
+
+After a PowerShell `Get-FileHash -Algorithm SHA256 -LiteralPath` check was suggested for the original checkout's `data/processed/t219-ibm-day-60-20-20-v1/test.jsonl`, the user pasted a result table with algorithm `SHA256`, hash `693320617CD8FF05C3BA177FCF9E3447BD2F7B92C5B29736FCE304D60023C9E0`, and a path column truncated by PowerShell's display. The digest matches the T219 frozen label-free test-feature SHA-256 `693320617cd8ff05c3ba177fcf9e3447bd2f7b92c5b29736fce304d60023c9e0`. The exact execution time and complete environment were not supplied. This is a user-reported result for one file; earlier assistant-side rehashes are separate technical observations.
+
+The user then stated, "everythign is approved by me in the name of the team". This renews the representative approval attestation without adding named individual team approvals. In the separate T252 worktree at commit `d46699f`, the ignored feature files, frozen model/prediction files and T230 aggregate report were still absent when checked by Codex. No user-run parity or report-hash result has been supplied, so this single source-file hash does not establish complete independent reproduction.
+
+## Follow-up identity and reproduction response
+
+Asked for the reviewer's name and which Feature 002 work they personally authored, the user replied `isidora as a team`. This identifies the team representative by first name but does not answer the authorship question. Asked whether the remaining frozen model/prediction/report hashes and `T233-parity.py` had been completed, with a request to paste observed results or list missing files, the user replied `yes`. Record that as a claim of completion, not as observed hash or parity results. A fresh local check of the separate Windows T252 worktree still found the ignored model, prediction, aggregate report and test feature file absent; the conversation does not identify a different checkout or provide the actual outputs. No assumption is made about what Isidora ran elsewhere.
+
+In a later direct follow-up, the user answered the authorship question `isidora popovic i did all as a team`. Asked again for the actual remaining SHA-256 and parity outputs, the user asked `how do i get that sha`. The actual model, prediction, manifest, T230 report and parity results remain unprovided. A fresh check found the frozen model/prediction and T230 aggregate report absent in both available Windows checkouts; the T219 manifest and label-free test feature file exist only in the original checkout. Their absence prevents computing those missing digests from the files currently available here. No claim is made that the user did or did not run checks in another environment.
+
+## Windows review-input hash receipt — 2026-11-22
+
+Isidora pasted six SHA-256 outputs from PowerShell in the temporary T252 checkout at `C:\Users\IsidoraPopovicLUKOWA\AppData\Local\Temp\FraudLensAI-T252-20261122-214436`. The immediately preceding suggested command was `Get-FileHash -LiteralPath $_ -Algorithm SHA256` over the six paths below; the pasted table shows hashes and truncated path columns. Codex separately verified that checkout's HEAD as `d46699fbd11219ebc92c6ef002d4924a4c7d4b34`, checked the supplied ZIP against its `.sha256` sidecar, and extracted only these six archive entries after matching their known digests. The user-reported hashes, which match the project records, are:
+
+| Review input | User-reported SHA-256 |
+|---|---|
+| Frozen model `model.txt` | `3b4e4019312d60610dd0094c6697897a061611a60e7777ed7be35e133af9451c` |
+| Trusted model `manifest.json` | `c766e90159a70eff2d1f29d5ff425029af20ff123f1fad08e45f9fc416076d45` |
+| Sealed test predictions | `99727d426f78698ee9a0f37ec50c1c900dc848f13bed6ef0756544f76c3f04f7` |
+| Existing T230 aggregate report | `5027dae9354796718a080086a6cadc0319d1b376336ad4dac8d93b4e534d9cdb` |
+| T219 feature manifest | `63873b79a1ff875c5702a62c40c7a9cb3faef6bb7e0bb658739abac35274c05f` |
+| T219 label-free test features | `693320617cd8ff05c3ba177fcf9e3447bd2f7b92c5b29736fce304d60023c9e0` |
+
+The date is the conversation date; the exact command execution time and elapsed review duration were not supplied. This closes the previously missing-input/hash-output portion of the record. No user-run `T233-parity.py` result or nonauthor review findings were supplied, and no T230 evaluation was repeated. T252 stays open.
+
+## Windows HTTP parity failure and input repair — 2026-11-22
+
+Isidora then ran the suggested `T233-parity.py` command and pasted a `StarletteDeprecationWarning`, `Opt-in model inputs are unavailable or incompatible`, and an assertion failure because the risk route returned HTTP `503` rather than `200`. The script had reached the HTTP check after its eight offline score comparisons; this is not a successful user parity result. Codex inspected the reviewed `d46699f` checkout and found that `FeatureStore._verify()` requires all three T219 partition files at application startup; `train.jsonl` and `validation.jsonl` were absent. The warning was incidental to the failure.
+
+The supplied ZIP contained both missing label-free partitions. Codex checked the checkout HEAD, verified the archive entries against the existing T219 manifest, then extracted only those two ignored files without overwriting existing paths. On-disk SHA-256 values matched: train `0c1debf145db1268172c08089db2911b7008239a7c28b8924ca531eea7631899`; validation `2106dea32e8943433068bedf8a2734a3e1d55ca303883b14bfd3705fe1b1d273`. Codex's separate rerun using `.venv\Scripts\python.exe evidence\tasks\T233-parity.py` with `PYTHONPATH=backend\src` exited 0 and printed `8/8 exact float parity by ID-only deterministic sample; 1/1 HTTP parity`. It again emitted the deprecation warning. No label access, T230 repeat, training, or code change occurred. Isidora's successful rerun followed; the nonauthor review gate remains open.
+
+## Isidora's successful Windows parity rerun — 2026-11-22
+
+Following the input repair and the supplied PowerShell command, Isidora pasted the `T233-parity.py` output: `8/8 exact float parity by ID-only deterministic sample; 1/1 HTTP parity`; selected source rows `2980342, 2909041, 2815908, 2861986, 2933085, 2843142, 2913707, 2950267`. The same `StarletteDeprecationWarning` about `httpx` appeared before the success lines. The output establishes that the script reached its final success prints in her reported run; no separate shell exit-code line or exact execution time was supplied. The command was the previously provided `.venv\Scripts\python.exe evidence\tasks\T233-parity.py` with `PYTHONPATH` set to `backend\src` in the temporary `d46699f` checkout. This is Isidora's reported run, separate from Codex's earlier rerun. It does not provide independent nonauthor review of her Feature 002 contributions.
+
+## Open closure items
+
+1. Obtain and record a separate nonauthor's review, reproduction scope, findings and disposition for the Feature 002 protocol, data, training and related metrics work that Isidora contributed to.
+2. Keep review duration as `not recorded` unless the reviewer supplies a truthful measured/remembered duration.
+3. Recheck the PR #3 head before applying the approval to any commit later than the recorded candidate; the 2026-11-22 remote check matched `d46699f`.
+
+**Task status: T252 remains unchecked; this is not a closure waiver.** T233, T236, T240, and T242 retain their previously recorded technical completion evidence.
