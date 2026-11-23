@@ -13,6 +13,7 @@ from fraudlens.investigation.retrieval import search
 ARGUMENTS = {'get_case_facts': 'CaseFactsArguments',
              'get_account_history': 'HistoryArguments', 'search_procedures': 'SearchArguments'}
 MAX_BYTES = 16000
+COMPACT_TEXT = 'Exact facts are listed by path below; full JSON is saved with this evidence.'
 # Defense in depth for executable/scope-changing requests. This is not a general
 # injection detector: document prose is always data and cannot change authority.
 UNSAFE_QUERY = re.compile(
@@ -55,6 +56,10 @@ def provider_evidence(item):
     result = {key: copy.deepcopy(item[key]) for key in
               ('evidence_id', 'kind', 'text', 'facts', 'returned_count',
                'eligible_count', 'truncated')}
+    # The compact prefix is part of the saved text, so quotations of it remain
+    # verifiable. All exact facts and full procedure passages remain present.
+    if result['text'].startswith(COMPACT_TEXT + '\n'):
+        result['text'] = COMPACT_TEXT
     if item['passage'] is not None:
         passage = item['passage']
         result['provenance'] = {key: passage['document'][key] for key in (
@@ -68,7 +73,8 @@ def provider_evidence(item):
 
 class ToolExecutor:
     def __init__(self, repository, attempt_id, owner, context, knowledge,
-                 corpus_version, retrieval_version, history_reader=None, *, history_bounds=False):
+                 corpus_version, retrieval_version, history_reader=None, *, history_bounds=False,
+                 local_sidecar=None):
         self.repo, self.attempt_id, self.owner = repository, attempt_id, owner
         self.context = validate('InvestigationContext', context)
         self.attempt = repository.get(attempt_id)
@@ -77,6 +83,7 @@ class ToolExecutor:
         self.knowledge, self.corpus, self.retrieval = knowledge, corpus_version, retrieval_version
         self.history_reader = history_reader or HistoryReader()
         self.history_bounds = history_bounds
+        self.local_sidecar = local_sidecar
 
     def _item(self, kind, text, exact_facts, returned=1, eligible=1,
               truncated=False, passage=None, history=None):
@@ -95,6 +102,10 @@ class ToolExecutor:
 
     def _case(self):
         body = outbound_context(self.context, self.attempt['run_id'])
+        if self.local_sidecar is not None:
+            body['notice'] = ('Synthetic benchmark; published v2 explanation was unavailable. '
+                              'A separately verified local log-odds contribution sidecar is provided as evidence. '
+                              'Contributions are not causal findings or a calibrated probability.')
         body['limitations'] = ['Fixture score is not calibrated probability; not ML inference.',
                                'No independently verified fixture timezone/time-basis provenance.',
                                'Occupation, device and source of funds are unavailable.']
@@ -102,8 +113,18 @@ class ToolExecutor:
             body['limitations']=['Synthetic benchmark; preserve score kind/source and explanation status.',
                                  'Preserve raw minute time and explicit assumed UTC time basis.',
                                  'Occupation, device and source of funds are unavailable.']
-        item = self._item('case_fact', canonical(body).decode(), facts(body))
-        return [item], self._result([item], 1, 1, False)
+        compact = self.local_sidecar is not None
+        item = self._item('case_fact', (COMPACT_TEXT + '\n' if compact else '') + canonical(body).decode(), facts(body))
+        items = [item]
+        if compact:
+            sidecar = self.local_sidecar
+            summary = {key: sidecar[key] for key in ('contract_version', 'method', 'explained_scale',
+                'canonical_transaction_id', 'transaction_id', 'case_id', 'assessment_run_id',
+                'context_revision', 'feature_snapshot_digest', 'model_sha256', 'evidence_digest',
+                'base_value', 'raw_score', 'items', 'remainder')}
+            items.append(self._item('case_fact', COMPACT_TEXT + '\n' + canonical(summary).decode(),
+                                    facts({'local_contribution_v1': summary})))
+        return items, self._result(items, len(items), len(items), False)
 
     def _history(self, side):
         raw = self.history_reader.read(self.context, side, 50)
@@ -137,7 +158,7 @@ class ToolExecutor:
             history['reason'] = 'History unavailable for selected side; not empty history.'
         while True:
             body['returned_count'] = len(body['events'])
-            item = self._item('history', canonical(body).decode(), facts(body),
+            item = self._item('history', (COMPACT_TEXT + '\n' if self.local_sidecar is not None else '') + canonical(body).decode(), facts(body),
                               body['returned_count'], body['eligible_count'], body['truncated'],
                               history=history)
             result = self._result([item], body['returned_count'], body['eligible_count'], body['truncated'])

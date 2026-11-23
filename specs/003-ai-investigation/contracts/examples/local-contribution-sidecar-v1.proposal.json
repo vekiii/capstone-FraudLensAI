@@ -1,0 +1,97 @@
+{
+  "contribution_sidecar_v1": {
+    "assessment_run_id": "run_bridge_d9bf94d28561f10315a190a0",
+    "base_value": -9.945714675483181,
+    "canonical_transaction_id": "ibm-hi-small:b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040:row:1500153",
+    "case_id": "C0674a2484035b8a21df34cbd69f3a38b",
+    "context_revision": "2be5b6e5e02fc5c6e67d0826bbe6753e2b777828fae45e501c37d47af7d21979",
+    "contract_version": 1,
+    "dataset_version": "dv_0980038486c6ef5b57d3c3b4173dd83eedd0dfdd9580b3e70cf43e16cbab44e1",
+    "evidence_digest": "c06157eee0f09dd602433f90c946c6f175f63ae57b9f30ab2a9f4cfbfe3bb627",
+    "explained_scale": "log_odds",
+    "feature_snapshot_digest": "sha256:3278d5d6cf8eba21f1740e136ca4e6726141a57239ee038c92eee1f9d18a3a5a",
+    "feature_version": "hi-small-temporal-v1",
+    "items": [
+      {
+        "contribution": 9.350597057962878,
+        "direction": "increases",
+        "feature_key": "current_payment_format",
+        "observed_value": "ACH",
+        "unit": "category"
+      },
+      {
+        "contribution": 8.981446462206636,
+        "direction": "increases",
+        "feature_key": "sender_out_count_24h",
+        "observed_value": "1",
+        "unit": "count"
+      },
+      {
+        "contribution": -3.804758062294226,
+        "direction": "decreases",
+        "feature_key": "sender_paid_count_same_currency_24h",
+        "observed_value": "0",
+        "unit": "count"
+      }
+    ],
+    "manifest_sha256": "c766e90159a70eff2d1f29d5ff425029af20ff123f1fad08e45f9fc416076d45",
+    "matrix_feature_order_sha256": "783b54d4289abedbba1b678bc44c4ec000347353e250c6471a5f589563af2b82",
+    "method": "lightgbm_pred_contrib_log_odds_v1",
+    "model_sha256": "3b4e4019312d60610dd0094c6697897a061611a60e7777ed7be35e133af9451c",
+    "num_iteration": 140,
+    "objective": "binary sigmoid:1",
+    "partial": true,
+    "raw_score": 2.537982469660797,
+    "remainder": -2.0435883127311887,
+    "score": 0.9267620061893889,
+    "status": "available",
+    "transaction_id": "D5587ddcabefea0cea44932ced278aa44"
+  },
+  "existing_provider_context_v2": {
+    "assessment": {
+      "dataset_version": "dv_0980038486c6ef5b57d3c3b4173dd83eedd0dfdd9580b3e70cf43e16cbab44e1",
+      "event_time_utc": "2022-09-06T06:29:00Z",
+      "explanation": {
+        "feature_snapshot_digest": "sha256:3278d5d6cf8eba21f1740e136ca4e6726141a57239ee038c92eee1f9d18a3a5a",
+        "reason_code": "unsupported_method",
+        "status": "unavailable"
+      },
+      "feature_version": "hi-small-temporal-v1",
+      "history_coverage": {
+        "start": "2022-09-01T00:00:00Z",
+        "state": "incomplete"
+      },
+      "history_cutoff_exclusive_at": "2022-09-06T06:29:00Z",
+      "run_id": "run_bridge_d9bf94d28561f10315a190a0",
+      "score": 0.9267620061893889,
+      "score_kind": "uncalibrated_probability_estimate",
+      "score_source": "model",
+      "scored_at": "2026-11-22T13:05:01.335394Z",
+      "scorer_version": "lightgbm-3b4e4019312d",
+      "transaction_id": "D5587ddcabefea0cea44932ced278aa44"
+    },
+    "case_id": "C0674a2484035b8a21df34cbd69f3a38b",
+    "context_contract_version": 2,
+    "context_revision": "2be5b6e5e02fc5c6e67d0826bbe6753e2b777828fae45e501c37d47af7d21979",
+    "notice": "Synthetic benchmark; model feature contributions unavailable. Score is not a calibrated probability. Human decision required.",
+    "source_mode": "dataset",
+    "transaction": {
+      "event_time_raw": "2022/09/06 06:29",
+      "event_time_utc": "2022-09-06T06:29:00Z",
+      "paid": {
+        "amount": "16182.82",
+        "currency": "Canadian Dollar"
+      },
+      "payment_format": "ACH",
+      "received": {
+        "amount": "16182.82",
+        "currency": "Canadian Dollar"
+      },
+      "receiver_alias": "account_ceacf8ea6dab30711a2005f2",
+      "sender_alias": "account_e1827013bc0276fa4e9e32ec",
+      "time_basis": "assumed_utc_for_synthetic_benchmark",
+      "transaction_id": "D5587ddcabefea0cea44932ced278aa44"
+    }
+  },
+  "proposal_status": "unapproved_isolated_example"
+}

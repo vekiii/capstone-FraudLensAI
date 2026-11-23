@@ -1,3 +1,7 @@
+# Local contribution experiment addendum — 2026-11-23
+
+The separately authorized branch experiment materializes 65 label-free native LightGBM sidecars under an ignored local path and records a distinct external SHA-256 pin. It reuses the frozen trusted loader/preprocessing/140 trees and leaves scoring, threshold, bridge and accepted v2 assessment unchanged. The full 32-column calculation remains local; only three grouped terms and their remainder enter the bounded sidecar. [Actual implementation and checks](../../evidence/tasks/002-003-local-contributions-implementation-2026-11-23.md) do not constitute Feature 003 contract approval. T257/T258 remain for accepted delivery.
+
 # Implementation Plan: Dataset, Machine Learning and EDA
 
 **Branch**: `feature/002-clean-start` (observed; unchanged)
@@ -126,5 +130,9 @@ Show prediction score, threshold status, feature/model version, synthetic-data n
 | Class strategy | Decision recorded 2026-11-20 | Train-only class weighting using training negative/positive ratio; constant baseline unweighted | Natural validation/test/showcase prevalence retained | Full FR-021 protocol approval before fitting |
 
 ## Complexity Tracking
+
+### Frozen local contributions proposal — 2026-11-23
+
+The isolated, non-serving prototype in `backend/src/fraudlens/scoring/local_contributions.py` reuses `ModelScorer` and its verified manifest/Booster. It verifies the manifest's 32-column order against the frozen preprocessor, evaluates native probability, raw margin and `pred_contrib` on one matrix with all 140 trees, and groups the 32 additive terms into the 11 source features. It does not modify scoring, threshold, artifacts or the published bridge. Numerical results, RED/GREEN and limitations: [execution record](../../evidence/tasks/002-local-contributions-2026-11-23.md). A distinct Feature 003 contract remains [proposed for owner review](../003-ai-investigation/contracts/local-lightgbm-contributions-proposal-v1.md).
 
 No infrastructure expansion requested. A columnar format and bounded temporal state are justified by source volume; select the simplest option that meets measured resource constraints. Do not introduce SQLite, database services, or a charting package by default.

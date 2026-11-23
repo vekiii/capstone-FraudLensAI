@@ -1,4 +1,26 @@
+# Feature 003 sidecar review handoff, 2026-11-23
+
+The [small offline package record](tasks/002-003-sidecar-owner-handoff-package-2026-11-23.md) identifies the reviewed PR #7 commit, independently pinned sidecar, SQLite backup of exactly two post-correction LIVE reports, 11/11 cited evidence checks, Windows instructions and ZIP hashes. The user relayed the owner's choice of separate sidecar v1 and the unchanged 48,000-byte input cap, and later reported sending the package to Milan. Implementation review, Windows reproduction and a future joint LIVE probe remain pending; the ignored package itself is outside Git.
+
+# Local contribution real-provider demo, 2026-11-23
+
+The [scoped LIVE demo record](tasks/002-003-local-contributions-live-demo-2026-11-23.md) covers both authorized attempts, configured provider and frozen pins, actual usage and duration, HTTP-cited evidence checks, one material report-wording finding, a test-only saved review, and browser/input-byte limitations. The [original continuation request](../prompts/development/2026-11-23-002-003-local-contributions-live-continuation.md) is preserved. No shared contract is accepted by this run.
+
+# Private provider configuration, 2026-11-23
+
+The [private `.env` setup receipt](tasks/002-003-private-env-preparation-2026-11-23.md) records Git ignore, owner-only file mode, blank field-name validation and the shared API/worker loader. No credential or live provider call is recorded.
+
+# Local contribution LIVE preflight, 2026-11-23
+
+The [scoped LIVE demo preflight](tasks/002-003-local-contributions-live-preflight-2026-11-23.md) stopped before provider calls because this checkout lacks the private key and active model configuration. Both approved attempts are explicitly not started; frozen pins and 65-row score/status parity were rechecked. The [exact authorization](../prompts/development/2026-11-23-002-003-local-contributions-live-demo.md) is preserved.
+
+# Local contribution implementation, 2026-11-23
+
+The [local sidecar implementation receipt](tasks/002-003-local-contributions-implementation-2026-11-23.md) records the separately authorized Feature 002/003 branch experiment, 65 pinned label-free sidecars, exact score parity, offline provider request bytes, test-provider/browser flow, full regressions and pending Feature 003 owner decisions. The [exact development request](../prompts/development/2026-11-23-002-003-local-contributions-implementation.md) is preserved. This is not accepted shared-contract delivery.
+
 # Execution evidence
+
+[Frozen LightGBM contribution workspace preparation](tasks/002-model-contributions-preparation-2026-11-23.md) records the new origin/main worktree, locked runtime, ignored hash-verified inputs, trusted loader smoke check, consumer review and next-unit plan.
 
 [CAP-06 na integrisanom kandidatu](security/cap06-submission-verification-2026-11-23.md) sadrži testirani SHA, komande i rezultate negativnih provera, budžetskog prekida i provere browser builda.
 
@@ -89,6 +111,12 @@ The [T228 transfer record](tasks/T228-transfer.md) identifies the request, recor
 - [2026-11-19 local commit receipt](tasks/session-commits-2026-11-19.md): reviewed file scope, commit identity, checks and publication status.
 
 The raw CSV, snapshot, stage and quality report live in ignored `data/` paths and are not part of Git. No feature/model evaluation or authorized restricted label audit has been reported for T210.
+
+The [synthetic-input/model-prediction wording correction](tasks/002-003-synthetic-model-prediction-wording-2026-11-23.md) traces a contradictory saved v6 prompt instruction, records the local prompt/test diff, 40 passing focused tests, unchanged 65/65 scores and statuses, and immutable original LIVE attempt outcomes. It plans but does not run another provider measurement.
+
+The [post-correction LIVE recheck](tasks/002-003-local-contributions-live-recheck-2026-11-23.md) records two newly authorized real-provider attempts, measured request-body bytes, usage, report/citation review, immutable original attempts and the browser limitation. It is a scoped post-fix check, not independent evaluation or Feature 003 contract acceptance.
+
+The [final local contribution review](tasks/002-003-final-local-review-2026-11-23.md) records exact 48,000-byte mock repair guards and audit behavior, current offline builder sizes, full backend/React regressions, frozen score parity, an isolated read-only manual-review store and the blocked origin fetch. It does not claim a visual browser check or Feature 003 owner approval.
 
 The [Stage C Mac receipt](tasks/T228-stagec-mac-receipt-2026-11-20.md) records this colleague's independent transfer checks, locked environment, no-fit tests, and blockers; it does not claim protocol approval or a model fit.
 

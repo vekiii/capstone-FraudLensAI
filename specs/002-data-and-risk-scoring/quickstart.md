@@ -8,17 +8,17 @@ From repository root, these commands exist; fixture mode requires no dataset or 
 
 ```powershell
 uv sync --locked --group dev
-npm.cmd --prefix frontend ci
+npm.cmd --prefix web ci
 uv run --locked uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
-npm.cmd --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort
+npm.cmd --prefix web run dev -- --host 127.0.0.1 --port 5173 --strictPort
 uv run --locked pytest backend/tests
 uv run --locked ruff check backend
-npm.cmd --prefix frontend run test -- --run
-npm.cmd --prefix frontend run typecheck
-npm.cmd --prefix frontend run build
+npm.cmd --prefix web run test -- --run
+npm.cmd --prefix web run typecheck
+npm.cmd --prefix web run build
 ```
 
-Python dependencies use root `uv.lock`; frontend dependencies use `frontend/package-lock.json`. Initial install may require network access; runtime fixture mode does not.
+Python dependencies use root `uv.lock`; frontend dependencies use `web/package-lock.json`. Initial install may require network access; runtime fixture mode does not.
 
 ## Proposed Feature 002 commands (not implemented)
 
@@ -56,7 +56,7 @@ Python dependencies use root `uv.lock`; frontend dependencies use `frontend/pack
 
    The command must fail closed on mismatched hashes or incomplete protocol and must not read test/showcase record labels.
 
-7. Model loading is a deliberate local setting. Without a compatible artifact, start the existing backend/frontend using the Feature 001 commands above; fixture mode remains available. The planned prediction view and EDA route require implementation, with EDA UI conditional on team approval.
+7. Model loading is a deliberate local setting. Without a compatible artifact, start the existing backend/web using the Feature 001 commands above; fixture mode remains available. The planned prediction view and EDA route require implementation, with EDA UI conditional on team approval.
 8. Add Feature 002 checks to the existing locked pytest/Ruff/Vitest/typecheck/build commands. Record actual command, versions, exit status, outputs and limitations in `evidence/`; do not copy sample outputs as execution evidence.
 9. Test evaluation is separate and requires a separate explicit authorization after frozen predictions. It is never part of the training quickstart.
 

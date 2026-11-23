@@ -1,0 +1,7 @@
+# Feature 002→003 contribution compatibility request — 2026-11-23
+
+User request retained in condensed form; the chat message is the verbatim source:
+
+> Provjeri tehničku kompatibilnost predloženih doprinosa sa Feature 003. Ne čekaj dodatno pojašnjenje da bi istražio postojeći kod. Pročitaj AGENTS.md, next_work.md, prototip local_contributions.py i prijedlog local-lightgbm-contributions-proposal-v1.md. Prati cijeli put objašnjenja od bridge/assessment kroz investigation kontekst, validatore, evidence i outbound provider zahtjev do frontend dekodera/prikaza. Utvrdi tačne blokade. Uporedi verzionisani artefakt objašnjenja i novu assessment/context verziju te preporuči najmanje rješenje koje čuva stare kontekste, bridge i izvještaje. Napravi izolovan primjer i ciljane testove bez mijenjanja prihvaćenih ugovora. Provjeri svih 65 objavljenih upozorenja na provjerenim label-free redovima i nepromijenjenost skorova/statusa. Bez live poziva izmjeri puni serijalizovani provider zahtjev za row:1500153 i row:2959955 stvarnim builderom; ako ulazi nedostaju, navedi ih i ne predstavljaj procjenu kao mjerenje. Ne povećavaj 48.000 bajtova; predloži bounded projekciju bez gubitka činjenica/dokaza. Vrati preporučeni ugovor, primjer, testove i odluke vlasnika; ažuriraj evidence i handoff.
+>
+> Granice: bez promjene modela, praga, preprocessinga, postojećih artefakata; bez treninga, labela, T230, showcase replaya, Feature 006, live providera, commita, pusha ili mergea.

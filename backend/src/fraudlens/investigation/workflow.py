@@ -9,6 +9,11 @@ from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 from fraudlens.investigation.context import CaseContextReader, HistoryReader, outbound_context
+from fraudlens.investigation.contribution_sidecar import (
+    SidecarInvalid,
+    SidecarMissing,
+    SidecarReader,
+)
 from fraudlens.investigation.models import SCHEMA, canonical, digest, validate
 from fraudlens.investigation.provider import ProviderError, ScriptedProvider, safe_diagnostic
 from fraudlens.investigation.repair import repair_reason
@@ -82,6 +87,20 @@ class InvestigationService:
         self.history_reader = history_reader or (HistoryReader(dataset_reader=dataset_reader)
                                                  if dataset_reader is not None else None)
         self.semantic_selector = None
+        self.sidecar_reader = (SidecarReader(self.settings.local_contribution_path,
+                                           self.settings.local_contribution_sha256)
+            if self.settings.local_contribution_path is not None else None)
+
+    def _local_contribution(self, context):
+        if self.sidecar_reader is None or context['source_mode'] != 'dataset':
+            return 'unavailable', None
+        try:
+            binding = self.context_reader.dataset_reader._binding(case_id=context['case_id'])
+            return 'available', self.sidecar_reader.read(binding, context)
+        except SidecarMissing:
+            return 'unavailable', None
+        except (SidecarInvalid, ValueError, OSError, KeyError, TypeError):
+            return 'invalid', None
 
     def _provider(self, binding):
         if binding['provider_mode'] == 'test':
@@ -151,6 +170,11 @@ class InvestigationService:
                            self.settings.model.get_secret_value() if self.settings.provider == 'openai' else None),
                        test_scenario=getattr(self.settings, 'test_scenario', 'grounded'),
                        report_policy=HUMAN_AUTHORITY_POLICY)
+        if self.sidecar_reader is not None:
+            contribution_status, sidecar = self._local_contribution(context)
+            binding['local_contribution_status'] = contribution_status
+            if sidecar is not None:
+                binding['local_contribution_sidecar'] = sidecar
         if self.settings.report_parallel_tools:
             binding['report_parallel_tools'] = True
         if self.settings.report_strict_sections:
@@ -287,6 +311,16 @@ class InvestigationService:
         if context['context_revision'] != parent['context_revision']:
             raise ValueError('stale_snapshot')
         binding = dict(self.binding(attempt_id))
+        current_contribution_status, current_sidecar = self._local_contribution(context)
+        if reuse and binding.get('local_contribution_sidecar') is not None and (
+                current_sidecar != binding['local_contribution_sidecar']):
+            raise ValueError('stale_snapshot')
+        if not reuse:
+            binding.pop('local_contribution_sidecar', None)
+            if self.sidecar_reader is not None:
+                binding['local_contribution_status'] = current_contribution_status
+                if current_sidecar is not None:
+                    binding['local_contribution_sidecar'] = current_sidecar
         corpus, retrieval = self.knowledge.latest('corpus'), self.knowledge.latest('retrieval')
         self.knowledge.corpus(corpus)
         self.knowledge.configuration(retrieval)
@@ -306,8 +340,10 @@ class InvestigationService:
         items = self.evidence(attempt_id) if reuse else []
         # Recompute facts/history and resolve exact archived passages; digest alone is insufficient.
         executor = ToolExecutor(self.repo, attempt_id, '', context, self.knowledge, corpus, retrieval,
-            history_reader=self.history_reader if binding.get('history_bounds_version') == 1 else None,
-            history_bounds=binding.get('history_bounds_version') == 1)
+            history_reader=self.history_reader if (binding.get('history_bounds_version') == 1
+                or binding.get('local_contribution_sidecar') is not None) else None,
+            history_bounds=binding.get('history_bounds_version') == 1,
+            local_sidecar=binding.get('local_contribution_sidecar'))
         for item in items:
             if item['content_sha256'] != content_digest(item):
                 raise ValueError('stale_snapshot')
@@ -316,8 +352,8 @@ class InvestigationService:
                     raise ValueError('stale_snapshot')
             else:
                 expected, _ = (executor._case() if item['kind'] == 'case_fact' else
-                               executor._history(json.loads(item['text'])['account_side']))
-                if item['content_sha256'] != expected[0]['content_sha256']:
+                               executor._history(json.loads(item['text'].split('\n', 1)[-1])['account_side']))
+                if item['content_sha256'] not in {one['content_sha256'] for one in expected}:
                     raise ValueError('stale_snapshot')
         binding.update(corpus_version=corpus, retrieval_version=retrieval,
                        parent_attempt_id=attempt_id, timestamp=instant())
@@ -474,7 +510,17 @@ class InvestigationService:
         except ValueError:
             return None
         deadline = time.monotonic() + max(0, expires - time.time())
-        messages = [dict(type='context', data=outbound_context(context, self.repo.get(attempt_id)['run_id']))]
+        status, sidecar = self._local_contribution(context)
+        if (binding.get('local_contribution_status') != 'available'
+                or sidecar is None
+                or sidecar != binding.get('local_contribution_sidecar')):
+            sidecar = None
+        projected = outbound_context(context, self.repo.get(attempt_id)['run_id'])
+        if sidecar is not None:
+            projected['notice'] = ('Synthetic benchmark; published v2 explanation was unavailable. '
+                'A separately verified local log-odds contribution sidecar is available through case facts. '
+                'Contributions are not causal findings or a calibrated probability.')
+        messages = [dict(type='context', data=projected)]
         retries, repairs = 0, 0
         provider = None
         try:
@@ -484,7 +530,8 @@ class InvestigationService:
             provider = self.provider_factory(binding)
             executor = ToolExecutor(self.repo, attempt_id, owner, context, self.knowledge,
                                     binding['corpus_version'], binding['retrieval_version'],self.history_reader,
-                                    history_bounds=binding.get('history_bounds_version') == 1)
+                                    history_bounds=binding.get('history_bounds_version') == 1,
+                                    local_sidecar=sidecar)
             while True:
                 view = self.read(attempt_id)
                 remaining = deadline - time.monotonic()

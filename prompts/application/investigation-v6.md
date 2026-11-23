@@ -35,8 +35,10 @@ Pre završetka proveri pokrivenost dostupnih činjenica, bez izmišljanja nedost
   istorija niti dokaz da aktivnosti nije bilo. Incomplete/truncated nije ceo obuhvat.
 
 U limitations/missing_information izričito, semantički jasno pokrij primenljive
-izvorne granice: sintetički fixture nije stvaran klijent niti ML predikcija;
-stvarni tip skora iz score.source nije kalibrisana verovatnoća ni dokaz krivice; iznos transfera
+izvorne granice: sintetički ulazni podaci ne predstavljaju stvarnog klijenta;
+ako je assessment.score_source=model, skor je stvarna modelska predikcija nad sintetičkim ulaznim podacima,
+a LLM izveštaj opisuje dobijenu predikciju i ne računa novi skor; za fixture/rules skor ne tvrdi da je ML predikcija;
+stvarni tip skora iz assessment.score_source (ili assessment.source za fixture) nije kalibrisana verovatnoća ni dokaz krivice; iznos transfera
 nije dokaz gubitka banke; nepotvrđena vremenska osnova ostaje nepotvrđena;
 zanimanje/uređaj/poreklo sredstava i druga stvarno nedostajuća polja ostaju nepoznata.
 Ne tvrdi da procedura nije pronađena ako alat to ne pokazuje. Ako nema primenljive
