@@ -1,0 +1,77 @@
+{
+  "notice": "Synthetic fixture video data. Scores are fixture-v1 display constants; threshold and flow are illustrative, not model evaluation or a live RAG run.",
+  "source": "data/fixtures/cases.json and docs/decisions/fixture-scoring.md",
+  "threshold": 0.6,
+  "demo": {
+    "brand": "FraudLens AI",
+    "sceneLabels": ["THE PROMISE", "THE PROBLEM", "INCOMING ALERT", "DETECT", "EXPLAIN", "ALERT BRIEF", "THE INVITATION"],
+    "sectionLabels": ["ALERT FATIGUE", "01 / ALERT", "02 / SCORE", "03 / EVIDENCE", "04 / BRIEF", "FRAUDLENS AI"],
+    "headlines": ["A signal enters the queue.", "Detect the anomaly.", "Ground the explanation.", "Make the case reviewable."],
+    "sourcePrefix": "SOURCE",
+    "alertPrefix": "ALERT",
+    "typicalAmountSuffix": "× typical amount",
+    "thresholdPrefix": "Threshold",
+    "flaggedLabel": "FLAGGED FOR REVIEW",
+    "ragLabel": "RAG",
+    "retrievalDisclaimer": "Illustrative sources and flow; no live retrieval runs in this video.",
+    "title": "Every suspicious transaction should come with an explanation.",
+    "titleChips": ["ALERT", "EVIDENCE", "EXPLANATION"],
+    "pipeline": ["ALERT", "SCORE", "EVIDENCE", "BRIEF"],
+    "statistic": {"value": 90, "suffix": "%+", "caption": "of transaction-monitoring alerts are false positives.", "sourceLabel": "Source: McKinsey", "sourceUrl": "https://www.mckinsey.com/capabilities/risk-and-resilience/our-insights/the-investigator-centered-approach-to-financial-crime-doing-what-matters"},
+    "problemInputs": ["Transaction records", "Account activity", "Policies & case history"],
+    "example": {"id": "#0248", "amount": 48500, "currencySymbol": "$", "amountLabel": "$48.5K", "counterparty": "New counterparty", "typicalMultiplier": 4.1, "badge": "ILLUSTRATIVE EXAMPLE — NOT LIVE CUSTOMER DATA", "score": 0.82, "model": "LightGBM AML baseline", "modelQualifier": "Conceptual model flow • illustrative score"},
+    "evidence": ["Transactions", "Account history", "Policies", "Case notes"],
+    "rag": "retrieve • ground • draft",
+    "brief": {"heading": "ALERT BRIEF / #0248 — Why this transfer merits review", "body": "A $48.5K transfer to a new counterparty is 4.1× the typical amount. The illustrative score exceeds the demo review threshold; the cited records need analyst verification.", "citations": ["Transaction record", "Account history", "AML policy"], "nextStep": "Suggested next step: verify source of funds.", "review": "Human review required."},
+    "close": {"headline": "From alert to accountable answer.", "cta": "Seeking AML design partners."},
+    "captions": ["Every suspicious transaction should come with an explanation.", "More than 90 percent of transaction monitoring alerts are false positives.", "An illustrative transfer arrives: 48 thousand 500 dollars, to a new counterparty.", "The conceptual LightGBM stage scores the alert above the demo threshold.", "Four evidence sources feed a retrieval, grounding, and drafting workflow.", "The draft brief cites its sources and requires human review.", "From alert to accountable answer. Seeking AML design partners."]
+  },
+  "transactions": [
+    {
+      "caseId": "CASE-001",
+      "id": "TX-001",
+      "occurredAt": "2026-01-05T09:15:00Z",
+      "sender": "DEMO-BANK-A:SYN-ACCOUNT-001",
+      "receiver": "DEMO-BANK-B:SYN-ACCOUNT-002",
+      "amount": "1250.00",
+      "currency": "EUR",
+      "fixtureScore": 0.75
+    },
+    {
+      "caseId": "CASE-002",
+      "id": "TX-002",
+      "occurredAt": "2026-01-05T09:42:00Z",
+      "sender": "DEMO-BANK-B:SYN-ACCOUNT-002",
+      "receiver": "DEMO-BANK-C:SYN-ACCOUNT-003",
+      "amount": "89.95",
+      "currency": "EUR",
+      "fixtureScore": 0.4
+    },
+    {
+      "caseId": "CASE-003",
+      "id": "TX-003",
+      "occurredAt": "2026-01-06T14:20:00Z",
+      "sender": "DEMO-BANK-C:SYN-ACCOUNT-004",
+      "receiver": "DEMO-BANK-A:SYN-ACCOUNT-005",
+      "amount": "18420.50",
+      "currency": "EUR",
+      "fixtureScore": 0.1
+    }
+  ],
+  "sources": [
+    {
+      "id": "sim-review",
+      "title": "Simulated review and escalation",
+      "section": "Review",
+      "citation": "local:fraudlens/sim-review#Review",
+      "excerpt": "A score is not proof of wrongdoing. Escalation, closure or a request for more information requires an explicit analyst decision and rationale."
+    },
+    {
+      "id": "sim-missing",
+      "title": "Simulated missing and conflicting facts",
+      "section": "Missingness",
+      "citation": "local:fraudlens/sim-missing#Missingness",
+      "excerpt": "Absence of evidence proves neither legitimacy nor guilt. Request additional information when a useful grounded conclusion is impossible."
+    }
+  ]
+}
