@@ -255,6 +255,73 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 
 .scoring-section .risk-workspace input { color: inherit; background: transparent; }
 .scoring-section .risk-workspace { min-width: 0; }
+
+/* Evidence-backed dataset and model pages share the FraudLens palette. */
+.model-evidence-page { width: var(--content); margin: 0 auto; padding-bottom: 100px; }
+.model-page-hero { padding: 160px 0 64px; border-bottom: 1px solid var(--line); }
+.model-page-hero h1, .eda-page-header h1 { margin: 20px 0; font: 400 clamp(48px, 7vw, 92px)/1 var(--display); letter-spacing: -.055em; }
+.model-page-hero > p:not(.eyebrow), .eda-page-header .intro { max-width: 770px; color: var(--muted); font-size: clamp(19px, 2.3vw, 27px); }
+.evidence-link { display: inline-block; margin-top: 20px; color: var(--accent); font-weight: 650; border-bottom: 1px solid currentColor; }
+.model-section { padding: 72px 0; border-bottom: 1px solid var(--line); }
+.model-section h2 { max-width: 850px; margin: 12px 0 24px; font: 400 clamp(34px, 4.4vw, 60px)/1.05 var(--display); letter-spacing: -.045em; }
+.model-section > p { max-width: 900px; color: var(--muted); line-height: 1.65; }
+.model-section code, .evidence-callout code, .model-disclosure code { overflow-wrap: anywhere; color: var(--accent); font-size: .85em; }
+.evidence-callout { display: grid; gap: 9px; max-width: 900px; margin: 28px 0; padding: 22px; border-left: 3px solid var(--accent); background: var(--surface); }
+.evidence-callout span, .model-note { color: var(--muted); font-size: 14px; }
+.model-pipeline { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 0; list-style-position: inside; counter-reset: stage; }
+.model-pipeline li { min-height: 112px; padding: 18px; border: 1px solid var(--line); background: var(--surface); }
+.model-pipeline li::marker { color: var(--accent); font: 12px var(--mono); }
+.model-disclosure { margin: 28px 0; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.model-disclosure summary { cursor: pointer; min-height: 44px; font-weight: 650; }
+.model-disclosure summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.model-disclosure > code { display: block; margin: 14px 0; }
+.model-metric-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 32px 0; }
+.model-metric-row { min-width: 0; padding: 18px; border: 1px solid var(--line); background: var(--surface); }
+.model-metric-row > strong { display: block; margin-bottom: 15px; }
+.model-metric-track { display: grid; grid-template-columns: 76px minmax(0, 1fr) 56px; gap: 10px; align-items: center; margin: 8px 0; font-size: 12px; }
+.model-metric-track > div { height: 9px; background: #303434; }
+.model-metric-track i { display: block; height: 100%; background: var(--accent); }
+.model-metric-track + .model-metric-track i { background: #8eaf64; }
+.model-metric-track b { text-align: right; font-variant-numeric: tabular-nums; }
+.model-metric-comparison > p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 12px; }
+.evidence-table-scroll { max-width: 100%; overflow-x: auto; margin: 24px 0; }
+.evidence-table { width: 100%; min-width: 650px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.evidence-table caption { padding: 0 0 12px; color: var(--muted); text-align: left; font-size: 13px; }
+.evidence-table th, .evidence-table td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.evidence-table th { font-weight: 600; }
+.evidence-table td { color: var(--muted); }
+.split-bar, .eda-quality-bar { display: flex; height: 22px; overflow: hidden; margin: 30px 0; border-radius: 4px; background: var(--surface); }
+.split-bar span:nth-child(1), .eda-quality-bar span:nth-child(2) { background: var(--accent); }
+.split-bar span:nth-child(2), .eda-quality-bar span:nth-child(1) { background: #8eaf64; }
+.split-bar span:nth-child(3), .eda-quality-bar span:nth-child(3) { background: var(--danger); }
+.model-fact-grid, .confusion-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.model-fact-grid > div, .confusion-grid article { min-width: 0; margin: 0; padding: 20px; border: 1px solid var(--line); background: var(--surface); }
+.model-fact-grid dt, .confusion-grid dt { color: var(--muted); font-size: 13px; }
+.model-fact-grid dd { margin: 10px 0 0; font-size: 20px; overflow-wrap: anywhere; }
+.confusion-grid article p { color: var(--muted); font-size: 13px; }
+.confusion-grid dl { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.confusion-grid dd { margin: 4px 0 0; font: 26px var(--display); }
+.eda-dashboard { padding-top: 150px; padding-bottom: 100px; }
+.eda-page-header { max-width: 1000px; }
+.eda-dashboard .risk-workspace { margin-top: 48px; }
+.eda-dashboard .risk-workspace > h2 { font: 400 clamp(28px, 3.4vw, 46px)/1.1 var(--display); letter-spacing: -.04em; }
+.eda-summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 32px 0; }
+.eda-summary-card { display: grid; align-content: space-between; gap: 16px; min-width: 0; min-height: 148px; padding: 17px; border: 1px solid var(--line); }
+.eda-summary-card span, .eda-summary-card small { color: var(--muted); font-size: 12px; }
+.eda-summary-card strong { font: 400 clamp(20px, 2vw, 30px)/1.1 var(--display); overflow-wrap: anywhere; }
+.eda-dashboard .detail-section { margin: 58px 0; }
+.eda-dashboard .detail-section h2 { margin-bottom: 20px; font: 400 clamp(26px, 3vw, 40px)/1.1 var(--display); }
+.eda-dashboard .eda-series { padding: 16px 0; border-top: 1px solid var(--line); }
+.eda-dashboard .eda-series h3 { margin: 0 0 4px; font-size: 18px; }
+.eda-limit-note { max-width: 850px; padding: 18px; border-left: 3px solid var(--accent); color: var(--muted); background: var(--surface); }
+@media (max-width: 900px) { .eda-summary-grid, .model-pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .model-page-hero { padding-top: 120px; }
+  .model-section { padding: 54px 0; }
+  .model-pipeline, .model-fact-grid, .confusion-grid, .eda-summary-grid, .model-metric-comparison { grid-template-columns: 1fr; }
+  .eda-dashboard { padding-top: 115px; }
+  .eda-summary-card { min-height: 100px; }
+}
 @media (max-width: 600px) {
   .risk-workspace { padding: 1rem; }
   .risk-workspace form { grid-template-columns: minmax(0, 1fr); }

@@ -169,18 +169,20 @@ export function createModelResultsView(root: HTMLElement, load: () => void) {
 export type EdaUiState = { kind: 'loading' } | { kind: 'success'; result: EdaSummary }
   | { kind: 'unavailable' } | { kind: 'error'; message: string };
 
+const edaInteger = (value: number) => new Intl.NumberFormat('en-US').format(value);
+
 function edaSeriesTable(series: EdaSeries): HTMLElement {
   const section = element('section', undefined, 'eda-series');
   const heading = element('h3', series.label);
   const unit = series.unit === 'transactions' ? 'transakcije'
     : `${series.currency} — zbir iznosa, ${series.side === 'paid' ? 'plaćeno' : 'primljeno'}`;
-  section.append(heading, element('p', `Jedinica: ${unit}; imenilac: ${series.denominator} transakcija${series.timezone ? '; UTC' : ''}.`, 'muted'));
+  section.append(heading, element('p', `Jedinica: ${unit}; imenilac: ${edaInteger(series.denominator)} transakcija${series.timezone ? '; UTC' : ''}.`, 'muted'));
   if (series.values.length === 0) {
     section.append(status('Nema podataka za ovu seriju.'));
     return section;
   }
   const table = element('table', undefined, 'eda-table');
-  const caption = element('caption', `${series.label} — jedinica: ${unit}; imenilac: ${series.denominator} transakcija.`);
+  const caption = element('caption', `${series.label} — jedinica: ${unit}; imenilac: ${edaInteger(series.denominator)} transakcija.`);
   const head = element('thead');
   const headers = element('tr');
   headers.append(element('th', series.timezone ? 'UTC period' : 'Kategorija'),
@@ -193,7 +195,7 @@ function edaSeriesTable(series: EdaSeries): HTMLElement {
     const label = element('th', bucket);
     label.scope = 'row';
     const value = element('td');
-    const number = element('span', String(series.values[index]), 'eda-value');
+    const number = element('span', new Intl.NumberFormat('en-US', { maximumFractionDigits: 6 }).format(series.values[index]), 'eda-value');
     const bar = element('span', undefined, 'eda-bar');
     bar.setAttribute('aria-hidden', 'true');
     bar.style.width = `${maximum === 0 ? 0 : (series.values[index] / maximum) * 100}%`;
@@ -207,22 +209,20 @@ function edaSeriesTable(series: EdaSeries): HTMLElement {
 }
 
 export function createEdaView(root: HTMLElement, load: () => void) {
-  const header = element('header', undefined, 'app-header');
-  header.append(element('p', 'SINTETIČKI PODACI', 'eyebrow'),
-    element('h1', 'FraudLens AI — EDA'),
-    element('p', 'Pregled provjerenih agregata izvora, bez pojedinačnih transakcija i labela.', 'intro'));
-  const navigation = element('nav', undefined, 'site-nav');
-  navigation.setAttribute('aria-label', 'Glavna navigacija');
-  const home = element('a', '← Pregled slučajeva i modela');
-  home.href = '/';
-  navigation.append(home);
-  header.append(navigation);
+  const header = element('header', undefined, 'eda-page-header');
+  header.append(element('p', 'SINTETIČKI PODACI / PROVJERENI AGREGATI', 'eyebrow'),
+    element('h1', 'Dataset overview'),
+    element('p', 'Šta sadrži trenutno konfigurisan skup podataka? Pokrivenost, kvalitet i raspodjele bez pojedinačnih transakcija ili ciljnih oznaka.', 'intro'));
+  const method = element('a', 'Metod, podjela i rezultati modela →', 'evidence-link');
+  method.href = '/data';
+  header.append(method);
   const output = element('section', undefined, 'risk-workspace');
   output.setAttribute('aria-labelledby', 'eda-title');
   const title = element('h2', 'Agregatni pregled podataka');
   title.id = 'eda-title';
   const content = element('div');
   output.append(title, content);
+  root.classList.add('eda-dashboard');
   root.replaceChildren(header, output);
 
   return {
@@ -240,29 +240,49 @@ export function createEdaView(root: HTMLElement, load: () => void) {
           content.append(status('Nema podataka u prihvaćenom izvoru. Prazan EDA sažetak.'));
           return;
         }
-        content.append(element('p', 'Sintetički IBM HI-Small podaci. Vremena su prikazana po UTC projektnoj konvenciji; izvorna vremenska zona i upstream verzija nisu potvrđene.', 'muted'),
+        const cards = element('div', undefined, 'eda-summary-grid');
+        for (const [label, value, note] of [
+          ['Izvornih redova', edaInteger(result.source_count), 'Imenilac: svi redovi izvora'],
+          ['Prihvaćeno', edaInteger(result.accepted_count), `${((result.accepted_count / result.source_count) * 100).toFixed(2)}% izvornih redova`],
+          ['Podobno za skoriranje', edaInteger(result.scoreable_count), `${((result.scoreable_count / result.accepted_count) * 100).toFixed(2)}% prihvaćenih`],
+          ['UTC pokrivenost', `${result.coverage_start_utc?.slice(0, 10)} – ${result.coverage_end_utc?.slice(0, 10)}`, 'Projektna UTC konvencija'],
+          ['Valute u prikazu', `${result.series.filter(item => item.unit === 'amount' && item.side === 'paid').length} plaćeno / ${result.series.filter(item => item.unit === 'amount' && item.side === 'received').length} primljeno`, `${result.omitted_amount_currencies.paid} / ${result.omitted_amount_currencies.received} izostavljeno`],
+        ]) {
+          const card = element('div', undefined, 'eda-summary-card');
+          card.append(element('span', label), element('strong', value), element('small', note));
+          cards.append(card);
+        }
+        content.append(cards, element('p', 'IBM Transactions for Anti-Money Laundering, HI-Small — sintetički podaci. Vremena su prikazana po UTC projektnoj konvenciji; izvorna vremenska zona i upstream verzija nisu potvrđene.', 'muted'),
           fields([
             ['Verzija podataka', result.dataset_version],
             ['Izvorni SHA-256', result.source_sha256],
             ['Početak obuhvata (UTC)', result.coverage_start_utc ?? 'Nije dostupan'],
             ['Kraj obuhvata (UTC)', result.coverage_end_utc ?? 'Nije dostupan'],
-            ['Ukupno redova', String(result.source_count)],
-            ['Prihvaćeno', String(result.accepted_count)],
-            ['Odbijeno', `${result.rejected_count}; imenilac: ${result.source_count} redova izvora`],
-            ['Warm-up', `${result.warmup_count}; imenilac: ${result.accepted_count} prihvaćenih`],
-            ['Podobno za skoriranje', `${result.scoreable_count}; imenilac: ${result.accepted_count} prihvaćenih`],
+            ['Ukupno redova', edaInteger(result.source_count)],
+            ['Prihvaćeno', edaInteger(result.accepted_count)],
+            ['Odbijeno', `${edaInteger(result.rejected_count)}; imenilac: ${edaInteger(result.source_count)} redova izvora`],
+            ['Warm-up (samo istorija)', `${edaInteger(result.warmup_count)}; imenilac: ${edaInteger(result.accepted_count)} prihvaćenih`],
+            ['Podobno za skoriranje', `${edaInteger(result.scoreable_count)}; imenilac: ${edaInteger(result.accepted_count)} prihvaćenih`],
           ]));
         const quality = element('section', undefined, 'detail-section');
-        quality.append(element('h2', 'Kvalitet izvora'));
+        quality.append(element('h2', 'Kvalitet i priprema izvora'));
+        const qualityBar = element('div', undefined, 'eda-quality-bar');
+        qualityBar.setAttribute('role', 'img');
+        qualityBar.setAttribute('aria-label', `${edaInteger(result.warmup_count)} warm-up, ${edaInteger(result.scoreable_count)} podobno za skoriranje, ${edaInteger(result.rejected_count)} odbijeno`);
+        const warmup = element('span'); warmup.style.width = `${result.warmup_count / result.source_count * 100}%`;
+        const scoreable = element('span'); scoreable.style.width = `${result.scoreable_count / result.source_count * 100}%`;
+        const rejected = element('span'); rejected.style.width = `${result.rejected_count / result.source_count * 100}%`;
+        qualityBar.append(warmup, scoreable, rejected);
+        quality.append(qualityBar);
         const qualityEntries = Object.entries(result.quality_counts);
         quality.append(qualityEntries.length
-          ? fields(qualityEntries.map(([key, count]) => [key, `${count}; imenilac: ${result.source_count} redova izvora`]))
+          ? fields(qualityEntries.map(([key, count]) => [key, `${edaInteger(count)}; imenilac: ${edaInteger(result.source_count)} redova izvora`]))
           : element('p', 'Nema dodatnih brojača odbijanja u provjerenom manifestu.', 'muted'));
         content.append(quality);
         for (const [heading, series] of [
           ['Kategorije', result.series.filter(item => item.unit === 'transactions' && item.timezone === null)],
           ['Broj transakcija kroz vrijeme', result.series.filter(item => item.unit === 'transactions' && item.timezone === 'UTC')],
-          ['Iznosi po valuti i strani', result.series.filter(item => item.unit === 'amount')],
+          ['Ukupni iznosi kroz vrijeme, po valuti i strani', result.series.filter(item => item.unit === 'amount')],
         ] as const) {
           const group = element('section', undefined, 'detail-section');
           group.append(element('h2', heading));
@@ -270,14 +290,14 @@ export function createEdaView(root: HTMLElement, load: () => void) {
           else for (const item of series) {
             if (item.unit === 'amount') {
               const disclosure = element('details', undefined, 'eda-disclosure');
-              disclosure.append(element('summary', `${item.side === 'paid' ? 'Plaćeno' : 'Primljeno'} — ${item.currency}; imenilac: ${item.denominator} transakcija`),
+              disclosure.append(element('summary', `${item.side === 'paid' ? 'Plaćeno' : 'Primljeno'} — ${item.currency}; imenilac: ${edaInteger(item.denominator)} transakcija`),
                 edaSeriesTable(item));
               group.append(disclosure);
             } else group.append(edaSeriesTable(item));
           }
           content.append(group);
         }
-        content.append(element('p', `Izostavljene valute zbog granice prikaza: plaćeno ${result.omitted_amount_currencies.paid}, primljeno ${result.omitted_amount_currencies.received}. Iznosi se ne sabiraju između valuta.`, 'muted'));
+        content.append(element('p', `Izostavljene valute zbog granice prikaza: plaćeno ${result.omitted_amount_currencies.paid}, primljeno ${result.omitted_amount_currencies.received}. Iznosi su ukupni iznosi po UTC intervalu, ne histogram pojedinačnih transakcija; numerički prikaz je aproksimacija preciznog Decimal sabiranja. Iznosi se ne sabiraju između valuta. Rijetke kategorije mogu biti grupisane kao __OTHER__. Prvi i posljednji UTC interval mogu biti djelimični. Ovaj sažetak nema ciljne oznake ni model metrike.`, 'eda-limit-note'));
       }
     },
   };

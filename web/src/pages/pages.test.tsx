@@ -34,12 +34,14 @@ describe("showcase pages", () => {
     expect(data.eda.generated_at).toBeTruthy();
     expect(data.ragEval.status).toBe("not_yet_measured");
     expect(markup(<Overview />, data)).toContain("Not yet measured");
-    expect(markup(<DataPage />, data)).toContain("Not yet measured");
+    expect(markup(<DataPage />, data)).toContain("Frozen unweighted LightGBM");
     expect(markup(<RagPage />, data)).toContain("Not yet measured");
     const features = markup(<DataPage />, data);
     expect(data.features.features).toHaveLength(11);
     expect(features).toContain("sender_out_count_24h");
     expect(features).toContain("current_payment_format");
+    expect(features).toContain("current_amount_paid_log1p");
+    expect(features).not.toContain("current_paid_amount</");
   });
 
   it("labels every illustrative sample in JSON and on screen", async () => {
