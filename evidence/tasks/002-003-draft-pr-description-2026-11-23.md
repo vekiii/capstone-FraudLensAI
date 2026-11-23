@@ -1,6 +1,6 @@
 # Draft: Local LightGBM contributions for published model alerts
 
-Base: `main`. Head: `feature/002-model-contributions`. **Draft only; Feature 003 contract review pending.** This text is prepared locally because remote fetch was blocked by automatic approval review; no PR has been opened.
+Base: `main`. Head: `feature/002-model-contributions`. **Draft only; Feature 003 contract review pending.** The user's explicit chat confirmation allowed a successful remote fetch and ancestor check before publication.
 
 ## Scope
 
