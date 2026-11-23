@@ -1,3 +1,7 @@
+# Feature 003 sidecar review handoff, 2026-11-23
+
+The [small offline package record](tasks/002-003-sidecar-owner-handoff-package-2026-11-23.md) identifies the reviewed PR #7 commit, independently pinned sidecar, SQLite backup of exactly two post-correction LIVE reports, 11/11 cited evidence checks, Windows instructions and ZIP hashes. The user relayed the owner's choice of separate sidecar v1 and the unchanged 48,000-byte input cap, and later reported sending the package to Milan. Implementation review, Windows reproduction and a future joint LIVE probe remain pending; the ignored package itself is outside Git.
+
 # Local contribution real-provider demo, 2026-11-23
 
 The [scoped LIVE demo record](tasks/002-003-local-contributions-live-demo-2026-11-23.md) covers both authorized attempts, configured provider and frozen pins, actual usage and duration, HTTP-cited evidence checks, one material report-wording finding, a test-only saved review, and browser/input-byte limitations. The [original continuation request](../prompts/development/2026-11-23-002-003-local-contributions-live-continuation.md) is preserved. No shared contract is accepted by this run.
