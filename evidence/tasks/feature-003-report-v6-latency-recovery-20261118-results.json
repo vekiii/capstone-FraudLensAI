@@ -1,0 +1,353 @@
+{
+  "date": "2026-11-18",
+  "initial_actual": 168,
+  "actual": 300,
+  "ceiling": 303,
+  "remaining": 3,
+  "stages": {
+    "development": {
+      "dispatches": 24,
+      "statuses": {
+        "200": 24
+      },
+      "ledger_sha256": "75a0b9092645217f8584c97f3b485b082d24bee848ef43e9b6baadb3b73ceb09"
+    },
+    "calibration": {
+      "dispatches": 6,
+      "statuses": {
+        "200": 6
+      },
+      "ledger_sha256": "3cb89b5c16ed5dd3fe07430e40283c743a6655564a6b4dd671b5cb03c1d9f0de"
+    },
+    "calibration-clarified": {
+      "dispatches": 6,
+      "statuses": {
+        "200": 6
+      },
+      "ledger_sha256": "340305b707f831145884aba7bcdfc899922054499f440d921d095d7c8522bde3"
+    },
+    "final": {
+      "dispatches": 33,
+      "statuses": {
+        "200": 33
+      },
+      "ledger_sha256": "3a1a4b71f8fe4812345bd45846bec3ceb19c28556a6660bb6037384969ce5aa5"
+    },
+    "judging": {
+      "dispatches": 13,
+      "statuses": {
+        "200": 13
+      },
+      "ledger_sha256": "8d2772e3c615dc47f5843de1c49960c2bad48cf8e6f916889943ea6a30f9b930"
+    },
+    "calibration-typed": {
+      "dispatches": 6,
+      "statuses": {
+        "200": 6
+      },
+      "ledger_sha256": "ff32cd808051b1dcb4c907aa430740fd6c6cabe6638baf2b403088f39a8a2cdc"
+    },
+    "retrieval": {
+      "dispatches": 44,
+      "ledger_sha256": "bc8713ccc8c03a38d3c8cce752efc50ce3c86ff3f5f52ea64bc55e641b82025e"
+    }
+  },
+  "development": {
+    "development_gate_pass": true,
+    "scope": "Codex source review against source fidelity, disclosure, coverage and guidance gate. Language variation separately recorded.",
+    "valid": 4,
+    "denominator": 4,
+    "new_calls": 24,
+    "total_actual": 192,
+    "total_ceiling": 303,
+    "rows": [
+      {
+        "id": "LAT6-01",
+        "state": "ready_for_review",
+        "seconds": 40.13733759999741,
+        "covered_obligations": 7,
+        "predeclared_obligations": 7,
+        "review": "Exact transaction facts, source, human authority, separate counts/totals and both exclusive bounds confirmed. Applicable simulated guidance."
+      },
+      {
+        "id": "LAT6-02",
+        "state": "needs_information",
+        "seconds": 36.939150999998674,
+        "covered_obligations": 7,
+        "predeclared_obligations": 7,
+        "review": "Exact transaction facts, source and explicit human authority. Both histories unavailable, null periods. English summary despite requested Latin Serbian."
+      },
+      {
+        "id": "LAT6-03",
+        "state": "ready_for_review",
+        "seconds": 31.895201899998938,
+        "covered_obligations": 7,
+        "predeclared_obligations": 7,
+        "review": "Exact transaction facts, separate GBP/USD totals, exclusive 10:00:00Z, missing receiver history and human authority. English summary."
+      },
+      {
+        "id": "LAT6-04",
+        "state": "needs_information",
+        "seconds": 24.40113509999719,
+        "covered_obligations": 7,
+        "predeclared_obligations": 7,
+        "review": "Exact transaction facts, unknown histories, no current Iceland deadline asserted, no unsupported recommendations. Serbian Cyrillic in some fields."
+      }
+    ],
+    "frozen_files": 74,
+    "dispatch_sha256": "75a0b9092645217f8584c97f3b485b082d24bee848ef43e9b6baadb3b73ceb09"
+  },
+  "retrieval": {
+    "recall_at5": 0.9375,
+    "mrr_at5": 0.9375,
+    "answerable": 16,
+    "no_answer_correct": 4,
+    "no_answer_total": 4,
+    "failed_or_unrun_ids": []
+  },
+  "retrieval_pass": true,
+  "calibrations": {
+    "calibration": {
+      "passed": false,
+      "cases": [
+        {
+          "scenario_id": "C1",
+          "matched": true
+        },
+        {
+          "scenario_id": "C2",
+          "matched": true
+        },
+        {
+          "scenario_id": "C3",
+          "matched": true
+        },
+        {
+          "scenario_id": "C4",
+          "matched": false
+        },
+        {
+          "scenario_id": "C5",
+          "matched": true
+        },
+        {
+          "scenario_id": "C6",
+          "matched": true
+        }
+      ],
+      "denominator": 6
+    },
+    "calibration-clarified": {
+      "passed": true,
+      "cases": [
+        {
+          "scenario_id": "C1",
+          "matched": true
+        },
+        {
+          "scenario_id": "C2",
+          "matched": true
+        },
+        {
+          "scenario_id": "C3",
+          "matched": true
+        },
+        {
+          "scenario_id": "C4",
+          "matched": true
+        },
+        {
+          "scenario_id": "C5",
+          "matched": true
+        },
+        {
+          "scenario_id": "C6",
+          "matched": true
+        }
+      ],
+      "denominator": 6
+    },
+    "calibration-typed": {
+      "passed": false,
+      "cases": [
+        {
+          "scenario_id": "C1",
+          "matched": true
+        },
+        {
+          "scenario_id": "C2",
+          "matched": false
+        },
+        {
+          "scenario_id": "C3",
+          "matched": true
+        },
+        {
+          "scenario_id": "C4",
+          "matched": true
+        },
+        {
+          "scenario_id": "C5",
+          "matched": true
+        },
+        {
+          "scenario_id": "C6",
+          "matched": true
+        }
+      ],
+      "denominator": 6
+    }
+  },
+  "timing": {
+    "passed": true,
+    "demo_success": 5,
+    "demo_all_terminal": true,
+    "search_p95_seconds": 0.004498400001466507,
+    "search_count": 20
+  },
+  "quality": {
+    "passed": false,
+    "passing_reports": 4,
+    "report_count": 8,
+    "reports": [
+      {
+        "id": "LAT-FINAL-01",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 25,
+        "essential_count": 7,
+        "procedural_count": 3,
+        "applicable_count": 3
+      },
+      {
+        "id": "LAT-FINAL-02",
+        "failed": false,
+        "support_rate": 0.9,
+        "essential_coverage": 1.0,
+        "passed": false,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 20,
+        "essential_count": 7,
+        "procedural_count": 3,
+        "applicable_count": 3
+      },
+      {
+        "id": "LAT-FINAL-03",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 29,
+        "essential_count": 7,
+        "procedural_count": 4,
+        "applicable_count": 4
+      },
+      {
+        "id": "LAT-FINAL-04",
+        "failed": false,
+        "support_rate": 0.8636363636363636,
+        "essential_coverage": 1.0,
+        "passed": false,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 22,
+        "essential_count": 7,
+        "procedural_count": 0,
+        "applicable_count": 0
+      },
+      {
+        "id": "LAT-FINAL-05",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 31,
+        "essential_count": 7,
+        "procedural_count": 3,
+        "applicable_count": 3
+      },
+      {
+        "id": "LAT-FINAL-06",
+        "failed": false,
+        "support_rate": 0.96,
+        "essential_coverage": 1.0,
+        "passed": false,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 25,
+        "essential_count": 7,
+        "procedural_count": 3,
+        "applicable_count": 3,
+        "review_incomplete": true
+      },
+      {
+        "id": "LAT-FINAL-07",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 22,
+        "essential_count": 7,
+        "procedural_count": 4,
+        "applicable_count": 4
+      },
+      {
+        "id": "LAT-FINAL-08",
+        "failed": false,
+        "support_rate": 0.9629629629629629,
+        "essential_coverage": 1.0,
+        "passed": false,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 27,
+        "essential_count": 7,
+        "procedural_count": 7,
+        "applicable_count": 7
+      }
+    ],
+    "invalid_ratings": [
+      {
+        "role": "secondary",
+        "scenario_id": "LAT-FINAL-06",
+        "error": "missing_or_invalid_rating"
+      }
+    ]
+  },
+  "final_reports_generated": 8,
+  "final_quality_sha256": "e8314ce4755a126dad6ae5811169d0d9685731a6beb452f58f373d998525df26",
+  "final_timing_sha256": "3241c1eb7aee819f53e7a58a7b301f22a3324078c4b0d4ddebd9b2a9e076cac2",
+  "new_offline_changes": "Include saved semantic verdict and source scope in evaluation packets. Constrain judge enum to unit kind and locations to packet sections.",
+  "successor": {
+    "frozen": true,
+    "authorized": false,
+    "required_calibration": 6,
+    "generation_max": 42,
+    "judging_max": 13,
+    "requested_ceiling": 361,
+    "freeze_sha256": "07056429d1c95d49d48f0c12056840b3545b538fd352e2a7419ebb15ecc6def9",
+    "calibration_freeze_sha256": "e99c364397996c3e6814dcc00a5a8b310b6df525ae7f99220264a8fccdfa4529"
+  },
+  "full_backend_before_packet_and_wire_only_changes": "1159 passed",
+  "final_focused": "23 passed",
+  "t101_complete": false,
+  "t102_performance_gate_passed": true
+}

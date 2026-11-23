@@ -1,0 +1,49 @@
+{
+  "branch": "feature03",
+  "head": "5431299053660f982e93c4d5fc8909131281ec2a",
+  "new_inputs": {
+    "development": 4,
+    "quality": 8,
+    "timing": 5,
+    "local_queries": 20,
+    "paired_secondary": 5
+  },
+  "manifest_verified": true,
+  "contracts_context_history_references_verified": true,
+  "historical_public_contexts_checked": 27,
+  "fresh_case_overlap": [],
+  "six_controls": "software_only_verified_not_live_calibration",
+  "synthetic_HTTP_API_worker": {
+    "attempts": 5,
+    "locally_validated_reports": 5,
+    "provider": "test",
+    "acceptance_eligible": false
+  },
+  "live_proposal_gate": {
+    "worker_exit_without_approval": 2,
+    "actual_dispatches": 0
+  },
+  "local_search_diagnostic": {
+    "samples": 20,
+    "errors": 0,
+    "p95_seconds": 0.0030023999861441553,
+    "SC006_accepted": false
+  },
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "logical_processors": 16,
+    "total_physical_memory_bytes": 34065952768,
+    "memory_source": "Win32 GlobalMemoryStatusEx",
+    "cim_attempt": "access_denied_no_escalation",
+    "perf_counter": {
+      "implementation": "QueryPerformanceCounter()",
+      "resolution": 1e-07
+    }
+  },
+  "actual_new_provider_calls": 0,
+  "actual_live_quality_reports": 0,
+  "live_quality_acceptance": "not_run_pending_review_authorization",
+  "live_timing_acceptance": "not_run_pending_review_authorization",
+  "new_tasks_added": 0
+}

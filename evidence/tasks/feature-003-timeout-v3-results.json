@@ -1,0 +1,125 @@
+{
+  "status": "PASS",
+  "kind": "development_v3_not_independent_release_evaluation",
+  "summary": {
+    "all_terminal_within_120": true,
+    "freeze_sha256": "06c44c1bdd4b520290762b1e5cb3f3366a32c2b178f4b657e230f29e327650e1",
+    "human_validation": false,
+    "judge_status": "completed",
+    "judged_reports": [
+      {
+        "additional_issues": [],
+        "applicable_count": 2,
+        "critical_error": false,
+        "essential_count": 7,
+        "essential_coverage": 0.7142857142857143,
+        "factual_count": 4,
+        "failed": false,
+        "id": "DEV3-721",
+        "missingness_correct": true,
+        "passed": false,
+        "procedural_count": 2,
+        "support_rate": 1.0
+      },
+      {
+        "additional_issues": [],
+        "applicable_count": 2,
+        "critical_error": false,
+        "essential_count": 5,
+        "essential_coverage": 0.6,
+        "factual_count": 4,
+        "failed": false,
+        "id": "DEV3-722",
+        "missingness_correct": false,
+        "passed": false,
+        "procedural_count": 2,
+        "support_rate": 1.0
+      },
+      {
+        "additional_issues": [
+          "The unlisted outcome value needs_information implies an information-request disposition, but the controlled retrieval returned no applicable procedure passage."
+        ],
+        "applicable_count": 0,
+        "critical_error": false,
+        "essential_count": 6,
+        "essential_coverage": 0.5,
+        "factual_count": 3,
+        "failed": false,
+        "id": "DEV3-723",
+        "missingness_correct": true,
+        "passed": false,
+        "procedural_count": 0,
+        "support_rate": 1.0
+      }
+    ],
+    "kind": "actual_llm_development_check_not_independent_holdout",
+    "known_usage": {
+      "input_tokens": 68484,
+      "output_tokens": 13734,
+      "total_tokens": 82218
+    },
+    "maximum_transport_attempts": 25,
+    "model": "gpt-6-luna",
+    "not_executed_ids": [],
+    "old_release_targets_unchanged": true,
+    "passing_development_reports": 0,
+    "rows": [
+      {
+        "failure": null,
+        "id": "DEV3-721",
+        "provider_requests": 5,
+        "repairs": 0,
+        "seconds": 32.617,
+        "state": "needs_information",
+        "tool_calls": 4
+      },
+      {
+        "failure": null,
+        "id": "DEV3-722",
+        "provider_requests": 5,
+        "repairs": 0,
+        "seconds": 23.739,
+        "state": "needs_information",
+        "tool_calls": 4
+      },
+      {
+        "failure": null,
+        "id": "DEV3-723",
+        "provider_requests": 5,
+        "repairs": 0,
+        "seconds": 20.798,
+        "state": "needs_information",
+        "tool_calls": 4
+      }
+    ],
+    "spend": null,
+    "stopped_for": null,
+    "successful_within_90": 3,
+    "transient_retries": {
+      "DEV3-721": 0,
+      "DEV3-722": 0,
+      "DEV3-723": 0
+    },
+    "transport_attempts": 16,
+    "unknown_usage_attempts": 0
+  },
+  "diagnostics": [],
+  "http_status_counts": {
+    "200": 16
+  },
+  "source_and_protocol_unchanged": true,
+  "v2_artifacts_preserved": true,
+  "human_validation": false,
+  "original_failed_release_targets_unchanged": true,
+  "artifact_sha256": {
+    "DEV3-721.json": "01df90e51201058842a1d6093764ca39d51e74483f01963a0c0c948ee10b411c",
+    "DEV3-722.json": "eaa821bfe12cb359df0b4778948597836953850d793b7ce055c300f941d64aad",
+    "DEV3-723.json": "4c75f398d472e2f3e49dac57780b785db46ac6bf69ee053ef706e18df25f629b",
+    "freeze.json": "fcb7d525ac3596d14c3ed49f85de830f36d63eb1067084bf461829d14e75bc7b",
+    "judge-packets.json": "e54834cec411abfd2043de317eddd1df9d61b421440df221054c4408df51862d",
+    "judge-response.json": "7745f317b344b6ac20a36752fc28a25d78aee8abbd1d6b131080971cb1044801",
+    "judge-result.json": "1b5de86c9be3b79eadc4b1a0ec1cf51b065f502c718400494db0ca5d47934665",
+    "summary.json": "1f4398490f9a53ba5683ffb0eb87f40e43d6180f880b7b7f42386a532eb3fce3",
+    "transport-ledger.json": "8cce66901a0856c4c78986b4dda2cf08bf40b3a17c706c86fae9a1630a3b9708"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "date": "2026-11-18",
+  "branch": "feature03-retrieval-v4",
+  "baseline": "038f728cddab31b0bc08dbeb74d89560f59c348d",
+  "archive_sha256": "84594f4ad98794f15326d1a8f093250b2dac2cfe6dae301d62c67252194e7696",
+  "archive_bytes": 28916871,
+  "manifest_sha256": "21ec67d094488c691715c9764dd3be554b43eddbd679e5fe37031c24a0fdf65d",
+  "published_manifest_match": true,
+  "payloads_checked": 15,
+  "all_payload_hashes_match": true,
+  "payload_hashes": {
+    "benchmark/frozen-tree-artifact/manifest.json": {
+      "sha256": "2732691cb08daafba9d303ef6f3c8f616e03b3dc51505d3abb9772ceadd3919e",
+      "matches": true
+    },
+    "benchmark/frozen-tree-artifact/metadata.json": {
+      "sha256": "8b5a513f0346b31b4c7ff60143078567f63e041f9d86d59388b7057f00f398e2",
+      "matches": true
+    },
+    "benchmark/frozen-tree-artifact/model.joblib": {
+      "sha256": "fd2332d543941886eb7d0092d7a606b683d1d7c198e3763865ebc7b6a2df0838",
+      "matches": true
+    },
+    "benchmark/holdout_ledger.json": {
+      "sha256": "4fd118ca62e08ca4e0d9661d0c4346171e2c6476db7bfbcf288a19b24c4a543d",
+      "matches": true
+    },
+    "benchmark/test_predictions.json": {
+      "sha256": "4897cb71ebeda7742cbeed27beda58db6c1d2ecfecf7825ad50801dd4d24cef4",
+      "matches": true
+    },
+    "benchmark/test_report.json": {
+      "sha256": "a578d6df0b25014987e142959250a5965e8225b44fb6f6ea579d1fa1745cb7b6",
+      "matches": true
+    },
+    "boosted-artifact/manifest.json": {
+      "sha256": "013c7ebe5ab5a5270a7b66af200060d3499c31eb2598c06a038ca887fd9320a6",
+      "matches": true
+    },
+    "boosted-artifact/metadata.json": {
+      "sha256": "c59376e06350bb403bd58898ef63f1588bc866b46dbead7fee09f3787b542044",
+      "matches": true
+    },
+    "boosted-artifact/model.joblib": {
+      "sha256": "fce2a4057e46e02f0974bfcfdcae983e0952d6a3b98efea714e44746f08866c8",
+      "matches": true
+    },
+    "boosted-artifact/validation_scores.npy": {
+      "sha256": "dc9d7b62d5af0fc5886be53f337c018367e598fc9f03ae11ff639c583243dbfd",
+      "matches": true
+    },
+    "boosted-full-five-explanations.json": {
+      "sha256": "7d50bec8aba0b4e36c58a1a696de27ae4869fe650ba653618f04f35a9227a54f",
+      "matches": true
+    },
+    "boosted-validation.json": {
+      "sha256": "acb76c76c810c681d734d437540f97bc6b7cb3a488cc9a32cec2388d09cbf028",
+      "matches": true
+    },
+    "five-operational-snapshots.json": {
+      "sha256": "b6710f07f1d7c3336d00628270f1e3410e6771d7fee9498ad14227ddb16702be",
+      "matches": true
+    },
+    "five-saved-assessments.json": {
+      "sha256": "b127ded9795765e509ecd418734eb08f4cf18625ba53550d92500e7ac3ee664e",
+      "matches": true
+    },
+    "handoff-instructions.md": {
+      "sha256": "006bdc6a6a1572ac0bb57e1792278a297b72573c1a1700dacd1160295dbe4fde",
+      "matches": true
+    }
+  },
+  "extracted_to": ".cache/t098-zip-84594f4ad987",
+  "extracted_files": [
+    "MANIFEST.json",
+    "boosted-artifact/manifest.json",
+    "boosted-artifact/metadata.json",
+    "boosted-artifact/model.joblib",
+    "boosted-full-five-explanations.json",
+    "five-operational-snapshots.json",
+    "five-saved-assessments.json",
+    "handoff-instructions.md"
+  ],
+  "extracted_hashes_match": true,
+  "benchmark_extracted": false,
+  "validation_scores_extracted": false,
+  "model_deserialized": false,
+  "sqlite_members": [],
+  "dataset_version": "dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802",
+  "source_csv_sha256": "b19d39f515523373f991b689c07e11e7b0b95c17a2c27a87d91584ae16c5b040",
+  "expected_source_store_sha256": "5397b637814cbed9cf31389613207335321597c9682ec67d31abacf28ebda4d9",
+  "expected_v3_store_sha256": "732eefa75ad46c80404c34301ae6d72be87d4eb61f0d618457f7c760224dce06",
+  "actual_dataset_store_available": false,
+  "actual_rules_run_available": false,
+  "actual_model_run_available": false,
+  "api_worker_execution": false,
+  "t098_complete": false,
+  "provider_calls": 0,
+  "training": false,
+  "inference": false,
+  "benchmark_execution": false,
+  "protected_58_unchanged_vs_038f728": true,
+  "only_open_task": "T098",
+  "document_links": "PASS",
+  "checklist": "16/16",
+  "pre_post_hooks": "absent"
+}

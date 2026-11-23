@@ -1,0 +1,378 @@
+[
+  {
+    "rating_version": 4,
+    "packet_id": "assigned_after_public_projection",
+    "units": [
+      {
+        "unit_id": "o1",
+        "judgment": "supported",
+        "critical_error": false,
+        "reason": "Authored expectation based on exact source and report text."
+      },
+      {
+        "unit_id": "e1",
+        "judgment": "present",
+        "critical_error": false,
+        "reason": "Authored expectation based on exact source and report text."
+      }
+    ],
+    "checks": {
+      "required_disclosures_complete": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      },
+      "missing_values_not_invented": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      },
+      "no_cross_section_contradictions": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      }
+    },
+    "critical_error": false,
+    "additional_issues": [],
+    "contradictions": []
+  },
+  {
+    "rating_version": 4,
+    "packet_id": "assigned_after_public_projection",
+    "units": [
+      {
+        "unit_id": "o1",
+        "judgment": "supported",
+        "critical_error": false,
+        "reason": "Authored expectation based on exact source and report text."
+      },
+      {
+        "unit_id": "e1",
+        "judgment": "present",
+        "critical_error": false,
+        "reason": "Authored expectation based on exact source and report text."
+      }
+    ],
+    "checks": {
+      "required_disclosures_complete": {
+        "passed": false,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": [
+          "source_of_funds"
+        ]
+      },
+      "missing_values_not_invented": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      },
+      "no_cross_section_contradictions": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      }
+    },
+    "critical_error": false,
+    "additional_issues": [],
+    "contradictions": []
+  },
+  {
+    "rating_version": 4,
+    "packet_id": "assigned_after_public_projection",
+    "units": [
+      {
+        "unit_id": "o1",
+        "judgment": "unsupported",
+        "critical_error": true,
+        "reason": "Authored expectation based on exact source and report text."
+      },
+      {
+        "unit_id": "e1",
+        "judgment": "present",
+        "critical_error": false,
+        "reason": "Authored expectation based on exact source and report text."
+      }
+    ],
+    "checks": {
+      "required_disclosures_complete": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      },
+      "missing_values_not_invented": {
+        "passed": false,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": [
+          "source_of_funds"
+        ]
+      },
+      "no_cross_section_contradictions": {
+        "passed": false,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": [
+          "source_of_funds"
+        ]
+      }
+    },
+    "critical_error": true,
+    "additional_issues": [],
+    "contradictions": [
+      {
+        "claim_location": "/summary",
+        "claim_quote": "Source of funds is drug trafficking.",
+        "counter_location": null,
+        "evidence_ref": "ev1",
+        "counter_quote": "Source of funds is unknown."
+      }
+    ]
+  },
+  {
+    "rating_version": 4,
+    "packet_id": "assigned_after_public_projection",
+    "units": [
+      {
+        "unit_id": "o1",
+        "judgment": "unsupported",
+        "critical_error": true,
+        "reason": "Authored expectation based on exact source and report text."
+      },
+      {
+        "unit_id": "e1",
+        "judgment": "missing",
+        "critical_error": false,
+        "reason": "Authored expectation based on exact source and report text."
+      }
+    ],
+    "checks": {
+      "required_disclosures_complete": {
+        "passed": false,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": [
+          "source_of_funds"
+        ]
+      },
+      "missing_values_not_invented": {
+        "passed": false,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": [
+          "source_of_funds"
+        ]
+      },
+      "no_cross_section_contradictions": {
+        "passed": false,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": [
+          "source_of_funds"
+        ]
+      }
+    },
+    "critical_error": true,
+    "additional_issues": [],
+    "contradictions": [
+      {
+        "claim_location": "/summary",
+        "claim_quote": "Source of funds is drug trafficking.",
+        "counter_location": null,
+        "evidence_ref": "ev1",
+        "counter_quote": "Source of funds is unknown."
+      }
+    ]
+  },
+  {
+    "rating_version": 4,
+    "packet_id": "assigned_after_public_projection",
+    "units": [
+      {
+        "unit_id": "o1",
+        "judgment": "supported",
+        "critical_error": false,
+        "reason": "Authored expectation based on exact source and report text."
+      },
+      {
+        "unit_id": "e1",
+        "judgment": "present",
+        "critical_error": false,
+        "reason": "Authored expectation based on exact source and report text."
+      }
+    ],
+    "checks": {
+      "required_disclosures_complete": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      },
+      "missing_values_not_invented": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      },
+      "no_cross_section_contradictions": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      }
+    },
+    "critical_error": false,
+    "additional_issues": [],
+    "contradictions": []
+  },
+  {
+    "rating_version": 4,
+    "packet_id": "assigned_after_public_projection",
+    "units": [
+      {
+        "unit_id": "o1",
+        "judgment": "unsupported",
+        "critical_error": true,
+        "reason": "Authored expectation based on exact source and report text."
+      },
+      {
+        "unit_id": "e1",
+        "judgment": "present",
+        "critical_error": false,
+        "reason": "Authored expectation based on exact source and report text."
+      }
+    ],
+    "checks": {
+      "required_disclosures_complete": {
+        "passed": true,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": []
+      },
+      "missing_values_not_invented": {
+        "passed": false,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": [
+          "identity"
+        ]
+      },
+      "no_cross_section_contradictions": {
+        "passed": false,
+        "reason": "Authored software control; not an actual model rating.",
+        "report_locations": [
+          "/summary"
+        ],
+        "evidence_refs": [
+          "ev1"
+        ],
+        "fields": [
+          "identity"
+        ]
+      }
+    },
+    "critical_error": true,
+    "additional_issues": [],
+    "contradictions": [
+      {
+        "claim_location": "/summary",
+        "claim_quote": "Identity is confirmed as Alice.",
+        "counter_location": null,
+        "evidence_ref": "ev1",
+        "counter_quote": "Identity is unknown."
+      }
+    ]
+  }
+]

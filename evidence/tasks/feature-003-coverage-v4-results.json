@@ -1,0 +1,134 @@
+{
+  "status": "PASS",
+  "kind": "calibrated_development_not_independent_holdout",
+  "summary": {
+    "all_terminal_within_120": true,
+    "calibration": {
+      "cases": [
+        {
+          "matched": true,
+          "scenario_id": "CAL4-A"
+        },
+        {
+          "matched": true,
+          "scenario_id": "CAL4-B"
+        },
+        {
+          "matched": true,
+          "scenario_id": "CAL4-C"
+        }
+      ],
+      "passed": true
+    },
+    "freeze_sha256": "8d0458bbdd9afe0114174da704aad4614e216b681ccaa671242a0db0f7d0302f",
+    "human_validation": false,
+    "judge_status": "completed",
+    "judged_reports": [
+      {
+        "additional_issues": [],
+        "applicable_count": 2,
+        "critical_error": false,
+        "essential_count": 11,
+        "essential_coverage": 1.0,
+        "factual_count": 5,
+        "failed": false,
+        "id": "DEV4-741",
+        "missingness_correct": true,
+        "passed": true,
+        "procedural_count": 2,
+        "support_rate": 1.0
+      },
+      {
+        "essential_count": 0,
+        "essential_coverage": null,
+        "factual_count": 0,
+        "failed": true,
+        "id": "DEV4-742",
+        "passed": false,
+        "support_rate": null
+      },
+      {
+        "additional_issues": [],
+        "applicable_count": 0,
+        "critical_error": false,
+        "essential_count": 8,
+        "essential_coverage": 1.0,
+        "factual_count": 3,
+        "failed": false,
+        "id": "DEV4-743",
+        "missingness_correct": true,
+        "passed": true,
+        "procedural_count": 0,
+        "support_rate": 1.0
+      }
+    ],
+    "kind": "actual_llm_development_check_not_independent_holdout",
+    "known_usage": {
+      "input_tokens": 67688,
+      "output_tokens": 11814,
+      "total_tokens": 79502
+    },
+    "maximum_transport_attempts": 25,
+    "model": "gpt-6-luna",
+    "not_executed_ids": [],
+    "old_release_targets_unchanged": true,
+    "passing_development_reports": 2,
+    "quality_assessment_valid": true,
+    "raw_passing_development_reports": 2,
+    "rows": [
+      {
+        "failure": null,
+        "id": "DEV4-741",
+        "provider_requests": 6,
+        "repairs": 0,
+        "seconds": 65.404,
+        "state": "needs_information",
+        "tool_calls": 4
+      },
+      {
+        "failure": "budget_exhausted",
+        "id": "DEV4-742",
+        "provider_requests": 6,
+        "repairs": 1,
+        "seconds": 35.218,
+        "state": "failed",
+        "tool_calls": 4
+      },
+      {
+        "failure": null,
+        "id": "DEV4-743",
+        "provider_requests": 5,
+        "repairs": 0,
+        "seconds": 26.515,
+        "state": "needs_information",
+        "tool_calls": 4
+      }
+    ],
+    "spend": null,
+    "stopped_for": null,
+    "successful_within_90": 2,
+    "transient_retries": {
+      "DEV4-741": 1,
+      "DEV4-742": 0,
+      "DEV4-743": 0
+    },
+    "transport_attempts": 17,
+    "unknown_usage_attempts": 1
+  },
+  "prior_outputs_preserved": true,
+  "v3_source_snapshot_preserved": true,
+  "cited_ids_resolved": 8,
+  "unknown_citations": 0,
+  "human_validation": false,
+  "artifact_sha256": {
+    "DEV4-741.json": "0db3f0d27dbadfbbf7c0ee62ec0fec2b6335046b0d1c4ac81d2026fb8890f2a9",
+    "DEV4-742.json": "0f776f1e94d505d3f5102af0628642f2f83081c4ffe837f19e4cc5ae558d94d9",
+    "DEV4-743.json": "42bbcf21b5f89415f196b22301d34e0b7b7f017ca79bc711ebf1b9b8475a3954",
+    "freeze.json": "4abae7b5052bce83084e7dcd8db1a1cac6e4b3e10781d095ad44c5485b4bd560",
+    "judge-packets.json": "63f00d53ef706040a06eba635b9977955c42e65eb67962eafcfd5918fa41b2bf",
+    "judge-response.json": "918781114211173c5a6c3de62f976caae0ea9ed2fc90e45bef49df40bf59201a",
+    "judge-result.json": "7969317d388272fe68b8c89af28bc2c89cd08d45a8d8fb61d60166345854a352",
+    "summary.json": "47ddca0bacb4cc627c2e438a384816db0dc9aa38a77d5e75969f12109c90c9e7",
+    "transport-ledger.json": "54cc17e4704b3f27b459e378bd80d03c5f7284c9864bfd02053b1aa302327bb9"
+  }
+}

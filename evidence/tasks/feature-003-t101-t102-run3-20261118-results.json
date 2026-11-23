@@ -1,0 +1,574 @@
+{
+  "kind": "Actual RUN3/v7/request45; failed acceptance retained",
+  "total_budget": 155,
+  "totals": {
+    "actual_requests": 126,
+    "http200": 123,
+    "http400": 1,
+    "http429": 0,
+    "unknown": 2,
+    "known_tokens": 449456
+  },
+  "remaining_requests": 29,
+  "unknown_usage_is_not_zero": true,
+  "spend": "unknown",
+  "stages": [
+    {
+      "path": "evals/results/feature-003/acceptance-live-20261118/calibration/dispatch.sqlite",
+      "actual_requests": 1,
+      "http200": 0,
+      "http400": 1,
+      "http429": 0,
+      "unknown": 0,
+      "known_tokens": 0
+    },
+    {
+      "path": "evals/results/feature-003/acceptance-live-20261118/calibration-wire-v2/dispatch.sqlite",
+      "actual_requests": 6,
+      "http200": 6,
+      "http400": 0,
+      "http429": 0,
+      "unknown": 0,
+      "known_tokens": 15001
+    },
+    {
+      "path": "evals/results/feature-003/acceptance-live-20261118/cohort-v2/first-five/dispatch.sqlite",
+      "actual_requests": 6,
+      "http200": 5,
+      "http400": 0,
+      "http429": 0,
+      "unknown": 1,
+      "known_tokens": 14974
+    },
+    {
+      "path": "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/dispatch.sqlite",
+      "actual_requests": 28,
+      "http200": 28,
+      "http400": 0,
+      "http429": 0,
+      "unknown": 0,
+      "known_tokens": 89157
+    },
+    {
+      "path": "evals/results/feature-003/acceptance-live-20261118/cohort-v3/judging/dispatch.sqlite",
+      "actual_requests": 13,
+      "http200": 13,
+      "http400": 0,
+      "http429": 0,
+      "unknown": 0,
+      "known_tokens": 112480
+    },
+    {
+      "path": "evals/results/feature-003/acceptance-live-20261118/cohort-v3/last-three/dispatch.sqlite",
+      "actual_requests": 17,
+      "http200": 17,
+      "http400": 0,
+      "http429": 0,
+      "unknown": 0,
+      "known_tokens": 58986
+    },
+    {
+      "path": "evals/results/feature-003/acceptance-live-20261118/controls-v2-calibration/dispatch.sqlite",
+      "actual_requests": 6,
+      "http200": 6,
+      "http400": 0,
+      "http429": 0,
+      "unknown": 0,
+      "known_tokens": 18590
+    },
+    {
+      "path": "evals/results/feature-003/acceptance-live-20261118/development-continuation/dispatch.sqlite",
+      "actual_requests": 16,
+      "http200": 16,
+      "http400": 0,
+      "http429": 0,
+      "unknown": 0,
+      "known_tokens": 44526
+    },
+    {
+      "path": "evals/results/feature-003/acceptance-live-20261118/timing/dispatch.sqlite",
+      "actual_requests": 27,
+      "http200": 27,
+      "http400": 0,
+      "http429": 0,
+      "unknown": 0,
+      "known_tokens": 81830
+    },
+    {
+      "path": "evals/results/feature-003/acceptance-preparation-20261118/development-proposal/dispatch.sqlite",
+      "actual_requests": 6,
+      "http200": 5,
+      "http400": 0,
+      "http429": 0,
+      "unknown": 1,
+      "known_tokens": 13912
+    }
+  ],
+  "generation": {
+    "profile": "v7",
+    "report_prompt": "v4",
+    "request_seconds": 45,
+    "semantic_seconds": 30,
+    "useful_seconds": 90,
+    "total_seconds": 120,
+    "outcomes": [
+      {
+        "id": "RUN3-01",
+        "state": "ready_for_review",
+        "seconds": 38.39028799999505,
+        "report_validated": true,
+        "attempt_id": "att_a6ebec8ad2214018946859df6a9ec944"
+      },
+      {
+        "id": "RUN3-02",
+        "state": "failed",
+        "seconds": 17.67459130001953,
+        "report_validated": false,
+        "attempt_id": "att_feef71083429428fa8d0747a8fec89f5"
+      },
+      {
+        "id": "RUN3-03",
+        "state": "failed",
+        "seconds": 21.5613558999612,
+        "report_validated": false,
+        "attempt_id": "att_051a10fc02c34564b3ef3d17b74c441c"
+      },
+      {
+        "id": "RUN3-04",
+        "state": "needs_information",
+        "seconds": 24.832594400038943,
+        "report_validated": true,
+        "attempt_id": "att_ebc568f006cc4296a4ebadebedcbe3d8"
+      },
+      {
+        "id": "RUN3-05",
+        "state": "ready_for_review",
+        "seconds": 36.06854349997593,
+        "report_validated": true,
+        "attempt_id": "att_c703d5a78a4c4b00a197192c05d73258"
+      },
+      {
+        "id": "RUN3-06",
+        "state": "failed",
+        "seconds": 17.18153559998609,
+        "report_validated": false,
+        "attempt_id": "att_5afbe069c559459d887b12c3bc7f4780"
+      },
+      {
+        "id": "RUN3-07",
+        "state": "ready_for_review",
+        "seconds": 47.173668599978555,
+        "report_validated": true,
+        "attempt_id": "att_816986726a544d2c9bd0e7e488969fc9"
+      },
+      {
+        "id": "RUN3-08",
+        "state": "needs_information",
+        "seconds": 50.60059630003525,
+        "report_validated": true,
+        "attempt_id": "att_429225bc7c7548eebeb5a53b21b567bf"
+      }
+    ]
+  },
+  "quality": {
+    "quality_assessment_valid": true,
+    "quality_pass": false,
+    "passing_reports": 1,
+    "report_count": 8,
+    "failed_reports": 3,
+    "reports": [
+      {
+        "id": "RUN3-01",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 0.7142857142857143,
+        "passed": false,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 27,
+        "essential_count": 7,
+        "procedural_count": 7,
+        "applicable_count": 7
+      },
+      {
+        "id": "RUN3-02",
+        "failed": true,
+        "support_rate": null,
+        "essential_coverage": null,
+        "passed": false,
+        "factual_count": 0,
+        "essential_count": 0,
+        "review_incomplete": true
+      },
+      {
+        "id": "RUN3-03",
+        "failed": true,
+        "support_rate": null,
+        "essential_coverage": null,
+        "passed": false,
+        "factual_count": 0,
+        "essential_count": 0,
+        "review_incomplete": true
+      },
+      {
+        "id": "RUN3-04",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 22,
+        "essential_count": 7,
+        "procedural_count": 1,
+        "applicable_count": 1
+      },
+      {
+        "id": "RUN3-05",
+        "failed": false,
+        "support_rate": 0.9310344827586207,
+        "essential_coverage": 0.7142857142857143,
+        "passed": false,
+        "critical_error": false,
+        "missingness_correct": false,
+        "additional_issues": [],
+        "factual_count": 29,
+        "essential_count": 7,
+        "procedural_count": 0,
+        "applicable_count": 0
+      },
+      {
+        "id": "RUN3-06",
+        "failed": true,
+        "support_rate": null,
+        "essential_coverage": null,
+        "passed": false,
+        "factual_count": 0,
+        "essential_count": 0,
+        "review_incomplete": true
+      },
+      {
+        "id": "RUN3-07",
+        "failed": false,
+        "support_rate": 0.9666666666666667,
+        "essential_coverage": 1.0,
+        "passed": false,
+        "critical_error": false,
+        "missingness_correct": false,
+        "additional_issues": [],
+        "factual_count": 30,
+        "essential_count": 7,
+        "procedural_count": 11,
+        "applicable_count": 11
+      },
+      {
+        "id": "RUN3-08",
+        "failed": false,
+        "support_rate": 0.9583333333333334,
+        "essential_coverage": 0.8571428571428571,
+        "passed": false,
+        "critical_error": false,
+        "missingness_correct": false,
+        "additional_issues": [],
+        "factual_count": 24,
+        "essential_count": 7,
+        "procedural_count": 6,
+        "applicable_count": 6
+      }
+    ],
+    "calibration": {
+      "passed": true,
+      "cases": [
+        {
+          "scenario_id": "C1",
+          "matched": true
+        },
+        {
+          "scenario_id": "C2",
+          "matched": true
+        },
+        {
+          "scenario_id": "C3",
+          "matched": true
+        },
+        {
+          "scenario_id": "C4",
+          "matched": true
+        },
+        {
+          "scenario_id": "C5",
+          "matched": true
+        },
+        {
+          "scenario_id": "C6",
+          "matched": true
+        }
+      ],
+      "denominator": 6
+    },
+    "human_validation": false
+  },
+  "paired_disagreements": [
+    {
+      "id": "RUN3-08",
+      "unit_id": "u017",
+      "originals": [
+        {
+          "unit_id": "u017",
+          "judgment": "unsupported",
+          "reason": "The source supports describing this as a fixture score, but does not establish that it is a rule score; the remaining caveats are supported.",
+          "critical_error": false
+        },
+        {
+          "unit_id": "u017",
+          "judgment": "supported",
+          "reason": "The source explicitly says the fixture score is not a calibrated probability or evidence of guilt.",
+          "critical_error": false
+        }
+      ],
+      "resolution": "unresolved; conservative not-supported/not-present",
+      "unresolved": true
+    },
+    {
+      "id": "RUN3-08",
+      "predicate": "missing_values_not_invented",
+      "originals": [
+        {
+          "passed": false,
+          "reason": "The report characterizes the score as a fixture/rule score, but the source establishes only a fixture score and does not provide a rule-score basis.",
+          "report_locations": [
+            "/limitations"
+          ],
+          "evidence_refs": [
+            "source_8a4b40341a52ac25"
+          ],
+          "fields": [
+            "score_meaning"
+          ]
+        },
+        {
+          "passed": true,
+          "reason": "The report does not assert an unsupported identity, occupation, device, source of funds, guilt, loss, or other missing customer fact. Its statements about unavailable evidence are appropriately framed as unknown or unsupported.",
+          "report_locations": [],
+          "evidence_refs": [
+            "ev_a1fe6f2e5b5f480dad00d9b4bb74f8e8",
+            "ev_833894aabe6e459f8c1b356aebef9a78",
+            "ev_f85d737b40604153955988b04ecae06f"
+          ],
+          "fields": []
+        }
+      ],
+      "unresolved": true
+    }
+  ],
+  "timing": {
+    "useful_within_90": 3,
+    "denominator": 5,
+    "all_terminal_within_120": true,
+    "local_search": {
+      "denominator": 20,
+      "observed": 20,
+      "successful_searches": 20,
+      "p95_seconds": 0.003735800040885806,
+      "passed": true,
+      "rows": [
+        {
+          "id": "SEARCH3-01",
+          "seconds": 0.0036362999817356467,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-02",
+          "seconds": 0.0026635000249370933,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-03",
+          "seconds": 0.003249800007324666,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-04",
+          "seconds": 0.003735800040885806,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-05",
+          "seconds": 0.0033614999847486615,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-06",
+          "seconds": 0.0025372999953106046,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-07",
+          "seconds": 0.0030473999795503914,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-08",
+          "seconds": 0.0045829000300727785,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-09",
+          "seconds": 0.0032061999663710594,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-10",
+          "seconds": 0.0031347000040113926,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-11",
+          "seconds": 0.002973399998154491,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-12",
+          "seconds": 0.0034588000271469355,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-13",
+          "seconds": 0.0033912999788299203,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-14",
+          "seconds": 0.0025103000225499272,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-15",
+          "seconds": 0.00198529998306185,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-16",
+          "seconds": 0.002853900019545108,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-17",
+          "seconds": 0.0034850999945774674,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-18",
+          "seconds": 0.002224199997726828,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-19",
+          "seconds": 0.0022548999986611307,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        },
+        {
+          "id": "SEARCH3-20",
+          "seconds": 0.0028496000450104475,
+          "error": false,
+          "error_type": null,
+          "hits": 6
+        }
+      ]
+    },
+    "performance_pass": false
+  },
+  "limitation": "Authored synthetic source fixtures plus real provider; not ML/population evaluation or independent human/model review. Zero critical flags only in five evaluable reports; three absent reports fail.",
+  "source_files_sha256": {
+    "evals/results/feature-003/acceptance-live-20261118/calibration/dispatch.sqlite": "d1391c9ee2374ab6c67da2b49701846840fe3ce768703b7c36934c2d07d8726e",
+    "evals/results/feature-003/acceptance-live-20261118/calibration/freeze.json": "9ff14aefd0fc8b220494802ee03102a6658697f708aaa15370224d7fdbade7cb",
+    "evals/results/feature-003/acceptance-live-20261118/calibration-wire-v2/dispatch.sqlite": "c416b4ddc8e381070387b09228c167c472b4f6dd36ec510625ca310a7c117676",
+    "evals/results/feature-003/acceptance-live-20261118/calibration-wire-v2/freeze.json": "06160f1296cf881f2a538b154c91180e7e587dfaa5c740fc1f2b559d7fd802e8",
+    "evals/results/feature-003/acceptance-live-20261118/controls-v2-calibration/dispatch.sqlite": "bef753ababfd27c9ac77db778dc6d5bc2bb0fbdb9e78493c88c7c9bfc9801854",
+    "evals/results/feature-003/acceptance-live-20261118/controls-v2-calibration/freeze.json": "f28b83a9cef6654d1e2b4e7be37fd8bcfa8364917417825b1d0940febd4a5a95",
+    "evals/results/feature-003/acceptance-live-20261118/development-continuation/DEVQ1-02-intent-result.json": "2f133795497d023f467a235d3ffb3e067eda65d0f6c66fe00aa44853df385f0c",
+    "evals/results/feature-003/acceptance-live-20261118/development-continuation/DEVQ1-03-intent-result.json": "c10c4dece2210731b3ef6141b5b548e4599b0e227cd1dda97db539f10edf5196",
+    "evals/results/feature-003/acceptance-live-20261118/development-continuation/DEVQ1-04-intent-result.json": "05fe60565449a1af08cd181d57650f87b9515654fcf6df6523b221f8977ad4d8",
+    "evals/results/feature-003/acceptance-live-20261118/development-continuation/dispatch.sqlite": "caeb1fef08afd43e4e73ac7f72561e9245422e10a3a3369047051e921dd0bfda",
+    "evals/results/feature-003/acceptance-live-20261118/development-continuation/freeze.json": "ef045b36b3b2011769f3185756fbab2cb08399bc3f43b88d47bf4146827cd297",
+    "evals/results/feature-003/acceptance-live-20261118/quality-v3-materialization/custodian-review.json": "28939c22ad9034e84c961b7767e6ff1ace7ee3046f32e1b14685ce2946501118",
+    "evals/results/feature-003/acceptance-live-20261118/quality-v3-materialization/packets-reviewed.json": "3f7317456e01a32654131a08e1aec8f7a32df9432e0d3bb7917ad61bc44d702e",
+    "evals/results/feature-003/acceptance-live-20261118/timing/dispatch.sqlite": "912f0c76ab85b84a16d3a90437aa82c304319caf05ab14d73e0b9ac37001223b",
+    "evals/results/feature-003/acceptance-live-20261118/timing/freeze.json": "704bfa90021fcc50a14decac69022d8cce5f859f1d61f5941f4036c286c54ff6",
+    "evals/results/feature-003/acceptance-live-20261118/timing/source-observer-freeze.json": "aad70616aa9e5da67574191d5ff062cf2c7d950f4dd981b15a5f7f26f178fe3a",
+    "evals/results/feature-003/acceptance-live-20261118/timing/TIME1-01-intent-result.json": "36d5956901052eae167a4c4f067059e3615340cb429afbaffaa4dab29e4666e3",
+    "evals/results/feature-003/acceptance-live-20261118/timing/TIME1-02-intent-result.json": "b2ae4017bb3ae8991b73ffd8e49b18bd747ab90ec888947171f2711548d94175",
+    "evals/results/feature-003/acceptance-live-20261118/timing/TIME1-03-intent-result.json": "3842022c7df87eb8ea8eedd837945763f6c61c48d6ceba2c52ba7822b883d9c7",
+    "evals/results/feature-003/acceptance-live-20261118/timing/TIME1-04-intent-result.json": "e86e6e042982158cae738d25fad193c29f9309cd3db24a90b3b0d44d7212e2ef",
+    "evals/results/feature-003/acceptance-live-20261118/timing/TIME1-05-intent-result.json": "0a833678030d497facdc08ff82fad3866beb4f7c10fbc0845556eb3f9eea9e86",
+    "evals/results/feature-003/acceptance-live-20261118/timing/timing-assessment.json": "ab0890fb0f892cceaf59688a8fc66ff6f77f0a9989c2a1358d427fdb0244cedf",
+    "evals/results/feature-003/acceptance-live-20261118/timing/timing-envelope.json": "91ea296dee65340cccefa7f7f54a68cbca6854e208b6096549c3dd018174cadc",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/dispatch.sqlite": "9d35283eb7e7feb79cb70cafbede2191979e34871a32b85f4b92273959adaade",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/freeze.json": "f265f6e268e3e23bd2ba998f1b344257b0aeff757eee3f6ad8d0bad59f7874bb",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/RUN3-01-intent-result.json": "b1777c5e1d531d4b60d909f8da964c483e38d3b2c91df2f4f8fdf5857562b151",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/RUN3-02-intent-result.json": "dcc6e4e2fc2467a5a8c5ada1993f3729045de9674b89e91a77e9c42a2e342621",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/RUN3-03-intent-result.json": "3c6e3baf0577766828705032e7a275871afe8d891b685ded2b24fedc502fdc71",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/RUN3-04-intent-result.json": "e6ebd32b41087d21760d70d9a4b32a5d83ace235ead35fa1655918093bb98c2b",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/RUN3-05-intent-result.json": "4fb92453202cd614cc56b4b517acf70918fcaa63cab5df28b06f82e8d78d66cf",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/source-observer-freeze.json": "0f5dcd09b9d1e8d8cc2226d294e0e6b1a345de18ffd5f7bd201e3ba0b1853751",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/timing-assessment.json": "f7ad748da30fafeb0ec7a693a4d9ae559a555fc22a2c23ade13ec05d56f54896",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/first-five/timing-envelope.json": "62606a773e7530388f9e65a6141190c00763f8f0eb153ba8a4a646f603b1bd5e",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/judging/dispatch.sqlite": "242a4180f66a7cb14b762320b3cbf22876f22cbccdef8bb8860c9a1bd654458d",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/judging/freeze.json": "29b6b529bad49b120043b88b731b3f895096134d94dafb09b293abd6439b4616",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/judging/quality-assessment.json": "976cdcef2c86c1447a2033590c742b75832fe8438ddf2a05f0e4546c94d44045",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/judging/quality-envelope.json": "7c49412d8a03ff1890a9f102a526e96f356f72325eda880808d05f67b1edf340",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/last-three/dispatch.sqlite": "de8bb64bd54e966881d060d535389a339c97438f72ef38d923120eecf931590c",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/last-three/freeze.json": "2089baafa071ba669477d094909312d73f2b479293113aa7b5b40fb0a7835a0a",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/last-three/RUN3-06-intent-result.json": "15580744d763c05545b22e485162a272312bf476a6cde572e350f388ef6f7e8b",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/last-three/RUN3-07-intent-result.json": "18653630a8ff9365c0ffabc47def1d4bd717395775a7c71ff9ced447f7c99153",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/last-three/RUN3-08-intent-result.json": "61c73718528526b9ba7780d8cd68884e0a17db78d581fb7bd330e0f7dc7605d0",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v3/last-three/source-observer-freeze.json": "733689edd5cb8fcf6bd3c6645f3e6224523b1184869346cfd886f3af278ac82a",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v2/first-five/dispatch.sqlite": "afb7effe4c6e25d6d9a7eba8339e62967d9667887bd83d09353d5c6146c293f9",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v2/first-five/freeze.json": "404e1d0afe1756f66fc4fa2ae4d6766b615d5c36988c57a1aa0fdede0e37bfac",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v2/first-five/RUN2-01-intent-result.json": "0c99e92e94c6cfb68287d6ae15a917a1c08aedee210152e22e0def6ee567c008",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v2/first-five/source-observer-freeze.json": "499804cfbcb9aeafad4682d1b427ce90c2e04a75f9048d8295db1dfa633d1446",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v2/last-three/dispatch.sqlite": "1b0bf649f05f4b3dea24514ac575341ee8be88b6c7d3673910b3c1882dbda3b3",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v2/last-three/freeze.json": "68dd645187a6ecef5d3e167394c514ddcb0f2c2db54e1f35804101654930f4be",
+    "evals/results/feature-003/acceptance-live-20261118/cohort-v2/last-three/source-observer-freeze.json": "9c12cfaa96955d89cac85e2b44dd8f9e7667f11355439b5379c8394c4812cfb9"
+  }
+}

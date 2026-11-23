@@ -1,0 +1,68 @@
+{
+  "version": 3,
+  "status": "development_reviewed_holdout_pending",
+  "corpus_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "question_authors": {
+    "development": "Codex AI",
+    "held_out": null
+  },
+  "glossary": {
+    "version": 1,
+    "status": "reviewed",
+    "reviewed_by": "Vedran Mitic",
+    "reviewed_at": "2026-11-15",
+    "basis": "Authored translations of existing corpus concepts only; no held-out questions inspected.",
+    "terms": {
+      "nedostaje": [
+        "missing"
+      ],
+      "nedostajuce": [
+        "missing"
+      ],
+      "nedostajuće": [
+        "missing"
+      ],
+      "činjenice": [
+        "facts"
+      ],
+      "cinjenice": [
+        "facts"
+      ],
+      "dokaz": [
+        "evidence"
+      ],
+      "dokazi": [
+        "evidence"
+      ],
+      "izvor": [
+        "source"
+      ],
+      "izvori": [
+        "sources"
+      ],
+      "citiranje": [
+        "citation"
+      ],
+      "eskalacija": [
+        "escalation"
+      ],
+      "pregled": [
+        "review"
+      ],
+      "poverljivost": [
+        "confidentiality"
+      ],
+      "dokumentacija": [
+        "documentation"
+      ],
+      "sintetički": [
+        "synthetic"
+      ],
+      "sinteticki": [
+        "synthetic"
+      ]
+    }
+  },
+  "author_provenance": "Fresh AI-authored development questions from the six curated sources; no original holdout content parsed. Milan accepted the presented table/references. No comparison against unseen old test questions or independent semantic duplicate audit is claimed."
+}

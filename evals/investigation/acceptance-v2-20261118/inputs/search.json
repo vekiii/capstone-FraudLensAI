@@ -1,0 +1,102 @@
+[
+  {
+    "id": "SEARCH2-01",
+    "language": "en",
+    "query": "What should an analyst record when customer records are absent?"
+  },
+  {
+    "id": "SEARCH2-02",
+    "language": "en",
+    "query": "Who may approve a final case disposition?"
+  },
+  {
+    "id": "SEARCH2-03",
+    "language": "en",
+    "query": "How can the original evidence version be traced?"
+  },
+  {
+    "id": "SEARCH2-04",
+    "language": "en",
+    "query": "Which limitations apply to simulated transaction examples?"
+  },
+  {
+    "id": "SEARCH2-05",
+    "language": "en",
+    "query": "Does an elevated score establish wrongdoing?"
+  },
+  {
+    "id": "SEARCH2-06",
+    "language": "en",
+    "query": "What can be concluded if funds origin is undocumented?"
+  },
+  {
+    "id": "SEARCH2-07",
+    "language": "en",
+    "query": "Can missing account records be reported as no activity?"
+  },
+  {
+    "id": "SEARCH2-08",
+    "language": "en",
+    "query": "How should plausible alternative explanations be qualified?"
+  },
+  {
+    "id": "SEARCH2-09",
+    "language": "en",
+    "query": "What customer information should be excluded from a public report?"
+  },
+  {
+    "id": "SEARCH2-10",
+    "language": "en",
+    "query": "How should an unresolved source gap affect a conclusion?"
+  },
+  {
+    "id": "SEARCH2-11",
+    "language": "en",
+    "query": "What provenance identifies a cited procedure?"
+  },
+  {
+    "id": "SEARCH2-12",
+    "language": "en",
+    "query": "Does an alert amount represent a bank loss?"
+  },
+  {
+    "id": "SEARCH2-13",
+    "language": "en",
+    "query": "Can an older procedure establish today's legal requirement?"
+  },
+  {
+    "id": "SEARCH2-14",
+    "language": "en",
+    "query": "What authorization is needed for escalation?"
+  },
+  {
+    "id": "SEARCH2-15",
+    "language": "en",
+    "query": "What should the report preserve when sources conflict?"
+  },
+  {
+    "id": "SEARCH2-16",
+    "language": "en",
+    "query": "How can an analyst express uncertainty without inventing facts?"
+  },
+  {
+    "id": "SEARCH2-17",
+    "language": "en",
+    "query": "What should happen when the library lacks applicable guidance?"
+  },
+  {
+    "id": "SEARCH2-18",
+    "language": "en",
+    "query": "Should balances in different currencies be added together?"
+  },
+  {
+    "id": "SEARCH2-19",
+    "language": "en",
+    "query": "What exact current Portuguese deadline applies to this case?"
+  },
+  {
+    "id": "SEARCH2-20",
+    "language": "en",
+    "query": "Which official Portuguese filing fee applies today?"
+  }
+]

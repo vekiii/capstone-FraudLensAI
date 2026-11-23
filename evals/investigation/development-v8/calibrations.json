@@ -1,0 +1,276 @@
+{
+  "packets": [
+    {
+      "role": "calibration",
+      "failed": false,
+      "report": {
+        "draft": {
+          "outcome": "needs_information",
+          "summary": [],
+          "observed_facts": [
+            {
+              "text": "TX-901: zabeležen transfer 10.00 EUR.",
+              "kind": "observation",
+              "evidence_refs": [
+                "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              ],
+              "exact_assertions": [],
+              "quotes": []
+            }
+          ],
+          "risk_indicators": [],
+          "alternative_explanations": [],
+          "missing_information": [
+            "Nedostaju podaci o klijentu i istorija."
+          ],
+          "recommended_checks": [],
+          "limitations": [
+            "Sintetički fixture, nije stvaran klijent niti ML predikcija.",
+            "Fixture skor nije kalibrisana verovatnoća niti dokaz krivice; transfer nije dokaz gubitka banke.",
+            "Zanimanje, uređaj, poreklo sredstava i istorija nisu poznati; nedostupna istorija nije prazna.",
+            "Vremenska osnova fixture-a nije nezavisno potvrđena.",
+            "Konačnu odluku donosi ljudski analitičar."
+          ],
+          "citations": [
+            "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ]
+        }
+      },
+      "failure": null,
+      "evidence": [
+        {
+          "evidence_id": "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "kind": "case_fact",
+          "text": "Authored fixture transfer TX-901 of 10.00 EUR. Occupation, device, source of funds and account history unavailable.",
+          "facts": []
+        }
+      ],
+      "reference": {
+        "essential_facts": [],
+        "expected_missing_fields": [
+          "occupation",
+          "device",
+          "source of funds",
+          "history"
+        ],
+        "required_disclosures": [
+          "synthetic fixture",
+          "human analyst final authority"
+        ],
+        "guidance_policy": "No guidance returned; empty recommended_checks and needs_information are correct."
+      },
+      "workflow_semantics": {
+        "analyst_review": null,
+        "automatic_action_performed": false
+      },
+      "scenario_id": "CAL8-A",
+      "units": [
+        {
+          "unit_id": "cal6_a_claim",
+          "claim_kind": "observation",
+          "claim_text": "TX-901: zabeležen transfer 10.00 EUR.",
+          "evidence_ids": [
+            "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ],
+          "report_location": "observed_facts.0",
+          "claim_id": "observed_facts.0",
+          "essential_fact_id": null
+        }
+      ]
+    },
+    {
+      "role": "calibration",
+      "failed": false,
+      "report": {
+        "draft": {
+          "outcome": "needs_information",
+          "summary": [],
+          "observed_facts": [
+            {
+              "text": "Poreklo sredstava klijenta je potvrđeno kao trgovina narkoticima.",
+              "kind": "observation",
+              "evidence_refs": [
+                "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              ],
+              "exact_assertions": [],
+              "quotes": []
+            }
+          ],
+          "risk_indicators": [],
+          "alternative_explanations": [],
+          "missing_information": [
+            "Nedostaju podaci o klijentu i istorija."
+          ],
+          "recommended_checks": [],
+          "limitations": [
+            "Sintetički fixture, nije stvaran klijent niti ML predikcija.",
+            "Fixture skor nije kalibrisana verovatnoća niti dokaz krivice; transfer nije dokaz gubitka banke.",
+            "Zanimanje, uređaj, poreklo sredstava i istorija nisu poznati; nedostupna istorija nije prazna.",
+            "Vremenska osnova fixture-a nije nezavisno potvrđena.",
+            "Konačnu odluku donosi ljudski analitičar."
+          ],
+          "citations": [
+            "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ]
+        }
+      },
+      "failure": null,
+      "evidence": [
+        {
+          "evidence_id": "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "kind": "case_fact",
+          "text": "Authored fixture transfer TX-901 of 10.00 EUR. Occupation, device, source of funds and account history unavailable.",
+          "facts": []
+        }
+      ],
+      "reference": {
+        "essential_facts": [],
+        "expected_missing_fields": [
+          "occupation",
+          "device",
+          "source of funds",
+          "history"
+        ],
+        "required_disclosures": [
+          "synthetic fixture",
+          "human analyst final authority"
+        ],
+        "guidance_policy": "No guidance returned; empty recommended_checks and needs_information are correct."
+      },
+      "workflow_semantics": {
+        "analyst_review": null,
+        "automatic_action_performed": false
+      },
+      "scenario_id": "CAL8-B",
+      "units": [
+        {
+          "unit_id": "cal6_b_claim",
+          "claim_kind": "observation",
+          "claim_text": "Poreklo sredstava klijenta je potvrđeno kao trgovina narkoticima.",
+          "evidence_ids": [
+            "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ],
+          "report_location": "observed_facts.0",
+          "claim_id": "observed_facts.0",
+          "essential_fact_id": null
+        }
+      ]
+    },
+    {
+      "role": "calibration",
+      "failed": false,
+      "report": {
+        "draft": {
+          "outcome": "needs_information",
+          "summary": [],
+          "observed_facts": [
+            {
+              "text": "TX-901: zabeležen transfer 10.00 EUR.",
+              "kind": "observation",
+              "evidence_refs": [
+                "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              ],
+              "exact_assertions": [],
+              "quotes": []
+            }
+          ],
+          "risk_indicators": [],
+          "alternative_explanations": [],
+          "missing_information": [
+            "Nedostaju podaci o klijentu i istorija."
+          ],
+          "recommended_checks": [],
+          "limitations": [
+            "Sintetički fixture, nije stvaran klijent niti ML predikcija.",
+            "Fixture skor nije kalibrisana verovatnoća niti dokaz krivice; transfer nije dokaz gubitka banke.",
+            "Zanimanje, uređaj, poreklo sredstava i istorija nisu poznati; nedostupna istorija nije prazna.",
+            "Vremenska osnova fixture-a nije nezavisno potvrđena."
+          ],
+          "citations": [
+            "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ]
+        }
+      },
+      "failure": null,
+      "evidence": [
+        {
+          "evidence_id": "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "kind": "case_fact",
+          "text": "Authored fixture transfer TX-901 of 10.00 EUR. Occupation, device, source of funds and account history unavailable.",
+          "facts": []
+        }
+      ],
+      "reference": {
+        "essential_facts": [],
+        "expected_missing_fields": [
+          "occupation",
+          "device",
+          "source of funds",
+          "history"
+        ],
+        "required_disclosures": [
+          "synthetic fixture",
+          "human analyst final authority"
+        ],
+        "guidance_policy": "No guidance returned; empty recommended_checks and needs_information are correct."
+      },
+      "workflow_semantics": {
+        "analyst_review": null,
+        "automatic_action_performed": false
+      },
+      "scenario_id": "CAL8-C",
+      "units": [
+        {
+          "unit_id": "cal6_c_claim",
+          "claim_kind": "observation",
+          "claim_text": "TX-901: zabeležen transfer 10.00 EUR.",
+          "evidence_ids": [
+            "ev_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ],
+          "report_location": "observed_facts.0",
+          "claim_id": "observed_facts.0",
+          "essential_fact_id": null
+        }
+      ]
+    }
+  ],
+  "expectations": [
+    {
+      "scenario_id": "CAL8-A",
+      "missingness_correct": true,
+      "critical_error": false,
+      "no_additional_issues": true,
+      "units": {
+        "cal6_a_claim": {
+          "judgment": "supported",
+          "critical_error": false
+        }
+      }
+    },
+    {
+      "scenario_id": "CAL8-B",
+      "missingness_correct": false,
+      "critical_error": true,
+      "no_additional_issues": false,
+      "units": {
+        "cal6_b_claim": {
+          "judgment": "unsupported",
+          "critical_error": true
+        }
+      }
+    },
+    {
+      "scenario_id": "CAL8-C",
+      "missingness_correct": false,
+      "critical_error": false,
+      "no_additional_issues": false,
+      "units": {
+        "cal6_c_claim": {
+          "judgment": "supported",
+          "critical_error": false
+        }
+      }
+    }
+  ],
+  "expected_only_canary": "CAL8_EXPECTED_ONLY_CANARY"
+}

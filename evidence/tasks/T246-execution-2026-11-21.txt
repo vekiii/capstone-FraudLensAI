@@ -1,0 +1,57 @@
+Verifying pinned T210 snapshot before label-free aggregation; RSS ceiling: 4,294,967,296 bytes
+EDA accepted rows: 100,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 200,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 300,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 400,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 500,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 600,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 700,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 800,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 900,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,000,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,100,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,200,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,300,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,400,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,500,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,600,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,700,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,800,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 1,900,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,000,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,100,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,200,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,300,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,400,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,500,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,600,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,700,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,800,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 2,900,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,000,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,100,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,200,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,300,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,400,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,500,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,600,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,700,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,800,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 3,900,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,000,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,100,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,200,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,300,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,400,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,500,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,600,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,700,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,800,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 4,900,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 5,000,000/5,078,345; peak RSS: 50,020,352 bytes
+EDA accepted rows: 5,078,345/5,078,345; peak RSS: 50,020,352 bytes
+EDA summary SHA-256: b8900338ca375b2d632b260a794634fb19408012a1c14fc66e2f7b097a111820
+Output: data/processed/t246-hi-small-eda-summary-v1.json
+Elapsed seconds: 43.058
+       43.15 real        42.38 user         0.66 sys
+time: sysctl kern.clockrate: Operation not permitted

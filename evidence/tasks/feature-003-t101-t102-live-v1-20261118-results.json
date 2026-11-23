@@ -1,0 +1,533 @@
+{
+  "kind": "Final_actual_v1_snapshot_preserved_before_remediation",
+  "actual_requests": 56,
+  "http200": 54,
+  "http400": 1,
+  "http429": 0,
+  "unknown_delivery": 1,
+  "known_usage_total_tokens": 155269,
+  "unknown_usage_never_zero": true,
+  "calibration": {
+    "passed": false,
+    "cases": [
+      {
+        "scenario_id": "C1",
+        "matched": true
+      },
+      {
+        "scenario_id": "C2",
+        "matched": true
+      },
+      {
+        "scenario_id": "C3",
+        "matched": false
+      },
+      {
+        "scenario_id": "C4",
+        "matched": false
+      },
+      {
+        "scenario_id": "C5",
+        "matched": false
+      },
+      {
+        "scenario_id": "C6",
+        "matched": false
+      }
+    ],
+    "denominator": 6
+  },
+  "control_comparison": [
+    {
+      "id": "C1",
+      "unit_judgments_match": true,
+      "critical_matches": true,
+      "predicate_matches": {
+        "required_disclosures_complete": true,
+        "missing_values_not_invented": true,
+        "no_cross_section_contradictions": true
+      },
+      "additional_issues": []
+    },
+    {
+      "id": "C2",
+      "unit_judgments_match": true,
+      "critical_matches": true,
+      "predicate_matches": {
+        "required_disclosures_complete": true,
+        "missing_values_not_invented": true,
+        "no_cross_section_contradictions": true
+      },
+      "additional_issues": []
+    },
+    {
+      "id": "C3",
+      "unit_judgments_match": true,
+      "critical_matches": true,
+      "predicate_matches": {
+        "required_disclosures_complete": false,
+        "missing_values_not_invented": true,
+        "no_cross_section_contradictions": true
+      },
+      "additional_issues": [
+        "The unsupported drug-trafficking assertion is repeated in /observations, outside the supplied unit bound to /summary."
+      ]
+    },
+    {
+      "id": "C4",
+      "unit_judgments_match": true,
+      "critical_matches": true,
+      "predicate_matches": {
+        "required_disclosures_complete": true,
+        "missing_values_not_invented": true,
+        "no_cross_section_contradictions": true
+      },
+      "additional_issues": [
+        "The unsupported drug-trafficking assertion is repeated in /observations, outside the supplied unit."
+      ]
+    },
+    {
+      "id": "C5",
+      "unit_judgments_match": true,
+      "critical_matches": true,
+      "predicate_matches": {
+        "required_disclosures_complete": false,
+        "missing_values_not_invented": true,
+        "no_cross_section_contradictions": true
+      },
+      "additional_issues": []
+    },
+    {
+      "id": "C6",
+      "unit_judgments_match": true,
+      "critical_matches": true,
+      "predicate_matches": {
+        "required_disclosures_complete": false,
+        "missing_values_not_invented": true,
+        "no_cross_section_contradictions": true
+      },
+      "additional_issues": [
+        "The unsupported identity assertion is repeated in /observations, outside the supplied unit's /summary location."
+      ]
+    }
+  ],
+  "quality_assessment_valid": false,
+  "quality_pass": null,
+  "actual_quality_reports": 0,
+  "unexecuted_primary_slots": 8,
+  "unexecuted_secondary_slots": 5,
+  "timing_demo": {
+    "denominator": 5,
+    "successful_within_90": 2,
+    "all_terminal_within_120": true,
+    "passed": false,
+    "rows": [
+      {
+        "id": "TIME1-01",
+        "observed": true,
+        "successful_within_90": true,
+        "terminal_within_120": true,
+        "observation": {
+          "id": "TIME1-01",
+          "state": "needs_information",
+          "seconds": 41.29455990000861,
+          "report_validated": true
+        }
+      },
+      {
+        "id": "TIME1-02",
+        "observed": true,
+        "successful_within_90": false,
+        "terminal_within_120": true,
+        "observation": {
+          "id": "TIME1-02",
+          "state": "failed",
+          "seconds": 12.158599399961531,
+          "report_validated": false
+        }
+      },
+      {
+        "id": "TIME1-03",
+        "observed": true,
+        "successful_within_90": false,
+        "terminal_within_120": true,
+        "observation": {
+          "id": "TIME1-03",
+          "state": "failed",
+          "seconds": 10.16870670003118,
+          "report_validated": false
+        }
+      },
+      {
+        "id": "TIME1-04",
+        "observed": true,
+        "successful_within_90": true,
+        "terminal_within_120": true,
+        "observation": {
+          "id": "TIME1-04",
+          "state": "needs_information",
+          "seconds": 29.97341730003245,
+          "report_validated": true
+        }
+      },
+      {
+        "id": "TIME1-05",
+        "observed": true,
+        "successful_within_90": false,
+        "terminal_within_120": true,
+        "observation": {
+          "id": "TIME1-05",
+          "state": "failed",
+          "seconds": 10.27867889998015,
+          "report_validated": false
+        }
+      }
+    ]
+  },
+  "local_search": {
+    "denominator": 20,
+    "observed": 20,
+    "successful_searches": 20,
+    "p95_seconds": 0.0032897000201046467,
+    "passed": true,
+    "rows": [
+      {
+        "id": "SEARCH1-01",
+        "seconds": 0.0029365000082179904,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-02",
+        "seconds": 0.0022607999853789806,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-03",
+        "seconds": 0.0029504999984055758,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-04",
+        "seconds": 0.0024135999847203493,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-05",
+        "seconds": 0.003048200043849647,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-06",
+        "seconds": 0.0032897000201046467,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-07",
+        "seconds": 0.002961499965749681,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-08",
+        "seconds": 0.0022596000344492495,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-09",
+        "seconds": 0.002459599985741079,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-10",
+        "seconds": 0.002353499992750585,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-11",
+        "seconds": 0.00283880002098158,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-12",
+        "seconds": 0.002607800008263439,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-13",
+        "seconds": 0.0028602000093087554,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-14",
+        "seconds": 0.00282839999999851,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-15",
+        "seconds": 0.0023504000273533165,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-16",
+        "seconds": 0.002144400030374527,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-17",
+        "seconds": 0.002361799997743219,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-18",
+        "seconds": 0.002337199985049665,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-19",
+        "seconds": 0.00298250000923872,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      },
+      {
+        "id": "SEARCH1-20",
+        "seconds": 0.004122000013012439,
+        "error": false,
+        "error_type": null,
+        "hits": 6
+      }
+    ]
+  },
+  "performance_pass": false,
+  "case_details": [
+    {
+      "id": "TIME1-01",
+      "state": "needs_information",
+      "failure": null,
+      "budget": {
+        "provider_requests": 6,
+        "tool_calls": 4,
+        "repairs": 0,
+        "transient_retries": 0,
+        "deadline": "2026-11-18T09:02:08.326431Z"
+      },
+      "dispatch_diagnostics": [
+        {
+          "sequence": 1,
+          "server_wall_diagnostic_seconds": 1.6846797466278076
+        },
+        {
+          "sequence": 2,
+          "server_wall_diagnostic_seconds": 1.104339361190796
+        },
+        {
+          "sequence": 3,
+          "server_wall_diagnostic_seconds": 1.2017133235931396
+        },
+        {
+          "sequence": 4,
+          "server_wall_diagnostic_seconds": 1.6363105773925781
+        },
+        {
+          "sequence": 5,
+          "server_wall_diagnostic_seconds": 6.076416969299316
+        },
+        {
+          "sequence": 6,
+          "server_wall_diagnostic_seconds": 28.512484788894653
+        }
+      ]
+    },
+    {
+      "id": "TIME1-02",
+      "state": "failed",
+      "failure": {
+        "code": "context_unavailable",
+        "message": "Investigation ended with a controlled limitation or failure.",
+        "outcome_unknown": true
+      },
+      "budget": {
+        "provider_requests": 5,
+        "tool_calls": 4,
+        "repairs": 0,
+        "transient_retries": 0,
+        "deadline": "2026-11-18T09:02:50.385407Z"
+      },
+      "dispatch_diagnostics": [
+        {
+          "sequence": 1,
+          "server_wall_diagnostic_seconds": 0.9709057807922363
+        },
+        {
+          "sequence": 2,
+          "server_wall_diagnostic_seconds": 1.477151870727539
+        },
+        {
+          "sequence": 3,
+          "server_wall_diagnostic_seconds": 1.0499987602233887
+        },
+        {
+          "sequence": 4,
+          "server_wall_diagnostic_seconds": 1.4412941932678223
+        },
+        {
+          "sequence": 5,
+          "server_wall_diagnostic_seconds": 6.683635473251343
+        }
+      ]
+    },
+    {
+      "id": "TIME1-03",
+      "state": "failed",
+      "failure": {
+        "code": "context_unavailable",
+        "message": "Investigation ended with a controlled limitation or failure.",
+        "outcome_unknown": true
+      },
+      "budget": {
+        "provider_requests": 5,
+        "tool_calls": 4,
+        "repairs": 0,
+        "transient_retries": 0,
+        "deadline": "2026-11-18T09:03:03.270154Z"
+      },
+      "dispatch_diagnostics": [
+        {
+          "sequence": 1,
+          "server_wall_diagnostic_seconds": 1.4269917011260986
+        },
+        {
+          "sequence": 2,
+          "server_wall_diagnostic_seconds": 1.224701166152954
+        },
+        {
+          "sequence": 3,
+          "server_wall_diagnostic_seconds": 1.1989085674285889
+        },
+        {
+          "sequence": 4,
+          "server_wall_diagnostic_seconds": 1.4032540321350098
+        },
+        {
+          "sequence": 5,
+          "server_wall_diagnostic_seconds": 4.424208164215088
+        }
+      ]
+    },
+    {
+      "id": "TIME1-04",
+      "state": "needs_information",
+      "failure": null,
+      "budget": {
+        "provider_requests": 6,
+        "tool_calls": 4,
+        "repairs": 0,
+        "transient_retries": 0,
+        "deadline": "2026-11-18T09:03:14.174819Z"
+      },
+      "dispatch_diagnostics": [
+        {
+          "sequence": 1,
+          "server_wall_diagnostic_seconds": 1.2316133975982666
+        },
+        {
+          "sequence": 2,
+          "server_wall_diagnostic_seconds": 1.6548857688903809
+        },
+        {
+          "sequence": 3,
+          "server_wall_diagnostic_seconds": 1.2584216594696045
+        },
+        {
+          "sequence": 4,
+          "server_wall_diagnostic_seconds": 2.685087203979492
+        },
+        {
+          "sequence": 5,
+          "server_wall_diagnostic_seconds": 2.09663987159729
+        },
+        {
+          "sequence": 6,
+          "server_wall_diagnostic_seconds": 20.633841276168823
+        }
+      ]
+    },
+    {
+      "id": "TIME1-05",
+      "state": "failed",
+      "failure": {
+        "code": "context_unavailable",
+        "message": "Investigation ended with a controlled limitation or failure.",
+        "outcome_unknown": true
+      },
+      "budget": {
+        "provider_requests": 5,
+        "tool_calls": 4,
+        "repairs": 0,
+        "transient_retries": 0,
+        "deadline": "2026-11-18T09:03:44.915630Z"
+      },
+      "dispatch_diagnostics": [
+        {
+          "sequence": 1,
+          "server_wall_diagnostic_seconds": 1.063298225402832
+        },
+        {
+          "sequence": 2,
+          "server_wall_diagnostic_seconds": 1.4148340225219727
+        },
+        {
+          "sequence": 3,
+          "server_wall_diagnostic_seconds": 0.9201607704162598
+        },
+        {
+          "sequence": 4,
+          "server_wall_diagnostic_seconds": 1.690307855606079
+        },
+        {
+          "sequence": 5,
+          "server_wall_diagnostic_seconds": 4.6173624992370605
+        }
+      ]
+    }
+  ],
+  "source_mode": "authored synthetic fixture, not full producer/ML performance",
+  "timing_freeze_sha256": "704bfa90021fcc50a14decac69022d8cce5f859f1d61f5941f4036c286c54ff6",
+  "old_sources_preserved_in": "evals/results/feature-003/acceptance-live-20261118/frozen-runtime-before-v7",
+  "new_tasks_added": 0
+}

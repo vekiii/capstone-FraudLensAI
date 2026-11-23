@@ -1,0 +1,47 @@
+{
+  "version": 4,
+  "date": "2026-11-15",
+  "status": "retrieval_freeze_audit",
+  "t052_bundle_sha256": "5cb654213934cbe11f6378eb6121ee40bfd046051d3671dbdaa082c4824f4700",
+  "original_protocol_sha256": "ea8d74547b64a89f71a00ee257806c0bf010ad84496d8dce0f2c9e32df914b92",
+  "current_protocol_sha256": "e6a59d4e6b2c1ba8a19d2ef0e3a7dd7c7787af58cff1cbc0f5c6b67ab1d73540",
+  "original_sealed_inventory_sha256": "85e602d1fd69ee10d19b0e751943cd2d2ebde42afbe73f6cb0cc3b72fa448d37",
+  "original_approval_and_inputs_unchanged": true,
+  "implementation_changes": {
+    "backend/src/fraudlens/investigation/provider.py": {
+      "t052_sha256": "92cba9ab5e4d788e9f22765c06a401a4be5fb8879cbb3b5c3ea7b8dbe27f1944",
+      "current_sha256": "a6e99864a1406f1847dacfa3ca31749f699eae9574151caa2901dfbad82aef9c"
+    },
+    "backend/src/fraudlens/investigation/retrieval.py": {
+      "t052_sha256": "cac72d2c97477a631ba7a48dd2a6f2c03c5da3dea69350c590bd13097903004c",
+      "current_sha256": "126be07da52662beea6c3d7d0b773a962fef0372dda8b5125a3245d873f923ef"
+    }
+  },
+  "runtime_modules_without_evaluator_import": [
+    "__init__.py",
+    "api.py",
+    "context.py",
+    "environment.py",
+    "knowledge.py",
+    "models.py",
+    "provider.py",
+    "retrieval.py",
+    "review.py",
+    "settings.py",
+    "store.py",
+    "tools.py",
+    "validation.py",
+    "workflow.py"
+  ],
+  "new_artifact_sha256": {
+    "backend/src/fraudlens/investigation/evaluation.py": "457d580e44833f48eb65e1f014ae49684f946c8b0a4f617fd03cce25a96e6650",
+    "backend/src/fraudlens/investigation/cli.py": "66eab97ba0da23b7c6b45da5d24c0bbb525cc1aabe37bb47707982fbde7ec7b7",
+    "data/knowledge/fraudlens-aml-knowledge-v1/glossary.json": "c2da4e6bafd617bbb7605fbf556c3d3630fac10e80d0640f93466d6c24db73ca"
+  },
+  "held_out_exposure": "No retrieval/investigation held-out questions or references printed/read into model context. Safety stimuli inspected; H08 input/reference not opened.",
+  "glossary_review": "reviewed",
+  "t055": "retrieval_frozen",
+  "t056": "executed_below_quality_targets",
+  "live_provider": "T033_synthetic_probe_only",
+  "provider_capability": "verified_T033"
+}

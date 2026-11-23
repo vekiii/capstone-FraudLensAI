@@ -1,0 +1,290 @@
+[
+  {
+    "id": "DEV8N-01",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-601",
+      "snapshot_ref": "fixture_b81e9db5fc0191425fde954569c8ee781a0d4df7f344408a24c522059066a472",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-601",
+        "transaction": {
+          "transaction_id": "TX-601",
+          "occurred_at": "2026-11-18T09:18:43Z",
+          "amount": "4582.73",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:DEV8N-01",
+          "receiver_account": "AUTHORED-R:DEV8N-01"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-601",
+          "score": 0.54,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:18:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:18:43Z",
+        "start": "2026-11-11T09:18:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "59c214afec977020f0fde2973431649cd98cd5c0e6788f86feb217adcfe71355"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-601": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "DEV8N-01-S"
+          },
+          "receiver": {
+            "bank": "AUTHORED-R",
+            "account": "DEV8N-01-R"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-401",
+          "occurred_at": "2026-11-16T09:18:43Z",
+          "amount": "83.47",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "DEV8N-01-S"
+        },
+        {
+          "transaction_id": "TX-501",
+          "occurred_at": "2026-11-17T09:18:43Z",
+          "amount": "29.61",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "DEV8N-01-S"
+        },
+        {
+          "transaction_id": "TX-301",
+          "occurred_at": "2026-11-18T06:18:43Z",
+          "amount": "41.92",
+          "currency": "EUR",
+          "bank": "AUTHORED-R",
+          "account": "DEV8N-01-R"
+        },
+        {
+          "transaction_id": "TX-201",
+          "occurred_at": "2026-11-18T09:18:33Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "DEV8N-01-S"
+        },
+        {
+          "transaction_id": "TX-101",
+          "occurred_at": "2026-11-19T09:18:43Z",
+          "amount": "987.65",
+          "currency": "EUR",
+          "bank": "AUTHORED-S",
+          "account": "DEV8N-01-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  },
+  {
+    "id": "DEV8N-02",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-602",
+      "snapshot_ref": "fixture_6cd26a9ce7a843232bb2eab4e5b52d1ae2caafdec55a13a049e2e19990c88853",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-602",
+        "transaction": {
+          "transaction_id": "TX-602",
+          "occurred_at": "2026-11-18T09:19:43Z",
+          "amount": "113.86",
+          "currency": "USD",
+          "sender_account": "AUTHORED-S:DEV8N-02",
+          "receiver_account": "AUTHORED-R:DEV8N-02"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-602",
+          "score": 0.32,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:19:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "b6de4de354433c7ecd516030568fef2595c7d7436f6f128ac4846c0f369bfc4a"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  },
+  {
+    "id": "DEV8N-03",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-603",
+      "snapshot_ref": "fixture_01fad5c6ac37c9b6a32c7bae77ced8ebabddfc051d5ba304949777fbce2e840c",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-603",
+        "transaction": {
+          "transaction_id": "TX-603",
+          "occurred_at": "2026-11-18T09:20:43Z",
+          "amount": "1294.68",
+          "currency": "GBP",
+          "sender_account": "AUTHORED-S:DEV8N-03",
+          "receiver_account": "AUTHORED-R:DEV8N-03"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-603",
+          "score": 0.71,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:20:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: Review available transaction evidence, missing facts and human review authority."
+        }
+      },
+      "history": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:20:43Z",
+        "start": "2026-11-11T09:20:43Z",
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "Authored partial history only; not a complete account record."
+      },
+      "context_revision": "bea7b149b7bc226926cc1cbc281f50bccc92af8a0fa64ff63ccda2af50ef2973"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-603": {
+          "sender": {
+            "bank": "AUTHORED-S",
+            "account": "DEV8N-03-S"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "TX-403",
+          "occurred_at": "2026-11-16T09:20:43Z",
+          "amount": "83.47",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "DEV8N-03-S"
+        },
+        {
+          "transaction_id": "TX-503",
+          "occurred_at": "2026-11-17T09:20:43Z",
+          "amount": "29.61",
+          "currency": "USD",
+          "bank": "AUTHORED-S",
+          "account": "DEV8N-03-S"
+        },
+        {
+          "transaction_id": "TX-203",
+          "occurred_at": "2026-11-18T09:20:33Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "DEV8N-03-S"
+        },
+        {
+          "transaction_id": "TX-103",
+          "occurred_at": "2026-11-19T09:20:43Z",
+          "amount": "987.65",
+          "currency": "GBP",
+          "bank": "AUTHORED-S",
+          "account": "DEV8N-03-S"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "Review available transaction evidence, missing facts and human review authority."
+    ]
+  },
+  {
+    "id": "DEV8N-04",
+    "language": "sr-Latn",
+    "instruction": "Use only supplied facts and authorized evidence; write Serbian Latin prose, search procedures in English. The analyst retains final decisions.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-604",
+      "snapshot_ref": "fixture_8ab45671ddf5f5693b91f6dc3ab90c936e54ee8cc092658bcf50f6af21324566",
+      "dataset_version": null,
+      "observed_at": "2026-11-18T18:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-604",
+        "transaction": {
+          "transaction_id": "TX-604",
+          "occurred_at": "2026-11-18T09:21:43Z",
+          "amount": "219.43",
+          "currency": "EUR",
+          "sender_account": "AUTHORED-S:DEV8N-04",
+          "receiver_account": "AUTHORED-R:DEV8N-04"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-604",
+          "score": 0.39,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-11-18T09:21:54Z",
+          "explanation": "Authored synthetic fixture illustration; not ML inference, calibrated probability, guilt or a legal finding. Review question: What is the exact current statutory filing deadline for this transfer in Portugal?"
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "cutoff": null,
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No historical records supplied for either account."
+      },
+      "context_revision": "e132282f6855dd4f1e8372bbe8fe2ed0979127504c65177c43113822723f7ed2"
+    },
+    "history_fixture": {
+      "accounts": {},
+      "events": []
+    },
+    "procedure_queries": [
+      "What is the exact current statutory filing deadline for this transfer in Portugal?"
+    ]
+  }
+]

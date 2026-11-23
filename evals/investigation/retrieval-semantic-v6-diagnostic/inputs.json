@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "query": "Must amounts sent and received keep their own currencies?"
+  },
+  {
+    "id": 2,
+    "query": "Is the data license identical to the repository license?"
+  },
+  {
+    "id": 3,
+    "query": "How do I check that a citation really supports an interpretation?"
+  },
+  {
+    "id": 4,
+    "query": "Where should observed facts get their evidence?"
+  },
+  {
+    "id": 5,
+    "query": "What should I say when the account history cannot be obtained?"
+  },
+  {
+    "id": 6,
+    "query": "How do I document disagreement between different source versions?"
+  },
+  {
+    "id": 7,
+    "query": "Can an automated score decide to freeze a bank account?"
+  },
+  {
+    "id": 8,
+    "query": "What written justification is needed when an analyst closes an alert?"
+  },
+  {
+    "id": 9,
+    "query": "What is considered supporting documentation for a filing?"
+  },
+  {
+    "id": 10,
+    "query": "Does this excerpt describe every retention procedure?"
+  },
+  {
+    "id": 11,
+    "query": "Is permission to share reports with affiliates unlimited?"
+  },
+  {
+    "id": 12,
+    "query": "Does this historical discussion establish Serbian legal requirements?"
+  },
+  {
+    "id": 13,
+    "query": "What is the exact source of funds for this customer?"
+  },
+  {
+    "id": 14,
+    "query": "Which device produced this transaction evidence?"
+  },
+  {
+    "id": 15,
+    "query": "What is the exact retention period for supporting documentation?"
+  },
+  {
+    "id": 16,
+    "query": "Which analyst made the decision on this transaction?"
+  },
+  {
+    "id": 17,
+    "query": "What are the actual amounts and currencies in this customer case?"
+  },
+  {
+    "id": 18,
+    "query": "When was this customer report shared with affiliates?"
+  },
+  {
+    "id": 19,
+    "query": "What exact calibrated probability does this transaction score imply?"
+  },
+  {
+    "id": 20,
+    "query": "What is the transaction timestamp for this account?"
+  },
+  {
+    "id": 21,
+    "query": "Which applicable Serbian law requires supporting records?"
+  },
+  {
+    "id": 22,
+    "query": "Which supporting documents were attached to this specific filing?"
+  },
+  {
+    "id": 23,
+    "query": "What is the customer occupation recorded in this report?"
+  },
+  {
+    "id": 24,
+    "query": "What is the exact current legal deadline for this regulatory filing?"
+  },
+  {
+    "id": 25,
+    "query": "Should a narrative claim wrongdoing merely because a score is high?"
+  },
+  {
+    "id": 26,
+    "query": "If sources disagree, is their version information dispensable?"
+  },
+  {
+    "id": 27,
+    "query": "Does a source identifier alone certify a correct interpretation?"
+  },
+  {
+    "id": 28,
+    "query": "In which country was this sender born?"
+  },
+  {
+    "id": 29,
+    "query": "What exact article of current EU law requires these records?"
+  },
+  {
+    "id": 30,
+    "query": "How many supporting documents were uploaded in this case?"
+  }
+]

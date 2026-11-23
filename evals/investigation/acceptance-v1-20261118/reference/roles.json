@@ -1,0 +1,104 @@
+{
+  "DEVQ1-01": {
+    "split": "development",
+    "kind": "supported",
+    "primary": false,
+    "secondary": false
+  },
+  "DEVQ1-02": {
+    "split": "development",
+    "kind": "missing",
+    "primary": false,
+    "secondary": false
+  },
+  "DEVQ1-03": {
+    "split": "development",
+    "kind": "mixed",
+    "primary": false,
+    "secondary": false
+  },
+  "DEVQ1-04": {
+    "split": "development",
+    "kind": "no_guidance",
+    "primary": false,
+    "secondary": false
+  },
+  "QUAL1-01": {
+    "split": "quality",
+    "kind": "supported",
+    "primary": true,
+    "secondary": false
+  },
+  "QUAL1-02": {
+    "split": "quality",
+    "kind": "unavailable",
+    "primary": true,
+    "secondary": true
+  },
+  "QUAL1-03": {
+    "split": "quality",
+    "kind": "mixed",
+    "primary": true,
+    "secondary": true
+  },
+  "QUAL1-04": {
+    "split": "quality",
+    "kind": "no_guidance",
+    "primary": true,
+    "secondary": true
+  },
+  "QUAL1-05": {
+    "split": "quality",
+    "kind": "elevated",
+    "primary": true,
+    "secondary": false
+  },
+  "QUAL1-06": {
+    "split": "quality",
+    "kind": "small",
+    "primary": true,
+    "secondary": true
+  },
+  "QUAL1-07": {
+    "split": "quality",
+    "kind": "missing",
+    "primary": true,
+    "secondary": false
+  },
+  "QUAL1-08": {
+    "split": "quality",
+    "kind": "mixed_large",
+    "primary": true,
+    "secondary": true
+  },
+  "TIME1-01": {
+    "split": "timing",
+    "kind": "supported",
+    "primary": false,
+    "secondary": false
+  },
+  "TIME1-02": {
+    "split": "timing",
+    "kind": "unavailable",
+    "primary": false,
+    "secondary": false
+  },
+  "TIME1-03": {
+    "split": "timing",
+    "kind": "mixed",
+    "primary": false,
+    "secondary": false
+  },
+  "TIME1-04": {
+    "split": "timing",
+    "kind": "no_guidance",
+    "primary": false,
+    "secondary": false
+  },
+  "TIME1-05": {
+    "split": "timing",
+    "kind": "elevated",
+    "primary": false,
+    "secondary": false
+  }
+}

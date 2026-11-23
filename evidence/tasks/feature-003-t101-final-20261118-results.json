@@ -1,0 +1,273 @@
+{
+  "date": "2026-11-18",
+  "status": "PASS",
+  "candidate": "semantic v8, report v6, bounded low reasoning, grouped tools, strict case sections after case facts",
+  "prior_failed_cycle_result": "6/8, archived unchanged",
+  "initial_actual": 352,
+  "actual": 419,
+  "ceiling": 433,
+  "stages": {
+    "development": {
+      "dispatches": 16,
+      "statuses": {
+        "200": 16
+      },
+      "known_usage": {
+        "input_tokens": 53671,
+        "output_tokens": 8568,
+        "total_tokens": 62239
+      },
+      "ledger_sha256": "cf1398bd1181227002177ac179c8a4b104570ba29bbd014b089e6182cc548033",
+      "frozen_files": 77,
+      "freeze_sha256": "0d767659c42a2a520757bf4df11e1ab37e61533509260696952fc04ec8da83c8"
+    },
+    "calibration": {
+      "dispatches": 6,
+      "statuses": {
+        "200": 6
+      },
+      "known_usage": {
+        "input_tokens": 13381,
+        "output_tokens": 7639,
+        "total_tokens": 21020
+      },
+      "ledger_sha256": "994b54adc0087a3eedb9a2428564e27aa4bc5eddbe83ae3327b75e6190c21e14",
+      "frozen_files": 41,
+      "freeze_sha256": "1dea226dfd3feffea0fd60d05c6d31ec0d29711453b00db24832c3b31bb1ca40"
+    },
+    "final": {
+      "dispatches": 32,
+      "statuses": {
+        "200": 32
+      },
+      "known_usage": {
+        "input_tokens": 109881,
+        "output_tokens": 18234,
+        "total_tokens": 128115
+      },
+      "ledger_sha256": "653c89b71da5df88f1adfade187426a91aa8bb584809985e833eb2d81246b59e",
+      "frozen_files": 77,
+      "freeze_sha256": "99095f88b765959761f5e8cc7979123a87a3c6cd0a2c0ff62ad4c4a44d9765d0"
+    },
+    "judging": {
+      "dispatches": 13,
+      "statuses": {
+        "200": 13
+      },
+      "known_usage": {
+        "input_tokens": 114472,
+        "output_tokens": 33711,
+        "total_tokens": 148183
+      },
+      "ledger_sha256": "4f876f38d6bc90e827ea704f22133d551f17c91e04de6412665ab621ad7003e1",
+      "frozen_files": 41,
+      "freeze_sha256": "2f8ead1e277979a9d021869db012567cc2ecf1e4f93106f760bb5398fc8196d9"
+    }
+  },
+  "calibration": {
+    "passed": true,
+    "cases": [
+      {
+        "scenario_id": "C1",
+        "matched": true
+      },
+      {
+        "scenario_id": "C2",
+        "matched": true
+      },
+      {
+        "scenario_id": "C3",
+        "matched": true
+      },
+      {
+        "scenario_id": "C4",
+        "matched": true
+      },
+      {
+        "scenario_id": "C5",
+        "matched": true
+      },
+      {
+        "scenario_id": "C6",
+        "matched": true
+      }
+    ],
+    "denominator": 6
+  },
+  "quality": {
+    "passed": true,
+    "passing": 8,
+    "count": 8,
+    "reports": [
+      {
+        "id": "SEC-FINAL-01",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 20,
+        "essential_count": 7,
+        "procedural_count": 2,
+        "applicable_count": 2
+      },
+      {
+        "id": "SEC-FINAL-02",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 25,
+        "essential_count": 7,
+        "procedural_count": 4,
+        "applicable_count": 4
+      },
+      {
+        "id": "SEC-FINAL-03",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 26,
+        "essential_count": 7,
+        "procedural_count": 3,
+        "applicable_count": 3
+      },
+      {
+        "id": "SEC-FINAL-04",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 23,
+        "essential_count": 7,
+        "procedural_count": 0,
+        "applicable_count": 0
+      },
+      {
+        "id": "SEC-FINAL-05",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 23,
+        "essential_count": 7,
+        "procedural_count": 4,
+        "applicable_count": 4
+      },
+      {
+        "id": "SEC-FINAL-06",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 22,
+        "essential_count": 7,
+        "procedural_count": 4,
+        "applicable_count": 4
+      },
+      {
+        "id": "SEC-FINAL-07",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 18,
+        "essential_count": 7,
+        "procedural_count": 3,
+        "applicable_count": 3
+      },
+      {
+        "id": "SEC-FINAL-08",
+        "failed": false,
+        "support_rate": 1.0,
+        "essential_coverage": 1.0,
+        "passed": true,
+        "critical_error": false,
+        "missingness_correct": true,
+        "additional_issues": [],
+        "factual_count": 27,
+        "essential_count": 7,
+        "procedural_count": 2,
+        "applicable_count": 2
+      }
+    ],
+    "disagreements": [],
+    "invalid_ratings": []
+  },
+  "observed_drafts": [
+    {
+      "id": "SEC-FINAL-01",
+      "state": "ready_for_review",
+      "seconds": 35.104057500000636,
+      "report_validated": true
+    },
+    {
+      "id": "SEC-FINAL-02",
+      "state": "ready_for_review",
+      "seconds": 28.30866529999912,
+      "report_validated": true
+    },
+    {
+      "id": "SEC-FINAL-03",
+      "state": "ready_for_review",
+      "seconds": 22.30852640000012,
+      "report_validated": true
+    },
+    {
+      "id": "SEC-FINAL-04",
+      "state": "needs_information",
+      "seconds": 16.66218260000096,
+      "report_validated": true
+    },
+    {
+      "id": "SEC-FINAL-05",
+      "state": "ready_for_review",
+      "seconds": 24.9716425000006,
+      "report_validated": true
+    },
+    {
+      "id": "SEC-FINAL-06",
+      "state": "ready_for_review",
+      "seconds": 28.120006600001943,
+      "report_validated": true
+    },
+    {
+      "id": "SEC-FINAL-07",
+      "state": "ready_for_review",
+      "seconds": 23.90827850000278,
+      "report_validated": true
+    },
+    {
+      "id": "SEC-FINAL-08",
+      "state": "ready_for_review",
+      "seconds": 29.955117600002268,
+      "report_validated": true
+    }
+  ],
+  "quality_sha256": "a50e8822e5c45249ae9762a372a5216637dbb75df71743a9e7b19a3fc738f3ef",
+  "packets_sha256": "eb4f9472cf250e5cd63c72ef23645b86c3d80850dca985a16c3a98b60b376fcd",
+  "tests": "56 focused, 1163 full backend passed",
+  "scope": "Authored synthetic held-out cohort, same configured model in separate blind contexts. T102 satisfaction remains bound to its earlier run.",
+  "t101_complete": true
+}

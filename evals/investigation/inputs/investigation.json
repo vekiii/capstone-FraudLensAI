@@ -1,0 +1,1581 @@
+[
+  {
+    "id": "INV-D01",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-001",
+      "snapshot_ref": "fixture_4dec78ab9de389623052af5492820be67f98e523103f931b78d635646c43211b",
+      "dataset_version": null,
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-001",
+        "transaction": {
+          "transaction_id": "TX-001",
+          "occurred_at": "2026-01-05T09:15:00Z",
+          "sender_account": "DEMO-BANK-A:SYN-ACCOUNT-001",
+          "receiver_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+          "amount": "1250.00",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-001",
+          "score": 0.75,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-05T09:15:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": null,
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No history coverage supplied by the fixture context."
+      },
+      "context_revision": "032a37df351799b142bd21f3c34d621555b58e434819227e6ee38b91b11d73ad"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-001": {
+          "sender": {
+            "bank": "AUTHORED-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "AUTHORED-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": []
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  },
+  {
+    "id": "INV-D02",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "dataset",
+      "case_id": "C4cbd5d50dc27c71a63c3335bf0f6e015",
+      "snapshot_ref": "run_eval_inv_d02",
+      "dataset_version": "dv_a094ca071f2d378424f1672b036ca843b163e9dfd134649f9c38c5e589e8683f",
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "contract_version": 2,
+        "snapshot_ref": "run_eval_inv_d02",
+        "dataset_version": "dv_a094ca071f2d378424f1672b036ca843b163e9dfd134649f9c38c5e589e8683f",
+        "case_id": "C4cbd5d50dc27c71a63c3335bf0f6e015",
+        "transaction": {
+          "transaction_id": "Dab2bc50340baa23425ac8ab7d9294fd8",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "event_time_raw": "2026/01/01 10:00",
+          "time_basis": "assumed_utc_for_synthetic_benchmark",
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          },
+          "paid": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "received": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "payment_format": null
+        },
+        "risk_assessment": {
+          "transaction_id": "Dab2bc50340baa23425ac8ab7d9294fd8",
+          "run_id": "run_eval_inv_d02",
+          "dataset_version": "dv_a094ca071f2d378424f1672b036ca843b163e9dfd134649f9c38c5e589e8683f",
+          "score": 0.65,
+          "score_kind": "ordinal_rule_score",
+          "score_source": "rules",
+          "scorer_version": "rules-v1",
+          "feature_version": "history-v1",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "history_cutoff_exclusive_at": "2026-01-01T10:00:00Z",
+          "scored_at": "2026-01-02T09:00:00Z",
+          "history_coverage": {
+            "state": "full",
+            "start": "2025-12-31T10:00:00Z"
+          },
+          "explanation": {
+            "status": "available",
+            "method": "rules",
+            "explained_scale": "risk_score",
+            "feature_snapshot_digest": "sha256:example",
+            "partial": false,
+            "base_value": 0,
+            "remainder": 0,
+            "items": [
+              {
+                "feature_key": "sender_out_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.35,
+                "rule_condition": "prior sender outgoing count >= 3"
+              },
+              {
+                "feature_key": "receiver_in_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.3,
+                "rule_condition": "prior receiver incoming count >= 3"
+              }
+            ]
+          }
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": "2026-01-01T10:00:00Z",
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "synthetic_shared_banks",
+        "reason": "Authored contract example; real producer/history integration not executed."
+      },
+      "context_revision": "2abb9f9ea399883809fc08a7b93bca13494fb65700974f5adee5f9026b7491f3"
+    },
+    "history_fixture": {
+      "accounts": {
+        "C4cbd5d50dc27c71a63c3335bf0f6e015": {
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": []
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  },
+  {
+    "id": "INV-D03",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "dataset",
+      "case_id": "Cb3e14476969695e0a5e20a74824a3621",
+      "snapshot_ref": "run_eval_inv_d03",
+      "dataset_version": "dv_8ddd068bd39e2c29f32864da69d4c81410464f75692aeaf0b6cf8eb5801a0a3f",
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "contract_version": 2,
+        "snapshot_ref": "run_eval_inv_d03",
+        "dataset_version": "dv_8ddd068bd39e2c29f32864da69d4c81410464f75692aeaf0b6cf8eb5801a0a3f",
+        "case_id": "Cb3e14476969695e0a5e20a74824a3621",
+        "transaction": {
+          "transaction_id": "D39a0867bd5e9906bc9b1325002d46645",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "event_time_raw": "2026/01/01 10:00",
+          "time_basis": "assumed_utc_for_synthetic_benchmark",
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          },
+          "paid": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "received": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "payment_format": null
+        },
+        "risk_assessment": {
+          "transaction_id": "D39a0867bd5e9906bc9b1325002d46645",
+          "run_id": "run_eval_inv_d03",
+          "dataset_version": "dv_8ddd068bd39e2c29f32864da69d4c81410464f75692aeaf0b6cf8eb5801a0a3f",
+          "score": 0.65,
+          "score_kind": "ordinal_rule_score",
+          "score_source": "rules",
+          "scorer_version": "rules-v1",
+          "feature_version": "history-v1",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "history_cutoff_exclusive_at": "2026-01-01T10:00:00Z",
+          "scored_at": "2026-01-02T09:00:00Z",
+          "history_coverage": {
+            "state": "full",
+            "start": "2025-12-31T10:00:00Z"
+          },
+          "explanation": {
+            "status": "unavailable",
+            "reason_code": "missing_artifact",
+            "feature_snapshot_digest": "sha256:authored-unavailable"
+          }
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": "2026-01-01T10:00:00Z",
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "synthetic_shared_banks",
+        "reason": "Authored contract example; real producer/history integration not executed."
+      },
+      "context_revision": "c1100d09190f6e78d4bee96c017fdf0dc6c4d778ee895dbf6bcb21c8072ac9ba"
+    },
+    "history_fixture": {
+      "accounts": {
+        "Cb3e14476969695e0a5e20a74824a3621": {
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": []
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  },
+  {
+    "id": "INV-D04",
+    "language": "sr-Latn",
+    "instruction": "Pripremi nacrt koji odgovara na zahtev za aktuelnim srpskim kanalom i rokom prijave u satima. Ako nema primenljivih smernica, jasno navedi nedostatak i zatraži informacije; nemoj izmisliti obavezu ili pokrenuti prijavu.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-001",
+      "snapshot_ref": "fixture_ce487c7b24bbf554e5e2268a869b4349e6b33e2298554d9a002f3714405369f8",
+      "dataset_version": null,
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-001",
+        "transaction": {
+          "transaction_id": "TX-001",
+          "occurred_at": "2026-01-05T09:15:00Z",
+          "sender_account": "DEMO-BANK-A:SYN-ACCOUNT-001",
+          "receiver_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+          "amount": "1250.00",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-001",
+          "score": 0.75,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-05T09:15:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": null,
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No history coverage supplied by the fixture context."
+      },
+      "context_revision": "348613ca31914e72473a6262fe7e1ec97e79516ef22ea4ee5f31aab743c411a6"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-001": {
+          "sender": {
+            "bank": "AUTHORED-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "AUTHORED-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": []
+    },
+    "procedure_queries": [
+      "current Serbian filing deadline in hours"
+    ]
+  },
+  {
+    "id": "INV-H01",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-002",
+      "snapshot_ref": "fixture_ae5c866a5eff96d1b3a2e5d77595a799702c4e7ebc40fbebbe0b5a4a365aacc1",
+      "dataset_version": null,
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-002",
+        "transaction": {
+          "transaction_id": "TX-002",
+          "occurred_at": "2026-01-05T09:42:00Z",
+          "sender_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+          "receiver_account": "DEMO-BANK-C:SYN-ACCOUNT-003",
+          "amount": "89.95",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-002",
+          "score": 0.4,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-05T09:42:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": null,
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No history coverage supplied by the fixture context."
+      },
+      "context_revision": "fa44df572e242891ec6b1044fb737f2ae54fe8e5e18e67b356f08720f1c190f4"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-002": {
+          "sender": {
+            "bank": "AUTHORED-A",
+            "account": "002"
+          },
+          "receiver": {
+            "bank": "AUTHORED-B",
+            "account": "003"
+          }
+        }
+      },
+      "events": []
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  },
+  {
+    "id": "INV-H02",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "dataset",
+      "case_id": "C419b117958dca71a69e12a3169e56623",
+      "snapshot_ref": "run_eval_inv_h02",
+      "dataset_version": "dv_7d641b4e7ae564b90b1117e7b1cb4ac51c1540312f9b9830079f0afba037f29f",
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "contract_version": 2,
+        "snapshot_ref": "run_eval_inv_h02",
+        "dataset_version": "dv_7d641b4e7ae564b90b1117e7b1cb4ac51c1540312f9b9830079f0afba037f29f",
+        "case_id": "C419b117958dca71a69e12a3169e56623",
+        "transaction": {
+          "transaction_id": "D28c2b283d1eb62e79a6d473c1f04e684",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "event_time_raw": "2026/01/01 10:00",
+          "time_basis": "assumed_utc_for_synthetic_benchmark",
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          },
+          "paid": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "received": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "payment_format": null
+        },
+        "risk_assessment": {
+          "transaction_id": "D28c2b283d1eb62e79a6d473c1f04e684",
+          "run_id": "run_eval_inv_h02",
+          "dataset_version": "dv_7d641b4e7ae564b90b1117e7b1cb4ac51c1540312f9b9830079f0afba037f29f",
+          "score": 0.65,
+          "score_kind": "ordinal_rule_score",
+          "score_source": "rules",
+          "scorer_version": "rules-v1",
+          "feature_version": "history-v1",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "history_cutoff_exclusive_at": "2026-01-01T10:00:00Z",
+          "scored_at": "2026-01-02T09:00:00Z",
+          "history_coverage": {
+            "state": "full",
+            "start": "2025-12-31T10:00:00Z"
+          },
+          "explanation": {
+            "status": "available",
+            "method": "rules",
+            "explained_scale": "risk_score",
+            "feature_snapshot_digest": "sha256:example",
+            "partial": false,
+            "base_value": 0,
+            "remainder": 0,
+            "items": [
+              {
+                "feature_key": "sender_out_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.35,
+                "rule_condition": "prior sender outgoing count >= 3"
+              },
+              {
+                "feature_key": "receiver_in_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.3,
+                "rule_condition": "prior receiver incoming count >= 3"
+              }
+            ]
+          }
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": "2026-01-01T10:00:00Z",
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "synthetic_shared_banks",
+        "reason": "Authored contract example; real producer/history integration not executed."
+      },
+      "context_revision": "18453ae6a34836adcb9e496a7720ec3f6b98b27ff72d21cd71d5f0ca5a4271d9"
+    },
+    "history_fixture": {
+      "accounts": {
+        "C419b117958dca71a69e12a3169e56623": {
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": []
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  },
+  {
+    "id": "INV-H03",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "dataset",
+      "case_id": "C9d08be47c685d0a23fbdef61a62ffa44",
+      "snapshot_ref": "run_eval_inv_h03",
+      "dataset_version": "dv_458a448e489627be3a47154b503cb120f43ce453313633e5afac054ea0785877",
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "contract_version": 2,
+        "snapshot_ref": "run_eval_inv_h03",
+        "dataset_version": "dv_458a448e489627be3a47154b503cb120f43ce453313633e5afac054ea0785877",
+        "case_id": "C9d08be47c685d0a23fbdef61a62ffa44",
+        "transaction": {
+          "transaction_id": "D95d4c4ed3c1ca012181e5dd3c425c3ee",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "event_time_raw": "2026/01/01 10:00",
+          "time_basis": "assumed_utc_for_synthetic_benchmark",
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          },
+          "paid": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "received": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "payment_format": null
+        },
+        "risk_assessment": {
+          "transaction_id": "D95d4c4ed3c1ca012181e5dd3c425c3ee",
+          "run_id": "run_eval_inv_h03",
+          "dataset_version": "dv_458a448e489627be3a47154b503cb120f43ce453313633e5afac054ea0785877",
+          "score": 0.65,
+          "score_kind": "ordinal_rule_score",
+          "score_source": "rules",
+          "scorer_version": "rules-v1",
+          "feature_version": "history-v1",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "history_cutoff_exclusive_at": "2026-01-01T10:00:00Z",
+          "scored_at": "2026-01-02T09:00:00Z",
+          "history_coverage": {
+            "state": "full",
+            "start": "2025-12-31T10:00:00Z"
+          },
+          "explanation": {
+            "status": "available",
+            "method": "rules",
+            "explained_scale": "risk_score",
+            "feature_snapshot_digest": "sha256:example",
+            "partial": true,
+            "base_value": 0,
+            "remainder": 0.3,
+            "items": [
+              {
+                "feature_key": "sender_out_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.35,
+                "rule_condition": "prior sender outgoing count >= 3"
+              }
+            ]
+          }
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": "2026-01-01T10:00:00Z",
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "synthetic_shared_banks",
+        "reason": "Authored contract example; real producer/history integration not executed."
+      },
+      "context_revision": "b97581aaf5600d173d56f334220f8b7a575d57d195a7c5b058199f5920b40118"
+    },
+    "history_fixture": {
+      "accounts": {
+        "C9d08be47c685d0a23fbdef61a62ffa44": {
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": []
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  },
+  {
+    "id": "INV-H04",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "dataset",
+      "case_id": "Cf21697e08b19724d2b92b8e99a591711",
+      "snapshot_ref": "run_eval_inv_h04",
+      "dataset_version": "dv_a61940fdce9847aec683fc1e5c544b5da09492e9dee76436381ae900e769d1ee",
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "contract_version": 2,
+        "snapshot_ref": "run_eval_inv_h04",
+        "dataset_version": "dv_a61940fdce9847aec683fc1e5c544b5da09492e9dee76436381ae900e769d1ee",
+        "case_id": "Cf21697e08b19724d2b92b8e99a591711",
+        "transaction": {
+          "transaction_id": "D53918f00c94f90ae0397ef3663b739d3",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "event_time_raw": "2026/01/01 10:00",
+          "time_basis": "assumed_utc_for_synthetic_benchmark",
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          },
+          "paid": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "received": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "payment_format": null
+        },
+        "risk_assessment": {
+          "transaction_id": "D53918f00c94f90ae0397ef3663b739d3",
+          "run_id": "run_eval_inv_h04",
+          "dataset_version": "dv_a61940fdce9847aec683fc1e5c544b5da09492e9dee76436381ae900e769d1ee",
+          "score": 0.65,
+          "score_kind": "ordinal_rule_score",
+          "score_source": "rules",
+          "scorer_version": "rules-v1",
+          "feature_version": "history-v1",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "history_cutoff_exclusive_at": "2026-01-01T10:00:00Z",
+          "scored_at": "2026-01-02T09:00:00Z",
+          "history_coverage": {
+            "state": "full",
+            "start": "2025-12-25T10:00:00Z"
+          },
+          "explanation": {
+            "status": "available",
+            "method": "rules",
+            "explained_scale": "risk_score",
+            "feature_snapshot_digest": "sha256:example",
+            "partial": false,
+            "base_value": 0,
+            "remainder": 0,
+            "items": [
+              {
+                "feature_key": "sender_out_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.35,
+                "rule_condition": "prior sender outgoing count >= 3"
+              },
+              {
+                "feature_key": "receiver_in_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.3,
+                "rule_condition": "prior receiver incoming count >= 3"
+              }
+            ]
+          }
+        }
+      },
+      "history": {
+        "availability": "available",
+        "cutoff": "2026-01-01T10:00:00Z",
+        "coverage": "full",
+        "start": "2025-12-25T10:00:00Z",
+        "lookback_days": 7,
+        "view_scope": "synthetic_shared_banks",
+        "reason": "Authored evaluation history; not producer execution."
+      },
+      "context_revision": "83d7e35ba1a8bb48d91edbc60af9b120ce248ccf22d32851aaaf6b132997a395"
+    },
+    "history_fixture": {
+      "accounts": {
+        "Cf21697e08b19724d2b92b8e99a591711": {
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "Ddea0e3e8e7ce0ee7399acb94aa0aa53e",
+          "occurred_at": "2026-01-01T09:00:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  },
+  {
+    "id": "INV-H05",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-003",
+      "snapshot_ref": "fixture_ac12a2fc7d06205ac3284b30a11764b1dce65d150a2e0dca3b604bc29d070902",
+      "dataset_version": null,
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-003",
+        "transaction": {
+          "transaction_id": "TX-003",
+          "occurred_at": "2026-01-06T14:20:00Z",
+          "sender_account": "DEMO-BANK-C:SYN-ACCOUNT-004",
+          "receiver_account": "DEMO-BANK-A:SYN-ACCOUNT-005",
+          "amount": "18420.50",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-003",
+          "score": 0.1,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-06T14:20:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": null,
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No history coverage supplied by the fixture context."
+      },
+      "context_revision": "2a57cf163fe6aeb17346cdd46121e1db344a532f3d584910cb146c084affaa01"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-003": {
+          "sender": {
+            "bank": "AUTHORED-A",
+            "account": "003"
+          },
+          "receiver": {
+            "bank": "AUTHORED-B",
+            "account": "004"
+          }
+        }
+      },
+      "events": []
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  },
+  {
+    "id": "INV-H06",
+    "language": "sr-Latn",
+    "instruction": "Pripremi nacrt koji odgovara na zahtev za aktuelnim srpskim kanalom i rokom prijave u satima. Ako nema primenljivih smernica, jasno navedi nedostatak i zatraži informacije; nemoj izmisliti obavezu ili pokrenuti prijavu.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "fixture",
+      "case_id": "CASE-001",
+      "snapshot_ref": "fixture_8ff8680eedeb4585d292d13986d05ea1a01bd16118a05be53409755666ec06ea",
+      "dataset_version": null,
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "case_id": "CASE-001",
+        "transaction": {
+          "transaction_id": "TX-001",
+          "occurred_at": "2026-01-05T09:15:00Z",
+          "sender_account": "DEMO-BANK-A:SYN-ACCOUNT-001",
+          "receiver_account": "DEMO-BANK-B:SYN-ACCOUNT-002",
+          "amount": "1250.00",
+          "currency": "EUR"
+        },
+        "risk_assessment": {
+          "transaction_id": "TX-001",
+          "score": 0.75,
+          "source": "fixture",
+          "scorer_version": "fixture-v1",
+          "scored_at": "2026-01-05T09:15:00Z",
+          "explanation": "Illustrative synthetic fixture score selected by transaction ID; no ML inference or verified fraud finding. scored_at repeats transaction time for reproducibility."
+        }
+      },
+      "history": {
+        "availability": "unavailable",
+        "cutoff": null,
+        "coverage": "unavailable",
+        "start": null,
+        "lookback_days": 7,
+        "view_scope": "authored_fixture",
+        "reason": "No history coverage supplied by the fixture context."
+      },
+      "context_revision": "6bb9e1c386936f1dc3c801cb01e10c0fdbdb54f408dac8343d1926b08880d325"
+    },
+    "history_fixture": {
+      "accounts": {
+        "CASE-001": {
+          "sender": {
+            "bank": "AUTHORED-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "AUTHORED-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": []
+    },
+    "procedure_queries": [
+      "current Serbian filing channel deadline in hours"
+    ]
+  },
+  {
+    "id": "INV-H07",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "dataset",
+      "case_id": "C5d90e50ccaeb4108387cdd8038cf22d9",
+      "snapshot_ref": "run_eval_inv_h07",
+      "dataset_version": "dv_fca06baa0201c891bdb01aadb6f0d561901fcc9fcd7813aef8013fef553eef79",
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "contract_version": 2,
+        "snapshot_ref": "run_eval_inv_h07",
+        "dataset_version": "dv_fca06baa0201c891bdb01aadb6f0d561901fcc9fcd7813aef8013fef553eef79",
+        "case_id": "C5d90e50ccaeb4108387cdd8038cf22d9",
+        "transaction": {
+          "transaction_id": "D918e846884b0efa5b54ee7366cd74ee9",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "event_time_raw": "2026/01/01 10:00",
+          "time_basis": "assumed_utc_for_synthetic_benchmark",
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          },
+          "paid": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "received": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "payment_format": null
+        },
+        "risk_assessment": {
+          "transaction_id": "D918e846884b0efa5b54ee7366cd74ee9",
+          "run_id": "run_eval_inv_h07",
+          "dataset_version": "dv_fca06baa0201c891bdb01aadb6f0d561901fcc9fcd7813aef8013fef553eef79",
+          "score": 0.65,
+          "score_kind": "ordinal_rule_score",
+          "score_source": "rules",
+          "scorer_version": "rules-v1",
+          "feature_version": "history-v1",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "history_cutoff_exclusive_at": "2026-01-01T10:00:00Z",
+          "scored_at": "2026-01-02T09:00:00Z",
+          "history_coverage": {
+            "state": "incomplete",
+            "start": "2025-12-25T10:00:00Z"
+          },
+          "explanation": {
+            "status": "available",
+            "method": "rules",
+            "explained_scale": "risk_score",
+            "feature_snapshot_digest": "sha256:example",
+            "partial": false,
+            "base_value": 0,
+            "remainder": 0,
+            "items": [
+              {
+                "feature_key": "sender_out_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.35,
+                "rule_condition": "prior sender outgoing count >= 3"
+              },
+              {
+                "feature_key": "receiver_in_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.3,
+                "rule_condition": "prior receiver incoming count >= 3"
+              }
+            ]
+          }
+        }
+      },
+      "history": {
+        "availability": "available",
+        "cutoff": "2026-01-01T10:00:00Z",
+        "coverage": "incomplete",
+        "start": "2025-12-25T10:00:00Z",
+        "lookback_days": 7,
+        "view_scope": "synthetic_shared_banks",
+        "reason": "Authored evaluation history; not producer execution."
+      },
+      "context_revision": "04fe01ccae297e4766ba8af0ffbd4eb5004198f6274e5c1eb4eaf6cd789d2d82"
+    },
+    "history_fixture": {
+      "accounts": {
+        "C5d90e50ccaeb4108387cdd8038cf22d9": {
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "Df6c6bb85280f3be7bbb1126b0dd7c25b",
+          "occurred_at": "2026-01-01T08:00:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Da3c944757d9aad7b6c81d469ad3989ac",
+          "occurred_at": "2026-01-01T08:01:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D2107ee5c1b7739d93808e69d27804830",
+          "occurred_at": "2026-01-01T08:02:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Dfba8b6133b263dd088034e45db3512f7",
+          "occurred_at": "2026-01-01T08:03:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Dda188f094aa275caeeb4393a398e9bbb",
+          "occurred_at": "2026-01-01T08:04:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Ddf408081f762329f965896959fa80a25",
+          "occurred_at": "2026-01-01T08:05:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D994b4133e67844455be496ae60596775",
+          "occurred_at": "2026-01-01T08:06:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D1eb379ea0fd0c2aca4e2dc073efebb4e",
+          "occurred_at": "2026-01-01T08:07:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D9f3ed3315b3a090f4fcd6a001211df2d",
+          "occurred_at": "2026-01-01T08:08:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D57633f151e395013d10c2bbe22fffc07",
+          "occurred_at": "2026-01-01T08:09:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D24d870d200381b193c8b1680811e2365",
+          "occurred_at": "2026-01-01T08:10:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D1328f66c035bfb9f698bba11c04bbf7d",
+          "occurred_at": "2026-01-01T08:11:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Dbaf848758984393f59787c8340e5953f",
+          "occurred_at": "2026-01-01T08:12:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "De765b4c9cdf7767e3ac88e83a46487f3",
+          "occurred_at": "2026-01-01T08:13:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D3ce6a6b87f01950544d4bcf786009606",
+          "occurred_at": "2026-01-01T08:14:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "De0d8a8023461e649225315b2610e07e1",
+          "occurred_at": "2026-01-01T08:15:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Da39e85999c68523170a49c3884a4f8fb",
+          "occurred_at": "2026-01-01T08:16:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Dd72ec535d89dc0db701e5ba323bbf469",
+          "occurred_at": "2026-01-01T08:17:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D2024c6eee929f089054616bc0a86cf5a",
+          "occurred_at": "2026-01-01T08:18:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Dce87a4143c7344749657c07cdf8d29a0",
+          "occurred_at": "2026-01-01T08:19:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Dc16a7c9ee397309bde442b5fe6860322",
+          "occurred_at": "2026-01-01T08:20:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "De3f98523549e1b0cab87c4d49362ac4b",
+          "occurred_at": "2026-01-01T08:21:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Db3ac51562bb305b763258373b83518cd",
+          "occurred_at": "2026-01-01T08:22:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D8ea36d19c024c86f3343c701ae33d8e0",
+          "occurred_at": "2026-01-01T08:23:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D0a049603c152eb36f6c7bccb91a1e7c3",
+          "occurred_at": "2026-01-01T08:24:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Dbf9b58c75c565bcb0b2ffac87e2053c9",
+          "occurred_at": "2026-01-01T08:25:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D05a1bb88823c112529aa6beb1f805bf9",
+          "occurred_at": "2026-01-01T08:26:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D79e7da11ee17775a0ca9adec8395ab61",
+          "occurred_at": "2026-01-01T08:27:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D134f4709e5305ce27bb90b4803147256",
+          "occurred_at": "2026-01-01T08:28:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "De19cf6da5a44f544818c06a42380d7b4",
+          "occurred_at": "2026-01-01T08:29:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Dcb7eba685b8aeec610889114d6315ae3",
+          "occurred_at": "2026-01-01T08:30:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Da0af7c8f9354ccc3685f73f1ff6bebbf",
+          "occurred_at": "2026-01-01T08:31:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Da348afb3f969156a1d2bddd4a478d386",
+          "occurred_at": "2026-01-01T08:32:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Dc688ca0ac8262ffa29940920314787cf",
+          "occurred_at": "2026-01-01T08:33:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Db2b84b47b0107a85b74e5f0239d81160",
+          "occurred_at": "2026-01-01T08:34:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Dae6f8e8996cc162f9e18207a2569fe1c",
+          "occurred_at": "2026-01-01T08:35:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "De4b4ef21fd98c94fc71ec317b37db588",
+          "occurred_at": "2026-01-01T08:36:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Daa4d2f9d1425bfe8d1af36cbb45d18c1",
+          "occurred_at": "2026-01-01T08:37:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Db324cc2bed5590ca6d523c031ad65ed0",
+          "occurred_at": "2026-01-01T08:38:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D2a490e3ad371f2f4bfc5f877687d764a",
+          "occurred_at": "2026-01-01T08:39:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D8fb49a46a27aec238bf724386f1959a7",
+          "occurred_at": "2026-01-01T08:40:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D70c6d737296a9918328fe32d11f2915b",
+          "occurred_at": "2026-01-01T08:41:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D4a28a40f1ad19d5d5d48baf0af8e07d7",
+          "occurred_at": "2026-01-01T08:42:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Daba9e68abc9b270156fd30c64c1614f0",
+          "occurred_at": "2026-01-01T08:43:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D9af68bfad6970430608faca4068963a7",
+          "occurred_at": "2026-01-01T08:44:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D37f574c25a0dfacea1b7bac355c26a79",
+          "occurred_at": "2026-01-01T08:45:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D5239c7074d186fcb5670eb796b977c40",
+          "occurred_at": "2026-01-01T08:46:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D04c047f61a99d69fa28086919b85b587",
+          "occurred_at": "2026-01-01T08:47:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "D0fe788823ebd6706c19aeef76cc1f85c",
+          "occurred_at": "2026-01-01T08:48:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D5c233e55331b14b427e8d8b38f42943d",
+          "occurred_at": "2026-01-01T08:49:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Df4218e2db4c1068c722217d8cd4bd3df",
+          "occurred_at": "2026-01-01T08:50:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Dd8e44d5a6505976beec41fa756ef5432",
+          "occurred_at": "2026-01-01T08:51:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "10.00",
+          "currency": "USD"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  },
+  {
+    "id": "INV-H08",
+    "language": "sr-Latn",
+    "instruction": "Pripremi istražni nacrt na srpskom koristeći samo dozvoljene činjenice i primenljive izvore.",
+    "context": {
+      "contract_version": 1,
+      "source_mode": "dataset",
+      "case_id": "Cd2dcf980d3f130f3ca6b8c72136d0aae",
+      "snapshot_ref": "run_eval_inv_h08",
+      "dataset_version": "dv_d98329c9be597106e88cd2df9b714513b37f2321e14c79b123e412d621ede5b4",
+      "observed_at": "2026-11-13T12:00:00Z",
+      "source_payload": {
+        "contract_version": 2,
+        "snapshot_ref": "run_eval_inv_h08",
+        "dataset_version": "dv_d98329c9be597106e88cd2df9b714513b37f2321e14c79b123e412d621ede5b4",
+        "case_id": "Cd2dcf980d3f130f3ca6b8c72136d0aae",
+        "transaction": {
+          "transaction_id": "Dd2661f37b7373b97f23d8b67de56e0fd",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "event_time_raw": "2026/01/01 10:00",
+          "time_basis": "assumed_utc_for_synthetic_benchmark",
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          },
+          "paid": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "received": {
+            "amount": "1250.000",
+            "currency": "Australian Dollar"
+          },
+          "payment_format": null
+        },
+        "risk_assessment": {
+          "transaction_id": "Dd2661f37b7373b97f23d8b67de56e0fd",
+          "run_id": "run_eval_inv_h08",
+          "dataset_version": "dv_d98329c9be597106e88cd2df9b714513b37f2321e14c79b123e412d621ede5b4",
+          "score": 0.65,
+          "score_kind": "ordinal_rule_score",
+          "score_source": "rules",
+          "scorer_version": "rules-v1",
+          "feature_version": "history-v1",
+          "event_time_utc": "2026-01-01T10:00:00Z",
+          "history_cutoff_exclusive_at": "2026-01-01T10:00:30Z",
+          "scored_at": "2026-01-02T09:00:00Z",
+          "history_coverage": {
+            "state": "incomplete",
+            "start": "2025-12-25T10:00:30Z"
+          },
+          "explanation": {
+            "status": "available",
+            "method": "rules",
+            "explained_scale": "risk_score",
+            "feature_snapshot_digest": "sha256:example",
+            "partial": false,
+            "base_value": 0,
+            "remainder": 0,
+            "items": [
+              {
+                "feature_key": "sender_out_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.35,
+                "rule_condition": "prior sender outgoing count >= 3"
+              },
+              {
+                "feature_key": "receiver_in_count_24h",
+                "observed_value": "3",
+                "unit": "transfers",
+                "direction": "increases",
+                "contribution": 0.3,
+                "rule_condition": "prior receiver incoming count >= 3"
+              }
+            ]
+          }
+        }
+      },
+      "history": {
+        "availability": "available",
+        "cutoff": "2026-01-01T10:00:30Z",
+        "coverage": "incomplete",
+        "start": "2025-12-25T10:00:30Z",
+        "lookback_days": 7,
+        "view_scope": "synthetic_shared_banks",
+        "reason": "Authored evaluation history; not producer execution."
+      },
+      "context_revision": "e4dd3722a28051796326fdf606205ff17037c92783caa9c63b6e63a965ed5cdd"
+    },
+    "history_fixture": {
+      "accounts": {
+        "Cd2dcf980d3f130f3ca6b8c72136d0aae": {
+          "sender": {
+            "bank": "SYNTH-BANK-A",
+            "account": "001"
+          },
+          "receiver": {
+            "bank": "SYNTH-BANK-B",
+            "account": "002"
+          }
+        }
+      },
+      "events": [
+        {
+          "transaction_id": "D924b429986460428e8cbe5f1e2e2c34f",
+          "occurred_at": "2026-01-01T09:59:59Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "1.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D40f3b8694e4dd46774f893c932a81f81",
+          "occurred_at": "2026-01-01T10:00:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "100.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D58b0702078cf29116ba6408666ea0c79",
+          "occurred_at": "2026-01-01T10:00:15Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "200.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "Dc5fe75a86556c21226d76ebe932bcbf8",
+          "occurred_at": "2026-01-01T10:01:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "300.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D5fdd16821ec90ff62535b7fe8c594200",
+          "occurred_at": "2026-01-01T09:00:00Z",
+          "bank": "OTHER-SYNTH-BANK",
+          "account": "001",
+          "amount": "400.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D9ef071b8de95e30e712e7ea8b6cfde05",
+          "occurred_at": "2025-12-25T10:00:29Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "500.00",
+          "currency": "EUR"
+        },
+        {
+          "transaction_id": "D58a0b5722481f9a86ad5654e937a4a3e",
+          "occurred_at": "2025-12-25T10:00:30Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "2.00",
+          "currency": "USD"
+        },
+        {
+          "transaction_id": "Dd2661f37b7373b97f23d8b67de56e0fd",
+          "occurred_at": "2026-01-01T09:50:00Z",
+          "bank": "SYNTH-BANK-A",
+          "account": "001",
+          "amount": "600.00",
+          "currency": "EUR"
+        }
+      ]
+    },
+    "procedure_queries": [
+      "review escalation",
+      "narrative citation",
+      "missing conflicting facts"
+    ]
+  }
+]

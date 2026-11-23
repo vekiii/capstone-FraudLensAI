@@ -1,0 +1,197 @@
+[
+  {
+    "id": "DEV6B-01",
+    "source_input_sha256": "5846d5ccd5cbd9f3709de94e4f2a03a3d4006519f29179a18f4de0c201434bad",
+    "essential_facts": [
+      "Transaction identifier is TX-621.",
+      "Amount is exactly 2816.27 EUR.",
+      "Event time is 2026-11-18T09:38:43Z.",
+      "Illustrative fixture risk score is 0.46; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"EUR\": \"113.08\"}; focal minute and future excluded.",
+      "Receiver history is incomplete; 1 eligible events; separate currency totals {\"EUR\": \"41.92\"}; focal minute and future excluded."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:38:43Z",
+        "start": "2026-11-11T09:38:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-421",
+            "occurred_at": "2026-11-16T09:38:43Z",
+            "bank": "AUTHORED-S",
+            "account": "DEV6B-01-S",
+            "amount": "83.47",
+            "currency": "EUR"
+          },
+          {
+            "transaction_id": "TX-521",
+            "occurred_at": "2026-11-17T09:38:43Z",
+            "bank": "AUTHORED-S",
+            "account": "DEV6B-01-S",
+            "amount": "29.61",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "EUR": "113.08"
+        }
+      },
+      "receiver": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:38:43Z",
+        "start": "2026-11-11T09:38:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-321",
+            "occurred_at": "2026-11-18T06:38:43Z",
+            "bank": "AUTHORED-R",
+            "account": "DEV6B-01-R",
+            "amount": "41.92",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 1,
+        "eligible_count": 1,
+        "truncated": false,
+        "totals": {
+          "EUR": "41.92"
+        }
+      }
+    },
+    "provenance": "Source-only automated review before dispatch; no output labels or human independence."
+  },
+  {
+    "id": "DEV6B-02",
+    "source_input_sha256": "8d18fb59b3813bea74466f481a7b2e34e50b2c2d5b65c7db2819a33e8b45bf63",
+    "essential_facts": [
+      "Transaction identifier is TX-622.",
+      "Amount is exactly 184.29 USD.",
+      "Event time is 2026-11-18T09:39:43Z.",
+      "Illustrative fixture risk score is 0.29; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Source-only automated review before dispatch; no output labels or human independence."
+  },
+  {
+    "id": "DEV6B-03",
+    "source_input_sha256": "9fbd85ea869a9b92eef1503eaa8f5a2cd4101799cd1d0172501d2b731d2bdf3e",
+    "essential_facts": [
+      "Transaction identifier is TX-623.",
+      "Amount is exactly 1736.94 GBP.",
+      "Event time is 2026-11-18T09:40:43Z.",
+      "Illustrative fixture risk score is 0.74; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"GBP\": \"83.47\", \"USD\": \"29.61\"}; focal minute and future excluded.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T09:40:43Z",
+        "start": "2026-11-11T09:40:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-423",
+            "occurred_at": "2026-11-16T09:40:43Z",
+            "bank": "AUTHORED-S",
+            "account": "DEV6B-03-S",
+            "amount": "83.47",
+            "currency": "GBP"
+          },
+          {
+            "transaction_id": "TX-523",
+            "occurred_at": "2026-11-17T09:40:43Z",
+            "bank": "AUTHORED-S",
+            "account": "DEV6B-03-S",
+            "amount": "29.61",
+            "currency": "USD"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "GBP": "83.47",
+          "USD": "29.61"
+        }
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Source-only automated review before dispatch; no output labels or human independence."
+  },
+  {
+    "id": "DEV6B-04",
+    "source_input_sha256": "8c6bab04e64270b7c4f51ab7d73c1986591d079c7f7eb10f30b56b19617a2428",
+    "essential_facts": [
+      "Transaction identifier is TX-624.",
+      "Amount is exactly 326.81 EUR.",
+      "Event time is 2026-11-18T09:41:43Z.",
+      "Illustrative fixture risk score is 0.37; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Source-only automated review before dispatch; no output labels or human independence."
+  }
+]

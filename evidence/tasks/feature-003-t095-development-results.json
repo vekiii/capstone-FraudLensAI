@@ -1,0 +1,186 @@
+{
+  "kind": "authored_development_diagnostic_not_acceptance",
+  "python": "3.14.7",
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "configuration_versions": {
+    "demo_legacy": "071f1a593fa17471295860bb5abc3a0064261a7e159bdf3d530494881001bccb",
+    "development_v2": "c17e43b9014a39c47b85c0e6b6e9926e11baaf9721ee406b960a25a44d0e8895"
+  },
+  "configuration_file_sha256": {
+    "data/knowledge/fraudlens-aml-knowledge-v1/retrieval.json": "171c3a4a9842e3b5a4d66fb279a809eb13dfe208de3517c577097ad1ee47610d",
+    "data/knowledge/fraudlens-aml-knowledge-v1/retrieval-development-v2.json": "2dc53aabe21e251da9137e39149e54803b44ddbaf1a503206fc026abb94e50f9"
+  },
+  "controls": {
+    "documentation_script_equivalent": true,
+    "confidentiality_script_equivalent": true,
+    "unknown_is_no_match_both": true,
+    "maximum_five_hits": true
+  },
+  "rows": {
+    "demo_legacy": {
+      "documentation_en": {
+        "query": "documentation",
+        "status": "matched",
+        "hits": [
+          {
+            "passage_id": "bf065cc99c914cfb4c32da8b832bf8f77f56eca15e17df5684c480cf42f20b2c",
+            "doc_id": "us-records",
+            "score": 1.0464738638065318
+          },
+          {
+            "passage_id": "5999900a56556a89910859e95eb2d624aa119222f85eea4ac48425f7d8f0b1ad",
+            "doc_id": "ibm-guide",
+            "score": 0.8746599731237932
+          }
+        ]
+      },
+      "documentation_latin": {
+        "query": "dokumentacija",
+        "status": "no_match",
+        "hits": []
+      },
+      "documentation_cyrillic": {
+        "query": "документација",
+        "status": "no_match",
+        "hits": []
+      },
+      "confidentiality_en": {
+        "query": "confidentiality",
+        "status": "matched",
+        "hits": [
+          {
+            "passage_id": "b2bc999647cc73d569326c095ea76ea740c1ebae8b4877770bb033dafafeb988",
+            "doc_id": "us-confidentiality",
+            "score": 2.0949152808013305
+          }
+        ]
+      },
+      "confidentiality_latin": {
+        "query": "poverljivost",
+        "status": "no_match",
+        "hits": []
+      },
+      "confidentiality_cyrillic": {
+        "query": "поверљивост",
+        "status": "no_match",
+        "hits": []
+      },
+      "unknown": {
+        "query": "nomatcht095xyz",
+        "status": "no_match",
+        "hits": []
+      },
+      "mixed_unknown": {
+        "query": "poverljivost nomatcht095xyz",
+        "status": "no_match",
+        "hits": []
+      },
+      "inflected": {
+        "query": "dokumentacijom",
+        "status": "no_match",
+        "hits": []
+      }
+    },
+    "development_v2": {
+      "documentation_en": {
+        "query": "documentation",
+        "status": "matched",
+        "hits": [
+          {
+            "passage_id": "bf065cc99c914cfb4c32da8b832bf8f77f56eca15e17df5684c480cf42f20b2c",
+            "doc_id": "us-records",
+            "score": 1.6317394507113758
+          },
+          {
+            "passage_id": "5999900a56556a89910859e95eb2d624aa119222f85eea4ac48425f7d8f0b1ad",
+            "doc_id": "ibm-guide",
+            "score": 0.8746599731237932
+          }
+        ]
+      },
+      "documentation_latin": {
+        "query": "dokumentacija",
+        "status": "matched",
+        "hits": [
+          {
+            "passage_id": "bf065cc99c914cfb4c32da8b832bf8f77f56eca15e17df5684c480cf42f20b2c",
+            "doc_id": "us-records",
+            "score": 0.8158697253556879
+          }
+        ]
+      },
+      "documentation_cyrillic": {
+        "query": "документација",
+        "status": "matched",
+        "hits": [
+          {
+            "passage_id": "bf065cc99c914cfb4c32da8b832bf8f77f56eca15e17df5684c480cf42f20b2c",
+            "doc_id": "us-records",
+            "score": 0.8158697253556879
+          }
+        ]
+      },
+      "confidentiality_en": {
+        "query": "confidentiality",
+        "status": "matched",
+        "hits": [
+          {
+            "passage_id": "b2bc999647cc73d569326c095ea76ea740c1ebae8b4877770bb033dafafeb988",
+            "doc_id": "us-confidentiality",
+            "score": 2.5892636152241444
+          }
+        ]
+      },
+      "confidentiality_latin": {
+        "query": "poverljivost",
+        "status": "matched",
+        "hits": [
+          {
+            "passage_id": "b2bc999647cc73d569326c095ea76ea740c1ebae8b4877770bb033dafafeb988",
+            "doc_id": "us-confidentiality",
+            "score": 1.2946318076120722
+          }
+        ]
+      },
+      "confidentiality_cyrillic": {
+        "query": "поверљивост",
+        "status": "matched",
+        "hits": [
+          {
+            "passage_id": "b2bc999647cc73d569326c095ea76ea740c1ebae8b4877770bb033dafafeb988",
+            "doc_id": "us-confidentiality",
+            "score": 1.2946318076120722
+          }
+        ]
+      },
+      "unknown": {
+        "query": "nomatcht095xyz",
+        "status": "no_match",
+        "hits": []
+      },
+      "mixed_unknown": {
+        "query": "poverljivost nomatcht095xyz",
+        "status": "matched",
+        "hits": [
+          {
+            "passage_id": "b2bc999647cc73d569326c095ea76ea740c1ebae8b4877770bb033dafafeb988",
+            "doc_id": "us-confidentiality",
+            "score": 1.2946318076120722
+          }
+        ]
+      },
+      "inflected": {
+        "query": "dokumentacijom",
+        "status": "no_match",
+        "hits": []
+      }
+    }
+  },
+  "provider_calls": 0,
+  "limitations": [
+    "Published controls are excluded from fresh evaluation splits.",
+    "No relevance judgments, recall/MRR or semantic adequacy measured.",
+    "Mixed unknown query and inflection are observations, not scored references.",
+    "Only existing demo/v2 configurations run; v3 remains design-only."
+  ]
+}

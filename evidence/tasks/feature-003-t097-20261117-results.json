@@ -1,0 +1,155 @@
+{
+  "date": "2026-11-17",
+  "baseline": "8ca4ba8f0bb80af08e9902084974ebccb4b875ee",
+  "branch": "feature03-retrieval-v4",
+  "scope": "T097 offline reconciliation/protocol, not live acceptance",
+  "new_provider_calls": 0,
+  "red": "17 intended scaffold failures",
+  "green": "17 evaluator tests;2 current-behavior characterization tests",
+  "targeted": "102 passed in47.64s",
+  "full_backend": "1067 passed in169.97s",
+  "ruff": "PASS",
+  "format": "PASS",
+  "diff_check": "PASS",
+  "preserved_files": {
+    "evidence\\tasks\\feature-003-coverage-v4-results.json": true,
+    "evidence\\tasks\\feature-003-evaluation-audit-results.json": true,
+    "evidence\\tasks\\feature-003-evaluation-pack-results.json": true,
+    "evidence\\tasks\\feature-003-final-live-v8-results.json": true,
+    "evidence\\tasks\\feature-003-fixture-journey-results.json": true,
+    "evidence\\tasks\\feature-003-human-authority-v7-results.json": true,
+    "evidence\\tasks\\feature-003-judge-results.json": true,
+    "evidence\\tasks\\feature-003-knowledge-smoke-results.json": true,
+    "evidence\\tasks\\feature-003-live-audit-results.json": true,
+    "evidence\\tasks\\feature-003-live-development-v2-results.json": true,
+    "evidence\\tasks\\feature-003-live-repair-v6-results.json": true,
+    "evidence\\tasks\\feature-003-live-results.json": true,
+    "evidence\\tasks\\feature-003-offline-review-20261116-browser-results.json": true,
+    "evidence\\tasks\\feature-003-offline-review-20261116-escalated-browser-results.json": true,
+    "evidence\\tasks\\feature-003-offline-review-20261116-escalated-knowledge-results.json": true,
+    "evidence\\tasks\\feature-003-offline-review-20261116-isolated-browser-results.json": true,
+    "evidence\\tasks\\feature-003-offline-review-20261116-isolated-knowledge-results.json": true,
+    "evidence\\tasks\\feature-003-offline-review-20261116-isolated-process-results.json": true,
+    "evidence\\tasks\\feature-003-offline-review-20261116-isolated-recovery-results.json": true,
+    "evidence\\tasks\\feature-003-offline-review-20261116-isolated-review-results.json": true,
+    "evidence\\tasks\\feature-003-offline-review-20261116-knowledge-results.json": true,
+    "evidence\\tasks\\feature-003-phase08-browser-results.json": true,
+    "evidence\\tasks\\feature-003-phase08-knowledge-results.json": true,
+    "evidence\\tasks\\feature-003-phase08-preservation-results.json": true,
+    "evidence\\tasks\\feature-003-phase08-process-results.json": true,
+    "evidence\\tasks\\feature-003-phase08-recovery-results.json": true,
+    "evidence\\tasks\\feature-003-phase08-review-results.json": true,
+    "evidence\\tasks\\feature-003-provider-probe-results.json": true,
+    "evidence\\tasks\\feature-003-recovery-browser-results.json": true,
+    "evidence\\tasks\\feature-003-recovery-process-results.json": true,
+    "evidence\\tasks\\feature-003-repair-v5-probe-results.json": true,
+    "evidence\\tasks\\feature-003-repair-v5-results.json": true,
+    "evidence\\tasks\\feature-003-retrieval-results.json": true,
+    "evidence\\tasks\\feature-003-review-browser-results.json": true,
+    "evidence\\tasks\\feature-003-reviewed-knowledge-smoke-results.json": true,
+    "evidence\\tasks\\feature-003-t033-resume-results.json": true,
+    "evidence\\tasks\\feature-003-t057-process-results.json": true,
+    "evidence\\tasks\\feature-003-t057-recovery-browser-results.json": true,
+    "evidence\\tasks\\feature-003-t057-results.json": true,
+    "evidence\\tasks\\feature-003-t057-review-browser-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-browser-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-fixed-browser-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-fixed-process-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-fixed-recovery-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-integrity-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-isolated-browser-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-isolated-knowledge-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-isolated-recovery-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-isolated-review-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-knowledge-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-unsandboxed-browser-results.json": true,
+    "evidence\\tasks\\feature-003-t066-ai-20261117-unsandboxed-knowledge-results.json": true,
+    "evidence\\tasks\\feature-003-t094-t096-review-20261117-results.json": true,
+    "evidence\\tasks\\feature-003-t095-development-results.json": true,
+    "evidence\\tasks\\feature-003-t096-20261117-results.json": true,
+    "evidence\\tasks\\feature-003-timeout-v3-results.json": true,
+    "backend\\src\\fraudlens\\investigation\\workflow.py": true,
+    "backend\\src\\fraudlens\\investigation\\provider.py": true
+  },
+  "preserved_count": 58,
+  "all_preserved": true,
+  "historical_worker_only_arithmetic": {
+    "kind": "historical_worker_only_arithmetic_not_new_visible_timing",
+    "source_sha256": "2f1c359a51f09bfe13b5877828d0c247e3d1686d2d99e5912f7419f7744b4dca",
+    "result": {
+      "denominator": 5,
+      "successful_within_90": 2,
+      "all_terminal_within_120": false,
+      "passed": false,
+      "rows": [
+        {
+          "id": "INV-D01",
+          "observed": true,
+          "successful_within_90": true,
+          "terminal_within_120": true,
+          "observation": {
+            "id": "INV-D01",
+            "seconds": 30.36544590000085,
+            "state": "needs_information",
+            "report_validated": true
+          }
+        },
+        {
+          "id": "INV-D02",
+          "observed": true,
+          "successful_within_90": false,
+          "terminal_within_120": false,
+          "observation": {
+            "id": "INV-D02",
+            "seconds": 7496.290298100001,
+            "state": "failed",
+            "report_validated": false
+          }
+        },
+        {
+          "id": "INV-D03",
+          "observed": true,
+          "successful_within_90": false,
+          "terminal_within_120": true,
+          "observation": {
+            "id": "INV-D03",
+            "seconds": 41.68632559999969,
+            "state": "failed",
+            "report_validated": false
+          }
+        },
+        {
+          "id": "INV-H01",
+          "observed": true,
+          "successful_within_90": true,
+          "terminal_within_120": true,
+          "observation": {
+            "id": "INV-H01",
+            "seconds": 25.47902310000063,
+            "state": "needs_information",
+            "report_validated": true
+          }
+        },
+        {
+          "id": "INV-H05",
+          "observed": true,
+          "successful_within_90": false,
+          "terminal_within_120": true,
+          "observation": {
+            "id": "INV-H05",
+            "seconds": 44.78607810000176,
+            "state": "failed",
+            "report_validated": false
+          }
+        }
+      ]
+    },
+    "original_file_unchanged": true
+  },
+  "live_timing_run": "not_run_not_authorized",
+  "local_search_measurement": "not_run",
+  "frontend": "not_run_no_changes",
+  "runtime_changed": false,
+  "t097_complete": true,
+  "sc006_live_acceptance": "unmet; fresh approved batch required"
+}

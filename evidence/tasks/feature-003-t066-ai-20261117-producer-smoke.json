@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "producer_sha": "487c427ea50e169f5e36898420d659f05ead2c60",
+  "producer_archive_sha256": "5d03399bdc8082d89e5b05fe7e6d81634e1956cab7da3b74632af49ce03145ae",
+  "dataset": "controlled authored canonical records, NOT IBM dataset evaluation",
+  "assessments": "authored rules/model-shaped values published by actual producer; no inference/fit",
+  "immutable_source_hashes": {
+    "source.sqlite": "68fd74fa7183604ae70120fd4b42f5ac4e425820fea7aa513afc40ee955ec94c",
+    "rules.sqlite": "1a093bbe515edd75d0ebbca46374134533336b136bfad956b0b98c51da9ec545",
+    "model.sqlite": "5ea099c2ad90745aa3fda37d037b393ccb029e5cc0c96ec5c31cc8af17ad4c13"
+  },
+  "source_bytes_unchanged": true,
+  "provider_calls": 0,
+  "label_reads": 0,
+  "outcomes": [
+    {
+      "score_source": "rules",
+      "context_version": 2,
+      "exact_producer_detail_match": true,
+      "history_eligible_count": 1,
+      "projection_valid": true,
+      "status": "PASS"
+    },
+    {
+      "score_source": "model",
+      "context_version": 2,
+      "exact_producer_detail_match": true,
+      "history_eligible_count": 1,
+      "projection_valid": true,
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "development_gate_pass": true,
+  "scope": "Codex source review against source fidelity, disclosure, coverage and guidance gate. Language variation separately recorded.",
+  "valid": 4,
+  "denominator": 4,
+  "new_calls": 24,
+  "total_actual": 192,
+  "total_ceiling": 303,
+  "rows": [
+    {
+      "id": "LAT6-01",
+      "state": "ready_for_review",
+      "seconds": 40.13733759999741,
+      "covered_obligations": 7,
+      "predeclared_obligations": 7,
+      "review": "Exact transaction facts, source, human authority, separate counts/totals and both exclusive bounds confirmed. Applicable simulated guidance."
+    },
+    {
+      "id": "LAT6-02",
+      "state": "needs_information",
+      "seconds": 36.939150999998674,
+      "covered_obligations": 7,
+      "predeclared_obligations": 7,
+      "review": "Exact transaction facts, source and explicit human authority. Both histories unavailable, null periods. English summary despite requested Latin Serbian."
+    },
+    {
+      "id": "LAT6-03",
+      "state": "ready_for_review",
+      "seconds": 31.895201899998938,
+      "covered_obligations": 7,
+      "predeclared_obligations": 7,
+      "review": "Exact transaction facts, separate GBP/USD totals, exclusive 10:00:00Z, missing receiver history and human authority. English summary."
+    },
+    {
+      "id": "LAT6-04",
+      "state": "needs_information",
+      "seconds": 24.40113509999719,
+      "covered_obligations": 7,
+      "predeclared_obligations": 7,
+      "review": "Exact transaction facts, unknown histories, no current Iceland deadline asserted, no unsupported recommendations. Serbian Cyrillic in some fields."
+    }
+  ],
+  "frozen_files": 74,
+  "dispatch_sha256": "75a0b9092645217f8584c97f3b485b082d24bee848ef43e9b6baadb3b73ceb09"
+}

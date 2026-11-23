@@ -1,0 +1,52 @@
+# Current T059-T061 closure - 2026-11-15
+
+User-approved automated report-judging-v2 replaces both historical human rating
+roles. Actual3/6 judge transports, 48 units, all8 primary/5 secondary outcomes
+accounted, 0/8 quality pass; original failed quality/performance findings retained.
+[Executed ratings/aggregate/audit](feature-003-automated-evaluation.md) and
+[machine results](feature-003-judge-results.json). T059/T060/T061 completed as
+post-hoc automated evaluation, not human validation or feature acceptance.
+Earlier human assignment/pending statements below are historical and superseded;
+no Vedran/Milan signatures are inferred. T062/T066 human gates unchanged.
+
+# T059 blocked by T058 and actual raters - 2026-11-15
+
+T052 pack approval is preserved; it is not evaluation of generated reports.
+No actual report rating, reviewer assignment, score, signature/date invented.
+No reviews.json containing synthetic/empty acceptance judgments was created.
+
+Import format follows frozen rubric.rating_record_fields (all 17 required):
+scenario_id, attempt_id, report_id, report_sha256, context_revision,
+reviewer_identity, reviewed_at, role, claim_id, report_location, claim_text,
+claim_kind, evidence_ids, judgment, reason, critical_error, essential_fact_id.
+Use one record per rated claim/essential fact, explicit nulls for inapplicable IDs;
+role primary/secondary. Exact report SHA binds the immutable artifact. Observations
+use supported/unsupported/uncertain; procedures applicable/unsupported/uncertain;
+essential facts present/missing/uncertain. Reasons must be actual human findings.
+Preserve all originals; disagreements keep separate null resolution until an
+actual resolution is recorded. Never silently overwrite the two ratings.
+
+One actual primary reviewer rates all eight; a different teammate independently
+rates the five already-preselected IDs in splits.json.second_review_subset (at
+least four required). Do not select easier reports after seeing output. Ratings
+must assess source fidelity and critical errors, not only schema/citation validity.
+Zero observational claims means N/A; uncertain remains unsupported. Failed
+provider/validation attempts remain in the denominator. Rater completeness/import
+checks are not automatic scientific acceptance; current quality_acceptance is null.
+
+Future real file: evals/results/feature-003/reviews.json. summarize-reviews takes
+explicit --protocol, --reviews, --outcomes (sealed), --output. T059 unchecked;
+complete T060/T061 remain blocked downstream.
+
+## T058 executed / T059 actual review pending - 2026-11-15
+
+All eight primary and five demo executions are sealed; 86/104 transport attempts,
+87 reserved dispatch slots. Primary two needs_information, six failures; demo two
+of five successful within 90s, one measured 7496.290s failure. Quality/performance
+targets failed; no replacement/cherry-picking/tuning. Known reported usage subset
+325196 tokens, five reserved dispatches without reported usage; spend unknown.
+Final backend 759 PASS, Ruff PASS. T059 actual judgments deliberately absent
+(user deferred until handoff); full T060/T061 remain pending. No T062+ or publication.
+See [current complete handoff](feature-003-t058-t061-handoff.md),
+[actual execution summary](feature-003-live-results.json),
+[available audit](feature-003-live-audit-results.json).

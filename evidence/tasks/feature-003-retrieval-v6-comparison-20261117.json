@@ -1,0 +1,182 @@
+{
+  "scope": "Post-hoc diagnostic comparison on same30 rows, no tuning or independent acceptance",
+  "v5": {
+    "recall_at5": 0.5333333333333333,
+    "mrr_at5": 0.5,
+    "answerable": 15,
+    "no_answer_correct": 5,
+    "no_answer_total": 15
+  },
+  "v6": {
+    "recall_at5": 1.0,
+    "mrr_at5": 1.0,
+    "answerable": 15,
+    "no_answer_correct": 15,
+    "no_answer_total": 15
+  },
+  "v5_rows": [
+    {
+      "id": 1,
+      "documents": []
+    },
+    {
+      "id": 2,
+      "documents": [
+        "ibm-guide"
+      ]
+    },
+    {
+      "id": 3,
+      "documents": [
+        "sim-citation"
+      ]
+    },
+    {
+      "id": 4,
+      "documents": [
+        "sim-review",
+        "sim-citation"
+      ]
+    },
+    {
+      "id": 5,
+      "documents": []
+    },
+    {
+      "id": 6,
+      "documents": []
+    },
+    {
+      "id": 7,
+      "documents": []
+    },
+    {
+      "id": 8,
+      "documents": []
+    },
+    {
+      "id": 9,
+      "documents": [
+        "us-records",
+        "sim-review"
+      ]
+    },
+    {
+      "id": 10,
+      "documents": [
+        "us-records"
+      ]
+    },
+    {
+      "id": 11,
+      "documents": [
+        "us-confidentiality"
+      ]
+    },
+    {
+      "id": 12,
+      "documents": [
+        "us-confidentiality"
+      ]
+    },
+    {
+      "id": 13,
+      "documents": [
+        "sim-missing",
+        "sim-review",
+        "us-records"
+      ]
+    },
+    {
+      "id": 14,
+      "documents": [
+        "sim-missing",
+        "sim-review"
+      ]
+    },
+    {
+      "id": 15,
+      "documents": [
+        "us-records"
+      ]
+    },
+    {
+      "id": 16,
+      "documents": [
+        "sim-review"
+      ]
+    },
+    {
+      "id": 17,
+      "documents": []
+    },
+    {
+      "id": 18,
+      "documents": [
+        "us-confidentiality"
+      ]
+    },
+    {
+      "id": 19,
+      "documents": [
+        "ibm-guide",
+        "sim-review"
+      ]
+    },
+    {
+      "id": 20,
+      "documents": [
+        "sim-review"
+      ]
+    },
+    {
+      "id": 21,
+      "documents": []
+    },
+    {
+      "id": 22,
+      "documents": [
+        "us-records"
+      ]
+    },
+    {
+      "id": 23,
+      "documents": [
+        "us-records",
+        "sim-review"
+      ]
+    },
+    {
+      "id": 24,
+      "documents": [
+        "sim-review"
+      ]
+    },
+    {
+      "id": 25,
+      "documents": []
+    },
+    {
+      "id": 26,
+      "documents": [
+        "sim-missing"
+      ]
+    },
+    {
+      "id": 27,
+      "documents": []
+    },
+    {
+      "id": 28,
+      "documents": []
+    },
+    {
+      "id": 29,
+      "documents": []
+    },
+    {
+      "id": 30,
+      "documents": []
+    }
+  ]
+}

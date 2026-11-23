@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "capability": {
+    "status": "capability_probe_passed",
+    "requested_model": "gpt-6-luna",
+    "requests": [
+      {
+        "request_id": "req_ee2dd018ecae4b61a42b4f6c6ba51af0",
+        "returned_model": "gpt-6-luna",
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 0
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 16,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 696
+        }
+      },
+      {
+        "request_id": "req_9d99087dc396451f8903cc775a0d5152",
+        "returned_model": "gpt-6-luna",
+        "usage": {
+          "input_tokens": 733,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 0
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 144,
+          "output_tokens_details": {
+            "reasoning_tokens": 81
+          },
+          "total_tokens": 877
+        }
+      }
+    ]
+  },
+  "freeze": {
+    "started_at": "2026-11-16T06:32:53.984762+00:00",
+    "model": "gpt-6-luna",
+    "maximum_transports": 2,
+    "kind": "synthetic_capability_not_report_quality",
+    "schema_sha256": "cc00d2eeaf3ecd732cc9062eec06b8202f345aa04682bced66869dfedf3c590e",
+    "provider_sha256": "a358705e26e8ae890a3980ad8920eabde2167d36c6a3057099aec69fa9cd2191"
+  },
+  "finished_at": "2026-11-16T06:32:58.688481+00:00",
+  "transport_attempts": 2,
+  "transports": [
+    {
+      "sequence": 1,
+      "status": "headers_received",
+      "input_bytes": 3930,
+      "http_status": 200
+    },
+    {
+      "sequence": 2,
+      "status": "headers_received",
+      "input_bytes": 4273,
+      "http_status": 200
+    }
+  ],
+  "report_quality_evaluated": false,
+  "spend": null
+}

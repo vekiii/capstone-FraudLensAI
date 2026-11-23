@@ -1,0 +1,119 @@
+{
+  "kind": "AI offline verification and archive integrity; no new evaluation",
+  "reviewed_head": "2469aec0b146c5c26cb5c0eea70cb96bb9c559e3",
+  "backend": {
+    "passed": 939,
+    "seconds": 57.83,
+    "exit_code": 0
+  },
+  "frontend": {
+    "passed": 186,
+    "files": 9,
+    "exit_code": 0
+  },
+  "build_and_typecheck": "PASS",
+  "ruff_backend": "PASS",
+  "components": [
+    {
+      "file": "feature-003-t066-ai-20261117-isolated-knowledge-results.json",
+      "status": "PASS",
+      "checks": 10,
+      "sha256": "56ec5e889b784000d17f0ba43dcc1c3ea664a2e291ab62f6dd7ffe6dc95dc5e6",
+      "cleanup": "PASS"
+    },
+    {
+      "file": "feature-003-t066-ai-20261117-isolated-review-results.json",
+      "status": "PASS",
+      "checks": 9,
+      "sha256": "6cc808a05cc3a259a8ed777290f2cf9b42eced2ab7970cbfc880ce60810f6cb4",
+      "cleanup": "PASS"
+    },
+    {
+      "file": "feature-003-t066-ai-20261117-fixed-recovery-results.json",
+      "status": "PASS",
+      "checks": 10,
+      "sha256": "8aa7121ef77c4d0e11ce2b15573c57bbf29e0ae37b9b4a7dcbe1e8a1eb9ec509",
+      "cleanup": "PASS"
+    },
+    {
+      "file": "feature-003-t066-ai-20261117-fixed-process-results.json",
+      "status": "PASS",
+      "checks": 6,
+      "sha256": "ebb5def2da0a2326b355a2111241399f8b2513106a715b188a3d633513ed1048",
+      "cleanup": "not a browser component"
+    }
+  ],
+  "all_component_wrapper_initial_result": "FAIL; successful unchanged components and fixed recovery/process are separate runs",
+  "v8_archived_artifact_hashes": [
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\controlled-fault.json",
+      "matches": true,
+      "sha256_lf": "8e0e9afa213670ff8ec2b9d3dcec368b52bd42c58e200555f4062f6604dda905",
+      "expected": "8e0e9afa213670ff8ec2b9d3dcec368b52bd42c58e200555f4062f6604dda905"
+    },
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\DEV8-781.json",
+      "matches": true,
+      "sha256_lf": "d88c04f097e18d58b3db9482bbf340e9d0d413cfa063e5c4701a99edcfbf71f2",
+      "expected": "d88c04f097e18d58b3db9482bbf340e9d0d413cfa063e5c4701a99edcfbf71f2"
+    },
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\DEV8-782.json",
+      "matches": true,
+      "sha256_lf": "09a608a6375d47f080d86e409c23af9af6becee19f13072db17f6a4502f9b5a2",
+      "expected": "09a608a6375d47f080d86e409c23af9af6becee19f13072db17f6a4502f9b5a2"
+    },
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\DEV8-783.json",
+      "matches": true,
+      "sha256_lf": "876bfe5770ce39089527947c84c2a4bce0cf0694fa1c796d7a3d0288f9c060b6",
+      "expected": "876bfe5770ce39089527947c84c2a4bce0cf0694fa1c796d7a3d0288f9c060b6"
+    },
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\freeze.json",
+      "matches": true,
+      "sha256_lf": "3e3070ff947dbc787af1fd57418d2518148b5303ccf3a06f6fb97c0704c249e3",
+      "expected": "3e3070ff947dbc787af1fd57418d2518148b5303ccf3a06f6fb97c0704c249e3"
+    },
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\judge-packets.json",
+      "matches": true,
+      "sha256_lf": "2b6a5050c4ca40e17909c4a0cc5e62c48ee418df153e0b592b35f78fc333fa90",
+      "expected": "2b6a5050c4ca40e17909c4a0cc5e62c48ee418df153e0b592b35f78fc333fa90"
+    },
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\judge-response.json",
+      "matches": true,
+      "sha256_lf": "6a684fc0bdf97d77c77cfac9bad1c4e2a50e1b9ba241b8a7923a07abf3870710",
+      "expected": "6a684fc0bdf97d77c77cfac9bad1c4e2a50e1b9ba241b8a7923a07abf3870710"
+    },
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\judge-result.json",
+      "matches": true,
+      "sha256_lf": "b2742354a2bf83c411d4087580e7d5f99ed8cb6ebfc5f373325552d8245e4db1",
+      "expected": "b2742354a2bf83c411d4087580e7d5f99ed8cb6ebfc5f373325552d8245e4db1"
+    },
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\summary.json",
+      "matches": true,
+      "sha256_lf": "0a9aaf54abd0fc9e1e2492d4947c79063b80bc05136b3a727cf9a6fb9fc4f438",
+      "expected": "0a9aaf54abd0fc9e1e2492d4947c79063b80bc05136b3a727cf9a6fb9fc4f438"
+    },
+    {
+      "file": "evals\\results\\feature-003\\development-v8\\transport-ledger.json",
+      "matches": true,
+      "sha256_lf": "869b7dc7b55add5ee48bbfceb57a9f2374296966851aa526ca04d2ad889fb12f",
+      "expected": "869b7dc7b55add5ee48bbfceb57a9f2374296966851aa526ca04d2ad889fb12f"
+    }
+  ],
+  "raw_judge_payload_seal_valid": true,
+  "protected_tracked_files": 110,
+  "unchanged_tracked_files": 109,
+  "intentional_documentation_changes": [
+    "data/knowledge/README.md"
+  ],
+  "provider_calls": 0,
+  "new_evaluations": 0,
+  "human_approval": null,
+  "old_review_chain_reconstructed": false
+}

@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-17",
+  "baseline": "6bf6675",
+  "branch": "feature03-retrieval-v4",
+  "python": "3.14.3",
+  "approval": "User explicitly accepted final corrected protocol; not external-model approval",
+  "provider_calls_this_implementation": 0,
+  "red_initial": "24 failed intended NotImplementedError after scaffold; initial missing-module collection error not counted as behavioral RED",
+  "green_initial": "24 passed",
+  "boundary_red": "2 failed,32 passed",
+  "boundary_green": "34 passed",
+  "bridge_red": "1 failed,38 passed",
+  "final_v4_tests": "39 passed",
+  "full_backend_before_final_bridge_fix": "1043 passed in130.63s",
+  "final_related_regression": "71 passed in2.69s",
+  "ruff": "PASS",
+  "frontend": "not run; no frontend/runtime changes",
+  "controls": {
+    "software_controls_pass": true,
+    "model_quality_evaluated": false,
+    "calibration": {
+      "passed": true,
+      "cases": [
+        {
+          "scenario_id": "C1",
+          "matched": true
+        },
+        {
+          "scenario_id": "C2",
+          "matched": true
+        },
+        {
+          "scenario_id": "C3",
+          "matched": true
+        },
+        {
+          "scenario_id": "C4",
+          "matched": true
+        },
+        {
+          "scenario_id": "C5",
+          "matched": true
+        },
+        {
+          "scenario_id": "C6",
+          "matched": true
+        }
+      ],
+      "denominator": 6
+    },
+    "artifact_bundle_sha256": "ad08dde161016a996fe0e0f425eef9f0a7c28026646aa2a3ce40e42a6f564168"
+  },
+  "historical_protected_unchanged": {
+    "evals\\investigation\\development-v8\\calibrations.json": true,
+    "evals\\investigation\\development-v8\\inputs.json": true,
+    "evals\\investigation\\development-v8\\protocol.json": true,
+    "evals\\investigation\\development-v8\\reference.json": true,
+    "evals\\investigation\\amendments\\report-judging-v2.json": true,
+    "backend\\src\\fraudlens\\investigation\\judging.py": true,
+    "backend\\src\\fraudlens\\investigation\\judge_calibration.py": true,
+    "backend\\src\\fraudlens\\investigation\\workflow.py": true,
+    "backend\\src\\fraudlens\\investigation\\validation.py": true,
+    "backend\\src\\fraudlens\\investigation\\report_policy.py": true,
+    "prompts\\evaluation\\report-judge-v2.md": true,
+    "prompts\\evaluation\\report-judge-v3.md": true,
+    "prompts\\application\\investigation-v4.md": true,
+    "evidence\\tasks\\feature-003-final-live-v8-results.json": true
+  },
+  "all14_protected_unchanged": true,
+  "real_report_evaluation": "not run",
+  "historical_quality": "0/8 preserved; calibration2/3failed and quality unavailable preserved",
+  "t094_complete": true,
+  "t096_complete": true
+}

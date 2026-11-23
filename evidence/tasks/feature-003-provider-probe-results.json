@@ -1,0 +1,53 @@
+{
+  "task": "T033",
+  "date": "2026-11-15",
+  "timezone": "Europe/Belgrade",
+  "total_transport_attempts": 2,
+  "http_responses_received": 1,
+  "capability_verified": false,
+  "runs": [
+    {
+      "started_at": "2026-11-15T05:11:57.732103+00:00",
+      "requested_model": "gpt-6-luna",
+      "sdk_requests": [
+        {
+          "sequence": 1,
+          "transport_error_type": "ConnectError",
+          "headers_elapsed_seconds": 0.026
+        }
+      ],
+      "maximum_requests": 2,
+      "cli_exit_code": 2,
+      "elapsed_seconds": 1.08,
+      "cli_result": {
+        "status": "provider_operation_failed",
+        "code": "provider_failure",
+        "outcome_unknown": true
+      },
+      "completed_at": "2026-11-15T05:11:58.811697+00:00"
+    },
+    {
+      "started_at": "2026-11-15T05:12:50.386884+00:00",
+      "requested_model": "gpt-6-luna",
+      "sdk_requests": [
+        {
+          "sequence": 2,
+          "http_status": 400,
+          "request_id": "req_740bf4ff71d9420d9decca768e058fd8",
+          "headers_elapsed_seconds": 1.976
+        }
+      ],
+      "maximum_requests": 2,
+      "previous_transport_attempts": 1,
+      "completed_turns": [],
+      "cli_exit_code": 2,
+      "elapsed_seconds": 2.647,
+      "cli_result": {
+        "status": "provider_operation_failed",
+        "code": "unsupported_capability",
+        "outcome_unknown": false
+      },
+      "completed_at": "2026-11-15T05:12:53.034249+00:00"
+    }
+  ]
+}

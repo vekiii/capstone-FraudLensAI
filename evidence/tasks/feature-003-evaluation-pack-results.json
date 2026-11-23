@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "scope": "T052 structural verification only; not retrieval/live/safety evaluation",
+  "python": "3.14.3",
+  "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "published_archive": "absent; historical T015/T022 evidence only, no store created",
+  "documents": 6,
+  "passages": 6,
+  "retrieval": {
+    "development": 10,
+    "held_out": 20,
+    "no_answers": {
+      "development": 2,
+      "held_out": 4
+    }
+  },
+  "investigation": {
+    "development": 4,
+    "held_out": 8
+  },
+  "safety_prepared_not_executed": 12,
+  "second_review_subset": [
+    "INV-H02",
+    "INV-H03",
+    "INV-H04",
+    "INV-H06",
+    "INV-H08"
+  ],
+  "ordinary_live_demo_cases": [
+    "INV-D01",
+    "INV-D02",
+    "INV-D03",
+    "INV-H01",
+    "INV-H05"
+  ],
+  "independent_history_reference_checks": [
+    "INV-H04",
+    "INV-H07",
+    "INV-H08"
+  ],
+  "sealed_files": 41,
+  "bundle_sha256": "5cb654213934cbe11f6378eb6121ee40bfd046051d3671dbdaa082c4824f4700",
+  "independent_human_review": "approved",
+  "t052": "complete",
+  "sealed_inventory_sha256": "85e602d1fd69ee10d19b0e751943cd2d2ebde42afbe73f6cb0cc3b72fa448d37",
+  "provider_settings_imported": false,
+  "environment_or_network_attempts": [],
+  "in_memory_corruptions_rejected": [
+    "wrong_input_reference_hash",
+    "overlapping_split",
+    "changed_context_money_without_rehash",
+    "wrong_cardinality",
+    "duplicate_identity"
+  ],
+  "protocol_file_sha256": "ea8d74547b64a89f71a00ee257806c0bf010ad84496d8dce0f2c9e32df914b92"
+}

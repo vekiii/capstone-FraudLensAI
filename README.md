@@ -1,5 +1,7 @@
 # FraudLens AI
 
+For the current Feature 002 model-training status and teammate setup, see the [team training handoff](TEAM_TRAINING_HANDOFF.md). The fixture quickstart below remains independent of a trained model.
+
 Educational AML prototype. Foundation phases 1-5 are implemented: local synthetic
 cases, strict contracts, replaceable scoring and list/detail UI. Phase 6 verifies
 coverage and delivery; independent peer reproduction and human review are pending.
@@ -15,7 +17,7 @@ For an existing checkout, install the committed locked dependencies:
 ```powershell
 $env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'
 uv sync --locked --group dev
-npm.cmd --prefix frontend ci
+npm.cmd --prefix web ci
 ```
 The workspace-local uv cache avoids machine-cache access restrictions. npm.cmd
 avoids npm.ps1 execution-policy restrictions without changing system policy.
@@ -24,8 +26,8 @@ need no provider key, model, RAG corpus, dataset or external AI service.
 No .env file or fixture data file is needed for health.
 
 Lockfile creation was performed during initial setup with `uv lock` and
-`npm.cmd --prefix frontend install`; those resolve dependencies and generate
-uv.lock / frontend/package-lock.json. Do not repeat them for routine installs or
+`npm.cmd --prefix web install`; those resolve dependencies and generate
+uv.lock / web/package-lock.json. Do not repeat them for routine installs or
 hand-edit lockfile hashes. Use locked installs above; intentional dependency
 changes require review and genuine lockfile regeneration.
 
@@ -36,9 +38,9 @@ uv run --locked uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.
 ```
 In terminal 2, from repository root:
 ```powershell
-npm.cmd --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort
+npm.cmd --prefix web run dev -- --host 127.0.0.1 --port 5173 --strictPort
 ```
-Open http://127.0.0.1:5173 for the synthetic case inspection UI. Vite forwards relative
+Open http://127.0.0.1:5173 for the local React app. Cases includes Feature 002 risk and aggregate results. The EDA route and the previous dataset-overview URL show the same approved EDA summary. Vite forwards relative
 /api requests to http://127.0.0.1:8000. Both services bind to loopback only;
 this is a local demo, with no production multi-user security or ML-ready claim.
 Stop your own foreground servers with Ctrl+C.
@@ -56,19 +58,51 @@ Invoke-RestMethod -Uri 'http://127.0.0.1:5173/api/cases/CASE-001'
 ```
 Unknown CASE-999 returns 404; malformed CASE-1 returns 422. Errors use the closed
 `{"error":{"code":"...","message":"..."}}` envelope. See T016 evidence for actual bodies.
-APP_MODE defaults to fixture and is the only supported value. If APP_MODE is set
-otherwise, startup fails validation; remove it or explicitly set it to fixture.
+APP_MODE defaults to fixture. Explicit `APP_MODE=model` activates the local
+Feature 002 risk endpoint with the pinned, ignored LightGBM artifact and frozen
+label-free research features. Missing or incompatible model inputs return 503
+from the risk endpoint; they never trigger fixture scoring there. Other mode
+values fail validation. For the local opt-in mode, run from the repository root:
+
+```powershell
+$env:APP_MODE = 'model'
+uv run --locked --group ml uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
+```
+
+Then request `GET /api/transactions/{canonical_transaction_id}/risk` with an ID
+from the verified label-free feature snapshot. The existing `/api/cases` fixture
+routes remain available. In the same explicit model mode, the interface's
+“Učitaj rezultate” control calls `GET /api/model/results`. That route serves
+only hash-verified, previously authorized aggregate validation/test reports;
+it does not evaluate or read label/score rows. Missing or changed approval is
+409, unavailable/incompatible reports are 404, and arbitrary query filters are
+422. Remove `APP_MODE` or set it to `fixture` to return to
+the default mode. The local model is for synthetic capstone review only; scores
+are uncalibrated risk scores, alerts are not capped, and analysts make final decisions.
 Settings resolve data/fixtures/cases.json relative to the repository, but startup
 and health do not open it. T014's three synthetic cases are stored there without scores.
+
+## Fixture investigation and Simulation Lab
+
+Use the [Feature 003 fixture setup](evidence/tasks/feature-003-web-integration.md#run-the-local-demo)
+for a local store, reviewed knowledge, and the test-provider worker. Open Cases
+and select a fixture case to access investigation. Simulation Lab is available
+at the local /simulation route and uses the bundled synthetic scenario.
+
+The optional investigation dependency group pins the provider SDK for a separately
+configured live provider. The test-provider fixture workflow works without a key.
+The Feature 002 model lookup and Feature 003 investigation use separate contracts.
+A producer adapter for scored Feature 002 transactions is pending.
 
 ## Checks and build
 ```powershell
 uv run --locked pytest backend/tests/integration/test_startup.py
-uv run --locked pytest backend/tests
+$env:PYTHONPATH = 'backend/src'
+uv run --locked --python 3.14.10 --group ml --group investigation pytest backend/tests
 uv run --locked ruff check backend
-npm.cmd --prefix frontend run test -- --run
-npm.cmd --prefix frontend run typecheck
-npm.cmd --prefix frontend run build
+npm.cmd --prefix web run test -- --run
+npm.cmd --prefix web run typecheck
+npm.cmd --prefix web run build
 git diff --check
 ```
 All 310 backend tests pass (phase 6, 2026-11-12), including the unchanged 49 T012 API/scorer tests and

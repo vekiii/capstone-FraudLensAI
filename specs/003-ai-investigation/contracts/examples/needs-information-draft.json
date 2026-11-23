@@ -1,0 +1,15 @@
+{
+  "outcome": "needs_information",
+  "summary": [],
+  "observed_facts": [],
+  "risk_indicators": [],
+  "alternative_explanations": [],
+  "missing_information": [
+    "Nema podataka o poreklu sredstava."
+  ],
+  "recommended_checks": [],
+  "limitations": [
+    "Ovo je primer ugovora, ne izvr?en AI izve?taj."
+  ],
+  "citations": []
+}

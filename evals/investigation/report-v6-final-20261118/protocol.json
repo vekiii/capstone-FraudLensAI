@@ -1,0 +1,34 @@
+{
+  "quality_order": [
+    "LAT-FINAL-01",
+    "LAT-FINAL-02",
+    "LAT-FINAL-03",
+    "LAT-FINAL-04",
+    "LAT-FINAL-05",
+    "LAT-FINAL-06",
+    "LAT-FINAL-07",
+    "LAT-FINAL-08"
+  ],
+  "timing_order": [
+    "LAT-FINAL-01",
+    "LAT-FINAL-02",
+    "LAT-FINAL-03",
+    "LAT-FINAL-04",
+    "LAT-FINAL-05"
+  ],
+  "secondary_order": [
+    "LAT-FINAL-02",
+    "LAT-FINAL-03",
+    "LAT-FINAL-04",
+    "LAT-FINAL-06",
+    "LAT-FINAL-08"
+  ],
+  "source": "authored synthetic fixtures",
+  "machine": "Windows-10-10.0.19045-SP0",
+  "python": "3.14.3 (main, Mar  3 2026, 15:00:44) [MSC v.1944 64 bit (AMD64)]",
+  "clock": "perf_counter; separate HTTP observer; 250ms polling",
+  "approved_ceiling": 303,
+  "generation_cap": 42,
+  "judging_cap": 13,
+  "overlap": "first five of eight"
+}

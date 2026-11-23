@@ -1,73 +1,40 @@
-# Specification Quality Checklist: Data Ingestion and Risk Scoring
+# Specification Quality Checklist: Dataset, Machine Learning and EDA
 
-**Purpose**: Validate completeness and quality before planning feature 002.
-**Created**: 2026-11-12
+**Purpose**: Review completeness before implementation planning approval
+**Created**: 2026-11-18
 **Feature**: [spec.md](../spec.md)
-**Reviewer**: Agent specification-quality review, not human product approval.
 
-## Content Quality
+## Content and Scope
 
-- [x] Requirements describe stakeholder outcomes rather than frameworks, code layout or endpoints.
-- [x] Focused on traceable data, defendable risk scores, explanations and analyst use.
-- [x] User roles, rationale and terminology are understandable to team stakeholders.
-- [x] All mandatory template sections are populated in the resolved template order.
+- [x] Product value and human decision authority are explicit.
+- [x] Scope, exclusions, foundation dependencies and approval gates are stated.
+- [x] Technical implementation detail is located in plan/contracts where useful.
+- [x] Synthetic AML labels are distinguished from payment fraud and legal findings.
 
-## Requirement Completeness
+## Requirements and Acceptance
 
-- [x] No unresolved clarification placeholders; source-dependent and numeric decisions
-  still required in the technical plan are explicitly listed in the spec.
-- [x] FR-001–FR-026 describe testable behavior with controlled failure outcomes.
-- [x] SC-001–SC-009 have measurable counts, checks or reproducibility outcomes.
-- [x] Success is not tied to a particular library or an invented predictive-performance target.
-- [x] Acceptance scenarios cover all five main user journeys.
-- [x] Edge cases cover row/header ambiguity, precision/currencies, ties, label leakage and artifacts.
-- [x] Scope explicitly excludes RAG, LLM investigation, optimization and new infrastructure.
-- [x] Data availability, acquisition, adequate class counts and contract review are dependencies.
+- [x] Functional requirements are numbered, testable and traceable.
+- [x] User journeys have independent checks and acceptance scenarios.
+- [x] Temporal boundaries, same-time treatment and warm-up are exact.
+- [x] Label access, partitions, frozen protocol and separate test authorization are explicit.
+- [x] Negative cases cover data, API, model, UI, EDA and replay boundaries.
+- [x] Success criteria are measurable and do not claim results that have not run.
 
-## Feature Readiness
+## Design Readiness
 
-- [x] Functional requirements map to acceptance stories and outcomes; see coverage below.
-- [x] Baseline/import can deliver value independently of ML training or provider access.
-- [x] Final holdout integrity and comparison reporting define success without promising improvement.
-- [x] Technical algorithms, exact interfaces and version-migration mechanics remain
-  decisions for planning; the spec's contributor handoff is marked as a proposed
-  implementation sketch, and fixture compatibility remains a required outcome.
+- [x] Existing FastAPI/TypeScript replaceable architecture is preserved.
+- [x] Plan describes bounded processing, artifact lifecycle, recovery and resource decision.
+- [x] Contracts are additive and versioned relative to Feature 001.
+- [x] Tasks are staged, unchecked, requirement-linked and include verification expectations.
+- [x] Quickstart separates existing commands from proposed commands.
 
-## Open review gates
+## Open Decisions and Gates
 
-- [ ] Human product and affected-consumer contract review is recorded.
-- [ ] The authoritative Phase 2 assignment requirements are identified and traced;
-  the feature quality checklist is not that source.
-- [ ] Source mapping, rule values, threshold objective, temporal/warm-up policy and
-  versioned contracts are frozen in the technical plan before implementation.
-- [ ] Feature 002 code, dataset audit, evaluation, regression checks and independent
-  reproduction have actual recorded results.
+- [x] Naive timezone requires verification and recorded policy.
+- [x] Resource ceilings, current features, candidate grid, threshold, artifact format and +10% feature rule are explicit decisions.
+- [x] Dedicated EDA page requires documented team approval and schedule impact.
+- [x] Test labels require separate authorization after predictions are frozen.
 
-## Coverage and Review Notes
+## Review Notes
 
-| Story / concern | Requirements | Outcomes |
-|---|---|---|
-| US1: provenance/import | FR-001–004 | SC-001 |
-| US2: historical baseline | FR-005–009 | SC-002–003 |
-| US3: selection/evaluation | FR-010–018 | SC-004–005, SC-009 |
-| US4: local explanations | FR-019–020 | SC-006 |
-| US5: case delivery/compatibility | FR-021–025 | SC-007–008 |
-| Cross-cutting TDD/reproduction | FR-026 | SC-001–009 |
-
-Review iteration 1: checked against constitution, original_idea.md and implemented foundation
-contracts/settings/scoring/delivery. Explicitly added no raw-ID predictors, tie-safe history,
-currency/precision preservation and contract migration instead of assuming foundation v1 scales.
-That first review preceded the adversarial findings collected in
-[002-review.md](../../../prompts/development/002-review.md).
-
-Review iteration 2: the spec now separates event facts from label eligibility,
-constrains the rule baseline, preserves honest zero-alert outcomes, defines
-per-scorer operating-policy and snapshot behavior, and adds concrete verification
-work packages. Timestamp/source mapping, numeric rule and threshold policies,
-artifact format and local persistence still require the plan and observed data.
-No Phase 2 compliance claim or human approval is inferred.
-
-These marks mean the specification was reviewed for quality, not that feature 002 works.
-No data acquisition/audit, model fitting, metric run, application test, new contract or
-human review was performed. Exact source schema/counts and numeric planning settings remain
-future documented work. Human feature review status: pending.
+No real dataset was acquired, no labels were inspected, no model was trained, and no application checks were run for this specification package. Checklist completion does not constitute team approval or authorize gated work.

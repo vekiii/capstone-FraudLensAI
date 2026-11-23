@@ -1,0 +1,7 @@
+prompts/development/002-T228-input-clarification.md -text
+# These published inputs are validated against hashes of their exact bytes.
+evidence/tasks/T230-authorization-2026-11-21.md text eol=lf
+evidence/tasks/T230-snapshot-completion-and-evaluation-2026-11-21.md text eol=lf
+evals/investigation/** -text
+data/knowledge/** -text
+prompts/application/** -text

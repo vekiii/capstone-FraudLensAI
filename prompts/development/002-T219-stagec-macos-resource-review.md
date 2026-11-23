@@ -1,0 +1,7 @@
+# Original request: revised FR-021 review candidate on Stage C Mac
+
+Date: 2026-11-20 Europe/Belgrade. The user requested a new FR-021 candidate for human review in `/Users/ladylazarus/Desktop/FraudLensAI-StageC`, while preserving all local changes and making no commit or push.
+
+> Prvo pregledaj diff tehničkih izmjena prema HEAD-u. Posebno provjeri zašto je candidates.py promijenjen ... Provjeri da subprocess nadzor ne mijenja ove postavke i da prekid ne ostavlja izlaz koji bi se mogao prihvatiti kao završen eksperiment. Ako pronađeš materijalni problem, prijavi ga kao prepreku prije pripreme kandidata za odobrenje.
+
+The request specifically required preserving all eight LightGBM configurations/order, seed, train-only class weighting and preprocessing, validation early stopping/metric and selection/tie rules, and the train/validation/test label boundary. Small synthetic fits were permitted only if necessary to check subprocess, LightGBM and artifact compatibility. The original IBM-day candidate and historical T219 builder were to remain untouched. The new candidate needed full implementation hashes including the resource guard, exact runtime/lock identity, resource supervision and sampling limitations, Windows memory limitation, Git HEAD/dirty state, and original candidate lineage. Read-only checks had to cover canonical and file SHA-256, both transferred manifests, implementation hashes and existing verifier compatibility. No real-data fit, test/showcase label access, T230, protocol approval, task closure, commit or push was authorized.

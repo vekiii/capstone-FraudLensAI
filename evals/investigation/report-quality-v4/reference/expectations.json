@@ -1,0 +1,122 @@
+[
+  {
+    "scenario_id": "C1",
+    "checks": {
+      "required_disclosures_complete": true,
+      "missing_values_not_invented": true,
+      "no_cross_section_contradictions": true
+    },
+    "critical_error": false,
+    "units": {
+      "o1": {
+        "judgment": "supported",
+        "critical_error": false
+      },
+      "e1": {
+        "judgment": "present",
+        "critical_error": false
+      }
+    },
+    "no_additional_issues": true
+  },
+  {
+    "scenario_id": "C2",
+    "checks": {
+      "required_disclosures_complete": false,
+      "missing_values_not_invented": true,
+      "no_cross_section_contradictions": true
+    },
+    "critical_error": false,
+    "units": {
+      "o1": {
+        "judgment": "supported",
+        "critical_error": false
+      },
+      "e1": {
+        "judgment": "present",
+        "critical_error": false
+      }
+    },
+    "no_additional_issues": true
+  },
+  {
+    "scenario_id": "C3",
+    "checks": {
+      "required_disclosures_complete": true,
+      "missing_values_not_invented": false,
+      "no_cross_section_contradictions": false
+    },
+    "critical_error": true,
+    "units": {
+      "o1": {
+        "judgment": "unsupported",
+        "critical_error": true
+      },
+      "e1": {
+        "judgment": "present",
+        "critical_error": false
+      }
+    },
+    "no_additional_issues": true
+  },
+  {
+    "scenario_id": "C4",
+    "checks": {
+      "required_disclosures_complete": false,
+      "missing_values_not_invented": false,
+      "no_cross_section_contradictions": false
+    },
+    "critical_error": true,
+    "units": {
+      "o1": {
+        "judgment": "unsupported",
+        "critical_error": true
+      },
+      "e1": {
+        "judgment": "missing",
+        "critical_error": false
+      }
+    },
+    "no_additional_issues": true
+  },
+  {
+    "scenario_id": "C5",
+    "checks": {
+      "required_disclosures_complete": true,
+      "missing_values_not_invented": true,
+      "no_cross_section_contradictions": true
+    },
+    "critical_error": false,
+    "units": {
+      "o1": {
+        "judgment": "supported",
+        "critical_error": false
+      },
+      "e1": {
+        "judgment": "present",
+        "critical_error": false
+      }
+    },
+    "no_additional_issues": true
+  },
+  {
+    "scenario_id": "C6",
+    "checks": {
+      "required_disclosures_complete": true,
+      "missing_values_not_invented": false,
+      "no_cross_section_contradictions": false
+    },
+    "critical_error": true,
+    "units": {
+      "o1": {
+        "judgment": "unsupported",
+        "critical_error": true
+      },
+      "e1": {
+        "judgment": "present",
+        "critical_error": false
+      }
+    },
+    "no_additional_issues": true
+  }
+]

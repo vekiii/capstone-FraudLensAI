@@ -1,0 +1,27 @@
+{
+  "status": "EXECUTED_DIAGNOSTIC_NOT_INDEPENDENT_ACCEPTANCE",
+  "requests": 30,
+  "retries": 0,
+  "tokens": 47076,
+  "reference_author": "Codex AI, actual human reference review pending",
+  "runtime_files_match_actual_live_freeze": true,
+  "new_question_subset_ids": [
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ],
+  "source_lf_sha256": {
+    "backend/src/fraudlens/investigation/retrieval_semantic_v6.py": "74f608a520ed59391aa1b9e5f5872856745806ca29c2c508ddbe2ddbb17d866e",
+    "prompts/application/retrieval-answerability-v6.md": "1b7bcb6e218ee9142ba4845d414d1614258e7b3c5c66d0b2a937f66c9f8ed399"
+  },
+  "bundle_files_lf_sha256": {
+    "dispatch.jsonl": "56e67a39a0d973d27ef3a4647a4668d49faf90adecf3bb262a76f17fb68b5763",
+    "freeze.json": "f8352e995bb30c598376c5a12ecd416cedc0de78445475557196777541726095",
+    "inputs.json": "f0598ed9487fd9d1708f8a5cc97d67649fdc7740faafa60a65d01084dcf0cf6e",
+    "passages.json": "212642269484011bac5617c47cedc6d477dc6b33a677f7af0170cfcbd2e69b29",
+    "reference.json": "dadc8e7e14c74ae2f365bfd7bd876b8e52b3ce37733d22bf820f9cbbe512bceb"
+  }
+}

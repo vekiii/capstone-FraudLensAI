@@ -1,0 +1,22 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b0b0c;
+  --surface: #111214;
+  --text: #e4e2d8;
+  --muted: #9b9b9b;
+  --dim: #687078;
+  --line: rgba(228, 226, 216, 0.23);
+  --accent: #c8ff4d;
+  --danger: #ff715f;
+  --ok: #7ce3b0;
+  --display: "Inter Tight", "Instrument Sans", "Arial Narrow", sans-serif;
+  --body: "Inter Tight", "Instrument Sans", Arial, sans-serif;
+  --mono: "Space Mono", "Courier New", monospace;
+  --col: calc(100% / 32);
+  --content: min(1400px, calc(100vw - 64px));
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}

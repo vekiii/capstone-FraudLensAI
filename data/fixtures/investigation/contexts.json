@@ -1,0 +1,36 @@
+{
+  "notice": "Authored synthetic context metadata; not producer provenance",
+  "observed_at": "2026-11-13T12:00:00Z",
+  "accounts": {
+    "CASE-001": {
+      "sender": {
+        "bank": "AUTHORED-A",
+        "account": "001"
+      },
+      "receiver": {
+        "bank": "AUTHORED-B",
+        "account": "002"
+      }
+    },
+    "CASE-002": {
+      "sender": {
+        "bank": "AUTHORED-A",
+        "account": "002"
+      },
+      "receiver": {
+        "bank": "AUTHORED-B",
+        "account": "003"
+      }
+    },
+    "CASE-003": {
+      "sender": {
+        "bank": "AUTHORED-A",
+        "account": "003"
+      },
+      "receiver": {
+        "bank": "AUTHORED-B",
+        "account": "004"
+      }
+    }
+  }
+}

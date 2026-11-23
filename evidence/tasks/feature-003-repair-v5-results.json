@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "kind": "offline_sdk_repair_serialization_not_model_evaluation",
+  "original_failure": "exact_assertion_mismatch",
+  "original_draft_still_rejected": true,
+  "old_repair_bytes": 49925,
+  "new_repair_bytes": 46148,
+  "limit": 48000,
+  "remaining_bytes": 1852,
+  "old_schema_bytes": 5801,
+  "new_schema_bytes": 2024,
+  "expanded_schemas_equal": true,
+  "entire_ordered_continuation_preserved": true,
+  "mocked_sdk_requests": 6,
+  "actual_api_calls": 0,
+  "corrected_live_report": false,
+  "prior_json_files_preserved": 30,
+  "pre_change_source_snapshot_verified": true,
+  "prior_protocol_and_artifact_hashes_verified": true,
+  "provider_source_sha256": "a358705e26e8ae890a3980ad8920eabde2167d36c6a3057099aec69fa9cd2191"
+}

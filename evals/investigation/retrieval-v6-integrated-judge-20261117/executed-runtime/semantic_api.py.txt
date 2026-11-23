@@ -1,0 +1,92 @@
+"""Explicit paid POST; GET status and cancel/replay never spend tokens."""
+import json
+import sqlite3
+from uuid import UUID
+
+from fastapi import APIRouter, Request
+from fastapi.responses import JSONResponse
+
+from fraudlens.investigation.knowledge import KnowledgeStore, KnowledgeUnavailable
+from fraudlens.investigation.models import validate
+from fraudlens.investigation.settings import load_settings
+
+router = APIRouter()
+
+
+def service_for(request):
+    settings = load_settings()
+    if not settings.enabled:
+        raise ValueError('semantic_unavailable')
+    service = getattr(request.app.state, 'semantic_search_service', None)
+    if service is None:
+        from fraudlens.investigation.semantic_runtime import SemanticSearchService
+        if not settings.store.is_file():
+            raise ValueError('semantic_unavailable')
+        service = SemanticSearchService(KnowledgeStore(settings.store, initialize=False), settings)
+    return service
+
+
+async def operation(request, kind):
+    from fraudlens.investigation.api import RouteFailure, error, local_guard
+    try:
+        local_guard(request, mutation=kind != 'status')
+        if request.query_params or len(request.headers.getlist('idempotency-key')) != 1:
+            raise RouteFailure(422, 'invalid_request')
+        key = request.headers.get('idempotency-key', '')
+        try:
+            UUID(key)
+        except ValueError:
+            raise RouteFailure(422, 'invalid_request') from None
+        body = {}
+        if kind != 'status':
+            raw = bytearray()
+            async for chunk in request.stream():
+                raw.extend(chunk)
+                if len(raw) > 4096:
+                    raise RouteFailure(422, 'invalid_request')
+            try:
+                body = json.loads(raw)
+                if not isinstance(body, dict) or set(body) - ({'query', 'corpus'} if kind == 'search' else set()):
+                    raise ValueError('Closed input required')
+                if kind == 'search':
+                    body['query'] = validate('SearchArguments', {'query': body.get('query')})['query']
+                    if body.get('corpus') is not None:
+                        if not isinstance(body['corpus'], str) or not body['corpus'].startswith('corpus_'):
+                            raise ValueError('Invalid corpus')
+                        validate('Digest', body['corpus'][7:])
+            except (ValueError, TypeError):
+                raise RouteFailure(422, 'invalid_request') from None
+        service = service_for(request)
+        if kind == 'search':
+            if not load_settings().semantic_retrieval:
+                raise ValueError('semantic_unavailable')
+            result = await service.search(body['query'], key, body.get('corpus'))
+        elif kind == 'cancel':
+            result = service.cancel(key)
+        else:
+            result = service.status(key)
+        status = 202 if result['status'] == 'pending' else 503 if result['status'] == 'failed' else 200
+        return JSONResponse(result, status_code=status)
+    except RouteFailure as exc:
+        return error(exc.status, exc.code)
+    except (ValueError, OSError, sqlite3.Error, KnowledgeUnavailable) as exc:
+        if str(exc) == 'request_conflict':
+            return error(409, 'request_conflict')
+        if str(exc) == 'search_not_found':
+            return error(404, 'evidence_not_found')
+        return error(503, 'knowledge_unavailable')
+
+
+@router.post('/semantic-search')
+async def semantic_search(request: Request):
+    return await operation(request, 'search')
+
+
+@router.get('/semantic-search/status')
+async def status(request: Request):
+    return await operation(request, 'status')
+
+
+@router.post('/semantic-search/cancel')
+async def cancel(request: Request):
+    return await operation(request, 'cancel')

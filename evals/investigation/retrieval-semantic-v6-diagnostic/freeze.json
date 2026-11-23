@@ -1,0 +1,15 @@
+{
+  "status": "FROZEN_DIAGNOSTIC_NOT_INDEPENDENT_ACCEPTANCE",
+  "model": "gpt-6-luna",
+  "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+  "policy": "413f9eb4f0363e05024eb7ef7171f069655d2fac19d3235fe14173645a3167ca",
+  "files": {
+    "backend/src/fraudlens/investigation/retrieval_semantic_v6.py": "74f608a520ed59391aa1b9e5f5872856745806ca29c2c508ddbe2ddbb17d866e",
+    "prompts/application/retrieval-answerability-v6.md": "1b7bcb6e218ee9142ba4845d414d1614258e7b3c5c66d0b2a937f66c9f8ed399"
+  },
+  "max_requests": 30,
+  "sdk_retries": 0,
+  "input_sha256": "eb7042bb0ded9f4b02f9495fb6e37db7e773a222123919cb1815ba90d0e702fa",
+  "passages_sha256": "177a94cc255f956b3ac06b8d7ffa1f3c5a508b478f5e20e9b96336a3e726b496",
+  "author": "Codex AI; human semantic reference review absent"
+}

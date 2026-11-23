@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "profile": "v8",
+  "report": "v6",
+  "cap": 24,
+  "order": [
+    "LAT6-01",
+    "LAT6-02",
+    "LAT6-03",
+    "LAT6-04"
+  ],
+  "historical_actual": 168,
+  "total_cap": 303,
+  "decision": "User requested recovery and final evaluation within total ceiling303 on 2026-11-18",
+  "gate": "All4 valid; support>=.90/coverage>=.80; faithful limits; zero critical/unsupported guidance"
+}

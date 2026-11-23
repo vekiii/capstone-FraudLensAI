@@ -1,0 +1,316 @@
+{
+  "mode": "Phase 6 automated review UI/API; authored fixture/test provider; not human approval or LLM evaluation",
+  "work": "D:\\AIBootcamp\\capstone\\.cache\\003-review-browser-b73ebb49-277f-48ac-9fc3-8ce3e5ed1db4",
+  "checks": [
+    {
+      "name": "SAFE-02 exact case injection rendered literally in real browser; script never executed",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Explicit empty decision, whitespace rationale, forged actor and wrong report are rejected without review writes",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Original bound citation inspected in actual browser",
+      "detail": {
+        "attempt": "att_b79a70236fcf421e80ff62f6af5760e8",
+        "evidence": "ev_aaae7c8b703440208d083cffd9b75be8"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "Two independent browser contexts: one close accepted, stale escalate rejected 409 without overwrite",
+      "detail": {
+        "attempt": "att_b79a70236fcf421e80ff62f6af5760e8",
+        "accepted_review": "rev_d96f5b8814dd4d5e852501c245eba8ec",
+        "revision": 5
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "Explicit refresh, linked correction, safe literal note and original response replay after amendment",
+      "detail": {
+        "original": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T13:21:22.265272Z",
+          "disposition": "close",
+          "rationale": "AUTOMATED fixture close; no human approval",
+          "report_id": "f97a6f0a24a2562982e27291b3bdfcb94822d3d341790438ec6d9ccf4ebc8fad",
+          "review_id": "rev_d96f5b8814dd4d5e852501c245eba8ec",
+          "supersedes_review_id": null
+        },
+        "amendment": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": "<img src=x onerror=alert(1)> AUTOMATED literal correction",
+          "created_at": "2026-11-15T13:21:22.578678Z",
+          "disposition": "escalate",
+          "rationale": "AUTOMATED changed interpretation",
+          "report_id": "f97a6f0a24a2562982e27291b3bdfcb94822d3d341790438ec6d9ccf4ebc8fad",
+          "review_id": "rev_1964c33570dc48f588a82d2060115d7a",
+          "supersedes_review_id": "rev_d96f5b8814dd4d5e852501c245eba8ec"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "All three initial dispositions saved and reopened through actual UI",
+      "detail": [
+        "att_b79a70236fcf421e80ff62f6af5760e8",
+        "att_2a4638d431124fc88feab5e94f1fb2ba",
+        "att_2ddb3dce2bbe4b489d7e5e73e969348e"
+      ],
+      "status": "PASS"
+    },
+    {
+      "name": "Saved limitations draft permits request-more-information only, including after review",
+      "detail": {
+        "attempt": "att_b44f01b999f244d7a5fb9803a324ce19",
+        "report": "4d1aba4f19c1c93decd99e88d0c288dbc0e3b5de6017b3911042edd66b05be3d"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "Reopen and SQLite audit: five immutable review events, four unchanged drafts, stable budgets, no duplicate replay",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "No uncaught exceptions in either browser session",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "68A4EBFC966C0568DB54FFCC4C86D58B",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_b79a70236fcf421e80ff62f6af5760e8/evidence/ev_aaae7c8b703440208d083cffd9b75be8",
+      "status": 200
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_b79a70236fcf421e80ff62f6af5760e8/reviews",
+      "status": 201
+    },
+    {
+      "session": "68A4EBFC966C0568DB54FFCC4C86D58B",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_b79a70236fcf421e80ff62f6af5760e8/reviews",
+      "status": 409
+    },
+    {
+      "session": "68A4EBFC966C0568DB54FFCC4C86D58B",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "68A4EBFC966C0568DB54FFCC4C86D58B",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_b79a70236fcf421e80ff62f6af5760e8/reviews",
+      "status": 201
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_b79a70236fcf421e80ff62f6af5760e8/reviews",
+      "status": 201
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_2a4638d431124fc88feab5e94f1fb2ba/reviews",
+      "status": 201
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs",
+      "status": 202
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_2ddb3dce2bbe4b489d7e5e73e969348e/reviews",
+      "status": 201
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/attempts/att_b44f01b999f244d7a5fb9803a324ce19/reviews",
+      "status": 201
+    },
+    {
+      "session": "E91DDDA993A46BD2DFF1B95481D7BD43",
+      "url": "http://127.0.0.1:5173/api/investigation/runs?case_id=CASE-001",
+      "status": 200
+    }
+  ],
+  "chrome_stderr": "\r\nDevTools listening on ws://127.0.0.1:9228/devtools/browser/05a5055d-38de-4a06-95b6-dffab464201a\r\n[118696:157312:1115/142125.508:ERROR:components\\media_router\\common\\providers\\cast\\certificate\\cast_crl.cc:446] CRL - Verification failed.\r\n",
+  "browser": "Chrome/157.0.8103.52",
+  "sessions": [
+    "E91DDDA993A46BD2DFF1B95481D7BD43",
+    "68A4EBFC966C0568DB54FFCC4C86D58B"
+  ],
+  "audit": {
+    "review_events": [
+      {
+        "expected_revision": 4,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T13:21:22.265272Z",
+          "disposition": "close",
+          "rationale": "AUTOMATED fixture close; no human approval",
+          "report_id": "f97a6f0a24a2562982e27291b3bdfcb94822d3d341790438ec6d9ccf4ebc8fad",
+          "review_id": "rev_d96f5b8814dd4d5e852501c245eba8ec",
+          "supersedes_review_id": null
+        },
+        "revision": 5,
+        "timestamp": "2026-11-15T13:21:22.265272Z"
+      },
+      {
+        "expected_revision": 5,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": "<img src=x onerror=alert(1)> AUTOMATED literal correction",
+          "created_at": "2026-11-15T13:21:22.578678Z",
+          "disposition": "escalate",
+          "rationale": "AUTOMATED changed interpretation",
+          "report_id": "f97a6f0a24a2562982e27291b3bdfcb94822d3d341790438ec6d9ccf4ebc8fad",
+          "review_id": "rev_1964c33570dc48f588a82d2060115d7a",
+          "supersedes_review_id": "rev_d96f5b8814dd4d5e852501c245eba8ec"
+        },
+        "revision": 6,
+        "timestamp": "2026-11-15T13:21:22.578678Z"
+      },
+      {
+        "expected_revision": 4,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T13:21:23.919808Z",
+          "disposition": "escalate",
+          "rationale": "AUTOMATED initial escalate",
+          "report_id": "34223a48b6e31b94d400b1e2e8a0e31af42fb380bf888bb52fd67a657ad06134",
+          "review_id": "rev_5011d3652320458c900a8cb55e2643b4",
+          "supersedes_review_id": null
+        },
+        "revision": 5,
+        "timestamp": "2026-11-15T13:21:23.919808Z"
+      },
+      {
+        "expected_revision": 4,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T13:21:25.000991Z",
+          "disposition": "request_more_information",
+          "rationale": "AUTOMATED initial request for facts",
+          "report_id": "fa66cf32dc0cf08067094e20ac8a74dbf8a83ac35f755627903a873f1da67972",
+          "review_id": "rev_38c93180a3d641999be576d436c527e2",
+          "supersedes_review_id": null
+        },
+        "revision": 5,
+        "timestamp": "2026-11-15T13:21:25.000991Z"
+      },
+      {
+        "expected_revision": 4,
+        "operation": "analyst_review",
+        "review": {
+          "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+          "correction_note": null,
+          "created_at": "2026-11-15T13:21:26.524553Z",
+          "disposition": "request_more_information",
+          "rationale": "AUTOMATED needs-information limitation",
+          "report_id": "4d1aba4f19c1c93decd99e88d0c288dbc0e3b5de6017b3911042edd66b05be3d",
+          "review_id": "rev_636ed22e1974437a883c3d02f21ea079",
+          "supersedes_review_id": null
+        },
+        "revision": 5,
+        "timestamp": "2026-11-15T13:21:26.524553Z"
+      }
+    ],
+    "review_count": 5,
+    "report_count": 4,
+    "review_request_keys": [
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "921fa469-907a-41ec-be46-d2e989af99cd"
+      },
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "1ef7c33a-69b3-4547-aeeb-7856d4e4430e"
+      },
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "55d85d80-1f0b-481f-81bf-c8e981d8a172"
+      },
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "f9955cda-190a-4515-b7cd-6fc41a80a758"
+      },
+      {
+        "actor": "AUTOMATED TEST OPERATOR (not human approval)",
+        "operation": "review",
+        "request_key": "0cb3e28f-89e2-465d-8b45-e7488cc817de"
+      }
+    ]
+  },
+  "human_confirmation": {
+    "status": "PENDING",
+    "analyst_identity": null,
+    "human_review_date": null,
+    "reason": "All stored actions in this run were generated by the automated test operator."
+  },
+  "status": "PASS",
+  "owned_process_cleanup": "PASS"
+}

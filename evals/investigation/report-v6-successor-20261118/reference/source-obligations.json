@@ -1,0 +1,428 @@
+[
+  {
+    "id": "NEXT-FINAL-01",
+    "source_input_sha256": "dc1382c0848fee539acfb067bd3905110516f5eca023c967a1720bf5d7b45d21",
+    "essential_facts": [
+      "Transaction identifier is TX-681.",
+      "Amount is exactly 1402.24 EUR.",
+      "Event time is 2026-11-18T10:38:43Z.",
+      "Illustrative fixture risk score is 0.53; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"EUR\": \"113.08\"}; focal minute and future excluded.",
+      "Receiver history is incomplete; 1 eligible events; separate currency totals {\"EUR\": \"41.92\"}; focal minute and future excluded."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T10:38:43Z",
+        "start": "2026-11-11T10:38:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-481",
+            "occurred_at": "2026-11-16T10:38:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-01-S",
+            "amount": "83.47",
+            "currency": "EUR"
+          },
+          {
+            "transaction_id": "TX-581",
+            "occurred_at": "2026-11-17T10:38:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-01-S",
+            "amount": "29.61",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "EUR": "113.08"
+        }
+      },
+      "receiver": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T10:38:43Z",
+        "start": "2026-11-11T10:38:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-381",
+            "occurred_at": "2026-11-18T07:38:43Z",
+            "bank": "AUTHORED-R",
+            "account": "NEXT-FINAL-01-R",
+            "amount": "41.92",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 1,
+        "eligible_count": 1,
+        "truncated": false,
+        "totals": {
+          "EUR": "41.92"
+        }
+      }
+    },
+    "provenance": "Codex source review before dispatch. No prior generated reports or outcome labels."
+  },
+  {
+    "id": "NEXT-FINAL-02",
+    "source_input_sha256": "8657c02e132fee6c7bda58171c9f2b4141505db32a4c2fd4cac908ff0af49364",
+    "essential_facts": [
+      "Transaction identifier is TX-682.",
+      "Amount is exactly 807.38 GBP.",
+      "Event time is 2026-11-18T10:39:43Z.",
+      "Illustrative fixture risk score is 0.24; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Codex source review before dispatch. No prior generated reports or outcome labels."
+  },
+  {
+    "id": "NEXT-FINAL-03",
+    "source_input_sha256": "60c0f34a897aa2eef863424b06e193b45d68486a1996f60d1e7b79f2dc563e5b",
+    "essential_facts": [
+      "Transaction identifier is TX-683.",
+      "Amount is exactly 6115.92 USD.",
+      "Event time is 2026-11-18T10:40:43Z.",
+      "Illustrative fixture risk score is 0.73; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"EUR\": \"29.61\", \"USD\": \"83.47\"}; focal minute and future excluded.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T10:40:43Z",
+        "start": "2026-11-11T10:40:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-483",
+            "occurred_at": "2026-11-16T10:40:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-03-S",
+            "amount": "83.47",
+            "currency": "USD"
+          },
+          {
+            "transaction_id": "TX-583",
+            "occurred_at": "2026-11-17T10:40:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-03-S",
+            "amount": "29.61",
+            "currency": "EUR"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "USD": "83.47",
+          "EUR": "29.61"
+        }
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Codex source review before dispatch. No prior generated reports or outcome labels."
+  },
+  {
+    "id": "NEXT-FINAL-04",
+    "source_input_sha256": "4eec94735dcb1ee84ee2fbb0f6ba0fd4cd3a41ebd1c4c713c445c4c4808df478",
+    "essential_facts": [
+      "Transaction identifier is TX-684.",
+      "Amount is exactly 162.47 EUR.",
+      "Event time is 2026-11-18T10:41:43Z.",
+      "Illustrative fixture risk score is 0.32; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Codex source review before dispatch. No prior generated reports or outcome labels."
+  },
+  {
+    "id": "NEXT-FINAL-05",
+    "source_input_sha256": "3e7cd03cfd63744ea524339768f3b20771c70a6b59b91e19c25f9fa28a523f9a",
+    "essential_facts": [
+      "Transaction identifier is TX-685.",
+      "Amount is exactly 14833.94 GBP.",
+      "Event time is 2026-11-18T10:42:43Z.",
+      "Illustrative fixture risk score is 0.94; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"GBP\": \"113.08\"}; focal minute and future excluded.",
+      "Receiver history is incomplete; 1 eligible events; separate currency totals {\"GBP\": \"41.92\"}; focal minute and future excluded."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T10:42:43Z",
+        "start": "2026-11-11T10:42:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-485",
+            "occurred_at": "2026-11-16T10:42:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-05-S",
+            "amount": "83.47",
+            "currency": "GBP"
+          },
+          {
+            "transaction_id": "TX-585",
+            "occurred_at": "2026-11-17T10:42:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-05-S",
+            "amount": "29.61",
+            "currency": "GBP"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "GBP": "113.08"
+        }
+      },
+      "receiver": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T10:42:43Z",
+        "start": "2026-11-11T10:42:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-385",
+            "occurred_at": "2026-11-18T07:42:43Z",
+            "bank": "AUTHORED-R",
+            "account": "NEXT-FINAL-05-R",
+            "amount": "41.92",
+            "currency": "GBP"
+          }
+        ],
+        "returned_count": 1,
+        "eligible_count": 1,
+        "truncated": false,
+        "totals": {
+          "GBP": "41.92"
+        }
+      }
+    },
+    "provenance": "Codex source review before dispatch. No prior generated reports or outcome labels."
+  },
+  {
+    "id": "NEXT-FINAL-06",
+    "source_input_sha256": "f8e721aeac95a5692a116bf0218249a947f8182f0058702278a586d0a8a888f1",
+    "essential_facts": [
+      "Transaction identifier is TX-686.",
+      "Amount is exactly 62.39 USD.",
+      "Event time is 2026-11-18T10:43:43Z.",
+      "Illustrative fixture risk score is 0.18; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"USD\": \"113.08\"}; focal minute and future excluded.",
+      "Receiver history is incomplete; 1 eligible events; separate currency totals {\"USD\": \"41.92\"}; focal minute and future excluded."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T10:43:43Z",
+        "start": "2026-11-11T10:43:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-486",
+            "occurred_at": "2026-11-16T10:43:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-06-S",
+            "amount": "83.47",
+            "currency": "USD"
+          },
+          {
+            "transaction_id": "TX-586",
+            "occurred_at": "2026-11-17T10:43:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-06-S",
+            "amount": "29.61",
+            "currency": "USD"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "USD": "113.08"
+        }
+      },
+      "receiver": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T10:43:43Z",
+        "start": "2026-11-11T10:43:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-386",
+            "occurred_at": "2026-11-18T07:43:43Z",
+            "bank": "AUTHORED-R",
+            "account": "NEXT-FINAL-06-R",
+            "amount": "41.92",
+            "currency": "USD"
+          }
+        ],
+        "returned_count": 1,
+        "eligible_count": 1,
+        "truncated": false,
+        "totals": {
+          "USD": "41.92"
+        }
+      }
+    },
+    "provenance": "Codex source review before dispatch. No prior generated reports or outcome labels."
+  },
+  {
+    "id": "NEXT-FINAL-07",
+    "source_input_sha256": "5f116ae4361e2a07a2c1768bcb58b3031b8b303f3827931cb26136e41f74b745",
+    "essential_facts": [
+      "Transaction identifier is TX-687.",
+      "Amount is exactly 4752.65 EUR.",
+      "Event time is 2026-11-18T10:44:43Z.",
+      "Illustrative fixture risk score is 0.78; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is unavailable, not zero activity.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Codex source review before dispatch. No prior generated reports or outcome labels."
+  },
+  {
+    "id": "NEXT-FINAL-08",
+    "source_input_sha256": "bae39951e13059cecf4336bf6a83a63ff03f5f44933ffdab99cf01b88e5d2a5e",
+    "essential_facts": [
+      "Transaction identifier is TX-688.",
+      "Amount is exactly 3056.31 GBP.",
+      "Event time is 2026-11-18T10:45:43Z.",
+      "Illustrative fixture risk score is 0.61; not ML inference or probability.",
+      "Human analysts retain final decisions; no automatic intervention.",
+      "Sender history is incomplete; 2 eligible events; separate currency totals {\"GBP\": \"83.47\", \"USD\": \"29.61\"}; focal minute and future excluded.",
+      "Receiver history is unavailable, not zero activity."
+    ],
+    "source_history": {
+      "sender": {
+        "availability": "available",
+        "coverage": "incomplete",
+        "cutoff": "2026-11-18T10:45:43Z",
+        "start": "2026-11-11T10:45:43Z",
+        "lookback_days": 7,
+        "events": [
+          {
+            "transaction_id": "TX-488",
+            "occurred_at": "2026-11-16T10:45:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-08-S",
+            "amount": "83.47",
+            "currency": "GBP"
+          },
+          {
+            "transaction_id": "TX-588",
+            "occurred_at": "2026-11-17T10:45:43Z",
+            "bank": "AUTHORED-S",
+            "account": "NEXT-FINAL-08-S",
+            "amount": "29.61",
+            "currency": "USD"
+          }
+        ],
+        "returned_count": 2,
+        "eligible_count": 2,
+        "truncated": false,
+        "totals": {
+          "GBP": "83.47",
+          "USD": "29.61"
+        }
+      },
+      "receiver": {
+        "availability": "unavailable",
+        "coverage": "unavailable",
+        "events": [],
+        "returned_count": 0,
+        "eligible_count": null,
+        "truncated": false,
+        "totals": {}
+      }
+    },
+    "provenance": "Codex source review before dispatch. No prior generated reports or outcome labels."
+  }
+]

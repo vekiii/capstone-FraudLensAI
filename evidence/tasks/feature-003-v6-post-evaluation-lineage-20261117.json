@@ -1,0 +1,35 @@
+{
+  "status": "CURRENT_RUNTIME_OFFLINE_VERIFIED",
+  "executed_runtime_revision": "324d5546a304d98fa24ddc996c694563def79cde7e4d3df6af8d026c16a1f7b3",
+  "current_runtime_revision": "05404f718b9fafb91768187e723f48726480cacbc62d23420ffb00ef3b88540d",
+  "changes": [
+    {
+      "file": "semantic_runtime.py",
+      "executed_sha256_lf": "3205ddf61cc01592cc150eede881599592f4a40562c72b13f44d4852d267186a",
+      "current_sha256_lf": "6e84af99033afc6f2591f3ec20e6e9ca3b26746d633167081830a26b8d23b8a0"
+    },
+    {
+      "file": "semantic_api.py",
+      "executed_sha256_lf": "763160ea4c52336454950bd20ebc9c90c695181d4ee580c9638425012f216724",
+      "current_sha256_lf": "9b299f74af59e2c8067e285db07006475ccf71fbe1ce8a3e4b41fc9184dc17b6"
+    },
+    {
+      "file": "workflow.py",
+      "executed_sha256_lf": "effeb8fc065eeed26209efb06acf9e94c90be39f09564d5b96699f7512105e32",
+      "current_sha256_lf": "b7e975f6a6f9843975f6ff049d5b2bb12be41f0e5d56588ff5c1b66378036c34"
+    }
+  ],
+  "semantic_core_prompt_model_corpus_ranking_unchanged": true,
+  "post_eval_changes": [
+    "public HTTP audit projection omits raw SDK/diagnostics",
+    "server captures malformed output before strict validation; failed original020 raw unavailable",
+    "new semantic-worker-only English query addendum pinned in binding"
+  ],
+  "live_rerun_after_patch": false,
+  "known_live_metrics_apply_to_archived_executed_runtime": true,
+  "offline_saved_http_results_preserved": 20,
+  "provider_calls_for_postfix_verification": 0,
+  "full_backend_tests": 1008,
+  "final_focused_tests": 34,
+  "frontend_tests": 193
+}

@@ -1,0 +1,7 @@
+{
+  "use": "Future isolated T053/T057 negative harness only; never runtime corpus, case context, provider request or tool output.",
+  "reference_answer_canary": "T052_PRIVATE_REFERENCE_61a730d9",
+  "reviewer_note_canary": "T052_PRIVATE_NOTE_2d94c380",
+  "private_label_canary": "T052_PRIVATE_LABEL_7b9a30c1",
+  "real_labels_present": false
+}

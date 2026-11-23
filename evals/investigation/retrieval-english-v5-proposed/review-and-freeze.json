@@ -1,0 +1,24 @@
+{
+  "status": "PROPOSED_NOT_FROZEN_NOT_RUN",
+  "author": "Codex AI",
+  "independent_human_review": null,
+  "review_required": [
+    "source relevance and completeness",
+    "novelty relative to exposed historical question families",
+    "split independence and adequacy for small six-document corpus",
+    "passage-ID resolution and source version binding",
+    "unchanged .80 Recall/.70 MRR/all4 no-answer target"
+  ],
+  "candidate_sha256": {
+    "backend/src/fraudlens/investigation/retrieval.py": "8c11d1b7224fb02e53c66b6e611d4b7cbcd78fb894166a0855a57687dd5d90d0",
+    "data/knowledge/fraudlens-aml-knowledge-v1/retrieval-development-v5.json": "486e60ee542a2845050e5a0e63bbca9ad1875a8afddd135d6b7b6446795fea64"
+  },
+  "candidate_fixed_before_pack_authoring": true,
+  "held_out_execution": "NOT RUN; no acceptance claim or new freeze attestation",
+  "denominators": {
+    "development_answerable": 8,
+    "development_no_answer": 2,
+    "held_out_answerable": 16,
+    "held_out_no_answer": 4
+  }
+}

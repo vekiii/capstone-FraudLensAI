@@ -1,0 +1,372 @@
+{
+  "date": "2026-11-18",
+  "branch": "feature03-retrieval-v4",
+  "baseline": "038f728cddab31b0bc08dbeb74d89560f59c348d",
+  "task": "T098",
+  "task_complete": false,
+  "actual_producer_api_worker_execution": false,
+  "configured_producer_files": {
+    "dataset_store": {
+      "path": "data/processed/dataset.sqlite",
+      "exists": false
+    },
+    "dataset_run_store": {
+      "path": "data/processed/scored-runs.sqlite",
+      "exists": false
+    }
+  },
+  "runtime_configuration": {
+    "enabled": false,
+    "provider": "test",
+    "source": "fixture",
+    "semantic_retrieval": false,
+    "dataset_score_source": "rules"
+  },
+  "observed_database_count": 2307,
+  "inventory_scan_errors": {
+    "total": 127,
+    "groups": {
+      ".cache": 126,
+      ".pytest_cache": 1
+    },
+    "limitation": "No exhaustive claim about inaccessible directories or unpublished stores elsewhere"
+  },
+  "outside_cache_database_kinds": [
+    {
+      "path": "data/processed/investigations.sqlite",
+      "is_producer_dataset": false,
+      "is_producer_runs": false
+    },
+    {
+      "path": "evals/results/feature-003/development-v2/runs.sqlite",
+      "is_producer_dataset": false,
+      "is_producer_runs": false
+    },
+    {
+      "path": "evals/results/feature-003/development-v3/runs.sqlite",
+      "is_producer_dataset": false,
+      "is_producer_runs": false
+    },
+    {
+      "path": "evals/results/feature-003/development-v4/runs.sqlite",
+      "is_producer_dataset": false,
+      "is_producer_runs": false
+    },
+    {
+      "path": "evals/results/feature-003/development-v6/runs.sqlite",
+      "is_producer_dataset": false,
+      "is_producer_runs": false
+    },
+    {
+      "path": "evals/results/feature-003/development-v8/runs.sqlite",
+      "is_producer_dataset": false,
+      "is_producer_runs": false
+    }
+  ],
+  "controlled_cached_smoke_hashes": [
+    {
+      "path": ".cache/dataset-producer-smoke-w6p03eaq/source.sqlite",
+      "exists": true,
+      "bytes": 45056,
+      "sha256": "68fd74fa7183604ae70120fd4b42f5ac4e425820fea7aa513afc40ee955ec94c",
+      "matches_recorded_authored_smoke": true
+    },
+    {
+      "path": ".cache/dataset-producer-smoke-w6p03eaq/rules.sqlite",
+      "exists": true,
+      "bytes": 32768,
+      "sha256": "1a093bbe515edd75d0ebbca46374134533336b136bfad956b0b98c51da9ec545",
+      "matches_recorded_authored_smoke": true
+    },
+    {
+      "path": ".cache/dataset-producer-smoke-w6p03eaq/model.sqlite",
+      "exists": true,
+      "bytes": 32768,
+      "sha256": "5ea099c2ad90745aa3fda37d037b393ccb029e5cc0c96ec5c31cc8af17ad4c13",
+      "matches_recorded_authored_smoke": true
+    }
+  ],
+  "missing_store_adapter_probe": {
+    "outcome": "unavailable",
+    "exception": "OperationalError",
+    "source_file_created": false,
+    "fixture_fallback": false,
+    "scope": "Missing-file negative probe with authored request IDs; NOT actual run validation"
+  },
+  "loopback_get_observations": [
+    {
+      "route": "/api/health",
+      "outcome": "unavailable",
+      "exception": "URLError"
+    },
+    {
+      "route": "/api/cases",
+      "outcome": "unavailable",
+      "exception": "URLError"
+    }
+  ],
+  "actual_producer_identities": null,
+  "regression": {
+    "command": "pytest dataset_adapter + dataset_context + investigation_api",
+    "passed": 44,
+    "seconds": 7.68,
+    "exit_code": 0,
+    "kind": "existing authored software regression, NOT actual producer integration"
+  },
+  "python": "3.14.7",
+  "ruff_inventory_script": "PASS",
+  "preserved_count": 58,
+  "all_preserved": true,
+  "preserved_files": {
+    "evidence/tasks/feature-003-coverage-v4-results.json": {
+      "sha256_lf": "737396670c1596b3a9cced9ecfe4cd6724ce3fabc31cbb3f1bd69a8081451586",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-evaluation-audit-results.json": {
+      "sha256_lf": "f8132ac2f068646948874ade490da1779aa6f7775c7e58ccbbc454779adf86fe",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-evaluation-pack-results.json": {
+      "sha256_lf": "ce96efe60d163bc8cf330354ca69f0da4d212bb399794c08f754d2e7a592873c",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-final-live-v8-results.json": {
+      "sha256_lf": "4e9d0a27d995cbc92be53935cae61d74ed66fcea449e704c0d9e2c06f585b793",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-fixture-journey-results.json": {
+      "sha256_lf": "3b79754300d6071c00c9190e2e9283b25a7fc31f9437398beddf9c51c5295318",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-human-authority-v7-results.json": {
+      "sha256_lf": "1e3b54170a6ce357d6fa0f3891a07ab60298cbdb9f571cad3901ebb351136afa",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-judge-results.json": {
+      "sha256_lf": "b02d8e6a5120ee0189fa0e08307814404e0602aa8c050a6a177fbad1757dd2e4",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-knowledge-smoke-results.json": {
+      "sha256_lf": "d7b95c41cbf4d0bf8f5237eaa3a15f5dc24241d455e08f7f024f062805134c46",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-live-audit-results.json": {
+      "sha256_lf": "a19dc5d2b1e1b4bf1a5614fd2f7f221d89a1278b896bc8f3a2acbc8aad98d1c1",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-live-development-v2-results.json": {
+      "sha256_lf": "fbaa219959d527be00bc8b1c790f7d12311c8e900715777b738d73415cbccec8",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-live-repair-v6-results.json": {
+      "sha256_lf": "6ea03023cfcd9d2363aa64379576ab269192ba88620fc96f66369529703af8e4",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-live-results.json": {
+      "sha256_lf": "2f1c359a51f09bfe13b5877828d0c247e3d1686d2d99e5912f7419f7744b4dca",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-offline-review-20261116-browser-results.json": {
+      "sha256_lf": "b5c78806adc272f02e2c77e7ee1f967ba4b7bdac664a8845d0f1bc50af4afa3a",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-offline-review-20261116-escalated-browser-results.json": {
+      "sha256_lf": "e09b49d5f234521a06f7670d0465be3e2a5ee370c77d1030ab021572bb4958f1",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-offline-review-20261116-escalated-knowledge-results.json": {
+      "sha256_lf": "3b996f678aedc1e13c79f9ef0291c945768cd2d66c7d2e03105e8d0e438acc40",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-offline-review-20261116-isolated-browser-results.json": {
+      "sha256_lf": "203fb297cdeaa6dc0fee1186c32cce83abf8031f308275698f56a98292568d7b",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-offline-review-20261116-isolated-knowledge-results.json": {
+      "sha256_lf": "6931ae0f815c9f751df9f36865fde6455ebeefb47598fecb7091a7a8481f8b9a",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-offline-review-20261116-isolated-process-results.json": {
+      "sha256_lf": "b00cb266b5480e656554fb64fa95ea7425572a9c14d379d6c3012f45fce2c284",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-offline-review-20261116-isolated-recovery-results.json": {
+      "sha256_lf": "cd1d4b386189e64b2101fc63e8256f5ee3743d715ef76a8b0281bbe96acc0987",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-offline-review-20261116-isolated-review-results.json": {
+      "sha256_lf": "3ee97342e144ed84afed564f5e4744ab0f7896a633aaa88c989c62c80ba81ce0",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-offline-review-20261116-knowledge-results.json": {
+      "sha256_lf": "69bf213c28b072448b07ec54aeb3da94861359e6e5611aceac590822cabddcca",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-phase08-browser-results.json": {
+      "sha256_lf": "f9a053b150d2ffebc1c9e55325bcfeb0d6985653656947b2c8d7172de91bc5ad",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-phase08-knowledge-results.json": {
+      "sha256_lf": "ef25f32002590f991886050545f9f38fbba4dab3241095fb6ca3797612e19e83",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-phase08-preservation-results.json": {
+      "sha256_lf": "90eaa7e64d1209346d4035349f947c0c636bb288d512dba7401a09c848e7c3a3",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-phase08-process-results.json": {
+      "sha256_lf": "e32177beb0e001b0d18798858fb077528f001a5ebc3aa6f44c1554d88296b634",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-phase08-recovery-results.json": {
+      "sha256_lf": "1861fcea57c80cde30af363c4851e5dcd8fae6194cd92859970aec211591764b",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-phase08-review-results.json": {
+      "sha256_lf": "d9df55bedd4398cdde437879bb2eaead4ae4a77c7c97c46863d34f30d21bd68a",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-provider-probe-results.json": {
+      "sha256_lf": "179cb1f9411109180deecc64c895d25f0a65b370aebd5defe10b314f25711065",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-recovery-browser-results.json": {
+      "sha256_lf": "e520f03797536e129a72e83b09720e58292deb07849411610823d599328f9f67",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-recovery-process-results.json": {
+      "sha256_lf": "ccd50867e15243af52307b9f7f5c24a909c5d2ccb1e4984a2bb764f72943dcce",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-repair-v5-probe-results.json": {
+      "sha256_lf": "11ef0766dfbe013a72d3f56c840dbe52891c324e895e7b109514dccdc01bb8fc",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-repair-v5-results.json": {
+      "sha256_lf": "b0a98f7d4add58028c3c163771599739a92baa89c4ee55223ebb7ff7f9a59d22",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-retrieval-results.json": {
+      "sha256_lf": "7518e1b6746a249aefc3dad613046fa126d07921f79c3de998e61c9734eef380",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-review-browser-results.json": {
+      "sha256_lf": "9ceeef25297c94bc29d20b5a2c7b3fa5bed860f06bb91adff3e4213d826d501e",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-reviewed-knowledge-smoke-results.json": {
+      "sha256_lf": "2b2b57e9eeaa5110e0af6a0cd86064507a63f3d06540b83630f8b0924676e58a",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t033-resume-results.json": {
+      "sha256_lf": "ba4cd37b27d1b0f3b0d1f6ef7f538848484a38921e5d50d4b659ead0ba6bc9e3",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t057-process-results.json": {
+      "sha256_lf": "4716ebb361920a6a0af99f6df7844df218cd59d887fbfbae5a6657ea4f29dda7",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t057-recovery-browser-results.json": {
+      "sha256_lf": "962913c18b318a585ed65081209c0d8034b028625617fa5bd3d327551bd08089",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t057-results.json": {
+      "sha256_lf": "a3f07211a50a05e1f87b06bf0fe140777f86ea7d09edc9e417696b1ef3b76975",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t057-review-browser-results.json": {
+      "sha256_lf": "fb1821d499edf302cb333376942f84d6be453fe9a8ce693f709d03a255d46a62",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-browser-results.json": {
+      "sha256_lf": "e43477a64e622697535e3ae65933a30934a8b8d8d1b5008745c6c7baf9252570",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-fixed-browser-results.json": {
+      "sha256_lf": "a2f8d0aa851cdf40cc32f26b70c9dfcc52425a628630c678d490348aed9b2848",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-fixed-process-results.json": {
+      "sha256_lf": "d75892aee87ce6b4b7b831d363b2d0a4b9354a56d97afba8f736f625dcb17500",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-fixed-recovery-results.json": {
+      "sha256_lf": "8aa7121ef77c4d0e11ce2b15573c57bbf29e0ae37b9b4a7dcbe1e8a1eb9ec509",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-integrity-results.json": {
+      "sha256_lf": "e526bf8d0f18d3661fb046faf7037bb3ee6470c04aba60f6349b6150791d1fb2",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-isolated-browser-results.json": {
+      "sha256_lf": "f84dcc880177e483aa9b65c32d0e9adb76dc75abbbb1128b0cc38fcbe486a615",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-isolated-knowledge-results.json": {
+      "sha256_lf": "56ec5e889b784000d17f0ba43dcc1c3ea664a2e291ab62f6dd7ffe6dc95dc5e6",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-isolated-recovery-results.json": {
+      "sha256_lf": "02afd6a0db9440b504c6a91ff646690eaefbe02866263a98e167828acb8f8019",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-isolated-review-results.json": {
+      "sha256_lf": "6cc808a05cc3a259a8ed777290f2cf9b42eced2ab7970cbfc880ce60810f6cb4",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-knowledge-results.json": {
+      "sha256_lf": "6ee7dafbebd6567e19270c0046a087c64648ec88e32cff431ee588ff82c62886",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-unsandboxed-browser-results.json": {
+      "sha256_lf": "82efc383c868e99048eb36141ca28cc722c155866e7f200704c26777b0299bf0",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t066-ai-20261117-unsandboxed-knowledge-results.json": {
+      "sha256_lf": "af9b014cef8358d52be32d2027a8a0620550d218fffc097a4018ea5cb2a021ee",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t094-t096-review-20261117-results.json": {
+      "sha256_lf": "2f027d40b21aa879ce957814b059f75abf234111476c4d57d0287990b62f6189",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t095-development-results.json": {
+      "sha256_lf": "10dc051e2ca81e19098122cefed03be20f86199bee53055bb6a90f6e1f05432d",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-t096-20261117-results.json": {
+      "sha256_lf": "6dc95741fb79e08dc241bf662d44118c9e5ad7ac3c07498ce408481f4ef39756",
+      "matches_baseline": true
+    },
+    "evidence/tasks/feature-003-timeout-v3-results.json": {
+      "sha256_lf": "04a12af7c3d6608d3f5d7bdc06015042879bc3b6f94d93060c99717d1674009b",
+      "matches_baseline": true
+    },
+    "backend/src/fraudlens/investigation/workflow.py": {
+      "sha256_lf": "b7e975f6a6f9843975f6ff049d5b2bb12be41f0e5d56588ff5c1b66378036c34",
+      "matches_baseline": true
+    },
+    "backend/src/fraudlens/investigation/provider.py": {
+      "sha256_lf": "fb2a98c0c7733da0260235c3cba67ea89e02ac995602f65f699f24fd07de8c8d",
+      "matches_baseline": true
+    }
+  },
+  "new_provider_calls": 0,
+  "label_reads": 0,
+  "ml_training": false,
+  "frontend": "not rerun; unchanged",
+  "full_backend": "not rerun; unchanged",
+  "sc003_live_quality_acceptance": false,
+  "sc006_fresh_live_timing_acceptance": false,
+  "feature03_ready_to_close": false,
+  "inventory_script_sha256": "3146fc3c0d15a03b84411c08ddc4d66f2f1be5570832a5645f070dc2da5bccaf",
+  "final_document_verification": {
+    "new_document_links": 4,
+    "historical_context_append_only": true,
+    "all_task_markers_unchanged": true,
+    "only_open_task": "T098",
+    "pre_post_hooks": "absent",
+    "inventory_script_hash": "PASS"
+  },
+  "diff_check": "PASS"
+}

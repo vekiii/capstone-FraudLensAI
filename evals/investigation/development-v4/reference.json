@@ -1,0 +1,160 @@
+{
+  "kind": "atomic_development_references_not_independent_review",
+  "canary": "DEV4_REFERENCE_ONLY_CANARY_20261116",
+  "items": [
+    {
+      "id": "DEV4-741",
+      "essential_facts": [
+        "Transaction identifier TX-741.",
+        "Transfer money exactly 8305.70 EUR.",
+        "Recorded transaction time 2026-11-13T10:30:45Z.",
+        "Assessment score exactly 0.61.",
+        "Assessment source is fixture.",
+        "Scorer version is fixture-v1.",
+        "Exactly two eligible sender-history events.",
+        "Sender-history coverage incomplete.",
+        "Sender-history EUR total exactly 145.60.",
+        "Sender-history USD total exactly 42.15.",
+        "Receiver history unavailable."
+      ],
+      "expected_missing_fields": [
+        "occupation",
+        "device",
+        "source of funds",
+        "independently verified fixture time provenance",
+        "complete history coverage",
+        "receiver history"
+      ],
+      "required_disclosures": [
+        "authored synthetic fixture, not real customer evidence",
+        "fixture is not ML inference",
+        "score is not calibrated probability",
+        "score does not prove guilt",
+        "transfer amount is not bank loss",
+        "fixture time provenance not independently verified",
+        "human analyst retains final authority",
+        "history is incomplete and scoped to seven days strictly before the focal minute",
+        "different currencies are not combined",
+        "unavailable receiver history is not empty history"
+      ],
+      "expected_limitations": [
+        "authored synthetic fixture, not real customer evidence",
+        "fixture is not ML inference",
+        "score is not calibrated probability",
+        "score does not prove guilt",
+        "transfer amount is not bank loss",
+        "fixture time provenance not independently verified",
+        "human analyst retains final authority",
+        "history is incomplete and scoped to seven days strictly before the focal minute",
+        "different currencies are not combined",
+        "unavailable receiver history is not empty history"
+      ],
+      "guidance_policy": "Procedures need applicable evidence; draft insufficiency outcome needs no procedure.",
+      "history_expectation": "741 incomplete sender/unavailable receiver; otherwise unavailable both sides.",
+      "critical_errors": [
+        "invented guilt/identity/funds",
+        "changed money/time",
+        "mixed-currency arithmetic",
+        "automatic action"
+      ]
+    },
+    {
+      "id": "DEV4-742",
+      "essential_facts": [
+        "Transaction identifier TX-742.",
+        "Transfer money exactly 204.18 GBP.",
+        "Recorded transaction time 2026-11-13T10:30:45Z.",
+        "Assessment score exactly 0.29.",
+        "Assessment source is fixture.",
+        "Scorer version is fixture-v1.",
+        "Account history unavailable for both sides."
+      ],
+      "expected_missing_fields": [
+        "occupation",
+        "device",
+        "source of funds",
+        "independently verified fixture time provenance",
+        "account history"
+      ],
+      "required_disclosures": [
+        "authored synthetic fixture, not real customer evidence",
+        "fixture is not ML inference",
+        "score is not calibrated probability",
+        "score does not prove guilt",
+        "transfer amount is not bank loss",
+        "fixture time provenance not independently verified",
+        "human analyst retains final authority",
+        "unavailable history is not observed empty history"
+      ],
+      "expected_limitations": [
+        "authored synthetic fixture, not real customer evidence",
+        "fixture is not ML inference",
+        "score is not calibrated probability",
+        "score does not prove guilt",
+        "transfer amount is not bank loss",
+        "fixture time provenance not independently verified",
+        "human analyst retains final authority",
+        "unavailable history is not observed empty history"
+      ],
+      "guidance_policy": "Procedures need applicable evidence; draft insufficiency outcome needs no procedure.",
+      "history_expectation": "741 incomplete sender/unavailable receiver; otherwise unavailable both sides.",
+      "critical_errors": [
+        "invented guilt/identity/funds",
+        "changed money/time",
+        "mixed-currency arithmetic",
+        "automatic action"
+      ]
+    },
+    {
+      "id": "DEV4-743",
+      "essential_facts": [
+        "Transaction identifier TX-743.",
+        "Transfer money exactly 1164.29 USD.",
+        "Recorded transaction time 2026-11-13T10:30:45Z.",
+        "Assessment score exactly 0.47.",
+        "Assessment source is fixture.",
+        "Scorer version is fixture-v1.",
+        "Account history unavailable for both sides.",
+        "No procedure passage returned by controlled no-match retrieval."
+      ],
+      "expected_missing_fields": [
+        "occupation",
+        "device",
+        "source of funds",
+        "independently verified fixture time provenance",
+        "account history",
+        "applicable procedure guidance"
+      ],
+      "required_disclosures": [
+        "authored synthetic fixture, not real customer evidence",
+        "fixture is not ML inference",
+        "score is not calibrated probability",
+        "score does not prove guilt",
+        "transfer amount is not bank loss",
+        "fixture time provenance not independently verified",
+        "human analyst retains final authority",
+        "unavailable history is not observed empty history",
+        "no applicable guidance; no unsupported procedural recommendations"
+      ],
+      "expected_limitations": [
+        "authored synthetic fixture, not real customer evidence",
+        "fixture is not ML inference",
+        "score is not calibrated probability",
+        "score does not prove guilt",
+        "transfer amount is not bank loss",
+        "fixture time provenance not independently verified",
+        "human analyst retains final authority",
+        "unavailable history is not observed empty history",
+        "no applicable guidance; no unsupported procedural recommendations"
+      ],
+      "guidance_policy": "Procedures need applicable evidence; draft insufficiency outcome needs no procedure.",
+      "history_expectation": "741 incomplete sender/unavailable receiver; otherwise unavailable both sides.",
+      "critical_errors": [
+        "invented guilt/identity/funds",
+        "changed money/time",
+        "mixed-currency arithmetic",
+        "automatic action"
+      ]
+    }
+  ]
+}

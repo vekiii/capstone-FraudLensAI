@@ -1,0 +1,287 @@
+{
+  "date": "2026-11-15",
+  "mode": "actual OpenAI frozen synthetic inputs",
+  "model": "gpt-6-luna",
+  "provider_budget": 104,
+  "human_ratings": "pending",
+  "support": null,
+  "essential_coverage": null,
+  "critical_unsupported_claims": null,
+  "spend": null,
+  "quality_acceptance": "pending_T059",
+  "roles": {
+    "primary": {
+      "count": 8,
+      "rows": [
+        {
+          "id": "INV-H01",
+          "attempt_id": "att_23cad52c4d174c73a4f9a47ea1792974",
+          "state": "failed",
+          "report_id": null,
+          "seconds": 64.61139240000011,
+          "failure": {
+            "code": "output_invalid",
+            "message": "Investigation ended with a controlled limitation or failure.",
+            "outcome_unknown": false
+          },
+          "budget": {
+            "deadline": "2026-11-15T14:02:47.341310Z",
+            "provider_requests": 7,
+            "repairs": 1,
+            "tool_calls": 5,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-H02",
+          "attempt_id": "att_332fc579c39b41da9ce6efe5390e9815",
+          "state": "needs_information",
+          "report_id": "1d81ef005009f8d83c124395132bfad97fa7786a88543ec289e19f6b659870db",
+          "seconds": 52.12284069999987,
+          "failure": null,
+          "budget": {
+            "deadline": "2026-11-15T14:03:51.952276Z",
+            "provider_requests": 7,
+            "repairs": 0,
+            "tool_calls": 6,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-H03",
+          "attempt_id": "att_cdf640abb0444eb9a2cf1aa95afec470",
+          "state": "failed",
+          "report_id": null,
+          "seconds": 39.27107120000073,
+          "failure": {
+            "code": "budget_exhausted",
+            "message": "Investigation ended with a controlled limitation or failure.",
+            "outcome_unknown": true
+          },
+          "budget": {
+            "deadline": "2026-11-15T14:04:44.076061Z",
+            "provider_requests": 7,
+            "repairs": 0,
+            "tool_calls": 6,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-H04",
+          "attempt_id": "att_2ebf60926b214deaa15ed3ecc19d4e9c",
+          "state": "failed",
+          "report_id": null,
+          "seconds": 37.30241080000087,
+          "failure": {
+            "code": "budget_exhausted",
+            "message": "Investigation ended with a controlled limitation or failure.",
+            "outcome_unknown": true
+          },
+          "budget": {
+            "deadline": "2026-11-15T14:05:23.377118Z",
+            "provider_requests": 6,
+            "repairs": 0,
+            "tool_calls": 5,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-H05",
+          "attempt_id": "att_d5cbdee6eb31432bbcd14e3eb41d6f11",
+          "state": "needs_information",
+          "report_id": "e2ee5d28f63c9afa58d38d27ad5b1e245ee303ef49ad6b5d89b5626a57ee5061",
+          "seconds": 35.15567199999896,
+          "failure": null,
+          "budget": {
+            "deadline": "2026-11-15T14:06:00.701337Z",
+            "provider_requests": 7,
+            "repairs": 0,
+            "tool_calls": 6,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-H06",
+          "attempt_id": "att_b444b555404b4b80afb9c479a65dff7f",
+          "state": "failed",
+          "report_id": null,
+          "seconds": 38.675255399999514,
+          "failure": {
+            "code": "output_invalid",
+            "message": "Investigation ended with a controlled limitation or failure.",
+            "outcome_unknown": false
+          },
+          "budget": {
+            "deadline": "2026-11-15T14:06:35.852582Z",
+            "provider_requests": 6,
+            "repairs": 1,
+            "tool_calls": 4,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-H07",
+          "attempt_id": "att_d81d994fa9b846eb94a0e12d4b3e7027",
+          "state": "failed",
+          "report_id": null,
+          "seconds": 13.255099699999846,
+          "failure": {
+            "code": "budget_exhausted",
+            "message": "Investigation ended with a controlled limitation or failure.",
+            "outcome_unknown": false
+          },
+          "budget": {
+            "deadline": "2026-11-15T14:07:14.542004Z",
+            "provider_requests": 7,
+            "repairs": 0,
+            "tool_calls": 6,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-H08",
+          "attempt_id": "att_5694e647faa54cd8aabde885e8985d3a",
+          "state": "failed",
+          "report_id": null,
+          "seconds": 36.973216800000955,
+          "failure": {
+            "code": "budget_exhausted",
+            "message": "Investigation ended with a controlled limitation or failure.",
+            "outcome_unknown": true
+          },
+          "budget": {
+            "deadline": "2026-11-15T14:07:27.820265Z",
+            "provider_requests": 7,
+            "repairs": 0,
+            "tool_calls": 6,
+            "transient_retries": 0
+          }
+        }
+      ],
+      "validated_or_needs_information": 2,
+      "failures": 6,
+      "successful_within_90": 2,
+      "all_terminal_within_120": true
+    },
+    "demo": {
+      "count": 5,
+      "rows": [
+        {
+          "id": "INV-D01",
+          "attempt_id": "att_4e17edd2a509417fa173d2aa7b8b9138",
+          "state": "needs_information",
+          "report_id": "a4a38ac08c6364d972ae174915525e345f4b7ea376f28f7fe2906713e080a89d",
+          "seconds": 30.36544590000085,
+          "failure": null,
+          "budget": {
+            "deadline": "2026-11-15T14:08:04.816128Z",
+            "provider_requests": 7,
+            "repairs": 0,
+            "tool_calls": 6,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-D02",
+          "attempt_id": "att_3362125850ed4ca5ae8b4c1f7f30a136",
+          "state": "failed",
+          "report_id": null,
+          "seconds": 7496.290298100001,
+          "failure": {
+            "code": "budget_exhausted",
+            "message": "Investigation ended with a controlled limitation or failure.",
+            "outcome_unknown": true
+          },
+          "budget": {
+            "deadline": "2026-11-15T14:08:35.205247Z",
+            "provider_requests": 6,
+            "repairs": 0,
+            "tool_calls": 5,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-D03",
+          "attempt_id": "att_176ccb199e354d02b1fe4a3bf9f75a71",
+          "state": "failed",
+          "report_id": null,
+          "seconds": 41.68632559999969,
+          "failure": {
+            "code": "budget_exhausted",
+            "message": "Investigation ended with a controlled limitation or failure.",
+            "outcome_unknown": false
+          },
+          "budget": {
+            "deadline": "2026-11-15T16:13:25.428767Z",
+            "provider_requests": 8,
+            "repairs": 1,
+            "tool_calls": 7,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-H01",
+          "attempt_id": "att_050958876cce45538aef0367b7608110",
+          "state": "needs_information",
+          "report_id": "a5a4d9d9f81357221bc2392b76f2d288a209a8fd7c58b0d552a78f1038f165d2",
+          "seconds": 25.47902310000063,
+          "failure": null,
+          "budget": {
+            "deadline": "2026-11-15T16:14:07.059620Z",
+            "provider_requests": 6,
+            "repairs": 0,
+            "tool_calls": 5,
+            "transient_retries": 0
+          }
+        },
+        {
+          "id": "INV-H05",
+          "attempt_id": "att_c9e661cf1bb34f1d90027ab856d2c2fd",
+          "state": "failed",
+          "report_id": null,
+          "seconds": 44.78607810000176,
+          "failure": {
+            "code": "output_invalid",
+            "message": "Investigation ended with a controlled limitation or failure.",
+            "outcome_unknown": false
+          },
+          "budget": {
+            "deadline": "2026-11-15T16:14:32.543031Z",
+            "provider_requests": 6,
+            "repairs": 1,
+            "tool_calls": 4,
+            "transient_retries": 0
+          }
+        }
+      ],
+      "validated_or_needs_information": 2,
+      "failures": 3,
+      "successful_within_90": 2,
+      "all_terminal_within_120": false
+    }
+  },
+  "transport_attempts": 86,
+  "artifact_sha256": {
+    "primary-INV-H01.json": "f60390255a08be1595f71e085fcabc38b403e9fd2857f7f5c2439456e7506653",
+    "primary-INV-H02.json": "07182148070e143e2faeb34a3d6b9f99b6fe6bcf7cc0a7caf9a4251b604ee7ed",
+    "primary-INV-H03.json": "7b45294629a8b20af2ef463493ecbc806d50c9a4aacefd82375bc926298ad6fc",
+    "primary-INV-H04.json": "0c688c53378581355bf3292b5eeab1e59ee781458fce5265de123fba1ef4421b",
+    "primary-INV-H05.json": "c41cb78933304c88dd5557a92fcbc7818964301e7bb576f039c7569e3035a3f9",
+    "primary-INV-H06.json": "1e84832149012199355ea280ec93927285ff4ba39e15ff3f0b1b0801bdd47a82",
+    "primary-INV-H07.json": "99b3cf8484eb0629f23e535cec862df61f149b7f9a97428cce083b3733482cd8",
+    "primary-INV-H08.json": "99aad45e88d39a6012d735f806b4f6bc2ea8d270eeda80f97de2f64521db9f03",
+    "demo-INV-D01.json": "4fcd987c9f3829c134213a6bb20e326caefb07359675e741631a9c724c690fff",
+    "demo-INV-D02.json": "89e29b41147a841707007fe920c72f24e1df892ff6685f9814a4c5dd78b901c9",
+    "demo-INV-D03.json": "469e4c04f622f456b8665120dc6c19673a3e613a03578ce489184825a9dd88bc",
+    "demo-INV-H01.json": "65b2199b5677a6701de60e8c37c700376b7c3f909f731b940819769ec82e7a32",
+    "demo-INV-H05.json": "24d59c7bcde9be0b5b734bb4ff7b55e2dcb6c461b7368004abab6b619cbbc5ac"
+  },
+  "known_usage": {
+    "input_tokens": 296871,
+    "output_tokens": 28325,
+    "total_tokens": 325196
+  },
+  "requests_with_reported_usage": 82,
+  "requests_without_reported_usage": 5,
+  "usage_note": "Reported subset only; unknown dispatches/local rejections not assumed free. No spend estimate."
+}
