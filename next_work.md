@@ -1,3 +1,12 @@
+## CAP-06 na integrisanom MVP-u — 23. novembar 2026.
+
+Na grani `fix/cap06-final-verification` kandidat `0151fac` odbija query
+parametre za skor rizika pre lookup-a ili skoringa. Prošlo je svih 16
+audit testova, svih šest CAP-06 kontrola i 17 ciljanih backend regresija.
+Svih 290 web testova i build su prošli. [Završna evidencija](evidence/security/cap06-integrated-main-2026-11-23.md).
+
+Sledeći korak je uključivanje lokalne popravke i dokaza u verziju za predaju.
+
 ## PR #3 live Windows demo verification — 2026-11-23
 
 The [Windows live demo record](evidence/tasks/pr3-live-demo-2026-11-23.md) covers PR #3 at `747ff97` and 17 hash-verified restored local inputs. The first case hit the 48,000-byte input cap. The user approved a compact-case run on `row:2959955`. It passed in Chrome with four real `gpt-6-luna` responses, five opened evidence references including two procedures, and a saved demo decision confirmed after reload with no extra provider requests. The [Windows startup and demo steps](specs/003-ai-investigation/quickstart.md#pr-3-demo-with-the-real-openai-provider-on-windows) cover a fresh run and the saved local SQLite store. The [publication request](prompts/development/2026-11-23-pr3-live-demo.md#publication-request) authorizes the documentation commit and push for PR #3. The executable candidate and limits were preserved. **Next step.** Milan reviews and merges PR #3 into `main` manually.
