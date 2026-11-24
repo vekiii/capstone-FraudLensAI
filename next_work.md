@@ -1,3 +1,13 @@
+## Integracija Feature 006 — 24. novembar 2026.
+
+Na grani `integration/capstone-evaluation-evidence`, od `main` commita
+`527020c`, preneti su specifikacija, protokol, evaluacioni paket i dokazi
+iz `3eee1d6`. Na integracionom stablu prošlo je 19 testova validatora i
+negativnih kontrola. Rezultat 15/16 pripada istorijskom `d8acc2a`.
+Živa evaluacija nije ponovljena. [CAP mapa](evidence/tasks/feature-006-capstone-evidence-map.md).
+
+Sledeći korak je pregled lokalnog diffa za dokumentacioni PR.
+
 ## Završna frontend integracija — 24. novembar 2026.
 
 Na integracionoj grani zasnovanoj na `main` commitu `71ba4b7`, kandidat
