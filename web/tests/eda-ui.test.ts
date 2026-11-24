@@ -30,9 +30,9 @@ const summary = decodeEdaSummary({
 
 vi.mock('../src/components/SiteFrame', () => ({ SiteFrame: Outlet }));
 let routeRoot: Root | undefined;
-async function openEdaRoute() {
+async function openEdaRoute(path = '/eda') {
   routeRoot = createRoot(document.getElementById('app')!);
-  await act(async () => { routeRoot!.render(createElement(MemoryRouter, { initialEntries: ['/eda'] }, createElement(AppRoutes))); });
+  await act(async () => { routeRoot!.render(createElement(MemoryRouter, { initialEntries: [path] }, createElement(AppRoutes))); });
 }
 
 beforeEach(() => {
@@ -45,8 +45,9 @@ it('renders an accessible bounded EDA page with separate currency units and safe
   const root = document.querySelector<HTMLElement>('#app')!;
   const view = createEdaView(root, () => {});
   view.render({ kind: 'success', result: summary });
-  expect(root.querySelector('h1')?.textContent).toContain('EDA');
-  expect(root.querySelector('nav a[href="/"]')).not.toBeNull();
+  expect(root.querySelector('h1')?.textContent).toContain('Dataset overview');
+  expect(root.querySelector('a[href="/data"]')).not.toBeNull();
+  expect(root.querySelector('nav')).toBeNull();
   expect(root.textContent).toContain(source);
   expect(root.textContent).toContain('2022-09-01');
   expect(root.textContent).toContain('2');
@@ -89,8 +90,18 @@ it('opens /eda as a separate route and calls only the summary API', async () => 
   await openEdaRoute();
   await vi.waitFor(() => expect(document.body.textContent).toContain('US Dollar'));
   expect(fetchMock.mock.calls.map(([input]) => String(input))).toEqual(['/api/eda/summary']);
-  expect(document.querySelector('nav a[href="/"]')).not.toBeNull();
+  expect(document.querySelector('a[href="/data"]')).not.toBeNull();
   window.history.replaceState({}, '', '/');
+});
+
+it('keeps /dataset-overview as an alias for the same bounded dashboard', async () => {
+  vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify(summary), {
+    headers: { 'content-type': 'application/json' },
+  })));
+  await openEdaRoute('/dataset-overview');
+  await vi.waitFor(() => expect(document.body.textContent).toContain('Dataset overview'));
+  await vi.waitFor(() => expect(document.body.textContent).toContain('US Dollar'));
+  expect(document.querySelector('a[href="/data"]')).not.toBeNull();
 });
 
 it('moves through loading, unavailable, malformed and retry without a fallback summary', async () => {
