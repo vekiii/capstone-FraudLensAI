@@ -1,3 +1,14 @@
+## Vedranova živa proba i CAP-08
+
+Na reviziji `77ed64c` Vedran je u Chrome-u prošao tok za `row:2959955` od
+modelskog skora do ponovnog otvaranja sačuvane odluke za dopunu.
+SQLite je potvrdio `reviewed` i četiri završena zahteva modelu.
+Pretraga procedura je zabeležena kao `no_match`.
+[Zapis probe](evidence/tasks/capstone-evening-demo-guide.md#izvršena-vedranova-proba)
+i [CAP-08 beleška](evidence/tasks/cap08-vedran-mitic.md) sadrže SHA probe.
+Dogovoreni SHA za timski demo je `77ed64c16f30ebaf7b7a2212c58b3b0b08c92709`.
+Sledeći korak za tim je merge dokumentacionog PR-a #9.
+
 ## PR #7 Windows comparison fixed and owner approval recorded — 2026-11-23
 
 Milan personally confirmed both saved cases in the browser and approved the reviewed opt-in pinned sidecar v1 in his role as Feature 003 owner. The [Windows execution and approval evidence](evidence/tasks/002-003-pr7-windows-merge-browser-live-2026-11-23.md#follow-up--windows-comparison-and-feature-003-owner-decision) records the exact digest checks, `1e-12` absolute comparison tolerance for recomputed floats, and unchanged exact score, identities, units, directions and order. The delivered sidecar SHA-256 matched. Targeted backend 62 passed. The full Windows backend suite in UTF-8 mode passed 1,461 tests with one skip for unavailable symlink creation. Frontend 297 passed, and typecheck, build, Ruff and diff checks passed. This follow-up changes a test and records evidence only. The prior `row:2959955` rehearsal remains the live evidence for the 48,000 B demo cap. **Next step:** transition Draft PR #7 to Ready for review when the team chooses to proceed.
