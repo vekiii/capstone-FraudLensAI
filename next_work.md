@@ -1,3 +1,17 @@
+## Integracija Feature 006 — 24. novembar 2026.
+
+Na grani `integration/capstone-evaluation-evidence`, od `main` commita
+`527020c`, preneti su specifikacija, protokol, evaluacioni paket i dokazi
+iz `3eee1d6`. Prošlo je 19 testova validatora i negativnih kontrola, kao i
+300 frontend testova i build. Istorijski rezultat 15/16 ostaje vezan za
+`d8acc2a`. Ponovljeni prolazi na integrisanoj postavci dali su 11/16 na
+`218c357`, 15/16 na `6d58dfb` i 16/16 na `3cfadcc` uz Chrome proveru
+modelskog slučaja i ponovnog otvaranja odluke. EV-01 i EV-06 koriste
+objavljeni modelski slučaj iz trenutnog demoa.
+[Zapis ponovljene evaluacije](evidence/tasks/feature-006-integrated-recheck-2026-11-24.md).
+
+Sledeći korak je pregled integracionog PR-a i odluka tima o merge-u u `main`.
+
 ## Završna frontend integracija — 24. novembar 2026.
 
 Na integracionoj grani zasnovanoj na `main` commitu `71ba4b7`, kandidat

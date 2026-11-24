@@ -14,7 +14,7 @@ class InvestigationSettings(BaseModel):
     enabled: bool = False
     semantic_retrieval: bool = False
     semantic_profile: Literal['v6', 'v7', 'v8'] = 'v6'
-    report_prompt: Literal['v4', 'v5', 'v6'] = 'v4'
+    report_prompt: Literal['v4', 'v5', 'v6', 'v7'] = 'v4'
     report_parallel_tools: bool = False
     report_strict_sections: bool = False
     report_reasoning_effort: Literal['low'] | None = None
@@ -65,9 +65,9 @@ class InvestigationSettings(BaseModel):
     def explicit_model(self):
         if (self.max_output_tokens > 4096 or self.request_timeout_seconds > 45
                 or self.report_reasoning_effort is not None or self.report_parallel_tools
-                or self.report_strict_sections) and (self.report_prompt != 'v6' or
+                or self.report_strict_sections) and (self.report_prompt not in ('v6', 'v7') or
                 self.provider != 'openai' or not self.semantic_retrieval or self.semantic_profile != 'v8'):
-            raise ValueError('Extended generation settings require explicit OpenAI semanticv8/reportv6')
+            raise ValueError('Extended generation settings require explicit OpenAI semanticv8/reportv6 or reportv7')
         if self.request_timeout_seconds > 30 and (
                 not self.semantic_retrieval or self.semantic_profile not in ('v7', 'v8') or self.provider != 'openai'):
             raise ValueError('Request limits above30 require an explicit OpenAI semantic v7/v8 profile')

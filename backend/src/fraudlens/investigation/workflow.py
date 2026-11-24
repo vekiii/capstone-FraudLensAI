@@ -154,7 +154,12 @@ class InvestigationService:
         if self.settings.provider == 'openai' and not self.settings.api_key.get_secret_value():
             raise ValueError('provider_unavailable')
         from fraudlens.investigation.models import ROOT
-        prompt = (ROOT / f'prompts/application/investigation-{self.settings.report_prompt}.md').read_text(encoding='utf-8')
+        prompt_version = self.settings.report_prompt
+        base_version = 'v6' if prompt_version == 'v7' else prompt_version
+        prompt_dir = ROOT / 'prompts/application'
+        prompt = (prompt_dir / f'investigation-{base_version}.md').read_text(encoding='utf-8')
+        if prompt_version == 'v7':
+            prompt += '\n\n' + (prompt_dir / 'investigation-missing-evidence-v1.md').read_text(encoding='utf-8')
         if self.settings.semantic_retrieval:
             prompt += '\n\n' + (ROOT / 'prompts/application/semantic-worker-addendum-v1.md').read_text(encoding='utf-8')
         if self.settings.report_parallel_tools:
@@ -181,7 +186,7 @@ class InvestigationService:
             binding['report_strict_sections'] = True
         if self.settings.report_reasoning_effort is not None:
             binding['report_reasoning_effort'] = self.settings.report_reasoning_effort
-        if self.settings.report_prompt == 'v6':
+        if prompt_version in ('v6', 'v7'):
             binding['history_bounds_version'] = 1
         if self.settings.semantic_retrieval:
             from fraudlens.investigation.retrieval_semantic_v6 import (

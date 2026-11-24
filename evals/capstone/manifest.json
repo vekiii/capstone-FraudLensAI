@@ -1,0 +1,375 @@
+{
+  "package_version": "capstone-ev-v1",
+  "preparation_revision": "d78febd",
+  "input_sha256": "7a52db065205cb3721596c6f6452d991948a6f42c5b28d23989b217c8162ba26",
+  "expectation_sha256": "57a84eb527a694eb33e2b312438f94a582741a225d42f30ea322d6950ed85953",
+  "rubric_sha256": "46e11dc604579576bd7c9c8b6c7c016bd80d66019eebf44d0e695a7298cbdf4c",
+  "schema_sha256": "0433ef503461a604030936b68831e4dafa57fcd8b8142aa743308a7d717f1307",
+  "dataset": {
+    "source_mode": "dataset",
+    "snapshot_ref": "run_boosted_candidate_smoke",
+    "dataset_version": "dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802",
+    "score_source": "model",
+    "scorer_version": "model-history-v1-boosted-candidate",
+    "run_store": "data/processed/feature-003-t098-20261118/model-bounded.sqlite",
+    "source_store": "data/processed/feature-003-t098-20261118/source.sqlite",
+    "history_index": "data/processed/feature-003-t098-20261118/history-index-feature006-local.sqlite"
+  },
+  "knowledge": {
+    "manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+    "retrieval": "data/knowledge/fraudlens-aml-knowledge-v1/retrieval.json",
+    "corpus_version": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3"
+  },
+  "ev10_review": {
+    "manifest": ".cache/006-capstone-ev10-reviewed/manifest.json",
+    "reviewed_by": "Milan",
+    "reviewed_at": "2026-11-22T04:54:46Z",
+    "content_sha256": "88dda81273e078b0d602c663943ec403cbbab2315f1856cbf616aa9d38adc6a8",
+    "evidence": "prompts/development/006-capstone-phase-04.md",
+    "corpus": "corpus_82c0f43fb55e1957f8aebdd0bc605f300d19d2f86653f3d4906818b3253dbe8d",
+    "passage": "ee369f98576c3de0ee9c8b6b86a22ee75a8c1aedb6465f9a6311fb78ee50ad28"
+  },
+  "artifacts": {
+    "data/processed/feature-003-t098-20261118/model-bounded.sqlite": "13cde42167cac02f257748633034a9461aa00648f6737ade813779845882d384",
+    "data/processed/feature-003-t098-20261118/source.sqlite": "125895e52cd7ce72fc1c4328ea758d3af23014dc8eb5df9d6a190e275e55ac47",
+    "data/processed/feature-003-t098-20261118/history-index-feature006-local.sqlite": "8745ec13848f5ce0f76417fd0c2f7c731a2189cb634034aea5eeaa3a205c5a9f",
+    "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json": "6b2867fd336cc97faafc88a977626a742a29bffe4dc2c5102420068a4855634a",
+    "data/knowledge/fraudlens-aml-knowledge-v1/retrieval.json": "171c3a4a9842e3b5a4d66fb279a809eb13dfe208de3517c577097ad1ee47610d"
+  },
+  "live_environment": {
+    "APP_MODE": "dataset",
+    "APP_SCORER": "model",
+    "VITE_APP_MODE": "dataset",
+    "INVESTIGATION_ENABLED": "true",
+    "INVESTIGATION_PROVIDER": "openai",
+    "INVESTIGATION_SOURCE": "dataset",
+    "INVESTIGATION_SEMANTIC_RETRIEVAL": "true",
+    "INVESTIGATION_SEMANTIC_PROFILE": "v8",
+    "INVESTIGATION_REPORT_PROMPT": "v6",
+    "INVESTIGATION_REPORT_REASONING_EFFORT": "low",
+    "INVESTIGATION_REPORT_PARALLEL_TOOLS": "true",
+    "INVESTIGATION_REPORT_STRICT_SECTIONS": "true",
+    "INVESTIGATION_REQUEST_TIMEOUT_SECONDS": "45",
+    "INVESTIGATION_TOTAL_TIMEOUT_SECONDS": "120",
+    "INVESTIGATION_MAX_PROVIDER_REQUESTS": "4",
+    "INVESTIGATION_MAX_SEMANTIC_REQUESTS": "10",
+    "INVESTIGATION_MAX_TOOL_CALLS": "12",
+    "INVESTIGATION_MAX_INPUT_BYTES": "48000",
+    "INVESTIGATION_MAX_OUTPUT_TOKENS": "4096",
+    "INVESTIGATION_MAX_RESPONSE_BYTES": "2097152",
+    "INVESTIGATION_DATASET_SCORE_SOURCE": "model",
+    "INVESTIGATION_ANALYST": "local-capstone-analyst",
+    "OPENAI_MODEL": "gpt-6-luna"
+  },
+  "configuration_sha256": "405af0cc6abea073f0fa8d7cfd70a9f0cc56b33b1ad2f200826157040aa5dfdb",
+  "budget": {
+    "requests_per_phase": 19,
+    "requests_total": 38,
+    "authorization": "prompts/development/006-capstone-phase-04.md",
+    "investigation_requests_per_case": 4,
+    "semantic_requests_per_query": 1
+  },
+  "cases": [
+    {
+      "id": "EV-01",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "2c9c4ac8ce1d653a82c856e3e33a3d3cdcd02c3e6d9df002566640fb6c641f71",
+      "seed_sha256": "cd82606c17633144ba9db6fdcfc5fe02a8b4985fabf815606182ae68f2a215d4",
+      "seed": {
+        "version": 1,
+        "state": "fresh investigation and knowledge SQLite archive",
+        "knowledge_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+        "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+        "history": "available",
+        "case_id": "C6c481448f7d25af15beea1309f44ee58",
+        "snapshot_ref": "run_boosted_candidate_smoke",
+        "dataset_version": "dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802",
+        "fresh_browser": true
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "19720f52db252d73b47a0a8b284be5569ff147b08f10b73502ecd52e090e584a"
+    },
+    {
+      "id": "EV-02",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "5cac072bdc480f9675cf80050c6f103d9a0f43899ac59ba587135cd189d2850b",
+      "seed_sha256": "955c68b73f2b8cad6e85fd32f3c06248e95b329ae4fd08f34a40b7a2620f0e6d",
+      "seed": {
+        "version": 1,
+        "state": "fresh investigation and knowledge SQLite archive",
+        "knowledge_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+        "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+        "history": "not_applicable"
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "11306a493989e03a0c580ba100dfc189a87974bf4b778090dab867c861308581"
+    },
+    {
+      "id": "EV-03",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "508d01e423928126fc107e042c496975de1f9091ac1e5e62d5ddd283916f3018",
+      "seed_sha256": "955c68b73f2b8cad6e85fd32f3c06248e95b329ae4fd08f34a40b7a2620f0e6d",
+      "seed": {
+        "version": 1,
+        "state": "fresh investigation and knowledge SQLite archive",
+        "knowledge_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+        "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+        "history": "not_applicable"
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "5b2936fb4aecfca80ab67f1ee9f9b5a1e0019935d55095f1e95d237efd3a6890"
+    },
+    {
+      "id": "EV-04",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "d21ac6a04f6c3e518d91642c643591f881166179ea3cb51277d60dcd41f98737",
+      "seed_sha256": "ebc1be975e966daa0290f7fc30eb26bbe40e49534c8119e15a16071e38e92184",
+      "seed": {
+        "version": 1,
+        "state": "fresh investigation and knowledge SQLite archive",
+        "knowledge_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+        "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+        "history": "available",
+        "case_id": "C6c481448f7d25af15beea1309f44ee58",
+        "snapshot_ref": "run_boosted_candidate_smoke",
+        "dataset_version": "dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802"
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "88f9a1cff3cfcfcb2db833cb1689a94e2be0701c02665e79c7931eaa1f6fa258"
+    },
+    {
+      "id": "EV-05",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "fc3834ee894cacc3e5536147c4dc81f31149328a3d2082d74835b2fb5ede13ce",
+      "seed_sha256": "955c68b73f2b8cad6e85fd32f3c06248e95b329ae4fd08f34a40b7a2620f0e6d",
+      "seed": {
+        "version": 1,
+        "state": "fresh investigation and knowledge SQLite archive",
+        "knowledge_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+        "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+        "history": "not_applicable"
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "fa9ca55780760b2a237a62f1e0abb254f984b1fe3eb41228294f2523050927e7"
+    },
+    {
+      "id": "EV-06",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "2302602e36bdd60bc3c7cba8188d40f858057fedf7880d90d17eb3e05f6e784f",
+      "seed_sha256": "1ff55bea62bf4bde8bf9077420d60e028129dc0347e65dfad90ff3dc8c69dad4",
+      "seed": {
+        "version": 1,
+        "state": "reuse saved EV-01 attempt, report, citation and review from same phase",
+        "knowledge_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+        "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+        "history": "available",
+        "case_id": "C6c481448f7d25af15beea1309f44ee58",
+        "snapshot_ref": "run_boosted_candidate_smoke",
+        "dataset_version": "dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802",
+        "source_scenario": "EV-01",
+        "fresh_browser": true
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "baa7ce9ef8198179913f7d541ab5cdd7797491f621d6238ede49d39c6aa06216"
+    },
+    {
+      "id": "EV-07",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "9265a1c179bc708e2ab3595fa1a7bea6a963bd0d304e9b2f227e580512448c07",
+      "seed_sha256": "955c68b73f2b8cad6e85fd32f3c06248e95b329ae4fd08f34a40b7a2620f0e6d",
+      "seed": {
+        "version": 1,
+        "state": "fresh investigation and knowledge SQLite archive",
+        "knowledge_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+        "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+        "history": "not_applicable"
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "58cbe753e5d01cd999106baf10e9f199bbbb047e3657a4af4470ca5d03010107"
+    },
+    {
+      "id": "EV-08",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "bf0d5a00537bdac5085d3c83bf977bd8400e0c9c0d779cabd5f393133311521f",
+      "seed_sha256": "e78c0526da24f932a4743f29551e0387048f8aa77486768a4ba85007d44ed024",
+      "seed": {
+        "version": 1,
+        "state": "fresh investigation and knowledge SQLite archive",
+        "knowledge_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+        "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+        "history": "unavailable",
+        "case_id": "C4af2f03a9d1bca5fc14d76e05af12140",
+        "snapshot_ref": "run_boosted_candidate_smoke",
+        "dataset_version": "dv_8ef39d505d3515131a969fade4b14ef0b11fc3318f9995c27d966e7a91e32802",
+        "absent_history_name": "missing-source.sqlite"
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "8e75f3bbd4abc76e2d391956a2a63d3ae41506ebb26bf3c522993a66d07f0c54"
+    },
+    {
+      "id": "EV-09",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "b656128de36b2f14c00678034561b4fa878cb28c7ac212c81b8c67143b9676b6",
+      "seed_sha256": "955c68b73f2b8cad6e85fd32f3c06248e95b329ae4fd08f34a40b7a2620f0e6d",
+      "seed": {
+        "version": 1,
+        "state": "fresh investigation and knowledge SQLite archive",
+        "knowledge_manifest": "data/knowledge/fraudlens-aml-knowledge-v1/manifest.json",
+        "corpus": "corpus_2fa1aa3379fadf2749300897ef79b9239c2ced2da311b370a8974d709b0bfaf3",
+        "history": "not_applicable"
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "1a6c116f6e9394e6a763ac3fc0e62ffe99dbcf263961c3a66a7ad40bb8f1abcd"
+    },
+    {
+      "id": "EV-10",
+      "mode": "live",
+      "input_version": 1,
+      "input_sha256": "9768265779dc4346880058b19acaedbf2b73ef23cc6f56c4129d9d1425dd7d42",
+      "seed_sha256": "664006883b88d3f1a97c9cabf233edc3f3ce2a69e34657b6b2b32e45b53e6f49",
+      "seed": {
+        "version": 1,
+        "state": "fresh investigation and knowledge SQLite archive",
+        "knowledge_manifest": ".cache/006-capstone-ev10-reviewed/manifest.json",
+        "corpus": "corpus_82c0f43fb55e1957f8aebdd0bc605f300d19d2f86653f3d4906818b3253dbe8d",
+        "history": "not_applicable",
+        "passage": "ee369f98576c3de0ee9c8b6b86a22ee75a8c1aedb6465f9a6311fb78ee50ad28"
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "61626cf8bc21a1a83dce50f3c4cbd88e99e38b2bdb5798eff8ab6b8c3d6ef0b1"
+    },
+    {
+      "id": "EV-11",
+      "mode": "deterministic",
+      "input_version": 1,
+      "input_sha256": "496f31c36174e1236d6858d49693cddda4cc91894b115ddacbdeda27827e55f1",
+      "seed_sha256": "3bcc04f32deee440de1bb9253360ce3e42c643d769689a3f6f4d60ac93d36810",
+      "seed": {
+        "version": 1,
+        "state": "fresh pytest SQLite fixture",
+        "case_id": "CASE-001",
+        "control": "omit_creation_binding",
+        "provider": "test",
+        "parameters": {
+          "omit_field": "snapshot_ref"
+        }
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "05f0fff18a623da7ec6ac0daa5b0d6b38fb5156a9e6f05ad91dacbbcb9084d69"
+    },
+    {
+      "id": "EV-12",
+      "mode": "deterministic",
+      "input_version": 1,
+      "input_sha256": "5639ef9bcd1a4c1916f1440cfff527048f6742c42146df5035ebcc8fc6c295a4",
+      "seed_sha256": "fd41ed33c6b49f5cc13b6dd055fe6ae3a55b60e79ec4d83db81abe48fa47a378",
+      "seed": {
+        "version": 1,
+        "state": "fresh pytest SQLite fixture",
+        "case_id": "CASE-001",
+        "control": "invalid_drafts_and_repair",
+        "provider": "test",
+        "parameters": {
+          "drafts": [
+            {
+              "outcome": "ready_for_review"
+            },
+            {
+              "outcome": "needs_information"
+            }
+          ]
+        }
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "3da5850b06bc5ef1d3261c262ae3e8fa0b0d51136ae423a8927fde8efffa554a"
+    },
+    {
+      "id": "EV-13",
+      "mode": "deterministic",
+      "input_version": 1,
+      "input_sha256": "372ff2c34dc3146900436cc3c9c10ef1a39b2c1d98e18a99f93fb827a3f27f57",
+      "seed_sha256": "0dc7d7bbbbb9f8b34a0df2c8cb1a4c62c80b79754981e9e38d03d94a939b0738",
+      "seed": {
+        "version": 1,
+        "state": "fresh pytest SQLite fixture",
+        "case_id": "CASE-001",
+        "control": "missing_bound_citation",
+        "provider": "test",
+        "parameters": {
+          "evidence_kind": "procedure"
+        }
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "9bf9e4809d57544410014eadf840d1c93b9d23614031c5a8dcbf9f9b8aeb0026"
+    },
+    {
+      "id": "EV-14",
+      "mode": "deterministic",
+      "input_version": 1,
+      "input_sha256": "dfb382333ba58ec7ee09036b653ccdfabcba5951178f2760202bb5053cffed11",
+      "seed_sha256": "3d9fa63899ce348c77e6ec8d5ae28d2ed4779401430e4afb9a95cd1478d313be",
+      "seed": {
+        "version": 1,
+        "state": "fresh pytest SQLite fixture",
+        "case_id": "CASE-001",
+        "control": "unknown_tool",
+        "provider": "test",
+        "parameters": {
+          "name": "capstone_unknown_tool",
+          "arguments": {}
+        }
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "901b20ce0b979a3a641d1e43f74f3318a2a7ddd8144b5d10059a2c3ca06027e7"
+    },
+    {
+      "id": "EV-15",
+      "mode": "deterministic",
+      "input_version": 1,
+      "input_sha256": "9ffaa33e7add5367bc6df90561dcfec3ce23b6883316d4d5fffcf3f67ff6f201",
+      "seed_sha256": "1524beedb65a996f8b27a56e71dbc095364176c8509c3af8d80b3d21b42f6bd7",
+      "seed": {
+        "version": 1,
+        "state": "fresh pytest SQLite fixture",
+        "case_id": "CASE-001",
+        "control": "mock_transport_timeout",
+        "provider": "mock_transport",
+        "parameters": {
+          "fault": "ReadTimeout"
+        }
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "b3ae41ab6a5d5b293673b00a434196874ca70f327e6e7d8b7276d5e2b1384cef"
+    },
+    {
+      "id": "EV-16",
+      "mode": "deterministic",
+      "input_version": 1,
+      "input_sha256": "d50d30bcbe83d607bbb085a50e44a399c34b03b01567147f8b41ce8227fa0324",
+      "seed_sha256": "b34c99813baba903bee6d5a7273893b72c2486a58c94efffce2f5ecde509a5ae",
+      "seed": {
+        "version": 1,
+        "state": "fresh pytest SQLite fixture",
+        "case_id": "CASE-001",
+        "control": "history_read_fault",
+        "provider": "test",
+        "parameters": {
+          "name": "get_account_history",
+          "account_side": "sender",
+          "fault": "OSError"
+        }
+      },
+      "expectation_version": 1,
+      "expectation_sha256": "55321c04defe486f9bbedde475a0953a30bf219d5475eadebe7aed8578b7ea72"
+    }
+  ]
+}

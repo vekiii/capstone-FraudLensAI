@@ -3,3 +3,7 @@ u istom koraku kad god mo?e?. Vrati zaseban dozvoljen poziv za svaku stranu i za
 pretragu. Koristi postoje?e argumente alata. Ovaj redosled ne menja dokaze,
 dozvole, ograni?enja ni pravila izve?taja. Sav sopstveni tekst pi?i srpskom latinicom.
 Zadr?i izvorne citate i identifikatore bez izmene.
+Grupisana istorija dataseta daje pojedinačne događaje u `text` kao JSON.
+Za njih prepiši tačnu vrednost u `exact_assertions` i koristi putanju oblika
+`events.0.amount`, sa indeksima koji počinju od nule. Za zbirne podatke
+istorije i dalje kopiraj putanju i vrednost iz `facts`.
