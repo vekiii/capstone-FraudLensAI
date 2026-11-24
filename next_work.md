@@ -1,3 +1,14 @@
+## Završna frontend integracija — 24. novembar 2026.
+
+Na integracionoj grani zasnovanoj na `main` commitu `71ba4b7`, kandidat
+`5d31af4` ima frontend dorade za Data, EDA i RAG. Prošlo je 300 web
+i 22 ciljana backend testa. Chrome je prikazao popunjeni EDA, skor i
+doprinose modela i ponovo otvorio isti dokaz i sačuvanu odluku sa četiri
+ranija provider zahteva. Proba nije slala nove zahteve modelu.
+[Dokaz](evidence/tasks/final-frontend-demo-integration.md).
+
+Sledeći korak je pregled integracionog PR-a i odluka tima o SHA-u za predaju.
+
 ## Vedranova živa proba i CAP-08
 
 Na reviziji `77ed64c` Vedran je u Chrome-u prošao tok za `row:2959955` od
