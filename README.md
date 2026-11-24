@@ -1,153 +1,64 @@
 # FraudLens AI
 
-For the current Feature 002 model-training status and teammate setup, see the [team training handoff](TEAM_TRAINING_HANDOFF.md). The fixture quickstart below remains independent of a trained model.
+FraudLens AI is an educational AML prototype for reviewing suspicious synthetic transactions. An analyst can look up a LightGBM risk score, open the linked case, inspect transaction facts and account history, and run an AI investigation that cites evidence and applicable procedures. The analyst records the final decision and can reopen it with its original evidence. Simulation Lab replays synthetic scenarios and compares prioritization policies.
 
-Educational AML prototype. Foundation phases 1-5 are implemented: local synthetic
-cases, strict contracts, replaceable scoring and list/detail UI. Phase 6 verifies
-coverage and delivery; independent peer reproduction and human review are pending.
-T019's final continuation records 16 headless Chrome scenarios plus Enter and
-390px viewport checks. This is automated browser evidence, not human review.
+The score is uncalibrated. The application runs locally and does not execute account actions or file regulatory reports.
 
-## Prerequisites and setup
-Use Git, uv, Python 3.14.x, Node 24.x and npm in Windows PowerShell.
-Versions checked on 2026-11-12 in phase 6: Python 3.14.3, uv 0.10.9,
-Node v24.20.0 and npm 11.19.0. Run commands from the repository root.
+## Capstone submission
 
-For an existing checkout, install the committed locked dependencies:
+[Submitted snapshot `5b5a208`](https://github.com/vekiii/capstone-FraudLensAI/tree/5b5a208603eb6d3d8b7964d7114706168ffed1de) includes the React demo, Feature 006 evaluation, and the CAP-08 contribution update. The execution evidence below identifies the commit on which each check ran.
+
+| Check | Executed revision | Outcome |
+| --- | --- | --- |
+| Manual live demo | `77ed64c` | Real model score, live investigation, factual citation and saved analyst decision reopened after reload. The procedure search returned `no_match`. [Demo record](evidence/tasks/capstone-evening-demo-guide.md) |
+| Integrated live evaluation | `3cfadcc` | 16/16 scenarios, including fresh generation with `gpt-6-luna`, a supported procedure citation and reopening the same saved decision in Chrome with zero additional provider requests. EV-01 and EV-06 used the published model-bridge case from the integrated demo. [Results and settings](evidence/tasks/feature-006-integrated-recheck-2026-11-24.md) |
+| Integrated regression | `3cfadcc` | 1,476 backend tests passed and one was skipped. All 300 web tests, typecheck and build passed. The backend run used `PYTHONUTF8=1` on Windows. [Evaluation record](evidence/tasks/feature-006-integrated-recheck-2026-11-24.md) |
+| Controlled failure | `55444ce` | The request-budget check rejected an oversized request before provider dispatch. Reopening the failure did not dispatch a request. [CAP-06 record](evidence/security/cap06-submission-verification-2026-11-23.md) |
+
+The submitted snapshot has the same application code, application prompts and lockfiles as the integrated evaluation candidate. The integrated 16/16 is a regression result on a known, adapted evaluation pack. The [historical comparison](evidence/tasks/feature-006-sc002-live-v2.md) retains its original inputs and named revisions. See the [CAP evidence map](evidence/tasks/feature-006-capstone-evidence-map.md) and [CAP-08 contribution](evidence/tasks/cap08-vedran-mitic.md).
+
+## Run the local fixture demo
+
+Use Git, uv, Python 3.14.x, Node 24.x and npm. Run the following in PowerShell from the repository root.
+
 ```powershell
-$env:UV_CACHE_DIR = Join-Path $PWD '.cache/uv'
 uv sync --locked --group dev
 npm.cmd --prefix web ci
 ```
-The workspace-local uv cache avoids machine-cache access restrictions. npm.cmd
-avoids npm.ps1 execution-policy restrictions without changing system policy.
-Initial dependency installation needs network access. Runtime startup and health
-need no provider key, model, RAG corpus, dataset or external AI service.
-No .env file or fixture data file is needed for health.
 
-Lockfile creation was performed during initial setup with `uv lock` and
-`npm.cmd --prefix web install`; those resolve dependencies and generate
-uv.lock / web/package-lock.json. Do not repeat them for routine installs or
-hand-edit lockfile hashes. Use locked installs above; intentional dependency
-changes require review and genuine lockfile regeneration.
+In terminal 1, start the API.
 
-## Run in two terminals
-In terminal 1, from repository root:
 ```powershell
 uv run --locked uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
 ```
-In terminal 2, from repository root:
+
+In terminal 2, start the React application.
+
 ```powershell
 npm.cmd --prefix web run dev -- --host 127.0.0.1 --port 5173 --strictPort
 ```
-Open http://127.0.0.1:5173 for the local React app. Cases includes Feature 002 risk and aggregate results. The EDA route and the previous dataset-overview URL show the same approved EDA summary. Vite forwards relative
-/api requests to http://127.0.0.1:8000. Both services bind to loopback only;
-this is a local demo, with no production multi-user security or ML-ready claim.
-Stop your own foreground servers with Ctrl+C.
 
-In another PowerShell terminal check health directly and through the proxy:
-```powershell
-Invoke-RestMethod -Uri 'http://127.0.0.1:8000/api/health'
-Invoke-RestMethod -Uri 'http://127.0.0.1:5173/api/health'
-```
-Both must return HTTP 200 JSON `{"status":"ok","mode":"fixture"}`.
-The case API is available directly and through the same proxy:
-```powershell
-Invoke-RestMethod -Uri 'http://127.0.0.1:8000/api/cases'
-Invoke-RestMethod -Uri 'http://127.0.0.1:5173/api/cases/CASE-001'
-```
-Unknown CASE-999 returns 404; malformed CASE-1 returns 422. Errors use the closed
-`{"error":{"code":"...","message":"..."}}` envelope. See T016 evidence for actual bodies.
-APP_MODE defaults to fixture. Explicit `APP_MODE=model` activates the local
-Feature 002 risk endpoint with the pinned, ignored LightGBM artifact and frozen
-label-free research features. Missing or incompatible model inputs return 503
-from the risk endpoint; they never trigger fixture scoring there. Other mode
-values fail validation. For the local opt-in mode, run from the repository root:
+Open `http://127.0.0.1:5173`. Vite proxies `/api` to the local backend. The default `fixture` mode uses synthetic scenarios and can start without a provider key or model artifacts. Check the API directly and through the proxy.
 
 ```powershell
-$env:APP_MODE = 'model'
-uv run --locked --group ml uvicorn fraudlens.main:app --app-dir backend/src --host 127.0.0.1 --port 8000
+Invoke-RestMethod 'http://127.0.0.1:8000/api/health'
+Invoke-RestMethod 'http://127.0.0.1:5173/api/health'
 ```
 
-Then request `GET /api/transactions/{canonical_transaction_id}/risk` with an ID
-from the verified label-free feature snapshot. The existing `/api/cases` fixture
-routes remain available. In the same explicit model mode, the interface's
-“Učitaj rezultate” control calls `GET /api/model/results`. That route serves
-only hash-verified, previously authorized aggregate validation/test reports;
-it does not evaluate or read label/score rows. Missing or changed approval is
-409, unavailable/incompatible reports are 404, and arbitrary query filters are
-422. Remove `APP_MODE` or set it to `fixture` to return to
-the default mode. The local model is for synthetic capstone review only; scores
-are uncalibrated risk scores, alerts are not capped, and analysts make final decisions.
-Settings resolve data/fixtures/cases.json relative to the repository, but startup
-and health do not open it. T014's three synthetic cases are stored there without scores.
+Use the [fixture investigation setup](evidence/tasks/feature-003-web-integration.md#run-the-local-demo) to prepare the local knowledge store and test-provider worker. Open **Cases** to inspect an investigation. Open **Simulation** to run the bundled synthetic scenario. The fixture provider returns scripted responses.
 
-## Fixture investigation and Simulation Lab
+## Run the scored and live demo
 
-Use the [Feature 003 fixture setup](evidence/tasks/feature-003-web-integration.md#run-the-local-demo)
-for a local store, reviewed knowledge, and the test-provider worker. Open Cases
-and select a fixture case to access investigation. Simulation Lab is available
-at the local /simulation route and uses the bundled synthetic scenario.
+Follow the [Windows demo guide](evidence/tasks/capstone-evening-demo-guide.md) for the verified artifact package, hash checks, model-case bridge, contribution sidecar, provider configuration and worker. The guide also records the earlier manual run. For the integrated live configuration, use the [evaluation settings](evidence/tasks/feature-006-integrated-recheck-2026-11-24.md), including the optional report v7 profile. Keep the key and local artifacts outside version control.
 
-The optional investigation dependency group pins the provider SDK for a separately
-configured live provider. The test-provider fixture workflow works without a key.
-The Feature 002 model lookup and Feature 003 investigation use separate contracts.
-A producer adapter for scored Feature 002 transactions is pending.
+## Checks
 
-## Checks and build
 ```powershell
-uv run --locked pytest backend/tests/integration/test_startup.py
-$env:PYTHONPATH = 'backend/src'
-uv run --locked --python 3.14.10 --group ml --group investigation pytest backend/tests
-uv run --locked ruff check backend
-npm.cmd --prefix web run test -- --run
-npm.cmd --prefix web run typecheck
+$env:PYTHONUTF8 = '1'
+uv run --locked --python 3.14.10 --group dev --group ml --group investigation pytest backend/tests --basetemp .cache/readme-pytest
+npm.cmd --prefix web test -- --run
 npm.cmd --prefix web run build
 git diff --check
 ```
-All 310 backend tests pass (phase 6, 2026-11-12), including the unchanged 49 T012 API/scorer tests and
-8 additional framework/logging checks (rerun successfully in T019).
-The frontend has 151 passing tests, including all 82 original API and 19 DOM tests.
-T019 typecheck/build/Ruff pass. See T012–T019 evidence for actual results and limits.
-Build output frontend/dist/ is local and ignored; it is not a deployment.
 
-The [fixture scoring rule](docs/decisions/fixture-scoring.md) rotates illustrative
-constants by transaction ID and copies transaction time into scored_at. Results
-are explicitly synthetic, without ML inference, calibrated probabilities or labels.
-
-The [target quickstart](specs/001-project-foundation/quickstart.md) also describes
-three-case navigation and failure-state checks. T019's real-server/browser
-verification includes live HTTP and completed headless Chrome automation. See the
-final T019 continuation for fault injection and limits. Phase 6 did not rerun the
-browser verifier because production code is unchanged. Human review stays pending.
-
-## Evidence and next work
-See [T019 integrated verification and limits](evidence/tasks/T019.md),
-[T018 UI/DOM verification](evidence/tasks/T018.md),
-[T017 frontend API/validation](evidence/tasks/T017.md),
-[T016 API/error verification](evidence/tasks/T016.md),
-[T015 scorer/validation](evidence/tasks/T015.md),
-[T014 fixtures/validation](evidence/tasks/T014.md),
-[T012 backend RED](evidence/tasks/T012.md), [T013 frontend RED](evidence/tasks/T013.md),
-[phase 3 handoff](evidence/tasks/phase-03-handoff.md),
-[startup RED/GREEN](evidence/tasks/T008.md), [setup/smoke](evidence/tasks/T011.md)
-and [next_work.md](next_work.md). Human review and independent second-member
-reproduction remain pending (SC-001). Local fixture checks are not ML evaluation.
-
-## Windows pytest temporary-directory access
-If pytest reports WinError 5 during tmp_path setup or cannot write .pytest_cache,
-use a fresh workspace-local temp/cache for that run (all tests still run):
-```powershell
-$runId = [guid]::NewGuid().ToString('N')
-$pytestTemp = Join-Path $PWD ".cache/peer-pytest-$runId"
-$pytestCache = Join-Path $PWD ".cache/peer-pytest-cache-$runId"
-uv run --locked pytest backend/tests --basetemp "$pytestTemp" -o "cache_dir=$pytestCache"
-```
-Use new paths: pytest manages/removes its basetemp contents. Do not change system
-permissions or remove other users' temp directories. Record the actual rerun result.
-
-## Acceptance update - 2026-11-12
-Earlier pending acceptance statements above are superseded by the team's reported
-joint setup verification and code/contracts/evidence review. T025/SC-001 and T028
-are complete; see evidence/tasks/peer-reproduction.md and human-review.md from the
-repository root. No additional automated/browser executions claimed by this update.
+Project specifications are in [specs](specs). The [Feature 006 quickstart](specs/006-capstone-evaluation/quickstart.md) describes the historical evaluation runner. See [next_work.md](next_work.md) for the contributor handoff.
