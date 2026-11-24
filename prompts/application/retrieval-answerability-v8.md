@@ -16,6 +16,13 @@ negation, singular/plural and ordinary English wording by meaning, not exact tok
 Do not abstain merely because a source says a fact is unknown when the question
 asks how to handle unknown facts. Distinguish that from asking for the actual fact.
 
+Before ranking, identify the action or decision being asked about and any context
+needed to distinguish the applicable procedure. For a follow-up with an unstated
+referent or stage, do not infer the situation from the passages. If materially
+different procedures could fit and the question provides no way to choose, mark
+the answer insufficient and state which detail would resolve the ambiguity. An
+explicitly scoped question about a general rule can still be supported.
+
 Return the closed source_ranks object with exactly one member for EVERY supplied
 passage_id. Use rank 0 for an unselected source and ranks 1..5 for selected sources,
 strongest first. Select at most five sources. A tied rank is ordered by passage_id.
