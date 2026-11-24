@@ -1,12 +1,13 @@
-## Vedranova ?iva proba i CAP-08
+## Vedranova živa proba i CAP-08
 
-Na reviziji 77ed64c Vedran je u Chrome-u pro?ao tok za row:2959955 od
-modelskog skora do ponovnog otvaranja sa?uvane odluke za dopunu.
-SQLite je potvrdio reviewed i ?etiri zavr?ena zahteva modelu.
-Pretraga procedura je zabele?ena kao no_match.
-[Zapis probe](evidence/tasks/capstone-evening-demo-guide.md#izvr?ena-vedranova-proba)
-i [CAP-08 bele?ka](evidence/tasks/cap08-vedran-mitic.md) sadr?e SHA probe.
-Slede?i korak za tim je upis zajedni?kog SHA-a nakon dogovora.
+Na reviziji `77ed64c` Vedran je u Chrome-u prošao tok za `row:2959955` od
+modelskog skora do ponovnog otvaranja sačuvane odluke za dopunu.
+SQLite je potvrdio `reviewed` i četiri završena zahteva modelu.
+Pretraga procedura je zabeležena kao `no_match`.
+[Zapis probe](evidence/tasks/capstone-evening-demo-guide.md#izvršena-vedranova-proba)
+i [CAP-08 beleška](evidence/tasks/cap08-vedran-mitic.md) sadrže SHA probe.
+Dogovoreni SHA za timski demo je `77ed64c16f30ebaf7b7a2212c58b3b0b08c92709`.
+Sledeći korak za tim je merge dokumentacionog PR-a #9.
 
 ## PR #7 Windows comparison fixed and owner approval recorded — 2026-11-23
 

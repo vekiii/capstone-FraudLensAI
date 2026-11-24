@@ -21,7 +21,7 @@ Datum pripreme: 23. novembar 2026. Ovo je uputstvo za narednu probu. Rezultate d
 - SHA `77ed64c16f30ebaf7b7a2212c58b3b0b08c92709`, slučaj `row:2959955`, pokušaj `att_8d9855c128b541b7a2cffe7bb6ccc5a0`.
 - Stvarni `gpt-6-luna` dao je nacrt u stanju `ready_for_review`. SQLite je potvrdio četiri završena zahteva. Otvoreni `case_fact` dokaz `ev_e5e1beaf4340418fa0bc33d79de77432` potvrdio je iznos 6.815,55 USD, vreme i skor `0.26731622570809` iz sažetka. Pretraga procedura vratila je `no_match`.
 - Vedran je u Chrome-u sačuvao `request_more_information` zbog nedostajućeg porekla sredstava i nepotpune istorije. Ponovno otvaranje prikazalo je istu odluku i obrazloženje uz `reviewed` i 4/8 zahteva. SQLite je potvrdio odluku `rev_c1c76f3dd02548e7b68cfce8c9901ad3`, vezu za isti nacrt i četiri završena zahteva.
-- Kontrolisani budžetski prekid nije ponovljen u ovoj probi. Zajednički SHA predaje još treba potvrditi sa timom.
+- Kontrolisani budžetski prekid nije ponovljen u ovoj probi. Dogovoreni SHA za timski demo je `77ed64c16f30ebaf7b7a2212c58b3b0b08c92709`.
 
 ## Mapa dokaza za predaju
 
