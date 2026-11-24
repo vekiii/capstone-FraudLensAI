@@ -1,5 +1,9 @@
 # Reprodukcija kandidata — Feature 06
 
+Za ponovljenu proveru kroz modelski demo iz `main` koristi verzije, postavke i
+ograničenja iz [integracionog zapisa](../../evidence/tasks/feature-006-integrated-recheck-2026-11-24.md).
+Ispod je uputstvo za reprodukciju istorijskog T098 kandidata.
+
 Aplikaciona revizija za predaju i demonstraciju je `d8acc2a335d95e2402f586006925949f4d9f7739`.
 Baseline `5974f94f68c2a1fd1e42b9b2d01d438c30bd8dca` služi za poređenje.
 Ovo uputstvo i [mapu dokaza](../../evidence/tasks/feature-006-capstone-evidence-map.md)

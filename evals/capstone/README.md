@@ -1,5 +1,11 @@
 # Evidencija Capstone evaluacije
 
+Zamrznuti `run.py` i `manifest.json` pripadaju istorijskom T098 toku.
+Na integrisanom `main`-u modelski slučajevi koriste objavljeni bridge i
+`APP_MODE=model`. [Odvojeno merenje integrisanog kandidata](../../evidence/tasks/feature-006-integrated-recheck-2026-11-24.md)
+navodi prilagođene ulaze, izvršene provere i ishod. Istorijski rezultati
+ostaju vezani za svoje revizije.
+
 [Izvršni scenariji](inputs/cases.json) sadrže 16 javnih ulaza i pravila za
 početno stanje. [Očekivanja](reference/expectations.json) otvara ocenjivač
 offline, tek pošto sačuva opažanja. API-ju i worker-u prosleđuju se samo

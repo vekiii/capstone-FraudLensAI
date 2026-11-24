@@ -2,11 +2,15 @@
 
 Na grani `integration/capstone-evaluation-evidence`, od `main` commita
 `527020c`, preneti su specifikacija, protokol, evaluacioni paket i dokazi
-iz `3eee1d6`. Na integracionom stablu prošlo je 19 testova validatora i
-negativnih kontrola. Rezultat 15/16 pripada istorijskom `d8acc2a`.
-Živa evaluacija nije ponovljena. [CAP mapa](evidence/tasks/feature-006-capstone-evidence-map.md).
+iz `3eee1d6`. Prošlo je 19 testova validatora i negativnih kontrola, kao i
+300 frontend testova i build. Istorijski rezultat 15/16 ostaje vezan za
+`d8acc2a`. Ponovljeni prolazi na integrisanoj postavci dali su 11/16 na
+`218c357`, 15/16 na `6d58dfb` i 16/16 na `3cfadcc` uz Chrome proveru
+modelskog slučaja i ponovnog otvaranja odluke. EV-01 i EV-06 koriste
+objavljeni modelski slučaj iz trenutnog demoa.
+[Zapis ponovljene evaluacije](evidence/tasks/feature-006-integrated-recheck-2026-11-24.md).
 
-Sledeći korak je pregled lokalnog diffa za dokumentacioni PR.
+Sledeći korak je pregled integracionog PR-a i odluka tima o merge-u u `main`.
 
 ## Završna frontend integracija — 24. novembar 2026.
 
